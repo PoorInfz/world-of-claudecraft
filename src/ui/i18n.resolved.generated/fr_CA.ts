@@ -1524,6 +1524,7 @@ export const fr_CA: EnTranslations = {
       "showDevBadges": "Afficher les badges de développeur",
       "showOwnNameplate": "Afficher ma plaque de nom",
       "showPlayerNameplates": "Afficher les plaques de noms des joueurs",
+      "showPetNames": "Show Pet Names",
       "uiScale": "Échelle de l’interface",
       "playerFrameScale": "Échelle du cadre du joueur",
       "targetFrameScale": "Échelle du cadre de la cible",
@@ -9388,7 +9389,8 @@ export const fr_CA: EnTranslations = {
       "potion": "Potion",
       "elixir": "Élixir",
       "bag": "Sac",
-      "mount": "Monture"
+      "mount": "Monture",
+      "buddy": "Buddy"
     },
     "stats": {
       "armor": "Armure",
@@ -12883,6 +12885,39 @@ export const fr_CA: EnTranslations = {
       },
       "ps_passing_stone": {
         "name": "Pierre de trépas"
+      },
+      "whistle_ember_fox": {
+        "name": "Ember Fox Whistle"
+      },
+      "whistle_moss_hare": {
+        "name": "Moss Hare Whistle"
+      },
+      "whistle_frog": {
+        "name": "Frog Whistle"
+      },
+      "whistle_crimson_claw_crab": {
+        "name": "Crimson Claw Crab Whistle"
+      },
+      "whistle_golden_sentinel": {
+        "name": "Golden Sentinel Whistle"
+      },
+      "whistle_nightfang": {
+        "name": "Nightfang Whistle"
+      },
+      "whistle_tuskhorn_boar": {
+        "name": "Tuskhorn Boar Whistle"
+      },
+      "whistle_emerald_wolf": {
+        "name": "Emerald Wolf Whistle"
+      },
+      "whistle_tiger": {
+        "name": "Tiger Whistle"
+      },
+      "whistle_cate_coin": {
+        "name": "Cate Coin Whistle"
+      },
+      "whistle_dragon": {
+        "name": "Dragon Whistle"
       },
       "conjured_water4": {
         "name": "Eau de source conjurée"

@@ -1524,6 +1524,7 @@ export const ko_KR: EnTranslations = {
       "showDevBadges": "개발자 배지 표시",
       "showOwnNameplate": "내 이름표 표시",
       "showPlayerNameplates": "플레이어 이름표 표시",
+      "showPetNames": "Show Pet Names",
       "uiScale": "UI 배율",
       "playerFrameScale": "플레이어 프레임 크기",
       "targetFrameScale": "대상 프레임 크기",
@@ -9388,7 +9389,8 @@ export const ko_KR: EnTranslations = {
       "potion": "물약",
       "elixir": "비약",
       "bag": "가방",
-      "mount": "탈것"
+      "mount": "탈것",
+      "buddy": "Buddy"
     },
     "stats": {
       "armor": "방어도",
@@ -12883,6 +12885,39 @@ export const ko_KR: EnTranslations = {
       },
       "ps_passing_stone": {
         "name": "안식의 돌"
+      },
+      "whistle_ember_fox": {
+        "name": "Ember Fox Whistle"
+      },
+      "whistle_moss_hare": {
+        "name": "Moss Hare Whistle"
+      },
+      "whistle_frog": {
+        "name": "Frog Whistle"
+      },
+      "whistle_crimson_claw_crab": {
+        "name": "Crimson Claw Crab Whistle"
+      },
+      "whistle_golden_sentinel": {
+        "name": "Golden Sentinel Whistle"
+      },
+      "whistle_nightfang": {
+        "name": "Nightfang Whistle"
+      },
+      "whistle_tuskhorn_boar": {
+        "name": "Tuskhorn Boar Whistle"
+      },
+      "whistle_emerald_wolf": {
+        "name": "Emerald Wolf Whistle"
+      },
+      "whistle_tiger": {
+        "name": "Tiger Whistle"
+      },
+      "whistle_cate_coin": {
+        "name": "Cate Coin Whistle"
+      },
+      "whistle_dragon": {
+        "name": "Dragon Whistle"
       },
       "conjured_water4": {
         "name": "창조된 샘물"

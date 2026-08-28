@@ -189,7 +189,13 @@ const MONOLITHS: MonolithRow[] = [
     // ceiling is the exact merged count.
     // Re-pinned to the integration merge of the latest v0.40.0 (the touch UI
     // rework); exact merged count.
-    ceiling: 13329,
+    // 2026-08-27: the Buddies feature's bespoke render module (buddy_render.ts,
+    // buddy_follow.ts) is gone — a buddy is now a real owned mob entity
+    // rendered through the ordinary per-mob view path, so renderer.ts lost the
+    // namespace import, the EntityView extends clause, and the three
+    // create/dispose/per-frame call sites it used to need. Ceiling lowered to
+    // the new exact count, zero slack.
+    ceiling: 13331,
     seam: 'a new src/render/<thing>.ts module the renderer calls (src/render/CLAUDE.md)',
   },
   {
@@ -238,7 +244,11 @@ const MONOLITHS: MonolithRow[] = [
     // Plus 7 at the v0.39.3 main back-merge: the Double Honor port grew the
     // sim arm on main while the release pin sat at zero slack (the known
     // both-arms compound). Exact merged count, zero slack.
-    ceiling: 12538,
+    // Plus 23 for the Buddies feature: the sanctioned thin-delegate seam
+    // (ownedBuddiesFor/toggleBuddyFor + the two IWorldBuddies facade methods),
+    // mirroring the existing mount delegates exactly; the actual mechanic
+    // lives in src/sim/buddies.ts. Exact count, zero slack.
+    ceiling: 12561,
     seam: 'a sim system module behind SimContext (src/sim/CLAUDE.md)',
   },
   {
@@ -308,7 +318,10 @@ const MONOLITHS: MonolithRow[] = [
     // routeEvents into the guild board window's live REST read (the
     // noticeboard_guilds event transform is deleted). Exact count, zero
     // slack.
-    ceiling: 10645,
+    // Plus 13 for the Buddies feature: the identityFields bud mirror, the
+    // budOwn self field, and the buddy_toggle dispatch case (thin wiring;
+    // the mechanic lives in src/sim/buddies.ts). Exact count, zero slack.
+    ceiling: 10658,
     seam: 'a sibling server module; see the hot-path seams in server/CLAUDE.md',
   },
   {
@@ -330,7 +343,11 @@ const MONOLITHS: MonolithRow[] = [
     // Lowered to the exact size after the ApiError family moved into
     // src/net/api_error.ts; the freed lines paid for the R11 wallet
     // re-auth params on linkWallet/unlinkWallet.
-    ceiling: 5840,
+    // Plus 23 for the Buddies feature: the entity default + identity mirror
+    // decode, the selfOwnedBuddies field + budOwn self-decode, and the two
+    // IWorldBuddies facade methods (thin wire-mirror wiring, the same shape
+    // as the existing IWorldMounts arm). Exact count, zero slack.
+    ceiling: 5863,
     seam: 'a src/net sibling module (the refactor/net-online split is the template)',
   },
   {

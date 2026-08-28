@@ -24,6 +24,7 @@ import {
   equipBag as equipBagCmd,
   stackSizeOf,
 } from './bags';
+import { summonBuddyItem } from './buddies';
 import { isRawCookingCatch } from './content/items';
 import { ITEMS, NPCS } from './data';
 import { markItemDiscovered } from './deeds';
@@ -960,6 +961,11 @@ export function useItem(
     // first. Reins are never consumed: mountOwned() derives ownership from holding
     // the item, so removing it here would delete the mount.
     summonMountItem(ctx, meta.entityId, def.mount);
+  } else if (def.kind === 'buddy') {
+    // Whistles work like reins: clicking one (bags or an action-bar slot)
+    // summons THAT buddy, or dismisses it if already out. Whistles are never
+    // consumed: buddyOwned() derives ownership from holding the item.
+    summonBuddyItem(ctx, meta.entityId, def.buddy);
   }
 }
 

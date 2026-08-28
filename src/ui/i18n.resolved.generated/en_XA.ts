@@ -1524,6 +1524,7 @@ export const en_XA: EnTranslations = {
       "showDevBadges": "[Šĥóŵ Ðéʋéļóþéŕ Ɓáðĝéš]",
       "showOwnNameplate": "[Šĥóŵ Ɱý Ñáɱéþļáţé]",
       "showPlayerNameplates": "[Šĥóŵ Þļáýéŕ Ñáɱéþļáţéš]",
+      "showPetNames": "[Šĥóŵ Þéţ Ñáɱéš]",
       "uiScale": "[ÚÍ Šçáļé]",
       "playerFrameScale": "[Þļáýéŕ Ƒŕáɱé Šçáļé]",
       "targetFrameScale": "[Ţáŕĝéţ Ƒŕáɱé Šçáļé]",
@@ -9388,7 +9389,8 @@ export const en_XA: EnTranslations = {
       "potion": "[Þóţíóñ]",
       "elixir": "[Éļíẋíŕ]",
       "bag": "[Ɓáĝ]",
-      "mount": "[Ɱóúñţ]"
+      "mount": "[Ɱóúñţ]",
+      "buddy": "[Ɓúððý]"
     },
     "stats": {
       "armor": "[Áŕɱóŕ]",
@@ -12883,6 +12885,39 @@ export const en_XA: EnTranslations = {
       },
       "ps_passing_stone": {
         "name": "[Þáššíñĝ Šţóñé]"
+      },
+      "whistle_ember_fox": {
+        "name": "[Éɱƀéŕ Ƒóẋ Ŵĥíšţļé]"
+      },
+      "whistle_moss_hare": {
+        "name": "[Ɱóšš Ĥáŕé Ŵĥíšţļé]"
+      },
+      "whistle_frog": {
+        "name": "[Ƒŕóĝ Ŵĥíšţļé]"
+      },
+      "whistle_crimson_claw_crab": {
+        "name": "[Çŕíɱšóñ Çļáŵ Çŕáƀ Ŵĥíšţļé]"
+      },
+      "whistle_golden_sentinel": {
+        "name": "[Ĝóļðéñ Šéñţíñéļ Ŵĥíšţļé]"
+      },
+      "whistle_nightfang": {
+        "name": "[Ñíĝĥţƒáñĝ Ŵĥíšţļé]"
+      },
+      "whistle_tuskhorn_boar": {
+        "name": "[Ţúšķĥóŕñ Ɓóáŕ Ŵĥíšţļé]"
+      },
+      "whistle_emerald_wolf": {
+        "name": "[Éɱéŕáļð Ŵóļƒ Ŵĥíšţļé]"
+      },
+      "whistle_tiger": {
+        "name": "[Ţíĝéŕ Ŵĥíšţļé]"
+      },
+      "whistle_cate_coin": {
+        "name": "[Çáţé Çóíñ Ŵĥíšţļé]"
+      },
+      "whistle_dragon": {
+        "name": "[Ðŕáĝóñ Ŵĥíšţļé]"
       },
       "conjured_water4": {
         "name": "[Çóñĵúŕéð Šþŕíñĝŵáţéŕ]"

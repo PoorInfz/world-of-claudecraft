@@ -12,6 +12,7 @@ import {
 } from '../sim/account_flair';
 import { bagCapacity } from '../sim/bags';
 import { signChallenge } from '../sim/client_challenge';
+import { type BuddyKey, normalizeBuddyKey } from '../sim/content/buddies';
 import { MOUNT_RACE_COURSE, type MountKey, normalizeMountKey } from '../sim/content/mounts';
 import { mechChromaSkinIndex } from '../sim/content/skins';
 import {
@@ -1492,6 +1493,7 @@ function blankEntity(id: number): Entity {
     mountKey: '',
     mountCastRemaining: 0,
     mountCastKey: '',
+    buddyKey: '',
     mainhandItemId: null,
     offhandItemId: null,
     weaponSkinLoadout: {},
@@ -2971,6 +2973,7 @@ export class ClientWorld implements IWorld {
         e.level = w.lv;
         e.skin = w.sk ?? 0;
         e.mountKey = w.mnt ?? ''; // active rideable mount ('' dismounted); feeds speed + render
+        e.buddyKey = w.bud ?? ''; // active cosmetic buddy ('' none); render-only, every viewer
         e.mainhandItemId = w.mh ?? null; // equipped mainhand → held weapon model (render-only)
         e.offhandItemId = w.oh ?? null; // equipped offhand → held weapon model (render-only)
         e.weaponSkinId = w.wsk ?? null; // active weapon-skin cosmetic (render-only)
@@ -3614,6 +3617,13 @@ export class ClientWorld implements IWorld {
           .filter((k): k is MountKey => k !== '');
       }
       if (s.mntRtd !== undefined) this.selfRidingTrained = s.mntRtd === true;
+      // IWorldBuddies self-decode: budOwn is delta-guarded (omitted keeps the
+      // prior mirror), mirrored verbatim like mntOwn.
+      if (Array.isArray(s.budOwn)) {
+        this.selfOwnedBuddies = (s.budOwn as unknown[])
+          .map((k) => normalizeBuddyKey(typeof k === 'string' ? k : ''))
+          .filter((k): k is BuddyKey => k !== '');
+      }
       if (s.mntLesson !== undefined) this.mountLessonActiveMirror = s.mntLesson === true;
       if (s.mntRace !== undefined) {
         const view = s.mntRace as MountRaceView | null;
@@ -4452,6 +4462,16 @@ export class ClientWorld implements IWorld {
   }
   toggleMounted(): void {
     this.cmd({ cmd: 'mount_toggle' });
+  }
+  // --- IWorldBuddies: collection + dismiss. Summoning a specific buddy is an
+  // item use, not a buddy command, so nothing here sends one. The toggle stays
+  // authoritative (server-validated ownership) and the active identity mirror
+  // (bud) lands on the next snapshot either way. ---
+  ownedBuddies(): readonly BuddyKey[] {
+    return this.selfOwnedBuddies;
+  }
+  toggleBuddy(): void {
+    this.cmd({ cmd: 'buddy_toggle' });
   }
   // --- riding skill purchase: server-authoritative; on success the snapshot
   // delta (mntRtd=true) confirms the skill was granted. ---
@@ -5363,6 +5383,9 @@ export class ClientWorld implements IWorld {
   // Riding skill, mirrored from the snapshot `s.mntRtd`. False until the server
   // confirms the player purchased it from Marla.
   private selfRidingTrained = false;
+  // The owned buddy collection, mirrored from `s.budOwn`. Starts empty: nothing
+  // is owned until the server says so.
+  private selfOwnedBuddies: BuddyKey[] = [];
   raidLockouts(): RaidLockout[] {
     const now = Date.now();
     const src = this.selfLockouts ?? {};

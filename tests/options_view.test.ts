@@ -540,6 +540,7 @@ const GENERAL_KEYS = [
   'showReliquaryTracker',
   'showOwnNameplate',
   'showPlayerNameplates',
+  'showPetNames',
 ];
 const FRAMES_KEYS = [
   'playerFrameScale',

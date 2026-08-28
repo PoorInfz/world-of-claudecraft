@@ -46,6 +46,7 @@
 //                                            with canEdit marking officer-plus EDITS,
 //                                            proximity-gated info + gold/item/buy-slots commands)
 //   mounts.ts           IWorldMounts         rideable ground mounts: pick + mount/dismount
+//   buddies.ts          IWorldBuddies        cosmetic followers: pick + summon/dismiss
 //   dungeon_finder.ts   IWorldDungeonFinder  Dungeon Finder queue/proposals/premade board
 //   deeds.ts            IWorldDeeds          earned deeds, lifetime stats, renown, active title,
 //                                            rarity + the account-Renown leaderboard reads
@@ -65,6 +66,7 @@
 import type { IWorldActionBar } from './world_api/action_bar';
 import type { IWorldBank } from './world_api/bank';
 import type { IWorldBattleground } from './world_api/battleground';
+import type { IWorldBuddies } from './world_api/buddies';
 import type { IWorldCardMinigame } from './world_api/card_minigame';
 import type { IWorldChat } from './world_api/chat';
 import type { IWorldCombat } from './world_api/combat';
@@ -310,7 +312,8 @@ export interface IWorld
     IWorldActionBar,
     IWorldDeeds,
     IWorldReliquary,
-    IWorldMounts {}
+    IWorldMounts,
+    IWorldBuddies {}
 
 // ---------------------------------------------------------------------------
 // Command schema (W0b): the shared wire-token vocabulary.
@@ -488,6 +491,7 @@ export const COMMAND_NAMES = [
   'set_dungeon_difficulty',
   'heroic_buy',
   'mount_toggle',
+  'buddy_toggle',
   'mount_train_begin',
   'mount_train_answer',
   'mount_train_abort',
@@ -700,7 +704,8 @@ export type WorldFacet =
   | 'IWorldActionBar'
   | 'IWorldDeeds'
   | 'IWorldReliquary'
-  | 'IWorldMounts';
+  | 'IWorldMounts'
+  | 'IWorldBuddies';
 
 export const COMMAND_FACETS = {
   // IWorldCombat: ability casts, auto-attack, spirit release.
@@ -916,6 +921,11 @@ export const COMMAND_FACETS = {
   // learn_riding: purchase the riding skill from Marla (80g, once). No snapshot
   // field; the result rides the ridingTrained snapshot delta (mntRtd).
   learn_riding: 'IWorldMounts',
+  // IWorldBuddies: cosmetic followers, dismiss-only toggle (snake_case wire
+  // string, by design, mirroring mount_toggle). The active buddy is a
+  // self-snapshot read (terse `bud`, no send, untagged); summoning one is an
+  // item use (use_item), not a buddy command.
+  buddy_toggle: 'IWorldBuddies',
   // IWorldDungeonFinder: the group finder (snake_case wire strings, by design).
   // dungeonFinderInfo / dungeonFinderBoard are snapshot reads (no send, untagged).
   df_roles: 'IWorldDungeonFinder',

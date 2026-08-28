@@ -1,4 +1,6 @@
+import { buddyItemId, buddyOwned } from './buddies';
 import { applyCourserDaze } from './combat/hunter_shared';
+import { BUDDY_KEYS } from './content/buddies';
 import { DEV_KIT_ROLES, devKitRole } from './content/dev_kit_roles';
 import { MOUNT_KEYS, TRAINING_MOUNT_KEY } from './content/mounts';
 import { GATHERING_PROFESSIONS } from './content/professions';
@@ -259,6 +261,26 @@ export function handleDevChat(
         ctx,
         pid,
         `[dev] Granted ${granted} mount reins (${MOUNT_KEYS.length} owned)${levelNote}. Use a reins item from your bags to ride.`,
+      );
+    }
+    return null;
+  }
+
+  if (/^\/(?:dev\s+buddi?es?|devbuddi?es?)\s*$/i.test(raw)) {
+    const meta = ctx.players.get(pid);
+    if (meta) {
+      let granted = 0;
+      for (const key of BUDDY_KEYS) {
+        if (buddyOwned(meta, key)) continue;
+        const itemId = buddyItemId(key);
+        if (!itemId) continue;
+        ctx.addItem(itemId, 1, pid);
+        granted += 1;
+      }
+      emitDevLog(
+        ctx,
+        pid,
+        `[dev] Granted ${granted} buddy whistles (${BUDDY_KEYS.length} owned). Use a whistle from your bags to summon.`,
       );
     }
     return null;
@@ -782,7 +804,7 @@ export function handleDevChat(
   if (/^\/dev(?:\s|$)/i.test(raw)) {
     ctx.error(
       pid,
-      'Dev commands: /dev gui, /dev level, /dev tp, /dev spawn, /dev despawn, /dev killtarget, /dev give, /dev kit, /dev mounts, /dev mountquest, /dev gold, /dev quest, /dev quests, /dev attune, /dev mobilestation, /dev gather, /dev bot, /dev vendor, /dev bg, /dev bis, /dev lfg, /dev portal [seed] [level] [C|B|A|S] [infernal|random], /dev cascade, /dev sandbox, /dev smite, /dev god, /dev heal, /dev hp <1-100>, /dev resource, /dev cooldowns, /dev revive, /dev combatreset, /dev daze, /dev fear, /dev dungeon, /dev raid, /dev kill',
+      'Dev commands: /dev gui, /dev level, /dev tp, /dev spawn, /dev despawn, /dev killtarget, /dev give, /dev kit, /dev mounts, /dev buddies, /dev mountquest, /dev gold, /dev quest, /dev quests, /dev attune, /dev mobilestation, /dev gather, /dev bot, /dev vendor, /dev bg, /dev bis, /dev lfg, /dev portal [seed] [level] [C|B|A|S] [infernal|random], /dev cascade, /dev sandbox, /dev smite, /dev god, /dev heal, /dev hp <1-100>, /dev resource, /dev cooldowns, /dev revive, /dev combatreset, /dev daze, /dev fear, /dev dungeon, /dev raid, /dev kill',
     );
     return null;
   }

@@ -178,6 +178,7 @@ function harness(knobs: {
     showDevBadges: () => true,
     showOwnNameplate: () => false,
     showPlayerNameplates: () => true,
+    showPetNames: () => false,
     isHostilePlayer: () => false,
   });
   return { painter, world };

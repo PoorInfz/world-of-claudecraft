@@ -18,6 +18,7 @@
 // garbage on the hot path), mirroring the speedStreaksInto / cameraSpace out-param
 // idiom elsewhere in src/render.
 
+import { BUDDY_TEMPLATE_IDS } from '../sim/content/buddy_mobs';
 import type { Entity } from '../sim/types';
 import { INTERACT_RANGE } from '../sim/types';
 import { comboPipsFor } from './nameplate_combo';
@@ -62,6 +63,10 @@ export interface NameplatePlan {
   threat: boolean;
   /** combo pips the viewer has built on this entity (0 = hide the row) */
   comboPips: number;
+  /** never draw a health bar for this plate even when otherwise shown: a
+   *  cosmetic buddy (src/sim/content/buddy_mobs.ts) always sits at 1/1 hp, so
+   *  a sliver would be pure noise rather than information. */
+  noHealthBar: boolean;
 }
 
 /** A zeroed plan for the painter to own and reuse. */
@@ -73,6 +78,7 @@ export function newNameplatePlan(): NameplatePlan {
     hasOverheadEmote: false,
     threat: false,
     comboPips: 0,
+    noHealthBar: false,
   };
 }
 
@@ -97,8 +103,13 @@ export function newNameplatePlan(): NameplatePlan {
  * It still overrides nothing that is not about a hidden body: a looted corpse,
  * the deliberately label-less sealed crypt door and the Vale Cup ball stay
  * hidden, and the self plate stays the player's own choice (the local player's
- * view is never gated). Pure: same inputs give the same plan, no DOM/Three/i18n,
- * no Math.random/Date.now/performance.now.
+ * view is never gated). `showPetNames` is the dedicated, off-by-default
+ * cosmetic-buddy toggle (src/sim/content/buddy_mobs.ts's BUDDY_TEMPLATE_IDS):
+ * a buddy's plate ignores `showNameplates` entirely (it is never a hostile,
+ * attackable mob) and is hidden unless this is on, in which case it shows
+ * name-only (noHealthBar is always true for a buddy — see that field). Pure:
+ * same inputs give the same plan, no DOM/Three/i18n, no
+ * Math.random/Date.now/performance.now.
  */
 export function nameplatePlanInto(
   out: NameplatePlan,
@@ -108,6 +119,7 @@ export function nameplatePlanInto(
   showNameplates: boolean,
   showOwnNameplate: boolean,
   showPlayerNameplates: boolean,
+  showPetNames: boolean,
   standIn: boolean,
 ): NameplatePlan {
   const dx = e.pos.x - player.pos.x;
@@ -135,16 +147,22 @@ export function nameplatePlanInto(
     e.templateId === 'delve_bell_rope' ||
     e.templateId === 'delve_bell_rope_pulled';
   const delveInteractNear = isDelveInteract && d2 <= (INTERACT_RANGE + 1) * (INTERACT_RANGE + 1);
+  const isBuddyPet = BUDDY_TEMPLATE_IDS.has(e.templateId);
 
   out.hidden =
     (isSelf && !hasOverheadEmote && !showOwnNameplate) ||
     (e.dead && !e.lootable && e.kind === 'mob') ||
     (isDoor && e.dungeonId === UNLABELED_DOOR_DUNGEON_ID) ||
+    // A buddy's own dedicated toggle, unconditional even over standIn: it is
+    // never a hostile, attackable mob, so it earns none of the "tell the
+    // player it's there" urgency a gated loot pile or quest object does.
+    (isBuddyPet && !showPetNames) ||
     (!standIn &&
       (d2 > NAMEPLATE_RANGE_SQ ||
         (e.kind === 'object' && !isDoor && !delveInteractNear) ||
-        (!showNameplates && e.kind === 'mob' && !e.dead) ||
+        (!isBuddyPet && !showNameplates && e.kind === 'mob' && !e.dead) ||
         (!showPlayerNameplates && e.kind === 'player' && !isSelf && e.id !== player.targetId)));
+  out.noHealthBar = isBuddyPet;
   out.anchorYOffset =
     viewHeight * e.scale +
     (isSelf && hasOverheadEmote && !showOwnNameplate

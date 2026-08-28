@@ -218,6 +218,11 @@ const animal = (attack: string[]): ClipMap => ({
   death: 'Death',
 });
 
+// Every buddy rig (public/models/buddies/) ships exactly Idle + Walk, renamed
+// in-place to this convention (see the buddy_* VISUALS entries below); run
+// and death alias Walk/Idle since a buddy never plays either.
+const BUDDY_CLIPS: ClipMap = { idle: 'Idle', walk: 'Walk', run: 'Walk', attack: [], death: 'Idle' };
+
 // Rideable mounts. The Tripo-lane rigs (bear, toad, griffin) ship clips baked
 // locally by scripts/bake_mount_gaits.mjs (the Tripo quadruped retarget was
 // near-static, 4-5 animated joints), which authors Idle/Walk/Run/Death gait
@@ -749,6 +754,7 @@ const FORMS = 'models/chars/forms';
 const CREATURES = 'models/creatures';
 const WEAPONS = 'models/weapons';
 const MOUNTS_DIR = 'models/mounts';
+const BUDDIES_DIR = 'models/buddies';
 
 const ITEM_OFFHAND_MODELS: Readonly<Record<string, string>> = {
   eastbrook_buckler: 'shield_round',
@@ -1808,6 +1814,70 @@ export const VISUALS: Record<string, VisualDef> = {
     clips: animal(['Attack']),
     tint: 'entity',
     tintStrength: 0.35,
+  },
+  // -- buddy follower rigs (src/sim/content/buddies.ts catalog) -------------
+  // Dedicated GLBs, one per BuddyKey (src/render/buddy_visuals.ts maps key ->
+  // visualKey here). Baked textures, no tint: each is a distinct species, not
+  // a recolor. Every source file shipped its idle/walk clips under a
+  // different name per generator (Crab_Idle/Crab_Walk, IDLE/WALK,
+  // Idle_Breathing, ...); scripts/assets (2026-08-28) renamed every one of
+  // them in-place to the same 'Idle'/'Walk' convention the shared Quaternius
+  // rig (mob_fox/mob_critter, animal() below) already uses, so BUDDY_CLIPS
+  // is one shared object instead of nine bespoke ones. No authored
+  // run/attack/death: run/death alias Walk/Idle, the two the rig actually
+  // has, since a buddy never plays them anyway (buddy_ai.ts's heel state is
+  // always moving-at-Walk or idle, never running/attacking/dead) and attack
+  // is empty; tests/character_clipmaps.test.ts only requires a name to
+  // resolve when it is non-empty, so the alias satisfies the gate cheaply.
+  // Eager (not lazyPreload): buddy_ai.ts's owned mob entity goes through the
+  // normal boot preload sweep like any other creature, unlike the mount
+  // lane's on-demand preloadMountAssets.
+  buddy_frog: {
+    url: `${BUDDIES_DIR}/frog.glb`,
+    height: 0.35,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_crimson_claw_crab: {
+    url: `${BUDDIES_DIR}/crimson_claw_crab.glb`,
+    height: 0.5,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_golden_sentinel: {
+    url: `${BUDDIES_DIR}/golden_sentinel.glb`,
+    height: 0.9,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_nightfang: {
+    url: `${BUDDIES_DIR}/nightfang.glb`,
+    height: 0.6,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_tuskhorn_boar: {
+    url: `${BUDDIES_DIR}/tuskhorn_boar.glb`,
+    height: 0.55,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_emerald_wolf: {
+    url: `${BUDDIES_DIR}/emerald_wolf.glb`,
+    height: 0.65,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_tiger: {
+    url: `${BUDDIES_DIR}/tiger.glb`,
+    height: 0.7,
+    clips: BUDDY_CLIPS,
+  },
+  // rare
+  buddy_cate_coin: {
+    url: `${BUDDIES_DIR}/cate_coin.glb`,
+    height: 0.4,
+    clips: BUDDY_CLIPS,
+  },
+  // epic
+  buddy_dragon: {
+    url: `${BUDDIES_DIR}/dragon.glb`,
+    height: 0.9,
+    clips: BUDDY_CLIPS,
   },
   // Yumi, the Protect Yumi objective cat familiar (Meshy rig, scale baked by
   // scripts/_bake_meshy_scale.mjs, meshopt + 1024 webp). The GLB ships ONE
@@ -3002,6 +3072,22 @@ const MOB_KEYS: Record<string, string> = {
   warlock_imp: 'mob_demon_flying',
   warlock_voidwalker: 'mob_demonalt',
   guardian_tithefiend: 'mob_demonalt',
+  // Buddy followers (src/sim/content/buddy_mobs.ts, real owned mob entities
+  // heeled by src/sim/pet/buddy_ai.ts): ember_fox/moss_hare reuse the shared
+  // Quaternius rig (tint: 'entity' on those VISUALS entries reads the
+  // template's `color` below); the rest point at their own dedicated GLB
+  // (public/models/buddies/), key-for-key with their VISUALS entry.
+  buddy_ember_fox: 'mob_fox',
+  buddy_moss_hare: 'mob_critter',
+  buddy_frog: 'buddy_frog',
+  buddy_crimson_claw_crab: 'buddy_crimson_claw_crab',
+  buddy_golden_sentinel: 'buddy_golden_sentinel',
+  buddy_nightfang: 'buddy_nightfang',
+  buddy_tuskhorn_boar: 'buddy_tuskhorn_boar',
+  buddy_emerald_wolf: 'buddy_emerald_wolf',
+  buddy_tiger: 'buddy_tiger',
+  buddy_cate_coin: 'buddy_cate_coin',
+  buddy_dragon: 'buddy_dragon',
   // Packlord Stampede guardians are transient local templates, not MOBS rows.
   // Give the three summoned beasts distinct existing bodies instead of the
   // generic humanoid bandit fallback.

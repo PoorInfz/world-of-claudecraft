@@ -1287,6 +1287,10 @@ function identityFields(e: Entity): Record<string, unknown> {
   // distinct from the self-only persisted pick (`mntSel`): using `mnt` for both
   // made the appended self delta overwrite the live riding state in JSON.
   if (e.mountKey) out.mnt = e.mountKey;
+  // Active cosmetic buddy ('' omitted). Render-only, like mnt: the sim never
+  // reads it for gameplay, but every client needs it to draw the same
+  // follower for every player, local or remote.
+  if (e.buddyKey) out.bud = e.buddyKey;
   if (e.mainhandItemId) out.mh = e.mainhandItemId; // equipped mainhand → held weapon model (render-only)
   if (e.offhandItemId) out.oh = e.offhandItemId; // equipped offhand → held weapon model (render-only)
   if (e.weaponSkinId) out.wsk = e.weaponSkinId; // active weapon-skin cosmetic (render-only, like mh)
@@ -7102,6 +7106,12 @@ export class GameServer {
       case 'mount_toggle':
         sim.toggleMountFor(pid);
         break;
+      // Cosmetic buddies: dismiss-only (summoning a specific one is an item
+      // use, routed through use_item -> summonBuddyItem). The Sim re-validates
+      // ownership; the entity mirror `bud` field carries the result.
+      case 'buddy_toggle':
+        sim.toggleBuddyFor(pid);
+        break;
       // Riding lesson: the Sim re-validates everything (level, range, quest
       // state, fee, session state).
       case 'mount_train_begin':
@@ -9296,6 +9306,11 @@ export class GameServer {
       // flag, not the modulo, is what carries correctness here. Wire key
       // `mntOwn`.
       maybe('mntOwn', this.sim.ownedMountsFor(anchorSession.pid));
+      // The owned buddy collection (IWorldBuddies.ownedBuddies): every buddy
+      // whose whistle sits in bags or bank. Same inputs/gating story as
+      // mntOwn above (bags heavy-gated, bank writes marked dirty). Wire key
+      // `budOwn`.
+      maybe('budOwn', this.sim.ownedBuddiesFor(anchorSession.pid));
       maybe('buyback', meta.vendorBuyback);
       maybe('equip', meta.equipment);
       maybe('einst', meta.equipmentInstance);

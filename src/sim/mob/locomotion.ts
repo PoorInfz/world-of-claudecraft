@@ -39,6 +39,7 @@ import { resetDrownedLitanyBossEncounter } from '../delves/drowned_litany_boss';
 import { clearDelveRaiseDeadChannel } from '../delves/runs';
 import { isEscortNpcTemplate } from '../escort';
 import { PLAYER_BODY_RADIUS, PLAYER_SWIM_DEPTH } from '../pathfind';
+import { isBuddyMob, updateBuddyMob } from '../pet/buddy_ai';
 import { noteMatchPetUnravelled } from '../pet/pet_match_return';
 import { notePetUnravelledOnOwnerDeath } from '../pet/pet_owner_revive';
 import { corpseHasDecayed } from '../respawn_policy';
@@ -344,6 +345,10 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
 
   if (mob.ownerId !== null) {
     if (ctx.isStunned(mob)) return;
+    if (isBuddyMob(mob)) {
+      updateBuddyMob(ctx, mob);
+      return;
+    }
     if (ctx.isDelveCompanionMob(mob)) {
       ctx.updateDelveCompanion(mob);
       return;

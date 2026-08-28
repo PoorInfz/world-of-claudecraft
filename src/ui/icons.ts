@@ -5287,7 +5287,23 @@ export const UI_ITEM_IMAGE_IDS = new Set<string>(['backpack']);
 // bell icons are rendered from their own world models
 // (scripts/render_island_item_icons.mjs), so they ship with committed art like
 // every other item.
-export const ITEM_ART_PENDING = new Set<string>();
+// The buddy whistle set lands here: real painted art per docs/design/
+// item-icon-art-style.md still needs to be commissioned for every one of
+// them (the committed GLBs under public/models/buddies/ are the 3D world
+// models the buddy itself renders as, not the 2D bag/tooltip icon).
+export const ITEM_ART_PENDING = new Set<string>([
+  'whistle_ember_fox',
+  'whistle_moss_hare',
+  'whistle_frog',
+  'whistle_crimson_claw_crab',
+  'whistle_golden_sentinel',
+  'whistle_nightfang',
+  'whistle_tuskhorn_boar',
+  'whistle_emerald_wolf',
+  'whistle_tiger',
+  'whistle_cate_coin',
+  'whistle_dragon',
+]);
 
 /** Static URL of an item's (or a UI pseudo-item's) image icon, or null if it uses a recipe. */
 export function itemImageUrl(id: string): string | null {

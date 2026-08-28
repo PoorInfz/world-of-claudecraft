@@ -554,6 +554,7 @@ const mergeStringsEn = {
       elixir: 'Elixir',
       bag: 'Bag',
       mount: 'Mount',
+      buddy: 'Buddy',
     },
     tooltip: {
       ...itemNames.en.itemUi.tooltip,

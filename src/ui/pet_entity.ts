@@ -1,3 +1,4 @@
+import { BUDDY_TEMPLATE_IDS } from '../sim/content/buddy_mobs';
 import type { Entity } from '../sim/types';
 
 type OwnedMobIdentity = Pick<Entity, 'kind' | 'ownerId' | 'templateId'>;
@@ -10,11 +11,15 @@ export function ownedCombatSourceOwnerId(
 }
 
 /** Client-safe pet discriminator. Guardian state is simulation-only, while every
- * temporary guardian has a reserved guardian_ template id on the wire. */
+ * temporary guardian has a reserved guardian_ template id on the wire. A
+ * cosmetic buddy (src/sim/content/buddy_mobs.ts) is excluded too: it takes no
+ * pet commands (rename/abandon/attack/stance), so right-clicking a targeted
+ * buddy must not open the pet command menu. */
 export function isControllableOwnedPet(entity: OwnedMobIdentity, ownerId: number): boolean {
   return (
     entity.kind === 'mob' &&
     entity.ownerId === ownerId &&
-    !entity.templateId.startsWith('guardian_')
+    !entity.templateId.startsWith('guardian_') &&
+    !BUDDY_TEMPLATE_IDS.has(entity.templateId)
   );
 }

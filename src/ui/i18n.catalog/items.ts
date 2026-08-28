@@ -2452,6 +2452,17 @@ const ITEM_ENTITY_IDS = [
   'ps_lustrous_pearl',
   'mother_of_pearl',
   'ps_passing_stone',
+  'whistle_ember_fox',
+  'whistle_moss_hare',
+  'whistle_frog',
+  'whistle_crimson_claw_crab',
+  'whistle_golden_sentinel',
+  'whistle_nightfang',
+  'whistle_tuskhorn_boar',
+  'whistle_emerald_wolf',
+  'whistle_tiger',
+  'whistle_cate_coin',
+  'whistle_dragon',
 ] as const;
 
 type ItemEntityId = (typeof ITEM_ENTITY_IDS)[number];
@@ -2589,6 +2600,19 @@ const APPENDED_ITEM_NAMES: Partial<Record<ItemEntityId, string>> = {
   ps_lustrous_pearl: 'Lustrous Pearl',
   mother_of_pearl: 'Mother of Pearl',
   ps_passing_stone: 'Passing Stone',
+  // Buddies (cosmetic followers), same English-appended treatment until the
+  // release fill folds them into the per-locale arrays.
+  whistle_ember_fox: 'Ember Fox Whistle',
+  whistle_moss_hare: 'Moss Hare Whistle',
+  whistle_frog: 'Frog Whistle',
+  whistle_crimson_claw_crab: 'Crimson Claw Crab Whistle',
+  whistle_golden_sentinel: 'Golden Sentinel Whistle',
+  whistle_nightfang: 'Nightfang Whistle',
+  whistle_tuskhorn_boar: 'Tuskhorn Boar Whistle',
+  whistle_emerald_wolf: 'Emerald Wolf Whistle',
+  whistle_tiger: 'Tiger Whistle',
+  whistle_cate_coin: 'Cate Coin Whistle',
+  whistle_dragon: 'Dragon Whistle',
 };
 
 function itemTranslations(names: readonly string[]): ItemEntityTranslations {

@@ -1392,8 +1392,23 @@ export const ZONE3_NPCS: Record<string, NpcDef> = {
     // Marla sells Riding Training (the 80g skill purchase, a service entry that
     // delegates to learnRiding) and the Valorsteed reins for riders who have
     // learned. The riding-skill gate (ridingTrained) is enforced in buyItem
-    // (items.ts).
-    vendorItems: ['riding_training', 'reins_valorsteed'],
+    // (items.ts). The buddy whistles are cosmetic-only (no riding-skill gate)
+    // but fit her stable-adjacent theme; only the common-tier whistles are
+    // vendor-buyable (the rare/epic pair has no acquisition source yet, see
+    // the comment on whistle_cate_coin/whistle_dragon in content/items.ts).
+    vendorItems: [
+      'riding_training',
+      'reins_valorsteed',
+      'whistle_ember_fox',
+      'whistle_moss_hare',
+      'whistle_frog',
+      'whistle_crimson_claw_crab',
+      'whistle_golden_sentinel',
+      'whistle_nightfang',
+      'whistle_tuskhorn_boar',
+      'whistle_emerald_wolf',
+      'whistle_tiger',
+    ],
     greeting:
       'Every rider walks in on two legs, $C. I will not hand you the reins until you can sit the Valorsteed without kissing the dirt, and the Galecrest wind shows no mercy to a bad seat.',
   },

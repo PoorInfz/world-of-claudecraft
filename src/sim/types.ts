@@ -1,6 +1,7 @@
 // Core shared types for the simulation. The sim layer has zero DOM/rendering deps.
 
 import type { ChatSenderFlair, StreamerLinks } from './account_flair';
+import type { BuddyKey } from './content/buddies';
 import type { MountKey } from './content/mounts';
 import type { GatheringProfessionId, ToolEffectId } from './content/professions';
 import type { LockSession, LootTier, PickAction, StepResult, VisibleCell } from './lockpick';
@@ -889,7 +890,8 @@ export type ItemKind =
   | 'potion'
   | 'elixir'
   | 'bag'
-  | 'mount';
+  | 'mount'
+  | 'buddy';
 
 interface BaseItemDef {
   id: string;
@@ -1162,7 +1164,7 @@ export interface HeldOffhandItemDef extends BaseItemDef {
 }
 
 export interface OtherItemDef extends BaseItemDef {
-  kind: Exclude<ItemKind, 'armor' | 'weapon' | 'held_offhand' | 'mount'>;
+  kind: Exclude<ItemKind, 'armor' | 'weapon' | 'held_offhand' | 'mount' | 'buddy'>;
   armorType?: never;
 }
 
@@ -1180,13 +1182,26 @@ export interface MountItemDef extends BaseItemDef {
   weapon?: never;
 }
 
+// A collectible buddy summon-whistle. Owning the item IS owning the buddy:
+// while it sits in the player's bags or bank, the catalog buddy it names is
+// summonable (src/sim/buddies.ts buddyOwned), exactly like a mount's reins
+// but with no riding-skill gate and no stat effect. Not soulbound: ownership
+// transfers with the item (trade, mail, market, guild bank).
+export interface BuddyItemDef extends BaseItemDef {
+  kind: 'buddy';
+  buddy: BuddyKey;
+  armorType?: never;
+  weapon?: never;
+}
+
 export type ItemDef =
   | ArmorItemDef
   | WeaponItemDef
   | JewelryItemDef
   | HeldOffhandItemDef
   | OtherItemDef
-  | MountItemDef;
+  | MountItemDef
+  | BuddyItemDef;
 
 // Per-instance item payload (#1165). Additive and OPTIONAL: most items stay plain
 // {itemId, count} with no instance payload (fungible, market-listable). A slot
@@ -4828,6 +4843,17 @@ export interface Entity extends ClientMirroredEntityFields {
   // reads it. Syncs on the wire (terse `mck`) alongside mountCastRemaining, and
   // handleDeath clears it.
   mountCastKey: string;
+  // Active cosmetic buddy ('' = none; players only). Zero GAMEPLAY effect on
+  // the owner (no stat, no combat), but since 2026-08-27 it names a real
+  // server-simulated owned mob entity: spawning/despawning it is the job of
+  // every write site (src/sim/buddies.ts's summonBuddyItem/toggleBuddy), and
+  // src/sim/pet/buddy_ai.ts's updateBuddyMob heels that entity with the same
+  // A*-pathed locomotion a hunter pet uses and reads this field back each
+  // tick to confirm the entity is still wanted. Still syncs in identity
+  // fields (terse `bud`) like `skin`/`mountKey` for HUD/UI state. No
+  // persisted selection, same as mounts: summoning is an item use, and the
+  // whistle you clicked IS the choice.
+  buddyKey: string;
   // Equipped mainhand item id (players only; null otherwise). Render-only: the
   // client maps it to a held weapon model. Recomputed in recalcPlayerStats and
   // synced in identity fields (terse `mh`). The sim never reads it for gameplay.

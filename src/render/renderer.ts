@@ -1349,6 +1349,13 @@ export class Renderer {
   // readable, especially on short mobile viewports. Initialized from Settings
   // and kept live by main.ts's applySetting dispatcher (mirrors showOwnNameplate).
   showPlayerNameplates = true;
+  // settings-backed cosmetic-buddy nameplate toggle (off by default): a buddy
+  // (src/sim/content/buddy_mobs.ts) has no health worth a bar and cannot be
+  // attacked, so its plate stays hidden regardless of showNameplates above
+  // unless this is on, in which case it shows name-only. Initialized from
+  // Settings and kept live by main.ts's applySetting dispatcher (mirrors
+  // showOwnNameplate).
+  showPetNames = false;
   // settings-menu graphics knobs (applied live)
   private renderScale = 1; // user-requested resolution ceiling on top of the device pixel ratio
   private effectiveRenderScale = 1; // runtime value after adaptive backoff
@@ -2154,6 +2161,7 @@ export class Renderer {
       showDevBadges: () => this.showDevBadges,
       showOwnNameplate: () => this.showOwnNameplate,
       showPlayerNameplates: () => this.showPlayerNameplates,
+      showPetNames: () => this.showPetNames,
       isHostilePlayer: (e) => this.isHostilePlayer(e),
     });
 
@@ -11649,6 +11657,10 @@ export class Renderer {
           v.mountVisual.advanceOffscreen(dt);
         }
       }
+      // Buddy: since 2026-08-27 a real owned mob entity (src/sim/pet/
+      // buddy_ai.ts), rendered through the exact same per-entity view path as
+      // every other mob — no bespoke create/dispose/follow-transform code
+      // needed here any more.
 
       const emoteId =
         e.kind === 'player' && e.overheadEmoteId && !e.dead ? e.overheadEmoteId : null;

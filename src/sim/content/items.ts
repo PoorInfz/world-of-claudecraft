@@ -414,6 +414,137 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     noDiscard: true,
     sellValue: 0,
   },
+  // Cosmetic buddy whistle. Owning the item IS owning the buddy (src/sim/
+  // buddies.ts buddyOwned); it stays valid from the bank too, and it
+  // transfers like any other unbound item, exactly like mount reins but with
+  // no riding-skill gate (the buddy has zero gameplay effect). Sold by
+  // Stablemaster Marla Hitchen alongside the mount reins.
+  whistle_ember_fox: {
+    id: 'whistle_ember_fox',
+    name: 'Ember Fox Whistle',
+    kind: 'buddy',
+    buddy: 'ember_fox',
+    quality: 'common',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 50_000, // 5 gold in copper
+  },
+  whistle_moss_hare: {
+    id: 'whistle_moss_hare',
+    name: 'Moss Hare Whistle',
+    kind: 'buddy',
+    buddy: 'moss_hare',
+    quality: 'common',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 50_000, // 5 gold in copper
+  },
+  // Rarity-tiered buddy whistle set. Quality mirrors the source GLB's
+  // common_/rare_/epic_ filename prefix (public/models/buddies/). Common
+  // stays vendor-buyable like the whistles above; rare/epic drop from
+  // acquisition sources the wiring pass here does not add (no vendor/loot
+  // entry yet, mirroring how reins_grag_bear (rare mount) carries no
+  // buyValue either) — they are craftable/grantable via /dev give only
+  // until that follow-up lands.
+  whistle_frog: {
+    id: 'whistle_frog',
+    name: 'Frog Whistle',
+    kind: 'buddy',
+    buddy: 'frog',
+    quality: 'common',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 50_000,
+  },
+  whistle_crimson_claw_crab: {
+    id: 'whistle_crimson_claw_crab',
+    name: 'Crimson Claw Crab Whistle',
+    kind: 'buddy',
+    buddy: 'crimson_claw_crab',
+    quality: 'common',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 50_000,
+  },
+  whistle_golden_sentinel: {
+    id: 'whistle_golden_sentinel',
+    name: 'Golden Sentinel Whistle',
+    kind: 'buddy',
+    buddy: 'golden_sentinel',
+    quality: 'common',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 50_000,
+  },
+  whistle_nightfang: {
+    id: 'whistle_nightfang',
+    name: 'Nightfang Whistle',
+    kind: 'buddy',
+    buddy: 'nightfang',
+    quality: 'common',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 50_000,
+  },
+  whistle_tuskhorn_boar: {
+    id: 'whistle_tuskhorn_boar',
+    name: 'Tuskhorn Boar Whistle',
+    kind: 'buddy',
+    buddy: 'tuskhorn_boar',
+    quality: 'common',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 50_000,
+  },
+  whistle_emerald_wolf: {
+    id: 'whistle_emerald_wolf',
+    name: 'Emerald Wolf Whistle',
+    kind: 'buddy',
+    buddy: 'emerald_wolf',
+    quality: 'common',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 50_000,
+  },
+  whistle_tiger: {
+    id: 'whistle_tiger',
+    name: 'Tiger Whistle',
+    kind: 'buddy',
+    buddy: 'tiger',
+    quality: 'common',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 50_000,
+  },
+  whistle_cate_coin: {
+    id: 'whistle_cate_coin',
+    name: 'Cate Coin Whistle',
+    kind: 'buddy',
+    buddy: 'cate_coin',
+    quality: 'rare',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+  },
+  whistle_dragon: {
+    id: 'whistle_dragon',
+    name: 'Dragon Whistle',
+    kind: 'buddy',
+    buddy: 'dragon',
+    quality: 'epic',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+  },
   mistveil_cord: {
     id: 'mistveil_cord',
     name: 'Mistveil Cord',

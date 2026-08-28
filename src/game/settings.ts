@@ -333,6 +333,13 @@ export const BOOL_SETTINGS = {
   // decluttering crowded hubs on short mobile viewports. Purely a local display
   // preference; mob nameplates and unit frames are unaffected.
   showPlayerNameplates: { def: true },
+  // off by default: a cosmetic buddy follower (src/sim/content/buddy_mobs.ts)
+  // has no health worth bar-ing (1 hp) and cannot be attacked, so its plate
+  // stays hidden regardless of the general mob nameplate toggle above unless
+  // this is on, in which case it shows the buddy's name only, never a health
+  // bar (src/render/nameplate_view.ts's isBuddyPet branch,
+  // nameplate_painter.ts's hpVisible suppression).
+  showPetNames: { def: false },
   // off by default: invert the vertical axis of mouselook (push mouse forward
   // to look down), the classic flight-sim preference.
   invertLookY: { def: false },
