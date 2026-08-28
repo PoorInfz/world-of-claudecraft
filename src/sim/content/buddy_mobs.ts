@@ -17,20 +17,19 @@ export function buddyTemplateId(key: BuddyKey): string {
   return `${BUDDY_TEMPLATE_PREFIX}${key}`;
 }
 
-// Shared per-buddy scale: hunter-pet proportion (1x the rig's authored
-// height) run through three owner-requested passes (2026-08-27) — -70%,
-// then +50% off that, then +100% off THAT: 1 * 0.3 * 1.5 * 2 = 0.9. Every
-// buddy uses this by default so none reads bigger than another from an
-// inconsistent factor; cate_coin's own +200% override below is the one
-// deliberate exception.
-const BUDDY_SCALE = 0.9;
+// One shared scale for the whole roster, pinned to cate_coin's own size
+// (2026-08-28 owner request: "make every buddy the same size as cate_coin").
+// History, for anyone tracing why this is 2.7: hunter-pet proportion (1x the
+// rig's authored height) run through -70%, then +50% off that, then +100%
+// off THAT (1 * 0.3 * 1.5 * 2 = 0.9), which is where cate_coin itself then
+// took its own +200% bump (0.9 * 3 = 2.7) before this pass made it universal.
+const BUDDY_SCALE = 2.7;
 
 function buddyTemplate(
   key: BuddyKey,
   name: string,
   family: MobTemplate['family'],
   color: number,
-  scale: number = BUDDY_SCALE,
 ): MobTemplate {
   return {
     id: buddyTemplateId(key),
@@ -47,7 +46,7 @@ function buddyTemplate(
     moveSpeed: 7,
     aggroRadius: 0,
     loot: [],
-    scale,
+    scale: BUDDY_SCALE,
     color,
   };
 }
@@ -88,17 +87,16 @@ export const BUDDY_MOBS: Record<string, MobTemplate> = {
     0xffffff,
   ),
   [buddyTemplateId('tiger')]: buddyTemplate('tiger', 'Tiger', 'beast', 0xffffff),
-  // +200% off the shared BUDDY_SCALE (2026-08-28 owner request: it read too
-  // small next to the rest of the roster) — the one deliberate exception to
-  // the "every buddy shares one scale" rule above.
-  [buddyTemplateId('cate_coin')]: buddyTemplate(
-    'cate_coin',
-    'Cate Coin',
-    'beast',
-    0xffffff,
-    BUDDY_SCALE * 3,
-  ),
+  [buddyTemplateId('cate_coin')]: buddyTemplate('cate_coin', 'Cate Coin', 'beast', 0xffffff),
   [buddyTemplateId('dragon')]: buddyTemplate('dragon', 'Dragon', 'dragonkin', 0xffffff),
+  [buddyTemplateId('alon')]: buddyTemplate('alon', 'Alon', 'beast', 0xffffff),
+  [buddyTemplateId('trollface')]: buddyTemplate('trollface', 'Trollface', 'beast', 0xffffff),
+  [buddyTemplateId('ansem')]: buddyTemplate('ansem', 'Ansem', 'beast', 0xffffff),
+  [buddyTemplateId('triple_t')]: buddyTemplate('triple_t', 'Triple T', 'beast', 0xffffff),
+  [buddyTemplateId('kekius')]: buddyTemplate('kekius', 'Kekius', 'beast', 0xffffff),
+  [buddyTemplateId('solbot')]: buddyTemplate('solbot', 'Solbot', 'beast', 0xffffff),
+  [buddyTemplateId('frostfire')]: buddyTemplate('frostfire', 'Frostfire', 'beast', 0xffffff),
+  [buddyTemplateId('rocky')]: buddyTemplate('rocky', 'Rocky', 'beast', 0xffffff),
 };
 
 /** Every valid buddy templateId, for the cheap `isBuddyMob` membership check

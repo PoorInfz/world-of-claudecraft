@@ -601,7 +601,7 @@ import {
 } from './scene_census_core';
 import { type FlamePerceptualState, updateSceneryFlame } from './scenery_flame';
 import { downscaleDims } from './screenshot';
-import { drapeRingLocalY } from './selection_ring';
+import { drapeRingLocalY, selectionRingScale } from './selection_ring';
 import { type SelfMotionFrame, SelfMotionPredictor, updateSelfRenderFallback } from './self_motion';
 import { SelfSpiritPrewarmer } from './self_spirit_prewarm';
 import { SentenceVfx } from './sentence_vfx';
@@ -11856,10 +11856,11 @@ export class Renderer {
         // The drape is a pure function of (cx, cz, scale) and nothing else writes
         // the ring's position attribute, so a stationary target reuses last
         // frame's per-vertex groundHeight samples untouched.
-        if (cx !== this.selRingX || cz !== this.selRingZ || target.scale !== this.selRingScale) {
+        const ringScale = selectionRingScale(target.scale, tv.height);
+        if (cx !== this.selRingX || cz !== this.selRingZ || ringScale !== this.selRingScale) {
           this.selRingX = cx;
           this.selRingZ = cz;
-          this.selRingScale = target.scale;
+          this.selRingScale = ringScale;
           const seed = this.sim.cfg.seed;
           // A target standing on a prop top (crate/rock) gets the ring on that
           // surface, not buried at terrain height under it.
@@ -11867,13 +11868,13 @@ export class Renderer {
           const gy = Math.max(groundHeight(cx, cz, seed), supportY);
           this.selectionDrapeSupportY = supportY;
           this.selectionRing.position.set(cx, gy, cz);
-          this.selectionRing.scale.setScalar(target.scale);
+          this.selectionRing.scale.setScalar(ringScale);
           const drape = drapeRingLocalY(
             this.selectionRingLocalXZ,
             cx,
             cz,
             gy,
-            target.scale,
+            ringScale,
             0.08,
             this.selectionGroundSample,
             this.selectionRingDrapeY,

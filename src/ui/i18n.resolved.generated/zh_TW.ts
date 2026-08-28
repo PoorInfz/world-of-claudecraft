@@ -12919,6 +12919,30 @@ export const zh_TW: EnTranslations = {
       "whistle_dragon": {
         "name": "Dragon Whistle"
       },
+      "whistle_alon": {
+        "name": "Alon Whistle"
+      },
+      "whistle_trollface": {
+        "name": "Trollface Whistle"
+      },
+      "whistle_ansem": {
+        "name": "Ansem Whistle"
+      },
+      "whistle_triple_t": {
+        "name": "Triple T Whistle"
+      },
+      "whistle_kekius": {
+        "name": "Kekius Whistle"
+      },
+      "whistle_solbot": {
+        "name": "Solbot Whistle"
+      },
+      "whistle_frostfire": {
+        "name": "Frostfire Whistle"
+      },
+      "whistle_rocky": {
+        "name": "Rocky Whistle"
+      },
       "conjured_water4": {
         "name": "魔法泉水"
       },

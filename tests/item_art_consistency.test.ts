@@ -738,7 +738,7 @@ describe('item-art consistency accepted-art provenance', () => {
     ).toBeUndefined();
     expect(mapping.entries).toHaveLength(40);
     expect(mapping.entries.every(({ license }) => Boolean(license))).toBe(true);
-    expect(mapping.generatedBatches).toHaveLength(18);
+    expect(mapping.generatedBatches).toHaveLength(19);
     const batch = mapping.generatedBatches.find(({ batchId }) => batchId === BATCH_ID);
     expect(batch).toBeDefined();
     expect(batch).toMatchObject({
@@ -755,13 +755,13 @@ describe('item-art consistency accepted-art provenance', () => {
     const oldGeneratedIds = mapping.generatedBatches
       .filter(({ batchId }) => batchId !== BATCH_ID)
       .flatMap(({ itemIds }) => itemIds);
-    expect(oldGeneratedIds).toHaveLength(515);
+    expect(oldGeneratedIds).toHaveLength(534);
     const allCurrentOwnerIds = [
       ...mapping.entries.map(({ itemId }) => itemId),
       ...mapping.generatedBatches.flatMap(({ itemIds }) => itemIds),
     ];
-    expect(allCurrentOwnerIds).toHaveLength(829);
-    expect(new Set(allCurrentOwnerIds).size).toBe(829);
+    expect(allCurrentOwnerIds).toHaveLength(848);
+    expect(new Set(allCurrentOwnerIds).size).toBe(848);
     expect(batch?.provenanceRecords).toEqual([
       `${evidenceDir}/accepted-art.json`,
       `${evidenceDir}/supersession-audit.json`,
@@ -897,8 +897,8 @@ describe('item-art consistency accepted-art provenance', () => {
     for (const id of ownerIds) ownerCountById.set(id, (ownerCountById.get(id) ?? 0) + 1);
 
     const violations: string[] = [];
-    if (ownerIds.length !== 829) violations.push(`mapping owner count: ${ownerIds.length} != 829`);
-    if (fileIds.length !== 829) violations.push(`shipping WebP count: ${fileIds.length} != 829`);
+    if (ownerIds.length !== 848) violations.push(`mapping owner count: ${ownerIds.length} != 848`);
+    if (fileIds.length !== 848) violations.push(`shipping WebP count: ${fileIds.length} != 848`);
     for (const id of ids) {
       const ownerCount = ownerCountById.get(id) ?? 0;
       if (ownerCount !== 1) violations.push(`${id}: current owner count ${ownerCount} != 1`);

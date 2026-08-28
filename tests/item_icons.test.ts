@@ -302,10 +302,10 @@ describe('item webp icons', () => {
     for (const id of ITEM_ART_PENDING) {
       expect(itemImageUrl(id), `${id} must not resolve to uncommitted art`).toBeNull();
     }
-    // The eleven buddy whistles are pending their painted art (docs/design/
-    // item-icon-art-style.md); real art is a follow-up.
+    // Empty again after the buddy whistle set's own rendered-from-GLB art
+    // landed (scripts/assets/render_buddy_item_icons.mjs).
     expect(ITEM_ART_PENDING.size, 'the accepted painted-art wave clears all enumerated debt').toBe(
-      11,
+      0,
     );
     // And the inverse: an id with committed art must still win the static url.
     expect(itemImageUrl('linen_pouch')).toBe('/ui/items/linen_pouch.webp');

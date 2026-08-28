@@ -1879,6 +1879,50 @@ export const VISUALS: Record<string, VisualDef> = {
     height: 0.9,
     clips: BUDDY_CLIPS,
   },
+  // rare
+  buddy_alon: {
+    url: `${BUDDIES_DIR}/alon.glb`,
+    height: 0.6,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_trollface: {
+    url: `${BUDDIES_DIR}/trollface.glb`,
+    height: 0.5,
+    clips: BUDDY_CLIPS,
+  },
+  // epic
+  buddy_ansem: {
+    url: `${BUDDIES_DIR}/ansem.glb`,
+    height: 0.9,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_triple_t: {
+    url: `${BUDDIES_DIR}/triple_t.glb`,
+    height: 0.6,
+    clips: BUDDY_CLIPS,
+  },
+  // rare
+  buddy_kekius: {
+    url: `${BUDDIES_DIR}/kekius.glb`,
+    height: 0.6,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_solbot: {
+    url: `${BUDDIES_DIR}/solbot.glb`,
+    height: 0.6,
+    clips: BUDDY_CLIPS,
+  },
+  // uncommon
+  buddy_frostfire: {
+    url: `${BUDDIES_DIR}/frostfire.glb`,
+    height: 0.6,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_rocky: {
+    url: `${BUDDIES_DIR}/rocky.glb`,
+    height: 0.6,
+    clips: BUDDY_CLIPS,
+  },
   // Yumi, the Protect Yumi objective cat familiar (Meshy rig, scale baked by
   // scripts/_bake_meshy_scale.mjs, meshopt + 1024 webp). The GLB ships ONE
   // clip, the block: mapped as the HIT reaction so she blocks when struck
@@ -3088,6 +3132,14 @@ const MOB_KEYS: Record<string, string> = {
   buddy_tiger: 'buddy_tiger',
   buddy_cate_coin: 'buddy_cate_coin',
   buddy_dragon: 'buddy_dragon',
+  buddy_alon: 'buddy_alon',
+  buddy_trollface: 'buddy_trollface',
+  buddy_ansem: 'buddy_ansem',
+  buddy_triple_t: 'buddy_triple_t',
+  buddy_kekius: 'buddy_kekius',
+  buddy_solbot: 'buddy_solbot',
+  buddy_frostfire: 'buddy_frostfire',
+  buddy_rocky: 'buddy_rocky',
   // Packlord Stampede guardians are transient local templates, not MOBS rows.
   // Give the three summoned beasts distinct existing bodies instead of the
   // generic humanoid bandit fallback.

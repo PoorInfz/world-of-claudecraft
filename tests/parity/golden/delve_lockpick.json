@@ -9,8 +9,8 @@
     "lockpick minigame (flawless solve)",
     "reward chest + delve marks"
   ],
-  "draws": 8,
-  "drawDigest": "b2debc02",
+  "draws": 12,
+  "drawDigest": "a474a4e3",
   "frames": [
     {
       "tick": 0,
@@ -183,8 +183,8 @@
       "state": "bf4802bd",
       "events": "1b170cee",
       "rng": {
-        "draws": 8,
-        "digest": "b2debc02"
+        "draws": 12,
+        "digest": "a474a4e3"
       },
       "label": "delve-end",
       "players": [
@@ -500,8 +500,8 @@
       "state": "6a1f7d2a",
       "events": "741638a5",
       "rng": {
-        "draws": 8,
-        "digest": "b2debc02"
+        "draws": 12,
+        "digest": "a474a4e3"
       }
     },
     {
@@ -511,8 +511,8 @@
       "state": "6a1f7d2a",
       "events": "741638a5",
       "rng": {
-        "draws": 8,
-        "digest": "b2debc02"
+        "draws": 12,
+        "digest": "a474a4e3"
       },
       "label": "final",
       "players": [

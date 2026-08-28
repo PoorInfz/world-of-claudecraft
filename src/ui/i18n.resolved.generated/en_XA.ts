@@ -12919,6 +12919,30 @@ export const en_XA: EnTranslations = {
       "whistle_dragon": {
         "name": "[Ðŕáĝóñ Ŵĥíšţļé]"
       },
+      "whistle_alon": {
+        "name": "[Áļóñ Ŵĥíšţļé]"
+      },
+      "whistle_trollface": {
+        "name": "[Ţŕóļļƒáçé Ŵĥíšţļé]"
+      },
+      "whistle_ansem": {
+        "name": "[Áñšéɱ Ŵĥíšţļé]"
+      },
+      "whistle_triple_t": {
+        "name": "[Ţŕíþļé Ţ Ŵĥíšţļé]"
+      },
+      "whistle_kekius": {
+        "name": "[Ķéķíúš Ŵĥíšţļé]"
+      },
+      "whistle_solbot": {
+        "name": "[Šóļƀóţ Ŵĥíšţļé]"
+      },
+      "whistle_frostfire": {
+        "name": "[Ƒŕóšţƒíŕé Ŵĥíšţļé]"
+      },
+      "whistle_rocky": {
+        "name": "[Ŕóçķý Ŵĥíšţļé]"
+      },
       "conjured_water4": {
         "name": "[Çóñĵúŕéð Šþŕíñĝŵáţéŕ]"
       },

@@ -32,7 +32,15 @@ export type BuddyKey =
   | 'emerald_wolf'
   | 'tiger'
   | 'cate_coin'
-  | 'dragon';
+  | 'dragon'
+  | 'alon'
+  | 'trollface'
+  | 'ansem'
+  | 'triple_t'
+  | 'kekius'
+  | 'solbot'
+  | 'frostfire'
+  | 'rocky';
 
 export interface BuddyDef {
   key: BuddyKey;
@@ -88,6 +96,42 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
   dragon: {
     key: 'dragon',
     name: 'Dragon',
+  },
+  // rare
+  alon: {
+    key: 'alon',
+    name: 'Alon',
+  },
+  trollface: {
+    key: 'trollface',
+    name: 'Trollface',
+  },
+  // epic
+  ansem: {
+    key: 'ansem',
+    name: 'Ansem',
+  },
+  triple_t: {
+    key: 'triple_t',
+    name: 'Triple T',
+  },
+  // rare
+  kekius: {
+    key: 'kekius',
+    name: 'Kekius',
+  },
+  solbot: {
+    key: 'solbot',
+    name: 'Solbot',
+  },
+  // uncommon
+  frostfire: {
+    key: 'frostfire',
+    name: 'Frostfire',
+  },
+  rocky: {
+    key: 'rocky',
+    name: 'Rocky',
   },
 };
 
