@@ -30,7 +30,6 @@
 // (enforced by tests/architecture.test.ts).
 
 import { HEROIC_BOSS_LOOT } from '../content/heroic_loot';
-import { buddyWhistlesOfQuality, GLOBAL_BUDDY_DROP_TIERS } from './global_drops';
 import { heroicVariantId } from '../content/heroic_variants';
 import { ITEMS, MOBS, QUESTS } from '../data';
 import { formatMoney } from '../format_money';
@@ -54,6 +53,7 @@ import type {
   MasterLootThreshold,
 } from '../types';
 import { dist2d, PARTY_XP_RANGE } from '../types';
+import { buddyWhistlesOfQuality, GLOBAL_BUDDY_DROP_TIERS } from './global_drops';
 import { LOOT_FFA_DELAY } from './loot_ffa';
 
 // How long (seconds) a need-greed roll stays open before it auto-resolves. Sole
@@ -326,7 +326,7 @@ export function rollLoot(
   // chance per whistle rarity tier for a random buddy of that quality. Rolled
   // dead LAST, after every per-mob and heroic-only draw above, and every tier
   // always draws its chance() regardless of hits or an empty pool, so the
-  // draw COUNT here never depends on the buddy catalog's size — only adding
+  // draw COUNT here never depends on the buddy catalog's size, only adding
   // or removing a TIER reshapes the parity goldens, not adding a new buddy.
   for (const tier of GLOBAL_BUDDY_DROP_TIERS) {
     if (!ctx.rng.chance(tier.chance)) continue;

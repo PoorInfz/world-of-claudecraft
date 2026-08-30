@@ -14316,6 +14316,63 @@ export const en_XA: EnTranslations = {
       "wildheart_high_priest": {
         "name": "[Žúļĝáŕ, Ʋóíçé óƒ ţĥé Ɓášíñ]"
       },
+      "buddy_ember_fox": {
+        "name": "[Éɱƀéŕ Ƒóẋ]"
+      },
+      "buddy_moss_hare": {
+        "name": "[Ɱóšš Ĥáŕé]"
+      },
+      "buddy_frog": {
+        "name": "[Ƒŕóĝ]"
+      },
+      "buddy_crimson_claw_crab": {
+        "name": "[Çŕíɱšóñ Çļáŵ Çŕáƀ]"
+      },
+      "buddy_golden_sentinel": {
+        "name": "[Ĝóļðéñ Šéñţíñéļ]"
+      },
+      "buddy_nightfang": {
+        "name": "[Ñíĝĥţƒáñĝ]"
+      },
+      "buddy_tuskhorn_boar": {
+        "name": "[Ţúšķĥóŕñ Ɓóáŕ]"
+      },
+      "buddy_emerald_wolf": {
+        "name": "[Éɱéŕáļð Ŵóļƒ]"
+      },
+      "buddy_tiger": {
+        "name": "[Ţíĝéŕ]"
+      },
+      "buddy_cate_coin": {
+        "name": "[Çáţé Çóíñ]"
+      },
+      "buddy_dragon": {
+        "name": "[Ðŕáĝóñ]"
+      },
+      "buddy_alon": {
+        "name": "[Áļóñ]"
+      },
+      "buddy_trollface": {
+        "name": "[Ţŕóļļƒáçé]"
+      },
+      "buddy_ansem": {
+        "name": "[Áñšéɱ]"
+      },
+      "buddy_triple_t": {
+        "name": "[Ţŕíþļé Ţ]"
+      },
+      "buddy_kekius": {
+        "name": "[Ķéķíúš]"
+      },
+      "buddy_solbot": {
+        "name": "[Šóļƀóţ]"
+      },
+      "buddy_frostfire": {
+        "name": "[Ƒŕóšţƒíŕé]"
+      },
+      "buddy_rocky": {
+        "name": "[Ŕóçķý]"
+      },
       "ironvein_foreman": {
         "name": "[Íŕóñʋéíñ Ƒóŕéɱáñ]"
       },

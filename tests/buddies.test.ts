@@ -24,7 +24,12 @@ import {
 import { BUDDIES, BUDDY_KEYS, buddyDef, normalizeBuddyKey } from '../src/sim/content/buddies';
 import { buddyTemplateId } from '../src/sim/content/buddy_mobs';
 import { useItem } from '../src/sim/items';
-import { buddyFollowTarget, buddyOf, isBuddyMob } from '../src/sim/pet/buddy_ai';
+import {
+  BUDDY_FOLLOW_BACK,
+  BUDDY_FOLLOW_LEFT,
+  buddyOf,
+  isBuddyMob,
+} from '../src/sim/pet/buddy_ai';
 import { petOf } from '../src/sim/pet/pet_commands';
 import type { PlayerMeta } from '../src/sim/sim';
 import { Sim } from '../src/sim/sim';
@@ -246,12 +251,21 @@ describe('buddy entity: real, server-simulated, heels like a hunter pet', () => 
     const buddy = buddyOf(sim.ctx, pid)!;
     // petFollow (pet_ai.ts) stops closing once within PET_FOLLOW_DISTANCE
     // (3.5yd) of the offset target itself, not of the owner's own tile, so
-    // the assertion measures against that same target rather than the
-    // owner's position directly.
-    const target = buddyFollowTarget(owner);
-    const dx = buddy.pos.x - target.x;
-    const dz = buddy.pos.z - target.z;
+    // the assertion measures against that same target. Computed here
+    // directly from owner.pos/owner.facing and the exported offset
+    // constants, NOT by calling buddyFollowTarget, so a regression that
+    // zeroed the offset in that function would still fail this assertion
+    // instead of silently matching its own (also-broken) output.
+    const sinF = Math.sin(owner.facing);
+    const cosF = Math.cos(owner.facing);
+    const targetX = owner.pos.x - BUDDY_FOLLOW_LEFT * cosF - BUDDY_FOLLOW_BACK * sinF;
+    const targetZ = owner.pos.z + BUDDY_FOLLOW_LEFT * sinF - BUDDY_FOLLOW_BACK * cosF;
+    const dx = buddy.pos.x - targetX;
+    const dz = buddy.pos.z - targetZ;
     expect(Math.sqrt(dx * dx + dz * dz)).toBeLessThan(3.6);
+    // And the offset is genuinely non-zero: this fails if the heel target
+    // ever collapses back onto the owner's own tile.
+    expect(Math.hypot(targetX - owner.pos.x, targetZ - owner.pos.z)).toBeGreaterThan(1);
   });
 
   it('never registers as the owner’s combat pet (petOf stays null)', () => {

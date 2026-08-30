@@ -1524,7 +1524,7 @@ export const ko_KR: EnTranslations = {
       "showDevBadges": "개발자 배지 표시",
       "showOwnNameplate": "내 이름표 표시",
       "showPlayerNameplates": "플레이어 이름표 표시",
-      "showPetNames": "Show Pet Names",
+      "showPetNames": "펫 이름표 표시",
       "uiScale": "UI 배율",
       "playerFrameScale": "플레이어 프레임 크기",
       "targetFrameScale": "대상 프레임 크기",
@@ -9390,7 +9390,7 @@ export const ko_KR: EnTranslations = {
       "elixir": "비약",
       "bag": "가방",
       "mount": "탈것",
-      "buddy": "Buddy"
+      "buddy": "동료"
     },
     "stats": {
       "armor": "방어도",
@@ -12887,61 +12887,61 @@ export const ko_KR: EnTranslations = {
         "name": "안식의 돌"
       },
       "whistle_ember_fox": {
-        "name": "Ember Fox Whistle"
+        "name": "잉걸불 여우 호루라기"
       },
       "whistle_moss_hare": {
-        "name": "Moss Hare Whistle"
+        "name": "이끼 산토끼 호루라기"
       },
       "whistle_frog": {
-        "name": "Frog Whistle"
+        "name": "개구리 호루라기"
       },
       "whistle_crimson_claw_crab": {
-        "name": "Crimson Claw Crab Whistle"
+        "name": "진홍 발톱 게 호루라기"
       },
       "whistle_golden_sentinel": {
-        "name": "Golden Sentinel Whistle"
+        "name": "황금 파수병 호루라기"
       },
       "whistle_nightfang": {
-        "name": "Nightfang Whistle"
+        "name": "나이트팽 호루라기"
       },
       "whistle_tuskhorn_boar": {
-        "name": "Tuskhorn Boar Whistle"
+        "name": "엄니뿔 멧돼지 호루라기"
       },
       "whistle_emerald_wolf": {
-        "name": "Emerald Wolf Whistle"
+        "name": "에메랄드 늑대 호루라기"
       },
       "whistle_tiger": {
-        "name": "Tiger Whistle"
+        "name": "호랑이 호루라기"
       },
       "whistle_cate_coin": {
-        "name": "Cate Coin Whistle"
+        "name": "케이트 코인 호루라기"
       },
       "whistle_dragon": {
-        "name": "Dragon Whistle"
+        "name": "드래곤 호루라기"
       },
       "whistle_alon": {
-        "name": "Alon Whistle"
+        "name": "알론 호루라기"
       },
       "whistle_trollface": {
-        "name": "Trollface Whistle"
+        "name": "트롤페이스 호루라기"
       },
       "whistle_ansem": {
-        "name": "Ansem Whistle"
+        "name": "안셈 호루라기"
       },
       "whistle_triple_t": {
-        "name": "Triple T Whistle"
+        "name": "트리플 T 호루라기"
       },
       "whistle_kekius": {
-        "name": "Kekius Whistle"
+        "name": "케키우스 호루라기"
       },
       "whistle_solbot": {
-        "name": "Solbot Whistle"
+        "name": "솔봇 호루라기"
       },
       "whistle_frostfire": {
-        "name": "Frostfire Whistle"
+        "name": "서리불꽃 호루라기"
       },
       "whistle_rocky": {
-        "name": "Rocky Whistle"
+        "name": "록키 호루라기"
       },
       "conjured_water4": {
         "name": "창조된 샘물"
@@ -14315,6 +14315,63 @@ export const ko_KR: EnTranslations = {
       },
       "wildheart_high_priest": {
         "name": "분지의 목소리 줄가르"
+      },
+      "buddy_ember_fox": {
+        "name": "잉걸불 여우"
+      },
+      "buddy_moss_hare": {
+        "name": "이끼 산토끼"
+      },
+      "buddy_frog": {
+        "name": "개구리"
+      },
+      "buddy_crimson_claw_crab": {
+        "name": "진홍 발톱 게"
+      },
+      "buddy_golden_sentinel": {
+        "name": "황금 파수병"
+      },
+      "buddy_nightfang": {
+        "name": "나이트팽"
+      },
+      "buddy_tuskhorn_boar": {
+        "name": "엄니뿔 멧돼지"
+      },
+      "buddy_emerald_wolf": {
+        "name": "에메랄드 늑대"
+      },
+      "buddy_tiger": {
+        "name": "호랑이"
+      },
+      "buddy_cate_coin": {
+        "name": "케이트 코인"
+      },
+      "buddy_dragon": {
+        "name": "드래곤"
+      },
+      "buddy_alon": {
+        "name": "알론"
+      },
+      "buddy_trollface": {
+        "name": "트롤페이스"
+      },
+      "buddy_ansem": {
+        "name": "안셈"
+      },
+      "buddy_triple_t": {
+        "name": "트리플 T"
+      },
+      "buddy_kekius": {
+        "name": "케키우스"
+      },
+      "buddy_solbot": {
+        "name": "솔봇"
+      },
+      "buddy_frostfire": {
+        "name": "서리불꽃"
+      },
+      "buddy_rocky": {
+        "name": "록키"
       },
       "ironvein_foreman": {
         "name": "철맥 감독관"

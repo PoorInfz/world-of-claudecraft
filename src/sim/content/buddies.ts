@@ -44,7 +44,7 @@ export type BuddyKey =
 
 export interface BuddyDef {
   key: BuddyKey;
-  /** Canonical English display name (the HUD localizes via hudChrome.buddies.*). */
+  /** Canonical English display name (the HUD localizes via entities.mobs.buddy_<key>.name, src/ui/world_entity_i18n.ts). */
   name: string;
 }
 

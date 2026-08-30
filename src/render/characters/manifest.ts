@@ -1829,9 +1829,12 @@ export const VISUALS: Record<string, VisualDef> = {
   // always moving-at-Walk or idle, never running/attacking/dead) and attack
   // is empty; tests/character_clipmaps.test.ts only requires a name to
   // resolve when it is non-empty, so the alias satisfies the gate cheaply.
-  // Eager (not lazyPreload): buddy_ai.ts's owned mob entity goes through the
-  // normal boot preload sweep like any other creature, unlike the mount
-  // lane's on-demand preloadMountAssets.
+  // buddy_ai.ts's owned mob entity goes through the normal generic mob-view
+  // path like any other creature, so these are not lazyPreload (no
+  // preloadMountAssets-style gate exists for them); instead
+  // models/buddies/ joins STREAMED_URL_PREFIXES (assets.ts) so the
+  // constrained iOS profile carves them out of the boot gate and streams
+  // them in after first frame, same as the creature family.
   buddy_frog: {
     url: `${BUDDIES_DIR}/frog.glb`,
     height: 0.35,

@@ -5073,6 +5073,23 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.player.mountKey).toBe('valorsteed');
   });
 
+  it('round-trips the active buddy identity mirror (bud) like mnt', () => {
+    // Entity.buddyKey (wire `bud`, identityFields in server/game.ts) is the
+    // "which buddy is out" mirror every client reads for HUD/UI identity; the
+    // buddy's own body renders through its real owned mob entity, never off
+    // this field, but the field itself must still round-trip like every
+    // other identity mirror (skin, mountKey).
+    const { server, fc, leader } = dirtyEveryDeltaField();
+    server.sim.entities.get(leader.pid)!.buddyKey = 'cate_coin';
+    broadcast(server);
+    const snapshot = lastSnap(fc.sent);
+    expect(snapshot.self.bud).toBe('cate_coin');
+
+    const client = bareClient(leader.pid);
+    (client as any).applySnapshot(snapshot);
+    expect(client.player.buddyKey).toBe('cate_coin');
+  });
+
   it('flips mst to null when the mobile station expires (server-side tick-domain check)', () => {
     // The expiry arm of the mst self-delta: activeMobileStationCraftFor
     // resolves active-vs-expired against the SERVER sim's own tickCount, so

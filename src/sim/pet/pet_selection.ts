@@ -1,6 +1,6 @@
 import { isTemporaryNecromancyUndeadTemplateId } from '../content/necromancy';
-import { BUDDY_TEMPLATE_IDS } from '../content/buddy_mobs';
 import type { Entity } from '../types';
+import { isBuddyMob } from './buddy_ai';
 
 /**
  * Pure owner/pet identity shared by the authoritative command path and its
@@ -17,7 +17,7 @@ export function isPrimaryOwnedPetEntity(entity: Entity, ownerId: number): boolea
     entity.kind === 'mob' &&
     entity.ownerId === ownerId &&
     !isTemporaryNecromancyUndeadTemplateId(entity.templateId) &&
-    !BUDDY_TEMPLATE_IDS.has(entity.templateId) &&
+    !isBuddyMob(entity) &&
     !entity.auras.some((aura) => aura.id === 'pyre_guardian')
   );
 }

@@ -416,7 +416,7 @@ describe('nameplate_view - import absence (two-controller + purity, source scan)
     const froms = [...code.matchAll(/\bimport\b[^;]*\bfrom\s*['"]([^'"]+)['"]/g)].map((m) => m[1]);
     // unique modules, robust to biome merging/splitting the type vs value sim import
     expect([...new Set(froms)].sort()).toEqual([
-      '../sim/content/buddy_mobs',
+      '../sim/pet/buddy_ai',
       '../sim/types',
       './nameplate_combo',
       './nameplate_threat',

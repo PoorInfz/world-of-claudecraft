@@ -18,7 +18,7 @@
 // garbage on the hot path), mirroring the speedStreaksInto / cameraSpace out-param
 // idiom elsewhere in src/render.
 
-import { BUDDY_TEMPLATE_IDS } from '../sim/content/buddy_mobs';
+import { isBuddyMob } from '../sim/pet/buddy_ai';
 import type { Entity } from '../sim/types';
 import { INTERACT_RANGE } from '../sim/types';
 import { comboPipsFor } from './nameplate_combo';
@@ -104,7 +104,7 @@ export function newNameplatePlan(): NameplatePlan {
  * the deliberately label-less sealed crypt door and the Vale Cup ball stay
  * hidden, and the self plate stays the player's own choice (the local player's
  * view is never gated). `showPetNames` is the dedicated, off-by-default
- * cosmetic-buddy toggle (src/sim/content/buddy_mobs.ts's BUDDY_TEMPLATE_IDS):
+ * cosmetic-buddy toggle (src/sim/pet/buddy_ai.ts's isBuddyMob):
  * a buddy's plate ignores `showNameplates` entirely (it is never a hostile,
  * attackable mob) and is hidden unless this is on, in which case it shows
  * name-only (noHealthBar is always true for a buddy — see that field). Pure:
@@ -147,7 +147,7 @@ export function nameplatePlanInto(
     e.templateId === 'delve_bell_rope' ||
     e.templateId === 'delve_bell_rope_pulled';
   const delveInteractNear = isDelveInteract && d2 <= (INTERACT_RANGE + 1) * (INTERACT_RANGE + 1);
-  const isBuddyPet = BUDDY_TEMPLATE_IDS.has(e.templateId);
+  const isBuddyPet = isBuddyMob(e);
 
   out.hidden =
     (isSelf && !hasOverheadEmote && !showOwnNameplate) ||

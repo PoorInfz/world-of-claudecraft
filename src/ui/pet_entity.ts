@@ -1,4 +1,4 @@
-import { BUDDY_TEMPLATE_IDS } from '../sim/content/buddy_mobs';
+import { isBuddyMob } from '../sim/pet/buddy_ai';
 import type { Entity } from '../sim/types';
 
 type OwnedMobIdentity = Pick<Entity, 'kind' | 'ownerId' | 'templateId'>;
@@ -20,6 +20,6 @@ export function isControllableOwnedPet(entity: OwnedMobIdentity, ownerId: number
     entity.kind === 'mob' &&
     entity.ownerId === ownerId &&
     !entity.templateId.startsWith('guardian_') &&
-    !BUDDY_TEMPLATE_IDS.has(entity.templateId)
+    !isBuddyMob(entity)
   );
 }

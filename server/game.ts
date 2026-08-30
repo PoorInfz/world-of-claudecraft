@@ -1287,9 +1287,10 @@ function identityFields(e: Entity): Record<string, unknown> {
   // distinct from the self-only persisted pick (`mntSel`): using `mnt` for both
   // made the appended self delta overwrite the live riding state in JSON.
   if (e.mountKey) out.mnt = e.mountKey;
-  // Active cosmetic buddy ('' omitted). Render-only, like mnt: the sim never
-  // reads it for gameplay, but every client needs it to draw the same
-  // follower for every player, local or remote.
+  // Active cosmetic buddy ('' omitted). Zero gameplay effect, like mnt, but
+  // unlike mnt not what draws the follower: the buddy is a real owned mob
+  // entity rendered through the ordinary per-mob path, so this is HUD/UI
+  // identity only (src/sim/types.ts's buddyKey doc).
   if (e.buddyKey) out.bud = e.buddyKey;
   if (e.mainhandItemId) out.mh = e.mainhandItemId; // equipped mainhand → held weapon model (render-only)
   if (e.offhandItemId) out.oh = e.offhandItemId; // equipped offhand → held weapon model (render-only)

@@ -13,9 +13,9 @@
 // entity whose ownerId is its owner's entity id (src/sim/pet/pet_commands.ts,
 // petOf), so ownership is re-derived from the roster on both hosts identically.
 
-import { BUDDY_TEMPLATE_IDS } from '../sim/content/buddy_mobs';
 import { isTemporaryNecromancyUndeadTemplateId } from '../sim/content/necromancy';
 import { DELVE_COMPANIONS } from '../sim/data';
+import { isBuddyMob } from '../sim/pet/buddy_ai';
 import type { UnitFrameDescriptor } from './unit_frame';
 
 /** The mob templates that are delve COMPANIONS rather than pets. A companion also
@@ -68,7 +68,7 @@ export function findOwnPet<T extends PetFrameUnit>(
   for (const e of entities) {
     if (e.kind !== 'mob' || e.ownerId !== playerId) continue;
     if (DELVE_COMPANION_TEMPLATE_IDS.has(e.templateId)) continue;
-    if (BUDDY_TEMPLATE_IDS.has(e.templateId)) continue;
+    if (isBuddyMob(e)) continue;
     // The class-overhaul exclusions, kept identical to the sim's petOf rule
     // (pet/pet_selection.ts isPrimaryOwnedPetEntity) and the pet-bar rule
     // (pet_entity.ts isControllableOwnedPet): the Destruction Pyre Colossus
@@ -118,7 +118,7 @@ export function findPetsByOwner<T extends PetFrameUnit>(
   for (const e of entities) {
     if (e.kind !== 'mob' || e.ownerId === null) continue;
     if (DELVE_COMPANION_TEMPLATE_IDS.has(e.templateId)) continue;
-    if (BUDDY_TEMPLATE_IDS.has(e.templateId)) continue;
+    if (isBuddyMob(e)) continue;
     if (byOwner.has(e.ownerId)) continue;
     byOwner.set(e.ownerId, {
       id: e.id,

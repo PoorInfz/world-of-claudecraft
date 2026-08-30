@@ -333,8 +333,8 @@ describe('item-art consistency accepted-art provenance', () => {
       },
       {
         path: `${evidenceDir}/final-item-art-audit-verdict.json`,
-        acceptedSha256: '5e6732b0799703195a457771305a5b36bdc64cffdf113dacdef3bdcbccd36af3',
-        acceptedBytes: 109_382,
+        acceptedSha256: '085711fffa990b5958e59ff1e51ed9f7167a35a2167a0fc011cc4832fe6d80b7',
+        acceptedBytes: 112_469,
       },
     ]);
     for (const evidence of [...value.sourceEvidence, ...value.generationReports]) {
@@ -449,9 +449,9 @@ describe('item-art consistency accepted-art provenance', () => {
     expect(readme).toContain('node scripts/item_art_audit.mjs\n');
     expect(readme).toContain('node scripts/item_art_audit.mjs --refresh-verdict');
     const verdictBytes = readFileSync(path.join(repoRoot, verdictPath));
-    expect(verdictBytes.length).toBe(109_382);
+    expect(verdictBytes.length).toBe(112_469);
     expect(sha256(verdictBytes)).toBe(
-      '5e6732b0799703195a457771305a5b36bdc64cffdf113dacdef3bdcbccd36af3',
+      '085711fffa990b5958e59ff1e51ed9f7167a35a2167a0fc011cc4832fe6d80b7',
     );
     const verdict = JSON.parse(verdictBytes.toString('utf8')) as FinalAuditVerdict;
 
@@ -460,8 +460,8 @@ describe('item-art consistency accepted-art provenance', () => {
       baselineCommit: 'aee195551b5aef628eb7a72192117d7e3079818e',
       branch: 'feature/placeholder-art-completion-v036',
       shippingDirectory: 'public/ui/items',
-      itemArtFilesReviewed: 829,
-      liveItemDefinitions: 844,
+      itemArtFilesReviewed: 848,
+      liveItemDefinitions: 863,
       generatedHeroicDefinitions: 64,
       heroicDefinitionsWithOwnWebp: 48,
       heroicWeaponArtAliases: 16,
@@ -471,9 +471,9 @@ describe('item-art consistency accepted-art provenance', () => {
       manifest().targetSets.items.map((id) => `public/ui/items/${id}.webp`),
     );
     expect(Object.values(verdict.auditScope.groups).reduce((sum, count) => sum + count, 0)).toBe(
-      829,
+      848,
     );
-    expect(Object.keys(verdict.auditScope.groups)).toHaveLength(22);
+    expect(Object.keys(verdict.auditScope.groups)).toHaveLength(23);
     const shippingIds = new Set(
       readdirSync(path.join(repoRoot, 'public/ui/items'))
         .filter((name) => name.endsWith('.webp'))
@@ -516,13 +516,13 @@ describe('item-art consistency accepted-art provenance', () => {
     ]);
     expect(verdict.visualVerdict).toMatchObject({
       status: 'pass',
-      passCount: 829,
+      passCount: 848,
       watchCount: 0,
       watch: [],
       rejectCount: 0,
       reject: [],
       summary:
-        'All 829 shipping item-art files pass the visual contract: 817 reviewed in the 2026-08-09 campaign (documented retries included), plus the five class-overhaul integration additions owner-reviewed and passed on 2026-08-10, plus the Dawnhold posy addition (project-authored vector illustration) owner-reviewed and passed on 2026-08-12, plus the two Proving Shore prop renders (rendered from their own shipped world models) owner-reviewed and passed on 2026-08-17, plus the three pearl-detour icons (generated via the OpenAI proving-shore-mother-of-pearl-2026-08-20 batch) owner-reviewed and passed on 2026-08-20, plus the Proving Shore Passing Stone render (rendered from its own shipped world model by the same deterministic pipeline as the 2026-08-17 pair) added on 2026-08-22, machine-checked and awaiting owner visual review.',
+        'All 848 shipping item-art files pass the visual contract: 817 reviewed in the 2026-08-09 campaign (documented retries included), plus the five class-overhaul integration additions owner-reviewed and passed on 2026-08-10, plus the Dawnhold posy addition (project-authored vector illustration) owner-reviewed and passed on 2026-08-12, plus the two Proving Shore prop renders (rendered from their own shipped world models) owner-reviewed and passed on 2026-08-17, plus the three pearl-detour icons (generated via the OpenAI proving-shore-mother-of-pearl-2026-08-20 batch) owner-reviewed and passed on 2026-08-20, plus the Proving Shore Passing Stone render (rendered from its own shipped world model by the same deterministic pipeline as the 2026-08-17 pair) added on 2026-08-22, machine-checked and awaiting owner visual review, plus the nineteen buddy-whistle icons (rendered from their own shipped buddy GLB models by scripts/assets/render_buddy_item_icons.mjs) added on 2026-08-28, machine-checked and awaiting owner visual review.',
     });
     expect(verdict.visualVerdict.passIds).toEqual(currentIds);
     expect(verdict.nonVisualContentWatch).toEqual([
@@ -569,7 +569,7 @@ describe('item-art consistency accepted-art provenance', () => {
       'fd92c41a206cd55b05a1de94c4789f6eb6ca4200d063f4bbd284c21ae03b6082',
     );
     expect(verdict.evidence.rendererFingerprint).toBe(ITEM_ART_AUDIT_RENDERER_FINGERPRINT);
-    expect(verdict.evidence.sheetCount).toBe(208);
+    expect(verdict.evidence.sheetCount).toBe(216);
     expect(verdict.evidence.sheetModeCounts).toEqual({
       '128-color': 26,
       '40-color': 26,
@@ -580,8 +580,8 @@ describe('item-art consistency accepted-art provenance', () => {
       'small-multiview': 26,
       identity: 26,
     });
-    expect(verdict.evidence.sheets).toHaveLength(208);
-    expect(new Set(verdict.evidence.sheets.map(({ path: sheetPath }) => sheetPath)).size).toBe(208);
+    expect(verdict.evidence.sheets).toHaveLength(216);
+    expect(new Set(verdict.evidence.sheets.map(({ path: sheetPath }) => sheetPath)).size).toBe(216);
     const modesByPage = new Map<string, string[]>();
     for (const sheet of verdict.evidence.sheets) {
       const match = sheet.path.match(

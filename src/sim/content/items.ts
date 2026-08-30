@@ -443,11 +443,10 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   // Rarity-tiered buddy whistle set. Quality mirrors the source GLB's
   // common_/rare_/epic_ filename prefix (public/models/buddies/). Common
-  // stays vendor-buyable like the whistles above; rare/epic drop from
-  // acquisition sources the wiring pass here does not add (no vendor/loot
-  // entry yet, mirroring how reins_grag_bear (rare mount) carries no
-  // buyValue either) — they are craftable/grantable via /dev give only
-  // until that follow-up lands.
+  // stays vendor-buyable like the whistles above; rare/epic carry no
+  // buyValue (mirroring how reins_grag_bear, a rare mount, has none either)
+  // and instead come from the global buddy-whistle drop on every regular mob
+  // kill (src/sim/loot/global_drops.ts) plus /dev give.
   whistle_frog: {
     id: 'whistle_frog',
     name: 'Frog Whistle',

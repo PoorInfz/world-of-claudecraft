@@ -14316,6 +14316,63 @@ export const es: EnTranslations = {
       "wildheart_high_priest": {
         "name": "Zulgar, Voz de la Cuenca"
       },
+      "buddy_ember_fox": {
+        "name": "Ember Fox"
+      },
+      "buddy_moss_hare": {
+        "name": "Moss Hare"
+      },
+      "buddy_frog": {
+        "name": "Frog"
+      },
+      "buddy_crimson_claw_crab": {
+        "name": "Crimson Claw Crab"
+      },
+      "buddy_golden_sentinel": {
+        "name": "Golden Sentinel"
+      },
+      "buddy_nightfang": {
+        "name": "Nightfang"
+      },
+      "buddy_tuskhorn_boar": {
+        "name": "Tuskhorn Boar"
+      },
+      "buddy_emerald_wolf": {
+        "name": "Emerald Wolf"
+      },
+      "buddy_tiger": {
+        "name": "Tiger"
+      },
+      "buddy_cate_coin": {
+        "name": "Cate Coin"
+      },
+      "buddy_dragon": {
+        "name": "Dragon"
+      },
+      "buddy_alon": {
+        "name": "Alon"
+      },
+      "buddy_trollface": {
+        "name": "Trollface"
+      },
+      "buddy_ansem": {
+        "name": "Ansem"
+      },
+      "buddy_triple_t": {
+        "name": "Triple T"
+      },
+      "buddy_kekius": {
+        "name": "Kekius"
+      },
+      "buddy_solbot": {
+        "name": "Solbot"
+      },
+      "buddy_frostfire": {
+        "name": "Frostfire"
+      },
+      "buddy_rocky": {
+        "name": "Rocky"
+      },
       "ironvein_foreman": {
         "name": "Capataz Vena de Hierro"
       },

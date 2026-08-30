@@ -1524,7 +1524,7 @@ export const zh_CN: EnTranslations = {
       "showDevBadges": "显示开发者徽章",
       "showOwnNameplate": "显示我的姓名板",
       "showPlayerNameplates": "显示玩家姓名板",
-      "showPetNames": "Show Pet Names",
+      "showPetNames": "显示宠物姓名板",
       "uiScale": "界面缩放",
       "playerFrameScale": "玩家框缩放",
       "targetFrameScale": "目标框缩放",
@@ -9390,7 +9390,7 @@ export const zh_CN: EnTranslations = {
       "elixir": "药剂",
       "bag": "背包",
       "mount": "坐骑",
-      "buddy": "Buddy"
+      "buddy": "伙伴"
     },
     "stats": {
       "armor": "护甲",
@@ -12887,61 +12887,61 @@ export const zh_CN: EnTranslations = {
         "name": "往生石"
       },
       "whistle_ember_fox": {
-        "name": "Ember Fox Whistle"
+        "name": "余烬狐狸哨子"
       },
       "whistle_moss_hare": {
-        "name": "Moss Hare Whistle"
+        "name": "苔藓野兔哨子"
       },
       "whistle_frog": {
-        "name": "Frog Whistle"
+        "name": "青蛙哨子"
       },
       "whistle_crimson_claw_crab": {
-        "name": "Crimson Claw Crab Whistle"
+        "name": "绯爪蟹哨子"
       },
       "whistle_golden_sentinel": {
-        "name": "Golden Sentinel Whistle"
+        "name": "黄金哨兵哨子"
       },
       "whistle_nightfang": {
-        "name": "Nightfang Whistle"
+        "name": "夜牙哨子"
       },
       "whistle_tuskhorn_boar": {
-        "name": "Tuskhorn Boar Whistle"
+        "name": "獠角野猪哨子"
       },
       "whistle_emerald_wolf": {
-        "name": "Emerald Wolf Whistle"
+        "name": "翡翠狼哨子"
       },
       "whistle_tiger": {
-        "name": "Tiger Whistle"
+        "name": "老虎哨子"
       },
       "whistle_cate_coin": {
-        "name": "Cate Coin Whistle"
+        "name": "凯特金币哨子"
       },
       "whistle_dragon": {
-        "name": "Dragon Whistle"
+        "name": "巨龙哨子"
       },
       "whistle_alon": {
-        "name": "Alon Whistle"
+        "name": "阿隆哨子"
       },
       "whistle_trollface": {
-        "name": "Trollface Whistle"
+        "name": "巨魔脸哨子"
       },
       "whistle_ansem": {
-        "name": "Ansem Whistle"
+        "name": "安森哨子"
       },
       "whistle_triple_t": {
-        "name": "Triple T Whistle"
+        "name": "三重T哨子"
       },
       "whistle_kekius": {
-        "name": "Kekius Whistle"
+        "name": "凯基乌斯哨子"
       },
       "whistle_solbot": {
-        "name": "Solbot Whistle"
+        "name": "索尔机器人哨子"
       },
       "whistle_frostfire": {
-        "name": "Frostfire Whistle"
+        "name": "霜火哨子"
       },
       "whistle_rocky": {
-        "name": "Rocky Whistle"
+        "name": "洛奇哨子"
       },
       "conjured_water4": {
         "name": "魔法泉水"
@@ -14315,6 +14315,63 @@ export const zh_CN: EnTranslations = {
       },
       "wildheart_high_priest": {
         "name": "盆地之声祖尔加"
+      },
+      "buddy_ember_fox": {
+        "name": "余烬狐狸"
+      },
+      "buddy_moss_hare": {
+        "name": "苔藓野兔"
+      },
+      "buddy_frog": {
+        "name": "青蛙"
+      },
+      "buddy_crimson_claw_crab": {
+        "name": "绯爪蟹"
+      },
+      "buddy_golden_sentinel": {
+        "name": "黄金哨兵"
+      },
+      "buddy_nightfang": {
+        "name": "夜牙"
+      },
+      "buddy_tuskhorn_boar": {
+        "name": "獠角野猪"
+      },
+      "buddy_emerald_wolf": {
+        "name": "翡翠狼"
+      },
+      "buddy_tiger": {
+        "name": "老虎"
+      },
+      "buddy_cate_coin": {
+        "name": "凯特金币"
+      },
+      "buddy_dragon": {
+        "name": "巨龙"
+      },
+      "buddy_alon": {
+        "name": "阿隆"
+      },
+      "buddy_trollface": {
+        "name": "巨魔脸"
+      },
+      "buddy_ansem": {
+        "name": "安森"
+      },
+      "buddy_triple_t": {
+        "name": "三重T"
+      },
+      "buddy_kekius": {
+        "name": "凯基乌斯"
+      },
+      "buddy_solbot": {
+        "name": "索尔机器人"
+      },
+      "buddy_frostfire": {
+        "name": "霜火"
+      },
+      "buddy_rocky": {
+        "name": "洛奇"
       },
       "ironvein_foreman": {
         "name": "铁脉工头"

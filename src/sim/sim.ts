@@ -376,6 +376,7 @@ import {
   PLAYER_MAX_CLIMB_SLOPE,
   PLAYER_SWIM_DEPTH,
 } from './pathfind';
+import { isBuddyMob } from './pet/buddy_ai';
 import * as petAi from './pet/pet_ai';
 import * as petCommands from './pet/pet_commands';
 import type { MatchPetSnapshot } from './pet/pet_match_return';
@@ -10193,6 +10194,13 @@ export class Sim {
   isHostileTo(attacker: Entity, target: Entity): boolean {
     if (target.kind === 'mob') {
       if (target.templateId.startsWith('vision_')) return false;
+      // A cosmetic buddy (src/sim/pet/buddy_ai.ts) is never a valid hostile
+      // target, in a duel/arena/battleground or anywhere else: it carries no
+      // combat at all, so recursing to its owner below would make an
+      // opponent's follower Tab-targetable and AoE-eligible purely because
+      // the owner is hostile. Checked before the owner-recursion arm so it
+      // wins regardless of who the owner is.
+      if (isBuddyMob(target)) return false;
       // A Protect Yumi cat is attackable only by the opposing team of its
       // live match (social/yumi.ts owns the rule).
       if (yumiMod.isYumiCat(target)) return yumiMod.yumiCatHostileTo(this.ctx, attacker, target);

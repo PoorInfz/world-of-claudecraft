@@ -195,7 +195,11 @@ const MONOLITHS: MonolithRow[] = [
     // namespace import, the EntityView extends clause, and the three
     // create/dispose/per-frame call sites it used to need. Ceiling lowered to
     // the new exact count, zero slack.
-    ceiling: 13331,
+    // Plus 1 for the buddy target-reticle fix: selectionRingScale (src/render/
+    // selection_ring.ts) scales the selection ring off the target's rendered
+    // height instead of its raw entity scale, so a buddy's ring hugs its small
+    // body instead of ballooning to a full-size mob's ring. Exact count.
+    ceiling: 13340,
     seam: 'a new src/render/<thing>.ts module the renderer calls (src/render/CLAUDE.md)',
   },
   {
@@ -248,7 +252,11 @@ const MONOLITHS: MonolithRow[] = [
     // (ownedBuddiesFor/toggleBuddyFor + the two IWorldBuddies facade methods),
     // mirroring the existing mount delegates exactly; the actual mechanic
     // lives in src/sim/buddies.ts. Exact count, zero slack.
-    ceiling: 12561,
+    // Plus 8 for the PvP-hostility fix: isHostileTo now checks isBuddyMob
+    // (src/sim/pet/buddy_ai.ts) before the owner-recursion arm, so an owned
+    // buddy is never a valid hostile target regardless of its owner. Exact
+    // count, zero slack.
+    ceiling: 12569,
     seam: 'a sim system module behind SimContext (src/sim/CLAUDE.md)',
   },
   {
@@ -275,7 +283,11 @@ const MONOLITHS: MonolithRow[] = [
     // Lowered again after the Discord login-choice persistence moved into
     // src/game/discord_login_choice.ts (the review-round-2 payment for the
     // stale-cache self-heal reads and the unlink re-entrancy guard).
-    ceiling: 11526,
+    // Plus 6 for the Buddies feature's "Show Pet Names" nameplate toggle:
+    // renderer.showPetNames read at boot, the settings-panel dispatch arm,
+    // and the reload-time re-sync (src/main.ts:1530, 2691-2694, 2876). Exact
+    // count, zero slack.
+    ceiling: 11532,
     seam: 'a src/game/ or src/ui/ sibling module; main.ts is a firewall, not a home',
   },
   {
@@ -321,7 +333,11 @@ const MONOLITHS: MonolithRow[] = [
     // Plus 13 for the Buddies feature: the identityFields bud mirror, the
     // budOwn self field, and the buddy_toggle dispatch case (thin wiring;
     // the mechanic lives in src/sim/buddies.ts). Exact count, zero slack.
-    ceiling: 10658,
+    // Plus 1 for the review-fix pass: the bud comment in identityFields was
+    // stale (claimed the renderer reads it directly to draw the follower,
+    // true only before the buddy became a real owned mob entity) and needed
+    // correcting. Exact count, zero slack.
+    ceiling: 10659,
     seam: 'a sibling server module; see the hot-path seams in server/CLAUDE.md',
   },
   {

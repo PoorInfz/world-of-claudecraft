@@ -1524,7 +1524,7 @@ export const ru_RU: EnTranslations = {
       "showDevBadges": "Показывать значки разработчика",
       "showOwnNameplate": "Показывать свою табличку с именем",
       "showPlayerNameplates": "Показывать таблички с именами игроков",
-      "showPetNames": "Show Pet Names",
+      "showPetNames": "Показывать таблички с именами питомцев",
       "uiScale": "Масштаб интерфейса",
       "playerFrameScale": "Размер рамки игрока",
       "targetFrameScale": "Размер рамки цели",
@@ -9390,7 +9390,7 @@ export const ru_RU: EnTranslations = {
       "elixir": "Эликсир",
       "bag": "Сумка",
       "mount": "Транспорт",
-      "buddy": "Buddy"
+      "buddy": "Компаньон"
     },
     "stats": {
       "armor": "Броня",
@@ -12887,61 +12887,61 @@ export const ru_RU: EnTranslations = {
         "name": "Камень Ухода"
       },
       "whistle_ember_fox": {
-        "name": "Ember Fox Whistle"
+        "name": "Свисток «Тлеющий лис»"
       },
       "whistle_moss_hare": {
-        "name": "Moss Hare Whistle"
+        "name": "Свисток «Мшистый заяц»"
       },
       "whistle_frog": {
-        "name": "Frog Whistle"
+        "name": "Свисток «Лягушка»"
       },
       "whistle_crimson_claw_crab": {
-        "name": "Crimson Claw Crab Whistle"
+        "name": "Свисток «Багровый краб-коготь»"
       },
       "whistle_golden_sentinel": {
-        "name": "Golden Sentinel Whistle"
+        "name": "Свисток «Золотой страж»"
       },
       "whistle_nightfang": {
-        "name": "Nightfang Whistle"
+        "name": "Свисток «Ночной Клык»"
       },
       "whistle_tuskhorn_boar": {
-        "name": "Tuskhorn Boar Whistle"
+        "name": "Свисток «Клыкорогий кабан»"
       },
       "whistle_emerald_wolf": {
-        "name": "Emerald Wolf Whistle"
+        "name": "Свисток «Изумрудный волк»"
       },
       "whistle_tiger": {
-        "name": "Tiger Whistle"
+        "name": "Свисток «Тигр»"
       },
       "whistle_cate_coin": {
-        "name": "Cate Coin Whistle"
+        "name": "Свисток «Кейт-монета»"
       },
       "whistle_dragon": {
-        "name": "Dragon Whistle"
+        "name": "Свисток «Дракон»"
       },
       "whistle_alon": {
-        "name": "Alon Whistle"
+        "name": "Свисток «Алон»"
       },
       "whistle_trollface": {
-        "name": "Trollface Whistle"
+        "name": "Свисток «Тролльлицо»"
       },
       "whistle_ansem": {
-        "name": "Ansem Whistle"
+        "name": "Свисток «Ансем»"
       },
       "whistle_triple_t": {
-        "name": "Triple T Whistle"
+        "name": "Свисток «Тройной Т»"
       },
       "whistle_kekius": {
-        "name": "Kekius Whistle"
+        "name": "Свисток «Кекиус»"
       },
       "whistle_solbot": {
-        "name": "Solbot Whistle"
+        "name": "Свисток «Солбот»"
       },
       "whistle_frostfire": {
-        "name": "Frostfire Whistle"
+        "name": "Свисток «Морозный огонь»"
       },
       "whistle_rocky": {
-        "name": "Rocky Whistle"
+        "name": "Свисток «Роки»"
       },
       "conjured_water4": {
         "name": "Сотворённая родниковая вода"
@@ -14315,6 +14315,63 @@ export const ru_RU: EnTranslations = {
       },
       "wildheart_high_priest": {
         "name": "Зулгар, Голос Котловины"
+      },
+      "buddy_ember_fox": {
+        "name": "Тлеющий лис"
+      },
+      "buddy_moss_hare": {
+        "name": "Мшистый заяц"
+      },
+      "buddy_frog": {
+        "name": "Лягушка"
+      },
+      "buddy_crimson_claw_crab": {
+        "name": "Багровый краб-коготь"
+      },
+      "buddy_golden_sentinel": {
+        "name": "Золотой страж"
+      },
+      "buddy_nightfang": {
+        "name": "Ночной Клык"
+      },
+      "buddy_tuskhorn_boar": {
+        "name": "Клыкорогий кабан"
+      },
+      "buddy_emerald_wolf": {
+        "name": "Изумрудный волк"
+      },
+      "buddy_tiger": {
+        "name": "Тигр"
+      },
+      "buddy_cate_coin": {
+        "name": "Кейт-монета"
+      },
+      "buddy_dragon": {
+        "name": "Дракон"
+      },
+      "buddy_alon": {
+        "name": "Алон"
+      },
+      "buddy_trollface": {
+        "name": "Тролльлицо"
+      },
+      "buddy_ansem": {
+        "name": "Ансем"
+      },
+      "buddy_triple_t": {
+        "name": "Тройной Т"
+      },
+      "buddy_kekius": {
+        "name": "Кекиус"
+      },
+      "buddy_solbot": {
+        "name": "Солбот"
+      },
+      "buddy_frostfire": {
+        "name": "Морозный огонь"
+      },
+      "buddy_rocky": {
+        "name": "Роки"
       },
       "ironvein_foreman": {
         "name": "Прораб Железной жилы"

@@ -1,7 +1,7 @@
 // Buddy heel AI: a buddy is a real, server-simulated owned mob entity
 // (src/sim/content/buddy_mobs.ts mints its MobTemplate) that follows using
 // the EXACT SAME A*-pathed heel locomotion as a hunter/warlock pet
-// (petFollow, pet_ai.ts) — obstacle avoidance, waypoint caching, and the
+// (petFollow, pet_ai.ts): obstacle avoidance, waypoint caching, and the
 // stranded-pet teleport recovery, all reused verbatim, not reimplemented.
 //
 // Two differences from a real combat pet, both deliberate:
@@ -22,7 +22,7 @@
 // tests/architecture.test.ts).
 
 import { type BuddyKey, normalizeBuddyKey } from '../content/buddies';
-import { buddyTemplateId, BUDDY_TEMPLATE_IDS } from '../content/buddy_mobs';
+import { BUDDY_TEMPLATE_IDS, buddyTemplateId } from '../content/buddy_mobs';
 import { MOBS } from '../data';
 import { createMob } from '../entity';
 import type { SimContext } from '../sim_context';
@@ -33,11 +33,15 @@ import { petFollow } from './pet_ai';
 // owner's forward (Entity.facing's "0 = +Z" convention). Values match the
 // retired render-only follower's own offset (src/render/buddy_follow.ts,
 // BUDDY_FOLLOW_LEFT/BACK) so the buddy keeps standing on the same side.
-const BUDDY_FOLLOW_LEFT = 2;
-const BUDDY_FOLLOW_BACK = 1.2;
+// Exported (alongside buddyFollowTarget below) so tests/buddies.test.ts can
+// pin the heel offset against owner.pos/owner.facing directly, instead of
+// re-deriving its expectation through the function under test.
+export const BUDDY_FOLLOW_LEFT = 2;
+export const BUDDY_FOLLOW_BACK = 1.2;
 
-/** Exported for tests/buddies.test.ts's exact-geometry heel assertion; every
- *  in-module call site above is the only real caller. */
+/** The buddy's heel target for the current tick. Every in-module call site
+ *  above is the only real caller; tests/buddies.test.ts pins the offset
+ *  independently against BUDDY_FOLLOW_LEFT/BACK rather than calling this. */
 export function buddyFollowTarget(owner: Entity): Vec3 {
   const sinF = Math.sin(owner.facing);
   const cosF = Math.cos(owner.facing);
@@ -50,8 +54,11 @@ export function buddyFollowTarget(owner: Entity): Vec3 {
 
 /** True for the real buddy entity (never a hunter/warlock/mage pet or a
  *  delve companion): every buddy templateId is minted by buddy_mobs.ts and
- *  used nowhere else, so this is a plain Set membership check. */
-export function isBuddyMob(mob: Entity): boolean {
+ *  used nowhere else, so this is a plain Set membership check. Takes a
+ *  narrowed pick (not the full Entity) so render/ui call sites that only
+ *  carry ownerId/templateId (e.g. unit-frame identity types) can share this
+ *  predicate too, instead of reimplementing the BUDDY_TEMPLATE_IDS check. */
+export function isBuddyMob(mob: Pick<Entity, 'ownerId' | 'templateId'>): boolean {
   return mob.ownerId !== null && BUDDY_TEMPLATE_IDS.has(mob.templateId);
 }
 

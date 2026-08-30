@@ -1524,7 +1524,7 @@ export const ja_JP: EnTranslations = {
       "showDevBadges": "開発者バッジを表示",
       "showOwnNameplate": "自分のネームプレートを表示",
       "showPlayerNameplates": "プレイヤーのネームプレートを表示",
-      "showPetNames": "Show Pet Names",
+      "showPetNames": "ペットのネームプレートを表示",
       "uiScale": "UIスケール",
       "playerFrameScale": "プレイヤーフレームの大きさ",
       "targetFrameScale": "ターゲットフレームの大きさ",
@@ -9390,7 +9390,7 @@ export const ja_JP: EnTranslations = {
       "elixir": "エリクサー",
       "bag": "バッグ",
       "mount": "マウント",
-      "buddy": "Buddy"
+      "buddy": "相棒"
     },
     "stats": {
       "armor": "防御力",
@@ -12887,61 +12887,61 @@ export const ja_JP: EnTranslations = {
         "name": "たましいの石"
       },
       "whistle_ember_fox": {
-        "name": "Ember Fox Whistle"
+        "name": "燠火狐の笛"
       },
       "whistle_moss_hare": {
-        "name": "Moss Hare Whistle"
+        "name": "苔野兎の笛"
       },
       "whistle_frog": {
-        "name": "Frog Whistle"
+        "name": "カエルの笛"
       },
       "whistle_crimson_claw_crab": {
-        "name": "Crimson Claw Crab Whistle"
+        "name": "紅爪蟹の笛"
       },
       "whistle_golden_sentinel": {
-        "name": "Golden Sentinel Whistle"
+        "name": "黄金の哨兵の笛"
       },
       "whistle_nightfang": {
-        "name": "Nightfang Whistle"
+        "name": "夜牙の笛"
       },
       "whistle_tuskhorn_boar": {
-        "name": "Tuskhorn Boar Whistle"
+        "name": "牙角猪の笛"
       },
       "whistle_emerald_wolf": {
-        "name": "Emerald Wolf Whistle"
+        "name": "エメラルドウルフの笛"
       },
       "whistle_tiger": {
-        "name": "Tiger Whistle"
+        "name": "トラの笛"
       },
       "whistle_cate_coin": {
-        "name": "Cate Coin Whistle"
+        "name": "ケイトコインの笛"
       },
       "whistle_dragon": {
-        "name": "Dragon Whistle"
+        "name": "ドラゴンの笛"
       },
       "whistle_alon": {
-        "name": "Alon Whistle"
+        "name": "アロンの笛"
       },
       "whistle_trollface": {
-        "name": "Trollface Whistle"
+        "name": "トロールフェイスの笛"
       },
       "whistle_ansem": {
-        "name": "Ansem Whistle"
+        "name": "アンセムの笛"
       },
       "whistle_triple_t": {
-        "name": "Triple T Whistle"
+        "name": "トリプルTの笛"
       },
       "whistle_kekius": {
-        "name": "Kekius Whistle"
+        "name": "ケキウスの笛"
       },
       "whistle_solbot": {
-        "name": "Solbot Whistle"
+        "name": "ソルボットの笛"
       },
       "whistle_frostfire": {
-        "name": "Frostfire Whistle"
+        "name": "霜炎の笛"
       },
       "whistle_rocky": {
-        "name": "Rocky Whistle"
+        "name": "ロッキーの笛"
       },
       "conjured_water4": {
         "name": "魔法の湧き水"
@@ -14315,6 +14315,63 @@ export const ja_JP: EnTranslations = {
       },
       "wildheart_high_priest": {
         "name": "盆地の声ズルガー"
+      },
+      "buddy_ember_fox": {
+        "name": "燠火狐"
+      },
+      "buddy_moss_hare": {
+        "name": "苔野兎"
+      },
+      "buddy_frog": {
+        "name": "カエル"
+      },
+      "buddy_crimson_claw_crab": {
+        "name": "紅爪蟹"
+      },
+      "buddy_golden_sentinel": {
+        "name": "黄金の哨兵"
+      },
+      "buddy_nightfang": {
+        "name": "夜牙"
+      },
+      "buddy_tuskhorn_boar": {
+        "name": "牙角猪"
+      },
+      "buddy_emerald_wolf": {
+        "name": "エメラルドウルフ"
+      },
+      "buddy_tiger": {
+        "name": "トラ"
+      },
+      "buddy_cate_coin": {
+        "name": "ケイトコイン"
+      },
+      "buddy_dragon": {
+        "name": "ドラゴン"
+      },
+      "buddy_alon": {
+        "name": "アロン"
+      },
+      "buddy_trollface": {
+        "name": "トロールフェイス"
+      },
+      "buddy_ansem": {
+        "name": "アンセム"
+      },
+      "buddy_triple_t": {
+        "name": "トリプルT"
+      },
+      "buddy_kekius": {
+        "name": "ケキウス"
+      },
+      "buddy_solbot": {
+        "name": "ソルボット"
+      },
+      "buddy_frostfire": {
+        "name": "霜炎"
+      },
+      "buddy_rocky": {
+        "name": "ロッキー"
       },
       "ironvein_foreman": {
         "name": "鉄脈の現場監督"

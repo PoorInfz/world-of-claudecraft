@@ -11,7 +11,7 @@
 // IS, since 2026-08-27, a real server-simulated owned mob entity
 // (src/sim/content/buddy_mobs.ts's MobTemplate, heeled by
 // src/sim/pet/buddy_ai.ts's updateBuddyMob using the exact same A*-pathed
-// locomotion as a hunter pet) — every summon/dismiss/re-summon below spawns
+// locomotion as a hunter pet); every summon/dismiss/re-summon below spawns
 // or despawns that entity alongside the Entity.buddyKey flip. buddyKey
 // ('' = none) stays the source of truth for "which buddy is out" (the wire
 // mirrors it like `skin`/`mountKey`, and updateBuddyMob's own safety net

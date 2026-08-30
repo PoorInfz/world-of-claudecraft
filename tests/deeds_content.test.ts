@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { POWERUPS } from '../src/sim/content/augments';
+import { BUDDY_MOBS } from '../src/sim/content/buddy_mobs';
 import { DEED_ORDER, DEEDS, DEEDS_ERA } from '../src/sim/content/deeds';
 import { DELVE_MOBS } from '../src/sim/content/delves/mobs';
 import { HEROIC_DUNGEON_TUNING } from '../src/sim/content/dungeon_difficulty';
@@ -702,6 +703,14 @@ describe('retro fallback proof sets stay anchored to the real tables', () => {
       // (createUndead, combat/necromancy.ts) and die inside the same owned-pet
       // no-credit early return.
       ...Object.keys(NECROMANCY_MOBS),
+      // Buddies (src/sim/content/buddy_mobs.ts) authors maxLevel: 60 uniformly
+      // since a buddy never actually spawns at a level that matters (it has
+      // no combat, no XP, no credit): isHostileTo/isEnemyTargetCandidate
+      // (sim.ts, targeting.ts) keep it out of hostile combat entirely, and on
+      // the rare stray non-hostile damage source that still kills one, it
+      // hits the very same owned-pet no-credit early return this whole set
+      // documents (combat/damage.ts) before even reaching a corpse.
+      ...Object.keys(BUDDY_MOBS),
       YUMI_TEMPLATE_ID,
     ]);
     const dynamicallyLevelCapped = new Set(Object.keys(RIFT_MOBS));

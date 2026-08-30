@@ -1,5 +1,5 @@
-import type { BuddyKey } from './buddies';
 import type { MobTemplate } from '../types';
+import type { BuddyKey } from './buddies';
 
 // Mob templates backing the real, server-simulated buddy follower entity
 // (src/sim/pet/buddy_ai.ts spawns/heels one of these exactly like a hunter

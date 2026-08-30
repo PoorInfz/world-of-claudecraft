@@ -3,7 +3,7 @@
 // a random buddy whistle (src/sim/content/items.ts, kind 'buddy') of that
 // quality. Consumed by rollLoot (loot_roll.ts), appended to the SAME corpse
 // item list as everything else so it rides ordinary party need/greed rules
-// for free — see that file's header for why the draw order here matters.
+// for free; see that file's header for why the draw order here matters.
 //
 // `src/sim`-pure: no DOM/Three/render/ui/game/net imports, no
 // Math.random/Date.now.
@@ -36,7 +36,8 @@ const BUDDY_WHISTLES_BY_QUALITY: Record<string, string[]> = {};
 for (const item of Object.values(ITEMS)) {
   if (item.kind !== 'buddy') continue;
   const quality = item.quality ?? 'common';
-  (BUDDY_WHISTLES_BY_QUALITY[quality] ??= []).push(item.id);
+  if (!BUDDY_WHISTLES_BY_QUALITY[quality]) BUDDY_WHISTLES_BY_QUALITY[quality] = [];
+  BUDDY_WHISTLES_BY_QUALITY[quality].push(item.id);
 }
 for (const pool of Object.values(BUDDY_WHISTLES_BY_QUALITY)) pool.sort();
 

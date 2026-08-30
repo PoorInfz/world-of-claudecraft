@@ -42,6 +42,7 @@ import {
   AMBERFALL_ROADS,
   AMBERFALL_ZONE,
 } from './content/amberfall';
+import { BUDDY_MOBS } from './content/buddy_mobs';
 import {
   BROTHER_HALVEN,
   BROTHER_HALVEN_MARSH,
@@ -210,7 +211,6 @@ import {
   TEMPLE_QUEST_ORDER,
   TEMPLE_QUESTS,
 } from './content/temple';
-import { BUDDY_MOBS } from './content/buddy_mobs';
 import { WARLOCK_PET_MOBS } from './content/warlock_pets';
 import { WILDHEART_DUNGEON_DEFS, WILDHEART_ITEMS, WILDHEART_MOBS } from './content/wildheart';
 import {
