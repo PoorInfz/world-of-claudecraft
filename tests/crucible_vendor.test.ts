@@ -5,6 +5,7 @@
 
 import { describe, expect, it } from 'vitest';
 import {
+  CRUCIBLE_VENDOR_ENTITY_ID,
   CRUCIBLE_VENDOR_NPC_ID,
   CRUCIBLE_VENDOR_STOCK,
   IGNIVAR_VENDOR_NPCS,
@@ -52,7 +53,8 @@ describe('crucible quartermaster: spawn and dialog routing', () => {
     expect(npc.dungeonId).toBeNull();
     expect(Math.hypot(npc.pos.x - 503.05, npc.pos.z - 2243.7)).toBeLessThanOrEqual(15);
     expect(IGNIVAR_VENDOR_NPCS[CRUCIBLE_VENDOR_NPC_ID].crucibleVendor).toBe(true);
-    expect(IGNIVAR_VENDOR_NPCS[CRUCIBLE_VENDOR_NPC_ID].dynamic).not.toBe(true);
+    expect(npc.id).toBe(CRUCIBLE_VENDOR_ENTITY_ID);
+    expect(IGNIVAR_VENDOR_NPCS[CRUCIBLE_VENDOR_NPC_ID].dynamic).toBe(true);
   });
 });
 

@@ -157,6 +157,11 @@ import { ensureWarriorStance } from './combat/warrior_stances';
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
 import { applyTalentMods } from './content/classes';
+import {
+  CRUCIBLE_VENDOR_ENTITY_ID,
+  CRUCIBLE_VENDOR_ENTRANCE_POS,
+  CRUCIBLE_VENDOR_NPC_ID,
+} from './content/ignivar_loot';
 import { DEFAULT_MOUNT, type MountKey } from './content/mounts';
 import { GATHERING_PROFESSION_IDS, type GatheringProfessionId } from './content/professions';
 import { PROVING_SHORE_ARRIVAL } from './content/proving_shore';
@@ -2300,6 +2305,21 @@ export class Sim {
       if (kole) {
         const safe = this.findSafePos(kole.pos.x, kole.pos.z, waterLevel() + 0.6);
         spawnWarfareQuartermaster(this.ctx, kole, safe);
+      }
+    }
+
+    // Quartermaster Bronn Emberward at the Crucible entrance: spawn after
+    // world generation under a reserved id so replay entity ids remain stable.
+    {
+      const bronn = worldContent.npcs[CRUCIBLE_VENDOR_NPC_ID];
+      if (bronn && !this.entities.has(CRUCIBLE_VENDOR_ENTITY_ID)) {
+        const safe = this.findSafePos(
+          CRUCIBLE_VENDOR_ENTRANCE_POS.x,
+          CRUCIBLE_VENDOR_ENTRANCE_POS.z,
+          waterLevel() + 0.6,
+        );
+        const npc = createNpc(CRUCIBLE_VENDOR_ENTITY_ID, bronn, this.groundPos(safe.x, safe.z));
+        this.addEntity(npc);
       }
     }
 
