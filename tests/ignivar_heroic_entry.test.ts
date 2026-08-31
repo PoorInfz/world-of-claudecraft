@@ -55,12 +55,18 @@ function walkIntoHalls(selected: DungeonDifficulty): {
 } {
   const { sim, lead } = raidSim();
   if (selected === 'heroic') sim.setDungeonDifficulty('heroic', lead.entityId);
+  // The difficulty toggle confirms through the toast channel; drain the setup
+  // noise so the per-hop error capture below covers only the walk-in itself.
+  sim.drainEvents();
   if (!enterDungeon(sim.ctx, IGNIVAR_LIFT_ROOM_ID, lead.entityId)) {
     throw new Error('lift entry failed');
   }
+  // Capture errors per hop: a single drain at the end would let the drain
+  // before the Halls hop silently discard anything the lift hop refused with.
+  const errors = drainedErrors(sim);
   const lift = liveClaim(sim, IGNIVAR_LIFT_ROOM_ID).difficulty;
   for (let i = 0; i < 20 * (IGNIVAR_LIFT_RIDE_SECONDS + 2); i += 1) sim.tick();
-  sim.drainEvents();
+  errors.push(...drainedErrors(sim));
   if (!enterDungeon(sim.ctx, IGNIVAR_FORGE_APPROACH_ID, lead.entityId)) {
     throw new Error('Halls entry through the opened lift gate failed');
   }
@@ -68,7 +74,8 @@ function walkIntoHalls(selected: DungeonDifficulty): {
   const hallsMobs = halls.mobIds
     .map((id) => sim.entities.get(id))
     .filter((mob): mob is Entity => mob !== undefined);
-  return { lift, halls: halls.difficulty, hallsMobs, errors: drainedErrors(sim) };
+  errors.push(...drainedErrors(sim));
+  return { lift, halls: halls.difficulty, hallsMobs, errors };
 }
 
 describe('the Ignivar raid claims the selected difficulty through the real door', () => {

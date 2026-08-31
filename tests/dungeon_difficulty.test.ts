@@ -9,6 +9,7 @@ import { HEROIC_DUNGEON_TUNING, HEROIC_MARK_ITEM_ID } from '../src/sim/content/d
 import { DUNGEON_MOBS } from '../src/sim/content/dungeons';
 import { TEMPLE_DUNGEON_MOBS } from '../src/sim/content/temple';
 import { DUNGEONS, ITEMS, MOBS } from '../src/sim/data';
+import { IGNIVAR_RAID_ROOM_IDS } from '../src/sim/ignivar_raid_ids';
 import {
   applyDungeonMobTuning,
   claimDifficultyForDungeon,
@@ -140,8 +141,21 @@ describe('claimDifficultyForDungeon', () => {
     expect(claimDifficultyForDungeon('gravewyrm_sanctum', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('nythraxis_boss_arena', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('ignivar_raid_arena', 'heroic')).toBe('heroic');
-    // The chain's door room: a clamp here silently normalizes the whole raid.
-    expect(claimDifficultyForDungeon('ignivar_forge_lift', 'heroic')).toBe('heroic');
+    // Derived door-room guard: the Ignivar chain's difficulty is decided at
+    // whichever room carries the overworld walk-up door (the chain head), and
+    // a clamp there silently normalizes the whole raid (the v0.41.0 bug: the
+    // door moved to the forge lift, which had no tuning record, and the
+    // hardcoded id pins above stayed green). Deriving from the live room list
+    // makes this fail on its own the next time the entrance moves.
+    for (const roomId of IGNIVAR_RAID_ROOM_IDS) {
+      if (DUNGEONS[roomId].overworldDoor === false) continue;
+      expect(claimDifficultyForDungeon(roomId, 'heroic'), `${roomId} is a door room`).toBe(
+        'heroic',
+      );
+    }
+    // The chain HEAD decides the claim every deeper room inherits, so it stays
+    // pinned even if a future layout gives it no overworld door.
+    expect(claimDifficultyForDungeon(IGNIVAR_RAID_ROOM_IDS[0], 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('ignivar_forge_approach', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('ignivar_molten_assembly', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('ignivar_inner_crucible', 'heroic')).toBe('heroic');
