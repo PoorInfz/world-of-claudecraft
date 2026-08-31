@@ -5,6 +5,7 @@
 
 import { describe, expect, it } from 'vitest';
 import {
+  CRUCIBLE_VENDOR_ENTITY_ID,
   CRUCIBLE_VENDOR_NPC_ID,
   CRUCIBLE_VENDOR_STOCK,
   IGNIVAR_VENDOR_NPCS,
@@ -17,25 +18,19 @@ import { buildCrucibleVendorView } from '../src/ui/hud/vendor/crucible_vendor_vi
 type AnySim = Sim & Record<string, any>;
 type AnyEntity = Entity & Record<string, any>;
 
-// The vendor is a dynamic NPC spawned inside the raid's approach room, so the
-// buy-path tests enter through the /dev practice-raid door like
-// tests/ignivar_dev_raid.test.ts.
-function raidSim(playerClass: 'warrior' | 'mage' = 'warrior'): AnySim {
-  const sim = new Sim({
+function vendorSim(playerClass: 'warrior' | 'mage' = 'warrior'): AnySim {
+  return new Sim({
     seed: 2786,
     playerClass,
     autoEquip: true,
-    devCommands: true,
   }) as AnySim;
-  sim.chat('/dev ignivarraid');
-  return sim;
 }
 
 function vendorEntity(sim: AnySim): AnyEntity {
   const npc = [...sim.entities.values()].find(
     (e: AnyEntity) => e.kind === 'npc' && e.templateId === CRUCIBLE_VENDOR_NPC_ID,
   );
-  if (!npc) throw new Error('Crucible Quartermaster did not spawn in the approach room');
+  if (!npc) throw new Error('Crucible Quartermaster did not spawn outside the raid entrance');
   return npc as AnyEntity;
 }
 
@@ -52,18 +47,20 @@ function errorTexts(sim: AnySim): string[] {
 }
 
 describe('crucible quartermaster: spawn and dialog routing', () => {
-  it('spawns in the approach room with the crucibleVendor dialog flag', () => {
-    const sim = raidSim();
+  it('spawns in the overworld at the raid entrance with the crucibleVendor dialog flag', () => {
+    const sim = vendorSim();
     const npc = vendorEntity(sim);
-    expect(npc).toBeTruthy();
+    expect(npc.dungeonId).toBeNull();
+    expect(Math.hypot(npc.pos.x - 503.05, npc.pos.z - 2243.7)).toBeLessThanOrEqual(15);
     expect(IGNIVAR_VENDOR_NPCS[CRUCIBLE_VENDOR_NPC_ID].crucibleVendor).toBe(true);
+    expect(npc.id).toBe(CRUCIBLE_VENDOR_ENTITY_ID);
     expect(IGNIVAR_VENDOR_NPCS[CRUCIBLE_VENDOR_NPC_ID].dynamic).toBe(true);
   });
 });
 
 describe('crucible quartermaster: buy path', () => {
   it('debits the matching sigil and grants the set piece', () => {
-    const sim = raidSim('warrior');
+    const sim = vendorSim('warrior');
     standAtVendor(sim);
     sim.addItem('sigil_anvil_helmet', 2, sim.playerId);
     sim.drainEvents();
@@ -80,7 +77,7 @@ describe('crucible quartermaster: buy path', () => {
   });
 
   it('redemptions repeat: each buy debits exactly one sigil from the stack', () => {
-    const sim = raidSim('warrior');
+    const sim = vendorSim('warrior');
     standAtVendor(sim);
     sim.addItem('sigil_anvil_helmet', 3, sim.playerId);
     sim.drainEvents();
@@ -93,7 +90,7 @@ describe('crucible quartermaster: buy path', () => {
   });
 
   it('refuses without the matching sigil (a different slot sigil does not pay)', () => {
-    const sim = raidSim('warrior');
+    const sim = vendorSim('warrior');
     standAtVendor(sim);
     sim.addItem('sigil_anvil_gloves', 1, sim.playerId);
     sim.drainEvents();
@@ -108,7 +105,7 @@ describe('crucible quartermaster: buy path', () => {
   it("refuses another class's piece even with the right sigil in hand", () => {
     // A warrior holds an Anvil helm sigil; Aetherweave is the mage set in the
     // same Anvil group, so only the class gate stands between them.
-    const sim = raidSim('warrior');
+    const sim = vendorSim('warrior');
     standAtVendor(sim);
     sim.addItem('sigil_anvil_helmet', 1, sim.playerId);
     sim.drainEvents();
@@ -121,7 +118,7 @@ describe('crucible quartermaster: buy path', () => {
   });
 
   it('refuses items that are not in the redemption stock', () => {
-    const sim = raidSim('warrior');
+    const sim = vendorSim('warrior');
     standAtVendor(sim);
     sim.drainEvents();
 
@@ -132,7 +129,7 @@ describe('crucible quartermaster: buy path', () => {
   });
 
   it('refuses out of range, before any debit', () => {
-    const sim = raidSim('warrior');
+    const sim = vendorSim('warrior');
     // Still at the room entry, not at the vendor.
     const npc = vendorEntity(sim);
     const p = sim.player as AnyEntity;
@@ -150,7 +147,7 @@ describe('crucible quartermaster: buy path', () => {
   });
 
   it('checks bag space BEFORE the debit so a full-bags refusal keeps the sigil', () => {
-    const sim = raidSim('warrior');
+    const sim = vendorSim('warrior');
     standAtVendor(sim);
     sim.addItem('sigil_anvil_helmet', 1, sim.playerId);
     // Fill every remaining slot with unstackable items.

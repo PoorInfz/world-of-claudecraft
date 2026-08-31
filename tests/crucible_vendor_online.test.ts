@@ -5,11 +5,8 @@
 // buy-path outcome over handleMessage (sigil debit, set-piece grant), the
 // routed vendor response frame, and the ClientWorld inventory mirror.
 //
-// The fixture enters the raid approach room through the /dev practice-raid
-// door exactly like the sim-direct suite (the Crucible Quartermaster is a
-// dynamic NPC that only exists there), so the server sim is built with
-// ALLOW_DEV_COMMANDS set for the setup chat command only; crucible_buy itself
-// is an ordinary player command with no dev gating.
+// The fixture moves the player to the quartermaster at the overworld raid
+// entrance; crucible_buy is an ordinary player command with no dev gating.
 import { describe, expect, it, vi } from 'vitest';
 
 // Mock the db layer so the live GameServer suite needs no Postgres (the
@@ -66,30 +63,17 @@ import {
 const SET_PIECE = 'slagbreaker_helmet';
 const SIGIL = 'sigil_anvil_helmet';
 
-/** A GameServer whose sim was built with dev commands enabled, so the fixture
- *  can enter the raid approach room where the quartermaster spawns. The env
- *  var is restored immediately after construction: Sim.devCommands latches at
- *  construction time, and nothing under test reads the variable afterwards. */
 function raidServer(): GameServer {
-  const previous = process.env.ALLOW_DEV_COMMANDS;
-  process.env.ALLOW_DEV_COMMANDS = '1';
-  try {
-    return new GameServer();
-  } finally {
-    if (previous === undefined) delete process.env.ALLOW_DEV_COMMANDS;
-    else process.env.ALLOW_DEV_COMMANDS = previous;
-  }
+  return new GameServer();
 }
 
-/** Join a session, stage the practice raid, and stand the player at the
- *  Crucible Quartermaster in the approach room. */
+/** Join a session and stand the player at the overworld raid quartermaster. */
 function joinAtQuartermaster(server: GameServer, fc: FakeClient): ClientSession {
   const session = joinServer(server, fc, 1, 'Redeemer');
-  server.sim.chat('/dev ignivarraid', session.pid);
   const vendor = [...server.sim.entities.values()].find(
     (e) => e.kind === 'npc' && e.templateId === CRUCIBLE_VENDOR_NPC_ID,
   );
-  if (!vendor) throw new Error('Crucible Quartermaster did not spawn in the approach room');
+  if (!vendor) throw new Error('Crucible Quartermaster did not spawn outside the raid entrance');
   const player = server.sim.entities.get(session.pid);
   if (!player) throw new Error('joined player missing');
   player.pos = { x: vendor.pos.x + 1, y: player.pos.y, z: vendor.pos.z };
@@ -112,7 +96,7 @@ describe('crucible_buy over the GameServer wire', () => {
     const fc = fakeWs();
     const session = joinAtQuartermaster(server, fc);
     server.sim.addItem(SIGIL, 2, session.pid);
-    routeTick(server); // drain the join/dev-staging noise before the buy
+    routeTick(server); // drain the join noise before the buy
     broadcast(server);
     fc.sent.length = 0;
 
@@ -187,7 +171,6 @@ describe('crucible_buy over the GameServer wire', () => {
     const server = raidServer();
     const fc = fakeWs();
     const session = joinServer(server, fc, 1, 'Farbuyer');
-    server.sim.chat('/dev ignivarraid', session.pid);
     const vendor = [...server.sim.entities.values()].find(
       (e) => e.kind === 'npc' && e.templateId === CRUCIBLE_VENDOR_NPC_ID,
     );
