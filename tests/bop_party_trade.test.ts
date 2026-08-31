@@ -10,7 +10,7 @@ import { type PlayerMeta, Sim } from '../src/sim/sim';
 import type { ItemInstancePayload } from '../src/sim/types';
 import { expectDefined } from './helpers/defined';
 
-const HELM = 'slagbreaker_helmet'; // soulbound epic warrior tier piece
+const HELM = 'furyforged_warhelm'; // soulbound epic warrior PvP helmet
 
 function tradeSim() {
   const sim = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
