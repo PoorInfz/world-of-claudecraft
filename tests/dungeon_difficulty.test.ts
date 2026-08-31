@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 import { HEROIC_DUNGEON_TUNING, HEROIC_MARK_ITEM_ID } from '../src/sim/content/dungeon_difficulty';
 import { DUNGEON_MOBS } from '../src/sim/content/dungeons';
 import { TEMPLE_DUNGEON_MOBS } from '../src/sim/content/temple';
-import { ITEMS, MOBS } from '../src/sim/data';
+import { DUNGEONS, ITEMS, MOBS } from '../src/sim/data';
 import {
   applyDungeonMobTuning,
   claimDifficultyForDungeon,
@@ -56,6 +56,11 @@ describe('heroic tuning data contract', () => {
       'sunken_bastion',
       'wildheart_basin',
     ]);
+    // The lift record is eligibility-only, and that premise holds only while
+    // the room spawns nothing: its factors are all 1, so the day a spawn is
+    // added to the lift, its heroic tuning becomes a real balance statement
+    // and needs authored numbers like its siblings.
+    expect(DUNGEONS.ignivar_forge_lift.spawns).toEqual([]);
     expect(
       Object.fromEntries(Object.values(HEROIC_DUNGEON_TUNING).map((t) => [t.id, t.finalBossId])),
     ).toEqual({
@@ -135,6 +140,8 @@ describe('claimDifficultyForDungeon', () => {
     expect(claimDifficultyForDungeon('gravewyrm_sanctum', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('nythraxis_boss_arena', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('ignivar_raid_arena', 'heroic')).toBe('heroic');
+    // The chain's door room: a clamp here silently normalizes the whole raid.
+    expect(claimDifficultyForDungeon('ignivar_forge_lift', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('ignivar_forge_approach', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('ignivar_molten_assembly', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('ignivar_inner_crucible', 'heroic')).toBe('heroic');
