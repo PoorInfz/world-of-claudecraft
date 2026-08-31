@@ -39,12 +39,16 @@ const SYNTHETIC: MobTemplate = {
 };
 
 describe('heroic tuning data contract', () => {
-  it('covers the five five-player dungeons plus all three raid arenas and final bosses', () => {
+  it('covers the five five-player dungeons plus the raid rooms (the Ignivar chain door-first) and final bosses', () => {
+    // The forge lift is the Ignivar chain's overworld door: it must be
+    // heroic-eligible or the whole chain's claim clamps to normal there
+    // (tests/ignivar_heroic_entry.test.ts drives the real door path).
     expect([...HEROIC_DUNGEON_IDS].sort()).toEqual([
       'drowned_temple',
       'gravewyrm_sanctum',
       'hollow_crypt',
       'ignivar_forge_approach',
+      'ignivar_forge_lift',
       'ignivar_inner_crucible',
       'ignivar_molten_assembly',
       'ignivar_raid_arena',

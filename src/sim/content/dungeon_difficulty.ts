@@ -1,4 +1,8 @@
-import { IGNIVAR_FORGE_APPROACH_ID, IGNIVAR_MOLTEN_ASSEMBLY_ID } from '../ignivar_raid_ids';
+import {
+  IGNIVAR_FORGE_APPROACH_ID,
+  IGNIVAR_LIFT_ROOM_ID,
+  IGNIVAR_MOLTEN_ASSEMBLY_ID,
+} from '../ignivar_raid_ids';
 import type { DungeonDifficulty } from '../types';
 
 // The participation token awarded directly to every eligible player when a
@@ -256,7 +260,21 @@ export const NORMAL_DUNGEON_TUNING: Record<string, NormalDungeonTuning> = {
 // they must not carry final-boss rewards or lockouts. Keeping them outside
 // HEROIC_DUNGEON_TUNING scopes the pressure pass to the two preboss spawn
 // lists and prevents Varkhul's encounter summons from inheriting it.
+// The forge lift rides here too, for ELIGIBILITY only: it is the raid
+// chain's first room and its only overworld door, so it must sit in
+// HEROIC_DUNGEON_IDS or claimDifficultyForDungeon clamps a heroic
+// selection to normal at the keep door and every deeper room inherits
+// that clamped claim. The lift spawns nothing, so its factors stay 1.
 export const HEROIC_MOB_TUNING: Record<string, HeroicMobTuning> = {
+  [IGNIVAR_LIFT_ROOM_ID]: {
+    id: IGNIVAR_LIFT_ROOM_ID,
+    difficulty: 'heroic',
+    level: 22,
+    healthMultiplier: 1,
+    damageMultiplier: 1,
+    addDamageMultiplier: 1,
+    armorMultiplier: 1,
+  },
   [IGNIVAR_FORGE_APPROACH_ID]: {
     id: IGNIVAR_FORGE_APPROACH_ID,
     difficulty: 'heroic',
