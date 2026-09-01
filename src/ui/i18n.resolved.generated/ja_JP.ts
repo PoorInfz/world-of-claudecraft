@@ -9765,7 +9765,7 @@ export const ja_JP: EnTranslations = {
       "elixir": "エリクサー",
       "bag": "バッグ",
       "mount": "マウント",
-      "skin": "Skin"
+      "skin": "スキン"
     },
     "stats": {
       "armor": "防御力",

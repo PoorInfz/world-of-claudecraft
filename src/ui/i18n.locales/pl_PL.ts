@@ -8812,6 +8812,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.tool': 'Narzędzie',
   'itemUi.kind.weapon': 'Broń',
   'itemUi.kind.mount': 'Wierzchowiec',
+  'itemUi.kind.skin': 'Skórka',
   'itemUi.logs.boughtBackItem': 'Odkupiono {item} za {money}.',
   'itemUi.logs.boughtItem': 'Kupiono {item} za {money}.',
   'itemUi.logs.collectedMoney': 'Odbierasz {money} od kupca.',

@@ -2808,6 +2808,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.potion': '药水',
   'itemUi.kind.elixir': '药剂',
   'itemUi.kind.mount': '坐骑',
+  'itemUi.kind.skin': '外观',
   'itemUi.stats.armor': '护甲',
   'itemUi.stats.str': '力量',
   'itemUi.stats.agi': '敏捷',

@@ -3902,6 +3902,7 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.tool': 'Nástroj',
   'itemUi.kind.weapon': 'Zbraň',
   'itemUi.kind.mount': 'Jízdní zvíře',
+  'itemUi.kind.skin': 'Vzhled',
   'itemUi.logs.boughtBackItem': 'Odkoupeno zpět: {item} za {money}.',
   'itemUi.logs.boughtItem': 'Koupeno: {item} za {money}.',
   'itemUi.logs.collectedMoney': 'Vyzvedáváš si od Obchodníka {money}.',

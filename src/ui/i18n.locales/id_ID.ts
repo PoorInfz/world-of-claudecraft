@@ -9404,6 +9404,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.tool': 'Perkakas',
   'itemUi.kind.weapon': 'Senjata',
   'itemUi.kind.mount': 'Tunggangan',
+  'itemUi.kind.skin': 'Tampilan',
   'itemUi.logs.boughtBackItem': 'Membeli kembali {item} seharga {money}.',
   'itemUi.logs.boughtItem': 'Membeli {item} seharga {money}.',
   'itemUi.logs.collectedMoney': 'Kamu mengambil {money} dari Pedagang.',
