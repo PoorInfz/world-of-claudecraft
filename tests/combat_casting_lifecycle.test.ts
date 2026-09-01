@@ -1192,6 +1192,23 @@ describe('casting_lifecycle: GCD-tail queue (WotLK-style spell queue)', () => {
     expect(p.queuedCastAbility).toBe('smite');
   });
 
+  it('a blink-through escape press never eats the queued follow-up', () => {
+    const { sim, p, meta } = makeSim('mage', 40);
+    spawnTarget(sim, p);
+    meta.talentMods.global.blinkCast = 1; // Flickerstep: blink slips through mid-cast
+    castAbility(sim.ctx, 'fireball', p.id);
+    while (p.castRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    castAbility(sim.ctx, 'fireball', p.id);
+    expect(p.queuedCastAbility).toBe('fireball');
+
+    // The escape weave: an on-GCD instant committing THROUGH the busy guard.
+    // It relocates the mage but must leave both the cast in progress and the
+    // follow-up queued behind that cast untouched.
+    castAbility(sim.ctx, 'blink', p.id);
+    expect(p.castingAbility).toBe('fireball');
+    expect(p.queuedCastAbility).toBe('fireball');
+  });
+
   it('death clears a GCD-held slot so it never fires posthumously', () => {
     const { sim, p, meta } = makeSim('priest', 40);
     spawnTarget(sim, p);
