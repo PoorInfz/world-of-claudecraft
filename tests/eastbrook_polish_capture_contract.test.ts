@@ -345,11 +345,10 @@ interface AttributionTargetFixture {
 // Re-minted for PR #3740's forge-lift room (the lift room render hookup and
 // door-portal arm moved the renderer integration leaf). No capture was
 // retaken.
-// Re-minted for the Drakelands entrance merge into the raid branch (PRs 3689
-// plus 3734: both arms had re-minted, the merged renderer and evidence inputs
-// land together). No capture was retaken.
+// Re-minted for the healer rez parity change (PR 3798): renderer.ts now threads
+// the spellfx school through the temporal glyph. No capture was retaken.
 const PINNED_POLISH_COMPOSITE_FINGERPRINT =
-  '89c8a62f400d63c10f85c61eac2c93f2f0a43d1e822679027d03bbed6ee82d0d';
+  'ee4695f819aa37f856005359060031486618814f17d410b5eec974d1f57fac47';
 
 function validPolishAttributionTargets(): AttributionTargetFixture[] {
   return [
