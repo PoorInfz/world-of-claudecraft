@@ -31,6 +31,7 @@ export function cancelProfessionSessionOnDisplacement(ctx: SimContext, e: Entity
   if (e.kind !== 'player') return;
   e.queuedCastAbility = null;
   e.queuedCastAim = null;
+  e.queuedCastTargetId = null;
   if (!isNonSpellCast(e.castingAbility)) return;
   ctx.cancelCast(e);
 }

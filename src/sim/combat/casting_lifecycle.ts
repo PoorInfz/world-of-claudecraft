@@ -723,12 +723,18 @@ export function releaseEmpoweredAbility(ctx: SimContext, abilityId: string, pid?
 // fires when the fresh cast completes. Off-GCD weaves never touch the slot,
 // and neither does a blink-through commit (excluded at its call site: the
 // escape weave leaves the cast in progress, and therefore the follow-up
-// queued behind it, untouched). The normal queued fire is unaffected
-// (fireQueuedCast empties the slot before calling back in).
+// queued behind it, untouched). Only the instant commit site carries that
+// exclusion: blinkThrough requires castTime 0, so the timed-cast and channel
+// commit sites are unreachable by a blink-through press today; a future
+// usableWhileCasting ability WITH a cast time or channel must extend the
+// guard to its commit site or it will eat the queued follow-up. The normal
+// queued fire is unaffected (fireQueuedCast empties the slot before calling
+// back in).
 function dropStaleHeldPressOnCommit(p: Entity, ability: AbilityDef): void {
   if (ability.offGcd) return;
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
+  p.queuedCastTargetId = null;
 }
 
 // Consumes the single-slot spell queue (see CAST_QUEUE_WINDOW_SEC), firing the
@@ -742,9 +748,11 @@ function fireQueuedCast(ctx: SimContext, p: Entity): void {
   const res = ctx.resolvedAbility(queued, p.id);
   if (res && !res.def.offGcd && p.gcdRemaining > 0) return;
   const aim = p.queuedCastAim;
+  const targetOverride = p.queuedCastTargetId;
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
-  castAbility(ctx, queued, p.id, aim ?? undefined);
+  p.queuedCastTargetId = null;
+  castAbility(ctx, queued, p.id, aim ?? undefined, targetOverride);
 }
 
 export function cancelCast(ctx: SimContext, p: Entity): void {
@@ -762,6 +770,7 @@ export function cancelCast(ctx: SimContext, p: Entity): void {
   // an interrupted cast never completed, so its queued follow-up is dropped too
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
+  p.queuedCastTargetId = null;
   // Hidden per-cast fishing/gather/craft state: unconditional inert writes
   // (already '' / 0 / false on every non-profession cancel path), so every
   // existing cancel stays byte-identical while a cancelled profession cast
@@ -1004,6 +1013,7 @@ export function castAbility(
       if (p.castRemaining <= CAST_QUEUE_WINDOW_SEC && !isNonSpellCast(p.castingAbility)) {
         p.queuedCastAbility = abilityId;
         p.queuedCastAim = aim ?? null;
+        p.queuedCastTargetId = castTargetId;
         return;
       }
       ctx.error(p.id, 'You are busy.');
@@ -1024,6 +1034,7 @@ export function castAbility(
     if (p.gcdRemaining <= CAST_QUEUE_WINDOW_SEC) {
       p.queuedCastAbility = abilityId;
       p.queuedCastAim = aim ?? null;
+      p.queuedCastTargetId = castTargetId;
     }
     return; // an earlier press stays silent, classic spams this
   }

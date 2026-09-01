@@ -1355,6 +1355,7 @@ export function clearNythraxisWardChannelCast(p: Entity): void {
   // queued in the ward-channel's tail (#1360) must not survive to misfire later
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
+  p.queuedCastTargetId = null;
 }
 
 export function nythraxisWardstones(ctx: SimContext, boss: Entity): Entity[] {

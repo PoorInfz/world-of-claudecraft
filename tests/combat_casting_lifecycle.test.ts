@@ -1212,6 +1212,56 @@ describe('casting_lifecycle: GCD-tail queue (WotLK-style spell queue)', () => {
     expect(p.queuedCastAbility).toBe('fireball');
   });
 
+  it('carries the mouseover target override through the queue to the fired cast', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p); // the SELECTED target stays hostile the whole time
+    const allyPid = sim.addPlayer('warrior', 'Mouseover');
+    const ally = sim.entities.get(allyPid) as AnyEntity;
+    ally.pos = { x: p.pos.x, y: p.pos.y, z: p.pos.z - 2 };
+    ally.prevPos = { ...ally.pos };
+    sim.rebucket(ally);
+    ally.hp = Math.max(1, Math.floor(ally.maxHp / 2)); // the heal has room to land
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+
+    // A Clique-style mouseover press: castTargetId overrides the selection.
+    castAbility(sim.ctx, 'lesser_heal', p.id, undefined, allyPid);
+    expect(p.queuedCastAbility).toBe('lesser_heal');
+    expect(p.queuedCastTargetId).toBe(allyPid);
+
+    while (p.queuedCastAbility) sim.tick();
+    expect(p.castingAbility).toBe('lesser_heal');
+    // The fired press kept the override: it resolves against the hovered ally,
+    // not the selected hostile or the self fallback (the wrong-unit heal this
+    // pins away).
+    expect(p.castTargetId).toBe(allyPid);
+  });
+
+  it('an on-cooldown press inside the tail queues, then surfaces the refusal when it fires', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    p.cooldowns.set('smite', 5); // the pressed ability is on cooldown
+    castAbility(sim.ctx, 'smite', p.id);
+    expect(p.queuedCastAbility).toBe('smite'); // the tail press queues regardless
+
+    const events: Array<Record<string, any>> = [];
+    const orig = (sim as any).emit.bind(sim);
+    (sim as any).emit = (e: Record<string, any>) => {
+      events.push(e);
+      orig(e);
+    };
+    let n = 0;
+    while (p.queuedCastAbility && n++ < 100) sim.tick();
+    expect(p.castingAbility).toBeNull(); // the cooldown gate refused the fire
+    // Deliberate semantics: the refusal is accurate feedback through the
+    // existing matched string, not silence (gates re-run at fire time).
+    expect(
+      events.some((e) => e.type === 'error' && e.text === 'That ability is not ready yet.'),
+    ).toBe(true);
+  });
+
   it('death clears a GCD-held slot so it never fires posthumously', () => {
     const { sim, p, meta } = makeSim('priest', 40);
     spawnTarget(sim, p);

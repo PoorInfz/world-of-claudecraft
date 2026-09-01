@@ -4573,11 +4573,15 @@ export interface Entity extends ClientMirroredEntityFields {
   queuedOnSwing: string | null; // heroic strike
   queuedOnSwingFree?: boolean; // next_cast_free consumed at queue time
   queuedOnSwingCostMultiplier?: number; // next_cast_cheap consumed at queue time
-  // single-slot spell queue: a press during the tail of the current cast (see
-  // CAST_QUEUE_WINDOW_SEC), fired by updateCasting on cast completion. Distinct
-  // from queuedOnSwing (a melee on-next-swing queue, not a cast queue).
+  // single-slot spell queue: a press during the tail of the current cast or of
+  // a bare GCD (see CAST_QUEUE_WINDOW_SEC), fired by updateCasting on cast
+  // completion or when the GCD clears. Distinct from queuedOnSwing (a melee
+  // on-next-swing queue, not a cast queue). queuedCastTargetId preserves the
+  // mouseover-cast target override so the fired press heals the unit the
+  // player pointed at, not their selected target.
   queuedCastAbility: string | null;
   queuedCastAim: { x: number; z: number } | null;
+  queuedCastTargetId: number | null;
   fiveSecondRule: number; // time since last mana spend
   comboPoints: number; // retail-style: character-bound, not anchored to a target
   comboUntil: number; // sim-time until which unspent combo points persist

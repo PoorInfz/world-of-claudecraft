@@ -137,6 +137,7 @@ function baseEntity(id: number, pos: Vec3): Entity {
     queuedOnSwing: null,
     queuedCastAbility: null,
     queuedCastAim: null,
+    queuedCastTargetId: null,
     fiveSecondRule: 99,
     comboPoints: 0,
     comboUntil: -1,
