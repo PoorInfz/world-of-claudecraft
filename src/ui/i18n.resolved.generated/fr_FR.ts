@@ -9764,7 +9764,8 @@ export const fr_FR: EnTranslations = {
       "potion": "Potion",
       "elixir": "Élixir",
       "bag": "Sac",
-      "mount": "Monture"
+      "mount": "Monture",
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Armure",

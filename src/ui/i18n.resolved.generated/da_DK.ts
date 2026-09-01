@@ -9764,7 +9764,8 @@ export const da_DK: EnTranslations = {
       "potion": "Eliksir",
       "elixir": "Eliksir",
       "bag": "Taske",
-      "mount": "Ridedyr"
+      "mount": "Ridedyr",
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Rustning",

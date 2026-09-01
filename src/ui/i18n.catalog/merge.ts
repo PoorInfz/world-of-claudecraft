@@ -554,6 +554,10 @@ const mergeStringsEn = {
       elixir: 'Elixir',
       bag: 'Bag',
       mount: 'Mount',
+      // Presentation split for the mech chroma armor plates (the tradable
+      // cosmetic skins): their KIND stays 'tool' internally, but the tooltip
+      // line reads Skin (item_kind_label.ts owns the split).
+      skin: 'Skin',
     },
     tooltip: {
       ...itemNames.en.itemUi.tooltip,

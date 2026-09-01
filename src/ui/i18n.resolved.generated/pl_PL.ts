@@ -9764,7 +9764,8 @@ export const pl_PL: EnTranslations = {
       "potion": "Mikstura",
       "elixir": "Eliksir",
       "bag": "Torba",
-      "mount": "Wierzchowiec"
+      "mount": "Wierzchowiec",
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Pancerz",

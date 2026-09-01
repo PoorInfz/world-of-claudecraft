@@ -9,25 +9,65 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "itemUi.kind.skin"
+  ],
+  "es_ES": [
+    "itemUi.kind.skin"
+  ],
+  "fr_FR": [
+    "itemUi.kind.skin"
+  ],
+  "fr_CA": [
+    "itemUi.kind.skin"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": [],
-  "cs_CZ": [],
-  "nl_NL": [],
-  "pl_PL": [],
-  "id_ID": [],
-  "tr_TR": [],
-  "sv_SE": [],
-  "vi_VN": [],
-  "da_DK": []
+  "it_IT": [
+    "itemUi.kind.skin"
+  ],
+  "de_DE": [
+    "itemUi.kind.skin"
+  ],
+  "zh_CN": [
+    "itemUi.kind.skin"
+  ],
+  "zh_TW": [
+    "itemUi.kind.skin"
+  ],
+  "ko_KR": [
+    "itemUi.kind.skin"
+  ],
+  "ja_JP": [
+    "itemUi.kind.skin"
+  ],
+  "pt_BR": [
+    "itemUi.kind.skin"
+  ],
+  "ru_RU": [
+    "itemUi.kind.skin"
+  ],
+  "cs_CZ": [
+    "itemUi.kind.skin"
+  ],
+  "nl_NL": [
+    "itemUi.kind.skin"
+  ],
+  "pl_PL": [
+    "itemUi.kind.skin"
+  ],
+  "id_ID": [
+    "itemUi.kind.skin"
+  ],
+  "tr_TR": [
+    "itemUi.kind.skin"
+  ],
+  "sv_SE": [
+    "itemUi.kind.skin"
+  ],
+  "vi_VN": [
+    "itemUi.kind.skin"
+  ],
+  "da_DK": [
+    "itemUi.kind.skin"
+  ]
 };

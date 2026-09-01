@@ -9764,7 +9764,8 @@ export const en_XA: EnTranslations = {
       "potion": "[Þóţíóñ]",
       "elixir": "[Éļíẋíŕ]",
       "bag": "[Ɓáĝ]",
-      "mount": "[Ɱóúñţ]"
+      "mount": "[Ɱóúñţ]",
+      "skin": "[Šķíñ]"
     },
     "stats": {
       "armor": "[Áŕɱóŕ]",
