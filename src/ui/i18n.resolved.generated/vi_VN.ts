@@ -9765,7 +9765,7 @@ export const vi_VN: EnTranslations = {
       "elixir": "Tiên Dược",
       "bag": "Túi",
       "mount": "Thú Cưỡi",
-      "skin": "Skin"
+      "skin": "Ngoại hình"
     },
     "stats": {
       "armor": "Giáp",

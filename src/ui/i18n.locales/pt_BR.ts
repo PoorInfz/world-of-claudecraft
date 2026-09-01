@@ -5848,6 +5848,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.potion': 'Poção',
   'itemUi.kind.elixir': 'Elixir',
   'itemUi.kind.mount': 'Montaria',
+  'itemUi.kind.skin': 'Visual',
   'itemUi.stats.armor': 'Armadura',
   'itemUi.stats.str': 'Força',
   'itemUi.stats.agi': 'Agilidade',

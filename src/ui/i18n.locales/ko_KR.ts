@@ -2898,6 +2898,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.potion': '물약',
   'itemUi.kind.elixir': '비약',
   'itemUi.kind.mount': '탈것',
+  'itemUi.kind.skin': '스킨',
   'itemUi.stats.armor': '방어도',
   'itemUi.stats.str': '힘',
   'itemUi.stats.agi': '민첩성',

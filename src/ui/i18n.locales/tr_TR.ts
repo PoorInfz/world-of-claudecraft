@@ -9320,6 +9320,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.tool': 'Alet',
   'itemUi.kind.weapon': 'Silah',
   'itemUi.kind.mount': 'Binek',
+  'itemUi.kind.skin': 'Görünüm',
   'itemUi.logs.boughtBackItem': '{item} eşyasını {money} karşılığında geri aldın.',
   'itemUi.logs.boughtItem': '{item} eşyasını {money} karşılığında satın aldın.',
   'itemUi.logs.collectedMoney': "Tüccar'dan {money} topladın.",
