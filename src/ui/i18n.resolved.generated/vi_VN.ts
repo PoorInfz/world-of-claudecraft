@@ -11216,6 +11216,14 @@ export const vi_VN: EnTranslations = {
         "name": "Mãn Khai",
         "description": "Tiêu 5 Sắc Xanh. Thu hoạch mọi hồi máu theo thời gian của bạn trên tất cả đồng minh với {buff}% lượng hồi còn lại, gỡ bỏ các hiệu ứng đó và trồng một Hoa Nở Hoang Dã mới lên mục tiêu."
       },
+      "wildwake": {
+        "name": "Wildwake",
+        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Grove Awakening",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Triệu Hồi Emberkin",
         "description": "Triệu hồi một Emberkin dưới lệnh của thuật sĩ. Emberkin niệm Tiễn Tro vào kẻ địch của bạn từ xa. Triệu hồi một quỷ mới sẽ giải tán con hiện tại. Bạn chỉ có thể có một quỷ tại một thời điểm."
@@ -11676,6 +11684,10 @@ export const vi_VN: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Hợp Xướng Giải Thoát",
         "description": "Vận phép trong 6 giây, hồi máu cho các thành viên trong nhóm trong phạm vi 30 mét {damage} mỗi 2 giây. Lượng hồi tăng theo sức mạnh phép thuật."
+      },
+      "prayer_of_returning": {
+        "name": "Prayer of Returning",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
       },
       "bear_charge": {
         "name": "Cú Lao Bruin",

@@ -11216,6 +11216,14 @@ export const da_DK: EnTranslations = {
         "name": "Overblomstring",
         "description": "Forbruger 5 Grønske. Høster hver af dine helbredelser over tid på alle allierede for {buff}% af den resterende helbredelse, fjerner de virkninger og planter en frisk Vildblomst på målet."
       },
+      "wildwake": {
+        "name": "Wildwake",
+        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Grove Awakening",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Tilkald Emberkin",
         "description": "Fremmaner en Emberkin under heksemesterens kommando. Emberkin kaster Dæmonlyn mod jeres fjender på afstand. At fremmane en ny dæmon sender jeres nuværende bort. I kan have én dæmon ad gangen."
@@ -11676,6 +11684,10 @@ export const da_DK: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Befrielsens Kor",
         "description": "Kanaliserer i 6 sek. og helbreder gruppemedlemmer inden for 30 meter for {damage} hvert 2. sek. Helbredelsen øges med besværgelseskraft."
+      },
+      "prayer_of_returning": {
+        "name": "Prayer of Returning",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
       },
       "bear_charge": {
         "name": "Bruin-storm",

@@ -11216,6 +11216,14 @@ export const pt_BR: EnTranslations = {
         "name": "Superflorescência",
         "description": "Consome 5 de Verdor. Colhe cada cura ao longo do tempo sua em todos os aliados por {buff}% da cura restante, remove esses efeitos e planta um Florescer Selvagem novo no alvo."
       },
+      "wildwake": {
+        "name": "Wildwake",
+        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Grove Awakening",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Invocar Emberkin",
         "description": "Convoca um Emberkin sob o comando do bruxo. O Emberkin lança Descarga Vil em vossos inimigos à distância. Convocar um novo demônio dispensa o atual. Podeis ter apenas um demônio de cada vez."
@@ -11676,6 +11684,10 @@ export const pt_BR: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Coro da Libertação",
         "description": "Canaliza por 6 s, curando membros do grupo num raio de 30 metros em {damage} a cada 2 s. A cura aumenta com o poder mágico."
+      },
+      "prayer_of_returning": {
+        "name": "Prayer of Returning",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
       },
       "bear_charge": {
         "name": "Investida de Bruin",

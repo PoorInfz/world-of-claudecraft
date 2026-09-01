@@ -2057,6 +2057,16 @@ const classAbilityNamesEn = {
         'Spends your 5 Verdance: every ally carrying your heal-over-time effects is instantly healed for {buff}% of the healing those effects had left, the effects are removed, and the target gets a fresh Wildbloom.',
       ],
       [
+        'wildwake',
+        'Wildwake',
+        'Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)',
+      ],
+      [
+        'grove_awakening',
+        'Grove Awakening',
+        'Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)',
+      ],
+      [
         'summon_imp',
         'Summon Emberkin',
         'Summons an Emberkin under the command of the Warlock. The Emberkin casts Felbolt at your enemies from afar. Summoning a new demon dismisses your current one. You may have one demon at a time.',
@@ -2607,6 +2617,11 @@ const classAbilityNamesEn = {
         'choir_of_deliverance',
         'Choir of Deliverance',
         'Channel for 6 sec, healing party members within 30 yards for {damage} every 2 sec. Healing increases with Spell Power.',
+      ],
+      [
+        'prayer_of_returning',
+        'Prayer of Returning',
+        'Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)',
       ],
     ]),
   },

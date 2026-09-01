@@ -12153,6 +12153,14 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.ancestor_return.description':
     '呼唤小队或团队中所有阵亡成员，使其在尸体处复活并恢复30%生命值和法力值。战斗中无法施放。（灵愈）',
   'entities.abilities.ancestor_return.name': '先祖归来',
+  'entities.abilities.grove_awakening.description':
+    '呼唤小队或团队中 40 码内且在你视线内的所有阵亡成员回到你身边复活，并恢复30%生命值和法力值。战斗中无法施放。（恢复）',
+  'entities.abilities.grove_awakening.name': '林地觉醒',
+  'entities.abilities.prayer_of_returning.description':
+    '呼唤小队或团队中 40 码内且在你视线内的所有阵亡成员回到你身边复活，并恢复30%生命值和法力值。战斗中无法施放。（神圣与戒律）',
+  'entities.abilities.prayer_of_returning.name': '归返祈祷',
+  'entities.abilities.wildwake.description': '催发倒下的盟友骤然绽放，使其回到你身边复活，恢复35%生命值和法力值，即使激战正酣也可施放。（恢复）',
+  'entities.abilities.wildwake.name': '野性复苏',
   'entities.abilities.army_of_the_dead.description':
     '开启墓穴传送门，在你选择的统御仆从之外额外召唤一名骷髅战士、骸骨法师和墓翼，持续 20 秒。',
   'entities.abilities.army_of_the_dead.name': '亡者军团',

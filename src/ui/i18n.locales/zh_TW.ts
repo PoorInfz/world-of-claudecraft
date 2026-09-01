@@ -12156,6 +12156,14 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.ancestor_return.description':
     '呼喚隊伍或團隊中所有陣亡成員，使其在屍體處復活並恢復30%生命值和法力值。戰鬥中無法施放。（靈癒）',
   'entities.abilities.ancestor_return.name': '先祖歸來',
+  'entities.abilities.grove_awakening.description':
+    '呼喚隊伍或團隊中 40 碼內且在你視線內的所有陣亡成員回到你身邊復活，並恢復30%生命值和法力值。戰鬥中無法施放。（恢復）',
+  'entities.abilities.grove_awakening.name': '林地覺醒',
+  'entities.abilities.prayer_of_returning.description':
+    '呼喚隊伍或團隊中 40 碼內且在你視線內的所有陣亡成員回到你身邊復活，並恢復30%生命值和法力值。戰鬥中無法施放。（聖光與戒律）',
+  'entities.abilities.prayer_of_returning.name': '歸返祈禱',
+  'entities.abilities.wildwake.description': '催發倒下的盟友驟然綻放，使其回到你身邊復活，恢復35%生命值和法力值，即使激戰正酣也能施放。（恢復）',
+  'entities.abilities.wildwake.name': '野性復甦',
   'entities.abilities.army_of_the_dead.description':
     '開啟墓穴傳送門，在你選擇的統御僕從之外額外召喚一名骷髏戰士、骸骨法師和墓翼，持續 20 秒。',
   'entities.abilities.army_of_the_dead.name': '亡者軍團',

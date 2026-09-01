@@ -11216,6 +11216,14 @@ export const it_IT: EnTranslations = {
         "name": "Sovrafioritura",
         "description": "Consuma 5 Verzura. Raccoglie ogni tua cura nel tempo su tutti gli alleati per il {buff}% della cura restante, rimuove quegli effetti e pianta una Fioritura Selvaggia fresca sul bersaglio."
       },
+      "wildwake": {
+        "name": "Wildwake",
+        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Grove Awakening",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Evoca Emberkin",
         "description": "Evoca un Emberkin agli ordini dello stregone. L'Emberkin lancia Dardo di Cenere sui vostri nemici dalla distanza. Evocare un nuovo demone congeda quello attuale. Potete avere un solo demone alla volta."
@@ -11676,6 +11684,10 @@ export const it_IT: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Coro della Liberazione",
         "description": "Canalizza per 6 sec e cura i membri del gruppo entro 30 metri di {damage} ogni 2 sec. La cura aumenta con il potere magico."
+      },
+      "prayer_of_returning": {
+        "name": "Prayer of Returning",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
       },
       "bear_charge": {
         "name": "Carica di Bruin",

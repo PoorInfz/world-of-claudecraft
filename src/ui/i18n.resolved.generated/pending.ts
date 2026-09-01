@@ -10,22 +10,58 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "es_ES": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "fr_FR": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "fr_CA": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "en_CA": [],
   "it_IT": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "de_DE": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "zh_CN": [
@@ -41,33 +77,87 @@ export const pending: Record<string, readonly string[]> = {
     "itemUi.kind.skin"
   ],
   "pt_BR": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "ru_RU": [
     "itemUi.kind.skin"
   ],
   "cs_CZ": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "nl_NL": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "pl_PL": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "id_ID": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "tr_TR": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "sv_SE": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "vi_VN": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ],
   "da_DK": [
+    "entities.abilities.grove_awakening.description",
+    "entities.abilities.grove_awakening.name",
+    "entities.abilities.prayer_of_returning.description",
+    "entities.abilities.prayer_of_returning.name",
+    "entities.abilities.wildwake.description",
+    "entities.abilities.wildwake.name",
     "itemUi.kind.skin"
   ]
 };

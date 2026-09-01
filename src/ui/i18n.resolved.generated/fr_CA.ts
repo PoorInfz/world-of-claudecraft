@@ -11216,6 +11216,14 @@ export const fr_CA: EnTranslations = {
         "name": "Surfloraison",
         "description": "Consomme 5 Verdoyance. Récolte chaque soin sur la durée que vous possédez sur tous les alliés pour {buff}% de ses soins restants, retire ces effets et plante une Floraison sauvage fraîche sur la cible."
       },
+      "wildwake": {
+        "name": "Wildwake",
+        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Grove Awakening",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Invoquer un Emberkin",
         "description": "Invoque un Emberkin sous les ordres du démoniste. L'Emberkin lance Éclair fel sur vos ennemis à distance. Invoquer un nouveau démon renvoie l'actuel. Vous ne pouvez avoir qu'un démon à la fois."
@@ -11676,6 +11684,10 @@ export const fr_CA: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Chœur de délivrance",
         "description": "Canalise pendant 6 s et soigne les membres du groupe dans un rayon de 30 mètres de {damage} toutes les 2 s. Le soin augmente avec la puissance des sorts."
+      },
+      "prayer_of_returning": {
+        "name": "Prayer of Returning",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
       },
       "bear_charge": {
         "name": "Ruée de Bruin",

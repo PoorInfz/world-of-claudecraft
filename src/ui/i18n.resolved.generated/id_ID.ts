@@ -11216,6 +11216,14 @@ export const id_ID: EnTranslations = {
         "name": "Mekar Raya",
         "description": "Menghabiskan 5 Kehijauan. Memanen setiap penyembuhan berkala milikmu pada semua sekutu sebesar {buff}% dari penyembuhan tersisa, menghapus efek itu, dan menanam Mekar Liar segar pada sasaran."
       },
+      "wildwake": {
+        "name": "Wildwake",
+        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Grove Awakening",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Panggil Emberkin",
         "description": "Memanggil Emberkin di bawah perintah sang penyihir. Emberkin merapal Baut Fel ke musuhmu dari kejauhan. Memanggil iblis baru melepaskan iblismu yang sekarang. Kamu hanya boleh punya satu iblis pada satu waktu."
@@ -11676,6 +11684,10 @@ export const id_ID: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Paduan Suara Pembebasan",
         "description": "Merapal selama 6 dtk, menyembuhkan anggota grup dalam radius 30 meter sebesar {damage} setiap 2 dtk. Penyembuhan meningkat dengan kekuatan mantra."
+      },
+      "prayer_of_returning": {
+        "name": "Prayer of Returning",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
       },
       "bear_charge": {
         "name": "Terjangan Bruin",
