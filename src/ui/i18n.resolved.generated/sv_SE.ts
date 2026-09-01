@@ -10480,7 +10480,7 @@ export const sv_SE: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Kalla de fallna",
-        "description": "Återför en död gruppmedlem till livet med 35% hälsa och mana. En Solhelare på nivå 16 eller högre kallar i stället tillbaka varje fallen medlem i gruppen."
+        "description": "Återför en död gruppmedlem till livet vid din sida med 35% hälsa och mana. En Solhelare på nivå 16 eller högre kallar i stället tillbaka varje fallen medlem i gruppen inom 30 meter och inom synhåll."
       },
       "beacon_of_light": {
         "name": "Ljusets båk",
@@ -11217,12 +11217,12 @@ export const sv_SE: EnTranslations = {
         "description": "Förbrukar 5 Grönska. Skördar varje läkning över tid du äger på alla allierade för {buff}% av dess återstående läkning, tar bort de effekterna och planterar en färsk Vildblomning på målet."
       },
       "wildwake": {
-        "name": "Wildwake",
-        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+        "name": "Vildväckelse",
+        "description": "Lockar en fallen bundsförvant till plötslig blomning och för denne tillbaka till livet vid din sida med 35% av dennes hälsa och mana, även mitt i striden. (Lundhjärta)"
       },
       "grove_awakening": {
-        "name": "Grove Awakening",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+        "name": "Lundens uppvaknande",
+        "description": "Kallar varje fallen medlem i din grupp eller räd, inom 40 meter och inom synhåll, tillbaka till din sida med 30% hälsa och mana. Kan inte kastas i strid. (Lundhjärta)"
       },
       "summon_imp": {
         "name": "Frammana Emberkin",
@@ -11530,15 +11530,15 @@ export const sv_SE: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Tidsåtergång",
-        "description": "Spolar tillbaka en fallen allierades tidslinje och återupplivar dem vid kroppen med en del av deras hälsa och mana, även mitt i strid. (Kronomantik)"
+        "description": "Spolar tillbaka en fallen allierades tidslinje och återupplivar dem vid din sida med 35% av deras hälsa och mana, även mitt i strid. (Kronomantik)"
       },
       "collective_reversal": {
         "name": "Kollektiv återgång",
-        "description": "Spolar tillbaka tidslinjen för varje fallen medlem i din grupp eller raid och återupplivar dem vid kroppen med 30% hälsa och mana. Kan inte användas i strid. (Kronomanti)"
+        "description": "Spolar tillbaka tidslinjen för varje fallen medlem i din grupp eller raid inom 40 meter och inom synhåll, och återupplivar dem vid din sida med 30% hälsa och mana. Kan inte användas i strid. (Kronomanti)"
       },
       "ancestor_return": {
         "name": "Förfädernas återkomst",
-        "description": "Kallar varje fallen medlem i din grupp eller räd tillbaka till livet vid sin kropp med 30% hälsa och mana. Kan inte kastas i strid. (Andelagning)"
+        "description": "Kallar varje fallen medlem i din grupp eller räd, inom 40 meter och inom synhåll, tillbaka till din sida med 30% hälsa och mana. Kan inte kastas i strid. (Andelagning)"
       },
       "temporal_rewind": {
         "name": "Tillbakaspolning",
@@ -11686,8 +11686,8 @@ export const sv_SE: EnTranslations = {
         "description": "Kanaliserar i 6 sek och läker gruppmedlemmar inom 30 meter för {damage} varannan sekund. Läkningen ökar med besvärjelsekraft."
       },
       "prayer_of_returning": {
-        "name": "Prayer of Returning",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
+        "name": "Återkomstens bön",
+        "description": "Kallar varje fallen medlem i din grupp eller räd, inom 40 meter och inom synhåll, tillbaka till din sida med 30% hälsa och mana. Kan inte kastas i strid. (Helig och Lära)"
       },
       "bear_charge": {
         "name": "Bruinrusning",

@@ -9,130 +9,25 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "es_ES": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "fr_FR": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "fr_CA": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
+  "es": [],
+  "es_ES": [],
+  "fr_FR": [],
+  "fr_CA": [],
   "en_CA": [],
-  "it_IT": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "de_DE": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
+  "it_IT": [],
+  "de_DE": [],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
+  "pt_BR": [],
   "ru_RU": [],
-  "cs_CZ": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "nl_NL": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "pl_PL": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "id_ID": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "tr_TR": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "sv_SE": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "vi_VN": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ],
-  "da_DK": [
-    "entities.abilities.grove_awakening.description",
-    "entities.abilities.grove_awakening.name",
-    "entities.abilities.prayer_of_returning.description",
-    "entities.abilities.prayer_of_returning.name",
-    "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name"
-  ]
+  "cs_CZ": [],
+  "nl_NL": [],
+  "pl_PL": [],
+  "id_ID": [],
+  "tr_TR": [],
+  "sv_SE": [],
+  "vi_VN": [],
+  "da_DK": []
 };
