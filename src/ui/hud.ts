@@ -6452,15 +6452,15 @@ export class Hud {
         )}</div>`;
       }
     }
-    // Bound-to-owner marker (marks and other soulbound tokens): shown like the
-    // classic "Soulbound" line so a player can see it cannot be traded or destroyed.
+    // Bound-to-owner marker: show that the item cannot be traded or destroyed.
     if (item.soulbound) {
       html += `<div class="tt-sub" style="color:var(--gold)">${esc(t('hudChrome.itemSoulbound'))}</div>`;
     }
-    // BoP party trade window: qualifies the Soulbound line above while this
-    // copy can still be traded to the players who shared its drop
-    // (item_instance_tooltip.ts owns the copy rules; the world owns the clock).
-    html += instancePartyTradeLine(instance, (untilMs) => this.sim.partyTradeMsRemaining(untilMs));
+    html += instancePartyTradeLine(
+      instance,
+      (untilMs) => this.sim.partyTradeMsRemaining(untilMs),
+      item.soulbound === true,
+    );
     // Maker's Bond lines (Professions 2.0): the commission
     // binds-on-first-trade warning or the bound lock, beside the def-level
     // soulbound line it parallels (item_instance_tooltip.ts owns the copy

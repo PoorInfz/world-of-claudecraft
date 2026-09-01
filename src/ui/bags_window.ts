@@ -1546,6 +1546,7 @@ export class BagsWindow {
       this.bagMode(),
       s.instance,
       s.craftedRecipeId,
+      this.partyTradeWindowActive(s.instance),
     );
     switch (action) {
       case 'transferBlockedSoulbound':
@@ -1715,6 +1716,7 @@ export class BagsWindow {
         mode,
         s.instance,
         s.craftedRecipeId,
+        this.partyTradeWindowActive(s.instance),
       );
       const extra = key ? `<div class="tt-sub">${esc(t(key))}</div>` : '';
       // Advertise the shift-click partial deposit on a splittable stack, the bank
@@ -1832,6 +1834,15 @@ export class BagsWindow {
       vaultDeposit: this.deps.isVaultBankTab(),
       petFeed: this.deps.pendingPetFeed(),
     };
+  }
+
+  private partyTradeWindowActive(instance: ItemInstancePayload | undefined): boolean {
+    const untilMs = instance?.partyTrade?.untilMs;
+    return (
+      typeof untilMs === 'number' &&
+      Number.isFinite(untilMs) &&
+      this.deps.world().partyTradeMsRemaining(untilMs) > 0
+    );
   }
 
   // Whether the action menu should open for this item. Offered ONLY in

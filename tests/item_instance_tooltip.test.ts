@@ -421,11 +421,16 @@ describe('instancePartyTradeLine (the BoP party trade window line)', () => {
     ).toBe('');
   });
 
+  it('suppresses a legacy marker after the item definition becomes freely tradable', () => {
+    expect(instancePartyTradeLine(windowed, () => 3_600_000, false)).toBe('');
+  });
+
   it('composes in hud.itemTooltip right after the Soulbound line, before the bond lines', () => {
     const hud = readFileSync(new URL('../src/ui/hud.ts', import.meta.url), 'utf8');
     const soulbound = hud.indexOf("t('hudChrome.itemSoulbound')");
-    const partyTrade = hud.indexOf('instancePartyTradeLine(instance,');
+    const partyTrade = hud.indexOf('instancePartyTradeLine(');
     const binding = hud.indexOf('instanceBindingLines(instance, item.kind)');
+    expect(hud.slice(partyTrade, binding)).toContain('item.soulbound === true');
     expect(partyTrade).toBeGreaterThan(soulbound);
     expect(binding).toBeGreaterThan(partyTrade);
     expect(hud.indexOf('instancePartyTradeLine(', partyTrade + 1)).toBe(-1);
