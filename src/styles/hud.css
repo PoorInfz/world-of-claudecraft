@@ -9311,9 +9311,11 @@
     flex-direction: column;
     gap: 10px;
   }
-  /* Store decisions must clear the Armory inspector (z90), and async results
-     remain readable after the Store itself has closed. */
-  #prompt-stack.store-decision-active,
+  /* Async store results remain readable after the Store itself has closed.
+     The modal store DECISION no longer lives in the stack: it mounts on
+     document.body (components.css #confirm-dialog.woc-store-prompt), because
+     no z-index inside #ui's stacking context can clear the body-level Armory
+     inspector (z90). */
   #prompt-stack.store-result-active {
     z-index: 96;
   }

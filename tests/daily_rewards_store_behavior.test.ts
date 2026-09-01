@@ -737,7 +737,8 @@ function charterHarness(
     /** Hold the spend open until the test resolves it, for the in-flight guard. */
     gate?: { wait: Promise<void> };
     /** Exercise the real StoreDecisionPrompts path instead of recording the
-     *  decision, for prompt-stack ownership and collision coverage. */
+     *  decision, for body-level mount ownership and #confirm-dialog collision
+     *  coverage. */
     realDecisions?: boolean;
     /** Give the stub world an identity, which is what turns DURABILITY on
      *  (src/ui/purchase_intent_durability.ts derives the storage row from
@@ -1954,7 +1955,7 @@ describe('WOC Store Strongbox charters', () => {
     expect(h.internals.charterFocus.peek()).toBeNull();
   });
 
-  it('abandons the exact unsent charter intent when a competing confirm owns the stack', async () => {
+  it('abandons the exact unsent charter intent when a competing confirm owns the dialog id', async () => {
     const scope = { playerClass: 'warrior', name: 'PromptCollision' };
     const rowName = `woc_purchase_intents_${scope.playerClass}_${scope.name}`;
     const h = charterHarness({ purchasedSlots: 0, scope, realDecisions: true });
