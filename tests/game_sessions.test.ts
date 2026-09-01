@@ -330,6 +330,16 @@ describe('GameServer sessions', () => {
     expect(session.accountCosmetics.mechChromaIds).toContain(MECH_CHROMAS[choice].id);
     expect(server.sim.countItem('alien_armor_plate', session.pid)).toBe(0);
     expect(server.sim.entities.get(session.pid)?.skinCatalog).toBe('mech');
+
+    // The claim consumed the spinner token, so the wear is item-backed:
+    // unequipping through the server dispatch returns the chroma's own armor
+    // plate to the bags (issue #3680), exactly like the offline Sim.
+    server.handleMessage(
+      session,
+      JSON.stringify({ t: 'cmd', cmd: 'unequip_mech_chroma', chroma: 'amber_crimson' }),
+    );
+    expect(server.sim.entities.get(session.pid)?.skinCatalog).toBe('class');
+    expect(server.sim.countItem('amber_crimson_armor_plate', session.pid)).toBe(1);
   });
 
   it('grantMechChromaToAccount persists the swag grant and pushes it to the live session', async () => {
@@ -446,7 +456,8 @@ describe('GameServer sessions', () => {
     );
     expect(server.sim.entities.get(second.pid)?.skinCatalog).toBe('class');
 
-    // Nothing is minted or duplicated: the look was never itemized.
+    // Nothing is minted or duplicated: both wears were display-only
+    // (change_skin over the unlock consumed no item, so no plate is owed).
     expect(server.sim.countItem('amber_crimson_armor_plate', first.pid)).toBe(0);
     expect(server.sim.countItem('amber_crimson_armor_plate', second.pid)).toBe(0);
 
@@ -457,6 +468,43 @@ describe('GameServer sessions', () => {
       JSON.stringify({ t: 'cmd', cmd: 'change_skin', skin: 0, catalog: 'mech' }),
     );
     expect(server.sim.entities.get(first.pid)?.skinCatalog).toBe('mech');
+  });
+
+  it('unequipping an item-backed mech chroma returns the armor plate to the bags, exactly once (issue #3680)', () => {
+    // The chroma loop is item-borne: using the plate consumed it, so the
+    // server's unequip dispatch must hand it back for the player to store,
+    // move, or list on the $WOC Exchange, while the free change_skin
+    // re-equip stays un-itemized (no duplicate minting).
+    const server = new GameServer();
+    const session = expectJoined(server.join(fakeWs(), 11, 101, 'Mechplate', 'shaman', null));
+    server.sim.addItem('amber_crimson_armor_plate', 1, session.pid);
+
+    server.handleMessage(
+      session,
+      JSON.stringify({ t: 'cmd', cmd: 'use', item: 'amber_crimson_armor_plate' }),
+    );
+    expect(server.sim.entities.get(session.pid)?.skinCatalog).toBe('mech');
+    expect(server.sim.countItem('amber_crimson_armor_plate', session.pid)).toBe(0);
+
+    server.handleMessage(
+      session,
+      JSON.stringify({ t: 'cmd', cmd: 'unequip_mech_chroma', chroma: 'amber_crimson' }),
+    );
+    expect(server.sim.entities.get(session.pid)?.skinCatalog).toBe('class');
+    expect(server.sim.countItem('amber_crimson_armor_plate', session.pid)).toBe(1);
+
+    // The permanent unlock re-equips for free; taking THAT wear off must not
+    // mint a second plate.
+    server.handleMessage(
+      session,
+      JSON.stringify({ t: 'cmd', cmd: 'change_skin', skin: 0, catalog: 'mech' }),
+    );
+    expect(server.sim.entities.get(session.pid)?.skinCatalog).toBe('mech');
+    server.handleMessage(
+      session,
+      JSON.stringify({ t: 'cmd', cmd: 'unequip_mech_chroma', chroma: 'amber_crimson' }),
+    );
+    expect(server.sim.countItem('amber_crimson_armor_plate', session.pid)).toBe(1);
   });
 
   it('reconciles a saved worn mech chroma when the account cosmetics row is stale', async () => {
