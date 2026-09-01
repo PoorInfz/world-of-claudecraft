@@ -9764,7 +9764,8 @@ export const ko_KR: EnTranslations = {
       "potion": "물약",
       "elixir": "비약",
       "bag": "가방",
-      "mount": "탈것"
+      "mount": "탈것",
+      "skin": "Skin"
     },
     "stats": {
       "armor": "방어도",

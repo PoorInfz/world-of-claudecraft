@@ -6,14 +6,23 @@
 // non-undefined for exactly the fine ids (material_grades.ts, the FINE_GRADE
 // pairing). Honest materials (recipe reagents, ores, raw cooking catches, etc.)
 // that are still kind 'junk' read "Material" via MATERIAL_ITEM_IDS. Grey junk
-// that is not in the honest set keeps "Junk". Extracted from hud.ts (the phase
-// 14 QA): the unit is directly importable, so its test drives it without a
-// prototype rig.
+// that is not in the honest set keeps "Junk". The mech chroma armor plates get
+// the same treatment: their KIND stays 'tool' internally (vendor, discard and
+// bag-filter rules key off it), but the line reads "Skin", which is what the
+// item IS to a player. Extracted from hud.ts (the phase 14 QA): the unit is
+// directly importable, so its test drives it without a prototype rig.
 
+import { MECH_CHROMAS, mechChromaItemId } from '../sim/content/skins';
 import { MATERIAL_ITEM_IDS } from '../sim/material_taxonomy';
 import { baseMaterialFor } from '../sim/professions/material_grades';
 import type { ItemDef } from '../sim/types';
 import { type TranslationKey, t } from './i18n';
+
+/** The 15 tradable chroma plate ids, derived from the catalog so a new chroma
+ *  picks the Skin line up with no edit here. */
+const MECH_CHROMA_PLATE_ITEM_IDS: ReadonlySet<string> = new Set(
+  MECH_CHROMAS.flatMap((chroma) => mechChromaItemId(chroma.id) ?? []),
+);
 
 type ItemQuality = NonNullable<ItemDef['quality']>;
 
@@ -50,6 +59,10 @@ export function itemQualityLabel(quality: ItemDef['quality']): string {
 }
 
 export function itemKindLabel(kind: ItemDef['kind'], itemId?: string): string {
+  // The chroma plates: id-specific beats kind-generic (they are kind 'tool').
+  if (itemId !== undefined && MECH_CHROMA_PLATE_ITEM_IDS.has(itemId)) {
+    return t('itemUi.kind.skin');
+  }
   if (kind === 'junk' && itemId !== undefined) {
     // Fine grades first: they are also honest materials, but the line must
     // stay "Fine Material" (not the broader Material label).

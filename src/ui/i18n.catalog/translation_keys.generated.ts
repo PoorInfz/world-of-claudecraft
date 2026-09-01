@@ -11506,6 +11506,7 @@ export type TranslationKeyFlat =
   | 'itemUi.kind.mount'
   | 'itemUi.kind.potion'
   | 'itemUi.kind.quest'
+  | 'itemUi.kind.skin'
   | 'itemUi.kind.tool'
   | 'itemUi.kind.weapon'
   | 'itemUi.logs.boughtBackItem'

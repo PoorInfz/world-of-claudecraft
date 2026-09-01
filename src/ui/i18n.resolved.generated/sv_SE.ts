@@ -9764,7 +9764,8 @@ export const sv_SE: EnTranslations = {
       "potion": "Trolldryck",
       "elixir": "Elixir",
       "bag": "Väska",
-      "mount": "Riddjur"
+      "mount": "Riddjur",
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Rustning",

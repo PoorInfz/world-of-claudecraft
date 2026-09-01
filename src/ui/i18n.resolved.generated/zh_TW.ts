@@ -9764,7 +9764,8 @@ export const zh_TW: EnTranslations = {
       "potion": "藥水",
       "elixir": "藥劑",
       "bag": "背包",
-      "mount": "坐騎"
+      "mount": "坐騎",
+      "skin": "Skin"
     },
     "stats": {
       "armor": "護甲",

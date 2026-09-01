@@ -9764,7 +9764,8 @@ export const cs_CZ: EnTranslations = {
       "potion": "Lektvar",
       "elixir": "Elixír",
       "bag": "Batoh",
-      "mount": "Jízdní zvíře"
+      "mount": "Jízdní zvíře",
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Brnění",
