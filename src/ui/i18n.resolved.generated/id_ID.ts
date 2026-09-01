@@ -9765,7 +9765,7 @@ export const id_ID: EnTranslations = {
       "elixir": "Eliksir",
       "bag": "Tas",
       "mount": "Tunggangan",
-      "skin": "Skin"
+      "skin": "Tampilan"
     },
     "stats": {
       "armor": "Zirah",

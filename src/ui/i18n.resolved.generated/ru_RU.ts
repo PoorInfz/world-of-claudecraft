@@ -9765,7 +9765,7 @@ export const ru_RU: EnTranslations = {
       "elixir": "Эликсир",
       "bag": "Сумка",
       "mount": "Транспорт",
-      "skin": "Skin"
+      "skin": "Облик"
     },
     "stats": {
       "armor": "Броня",

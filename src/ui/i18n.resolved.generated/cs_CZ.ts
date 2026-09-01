@@ -9765,7 +9765,7 @@ export const cs_CZ: EnTranslations = {
       "elixir": "Elixír",
       "bag": "Batoh",
       "mount": "Jízdní zvíře",
-      "skin": "Skin"
+      "skin": "Vzhled"
     },
     "stats": {
       "armor": "Brnění",

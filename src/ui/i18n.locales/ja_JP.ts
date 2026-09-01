@@ -2920,6 +2920,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.potion': 'ポーション',
   'itemUi.kind.elixir': 'エリクサー',
   'itemUi.kind.mount': 'マウント',
+  'itemUi.kind.skin': 'スキン',
   'itemUi.stats.armor': '防御力',
   'itemUi.stats.str': '筋力',
   'itemUi.stats.agi': '敏捷性',

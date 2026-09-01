@@ -9765,7 +9765,7 @@ export const tr_TR: EnTranslations = {
       "elixir": "İksir",
       "bag": "Çanta",
       "mount": "Binek",
-      "skin": "Skin"
+      "skin": "Görünüm"
     },
     "stats": {
       "armor": "Zırh",

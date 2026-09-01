@@ -9765,7 +9765,7 @@ export const es_ES: EnTranslations = {
       "elixir": "Elixir",
       "bag": "Bolsa",
       "mount": "Montura",
-      "skin": "Skin"
+      "skin": "Apariencia"
     },
     "stats": {
       "armor": "Armadura",

@@ -9316,6 +9316,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.tool': 'Dụng Cụ',
   'itemUi.kind.weapon': 'Vũ Khí',
   'itemUi.kind.mount': 'Thú Cưỡi',
+  'itemUi.kind.skin': 'Ngoại hình',
   'itemUi.logs.boughtBackItem': 'Đã mua lại {item} với giá {money}.',
   'itemUi.logs.boughtItem': 'Đã mua {item} với giá {money}.',
   'itemUi.logs.collectedMoney': 'Bạn thu về {money} từ Thương Nhân.',

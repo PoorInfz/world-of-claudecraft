@@ -8638,6 +8638,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.tool': 'Værktøj',
   'itemUi.kind.weapon': 'Våben',
   'itemUi.kind.mount': 'Ridedyr',
+  'itemUi.kind.skin': 'Skin',
   'itemUi.logs.boughtBackItem': 'Købte {item} tilbage for {money}.',
   'itemUi.logs.boughtItem': 'Købte {item} for {money}.',
   'itemUi.logs.collectedMoney': 'Du henter {money} fra Købmanden.',

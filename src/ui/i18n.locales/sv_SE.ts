@@ -8589,6 +8589,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.tool': 'Verktyg',
   'itemUi.kind.weapon': 'Vapen',
   'itemUi.kind.mount': 'Riddjur',
+  'itemUi.kind.skin': 'Skin',
   'itemUi.logs.boughtBackItem': 'Köpte tillbaka {item} för {money}.',
   'itemUi.logs.boughtItem': 'Köpte {item} för {money}.',
   'itemUi.logs.collectedMoney': 'Du hämtar {money} från Handlaren.',

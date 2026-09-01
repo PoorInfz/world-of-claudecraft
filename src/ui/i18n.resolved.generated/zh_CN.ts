@@ -9765,7 +9765,7 @@ export const zh_CN: EnTranslations = {
       "elixir": "药剂",
       "bag": "背包",
       "mount": "坐骑",
-      "skin": "Skin"
+      "skin": "外观"
     },
     "stats": {
       "armor": "护甲",

@@ -8790,6 +8790,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.tool': 'Gereedschap',
   'itemUi.kind.weapon': 'Wapen',
   'itemUi.kind.mount': 'Rijdier',
+  'itemUi.kind.skin': 'Skin',
   'itemUi.logs.boughtBackItem': '{item} teruggekocht voor {money}.',
   'itemUi.logs.boughtItem': '{item} gekocht voor {money}.',
   'itemUi.logs.collectedMoney': 'Je haalt {money} op bij de Koopman.',

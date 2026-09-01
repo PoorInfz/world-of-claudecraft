@@ -15,8 +15,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "es_ES": [
     "entities.abilities.grove_awakening.description",
@@ -24,8 +23,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "fr_FR": [
     "entities.abilities.grove_awakening.description",
@@ -33,8 +31,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "fr_CA": [
     "entities.abilities.grove_awakening.description",
@@ -42,8 +39,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "en_CA": [],
   "it_IT": [
@@ -52,8 +48,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "de_DE": [
     "entities.abilities.grove_awakening.description",
@@ -61,41 +56,28 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
-  "zh_CN": [
-    "itemUi.kind.skin"
-  ],
-  "zh_TW": [
-    "itemUi.kind.skin"
-  ],
-  "ko_KR": [
-    "itemUi.kind.skin"
-  ],
-  "ja_JP": [
-    "itemUi.kind.skin"
-  ],
+  "zh_CN": [],
+  "zh_TW": [],
+  "ko_KR": [],
+  "ja_JP": [],
   "pt_BR": [
     "entities.abilities.grove_awakening.description",
     "entities.abilities.grove_awakening.name",
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
-  "ru_RU": [
-    "itemUi.kind.skin"
-  ],
+  "ru_RU": [],
   "cs_CZ": [
     "entities.abilities.grove_awakening.description",
     "entities.abilities.grove_awakening.name",
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "nl_NL": [
     "entities.abilities.grove_awakening.description",
@@ -103,8 +85,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "pl_PL": [
     "entities.abilities.grove_awakening.description",
@@ -112,8 +93,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "id_ID": [
     "entities.abilities.grove_awakening.description",
@@ -121,8 +101,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "tr_TR": [
     "entities.abilities.grove_awakening.description",
@@ -130,8 +109,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "sv_SE": [
     "entities.abilities.grove_awakening.description",
@@ -139,8 +117,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "vi_VN": [
     "entities.abilities.grove_awakening.description",
@@ -148,8 +125,7 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ],
   "da_DK": [
     "entities.abilities.grove_awakening.description",
@@ -157,7 +133,6 @@ export const pending: Record<string, readonly string[]> = {
     "entities.abilities.prayer_of_returning.description",
     "entities.abilities.prayer_of_returning.name",
     "entities.abilities.wildwake.description",
-    "entities.abilities.wildwake.name",
-    "itemUi.kind.skin"
+    "entities.abilities.wildwake.name"
   ]
 };
