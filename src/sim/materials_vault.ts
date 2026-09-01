@@ -70,6 +70,7 @@ import {
   warnDroppedInstanceKeys,
 } from './item_instance_load';
 import { itemInstancePayloadsEqual } from './item_instance_merge';
+import { normalizePartyTradeSlots } from './loot/bop_trade_cleanup';
 import { materialItemIds } from './material_ids';
 import { sanitizeRiftGearInstance } from './rift/progression';
 import type { PlayerMeta } from './sim';
@@ -137,6 +138,24 @@ export function savedVaultState(state: MaterialsVaultState): SavedMaterialsVault
       : {}),
     upgrades: state.upgrades,
   };
+}
+
+/** Retire expired party-trade markers while keeping this module the sole vault writer. */
+export function normalizeVaultPartyTradeState(state: MaterialsVaultState, nowMs: number): boolean {
+  const special = normalizePartyTradeSlots(state.special, nowMs);
+  if (special === state.special) return false;
+  state.special = special;
+  return true;
+}
+
+/** Save-shape variant that preserves the absent-while-empty `special` contract. */
+export function normalizeSavedVaultPartyTradeState(
+  state: SavedMaterialsVaultState,
+  nowMs: number,
+): void {
+  if (!state.special) return;
+  const special = normalizePartyTradeSlots(state.special, nowMs);
+  if (special !== state.special) state.special = special;
 }
 
 /** True when a carried slot must retain its full identity in the vault. */

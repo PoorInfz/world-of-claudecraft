@@ -304,6 +304,10 @@ import {
 } from './leaderboard_page';
 import { entityLineOfSightClear } from './line_of_sight_elevation';
 import type { Ante, PickAction } from './lockpick';
+import {
+  normalizePartyTradeContainers,
+  normalizePersistedPartyTradeContainers,
+} from './loot/bop_trade_cleanup';
 import { withoutPartyTradeMarker } from './loot/bop_trade_window';
 // L1: the loot-distribution layer (party-loot strategy, the rollLoot roller, copper
 // split, need-greed roll lifecycle, corpse-loot helpers) moved to ./loot/loot_roll.ts;
@@ -3067,6 +3071,9 @@ export class Sim {
       // save sanitizes to the empty locked vault): restoreVaultStateOnLoad owns the
       // whole-record replacement AND its vaultWireRev bump (the rationale sits there).
       vaultMod.restoreVaultStateOnLoad(meta, s.vault, droppedInstanceJunk, player.id);
+      const partyTradeNowMs = this.lockoutNowMs();
+      normalizePartyTradeContainers(meta, partyTradeNowMs);
+      vaultMod.normalizeVaultPartyTradeState(meta.vault, partyTradeNowMs);
       warnDroppedInstanceKeys(meta.name, droppedInstanceJunk);
       let questRevReset = false;
       for (const q of s.questLog) {
@@ -4084,6 +4091,12 @@ export class Sim {
         return reliquary ? { reliquary } : {};
       })(),
     };
+    // Retire expired BoP party-trade metadata at the existing per-character
+    // persistence boundary. This keeps saved JSON compact without adding a
+    // synchronized realm-wide container scan to the simulation tick.
+    const partyTradeNowMs = this.lockoutNowMs();
+    normalizePersistedPartyTradeContainers(state, partyTradeNowMs);
+    if (state.vault) vaultMod.normalizeSavedVaultPartyTradeState(state.vault, partyTradeNowMs);
     return sanitizeRemovedZone1Content(state).state;
   }
 

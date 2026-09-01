@@ -96,13 +96,16 @@ export function instanceBindingLines(
  *  IWorld.partyTradeMsRemaining, injected because only the world knows which
  *  clock `untilMs` was stamped from (tick-derived offline, epoch online);
  *  this builder stays a Node-testable pure string function. Renders nothing
- *  for an absent, malformed, or expired window, and never on WORN gear
+ *  for an absent, malformed, or expired window, for a definition that is no
+ *  longer soulbound, and never on WORN gear
  *  (equip strips the payload field, and wornTooltipInstance would trim it
  *  anyway). */
 export function instancePartyTradeLine(
   instance: ItemInstancePayload | undefined,
   msRemainingFor: (untilMs: number) => number,
+  soulbound = true,
 ): string {
+  if (!soulbound) return '';
   const untilMs = instance?.partyTrade?.untilMs;
   if (untilMs === undefined || !Number.isFinite(untilMs)) return '';
   const remainingMs = msRemainingFor(untilMs);
