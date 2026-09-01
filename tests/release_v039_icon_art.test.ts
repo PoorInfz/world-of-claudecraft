@@ -327,9 +327,10 @@ describe('release v0.39 icon-art second-pass lineage', () => {
         retriedAssets: ['dismiss_pet'],
       },
       runtimeClosure: {
-        // 402: the ten Vale Cup sport abilities retired with the New
-        // Eastbrook program's Sowfield demolition, plus the release arm's
-        // two new abilities riding the v0.40.0 sync merge.
+        // 405: the ten Vale Cup sport abilities retired with the New
+        // Eastbrook program's Sowfield demolition, the release arm's two new
+        // abilities riding the v0.40.0 sync merge, plus the three healer
+        // resurrections (prayer_of_returning, wildwake, grove_awakening).
         abilities: { live: 405, painted: 405 },
         hotbarItems: { live: 73, painted: 73 },
         fixedActions: { painted: 11 },

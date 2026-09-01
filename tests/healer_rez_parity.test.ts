@@ -1,10 +1,13 @@
-// Healer resurrection parity (owner directive 2026-09-01): every primary healer
-// class fields a resurrection, and every healer rez shares the five-minute
-// cooldown. Benison/Doctrine priests and Groveheart druids gain their rezzes
+// Healer resurrection parity (owner directive 2026-09-01, recorded in
+// docs/design/resurrection-cooldowns.md): every primary healer class fields a
+// resurrection, and every healer rez shares the five-minute cooldown. Benison/Doctrine priests and Groveheart druids gain their rezzes
 // here (prayer_of_returning, wildwake, grove_awakening); the paladin's Recall
 // the Fallen joins the shared cooldown. Chronomancy's Temporal Reversal keeps
 // its deliberately longer ten-minute combat-rez cooldown.
 
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { ABILITIES, abilitiesKnownAt } from '../src/sim/content/classes';
 import { computeTalentModifiers, emptyAllocation } from '../src/sim/content/talents';
@@ -75,6 +78,49 @@ describe('healer resurrection cooldown parity', () => {
     }
     // Deliberately unchanged: Chronomancy's combat rez keeps a death costlier.
     expect(ABILITIES.temporal_reversal.cooldown).toBe(600);
+  });
+
+  it('renders the single-rez glyph in the ability school, not a hardcoded arcane', () => {
+    // The resurrectAlly dispatch emits school: ability.school so Wildwake
+    // blooms nature and the Sunmender rite holy. The renderer's temporalGlyph
+    // branch must thread ev.school through, or the sim-side school is dead at
+    // the pixel. Source pin, since the renderer has no unit seam here.
+    const rendererSource = readFileSync(
+      path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../src/render/renderer.ts'),
+      'utf8',
+    );
+    const branchStart = rendererSource.indexOf("ev.fx === 'temporalGlyph'");
+    expect(branchStart).toBeGreaterThan(-1);
+    const branch = rendererSource.slice(branchStart, rendererSource.indexOf('} else', branchStart));
+    expect(branch).toContain('wardBloom(ev.targetId, ev.school)');
+    expect(branch).not.toContain("'arcane'");
+  });
+
+  it('refuses both new mass rezzes in combat: requiresOutOfCombat is live', () => {
+    const cases = [
+      { playerClass: 'priest' as const, spec: 'holy', id: 'prayer_of_returning', seed: 4484 },
+      { playerClass: 'druid' as const, spec: 'restoration', id: 'grove_awakening', seed: 4485 },
+    ];
+    for (const { playerClass, spec, id, seed } of cases) {
+      const sim = healerSim(playerClass, spec, seed);
+      const fallen = addFallenPartyMember(sim, 'Fallen In Combat');
+
+      // A dead member is in reach and mana is full: only the combat gate may
+      // refuse this cast.
+      sim.player.inCombat = true;
+      sim.player.combatTimer = 0;
+      const mana = sim.player.resource;
+      sim.castAbility(id);
+      expect(sim.player.castingAbility, id).toBeNull();
+      expect(sim.player.resource, id).toBe(mana);
+      expect(fallen.dead, id).toBe(true);
+
+      // Leaving combat with everything else unchanged lets the identical cast
+      // start, proving the refusal above was the combat gate.
+      sim.player.inCombat = false;
+      sim.castAbility(id);
+      expect(sim.player.castingAbility, id).toBe(id);
+    }
   });
 });
 
