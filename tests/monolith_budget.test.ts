@@ -640,7 +640,12 @@ const MONOLITHS: MonolithRow[] = [
     // Re-pinned to the exact merged count of the OSSBrain v0.41.0 base
     // merge: both parents had already ratcheted for their own work, so
     // the composite is the honest size. Exact count, zero slack.
-    ceiling: 5908,
+    // LOWERED at the PR 3804 spell-queue fast-follow: the queuedCastTargetId
+    // mirror default tipped the file one line over, and the ratchet's answer
+    // is extraction, so the whole blankEntity placeholder literal moved to
+    // src/net/blank_entity.ts (pure data, no ClientWorld state). Exact count,
+    // zero slack.
+    ceiling: 5684,
     seam: 'a src/net sibling module (the refactor/net-online split is the template)',
   },
   {
