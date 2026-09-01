@@ -10480,7 +10480,7 @@ export const es: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Llamar a los Caídos",
-        "description": "Devuelve a la vida a un miembro muerto del grupo con un 35% de salud y maná. Un Sanador del Sol de nivel 16 o superior llama de vuelta a todos los miembros caídos del grupo."
+        "description": "Devuelve a la vida a un miembro muerto del grupo a tu lado con un 35% de salud y maná. Un Sanador del Sol de nivel 16 o superior llama de vuelta a todos los miembros caídos del grupo en un radio de 30 yardas y dentro de tu línea de visión."
       },
       "beacon_of_light": {
         "name": "Faro de Luz",
@@ -11217,12 +11217,12 @@ export const es: EnTranslations = {
         "description": "Consume 5 de Verdor. Cosecha cada sanación periódica tuya en todos los aliados por un {buff}% de su sanación restante, elimina esos efectos y planta una Floración Silvestre nueva en el objetivo."
       },
       "wildwake": {
-        "name": "Wildwake",
-        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+        "name": "Despertar Silvestre",
+        "description": "Incita a un aliado caído a florecer de pronto, devolviéndolo a la vida a tu lado con un 35% de su salud y maná, incluso en pleno combate. (Corazón del Bosque)"
       },
       "grove_awakening": {
-        "name": "Grove Awakening",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+        "name": "Despertar del Bosque",
+        "description": "Devuelve a la vida a todos los miembros caídos de tu grupo o banda en un radio de 40 yardas y dentro de tu línea de visión, de vuelta a tu lado con un 30% de salud y maná. No puede lanzarse en combate. (Corazón del Bosque)"
       },
       "summon_imp": {
         "name": "Invocar Emberkin",
@@ -11530,15 +11530,15 @@ export const es: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Inversión Temporal",
-        "description": "Rebobina la línea temporal de un aliado caído, devolviéndolo a la vida junto a su cuerpo con una parte de su salud y maná, incluso en pleno combate. (Cronomancia)"
+        "description": "Rebobina la línea temporal de un aliado caído, devolviéndolo a la vida a tu lado con un 35% de su salud y maná, incluso en pleno combate. (Cronomancia)"
       },
       "collective_reversal": {
         "name": "Reversión colectiva",
-        "description": "Rebobina a todos los miembros muertos de tu grupo o banda y los devuelve a la vida junto a sus cuerpos con un 30% de salud y maná. No se puede lanzar en combate. (Cronomancia)"
+        "description": "Rebobina a todos los miembros muertos de tu grupo o banda en un radio de 40 yardas y dentro de tu línea de visión, y los devuelve a la vida a tu lado con un 30% de salud y maná. No se puede lanzar en combate. (Cronomancia)"
       },
       "ancestor_return": {
         "name": "Retorno de los Ancestros",
-        "description": "Devuelve a la vida junto a su cuerpo a todos los miembros caídos de tu grupo o banda con un 30% de salud y maná. No puede lanzarse en combate. (Remiendo Espiritual)"
+        "description": "Devuelve a la vida a todos los miembros caídos de tu grupo o banda en un radio de 40 yardas y dentro de tu línea de visión, de vuelta a tu lado con un 30% de salud y maná. No puede lanzarse en combate. (Remiendo Espiritual)"
       },
       "temporal_rewind": {
         "name": "Rebobinar",
@@ -11686,8 +11686,8 @@ export const es: EnTranslations = {
         "description": "Canaliza durante 6 s y sana a los miembros del grupo en un radio de 30 metros por {damage} cada 2 s. La sanación aumenta con el poder con hechizos."
       },
       "prayer_of_returning": {
-        "name": "Prayer of Returning",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
+        "name": "Plegaria del Retorno",
+        "description": "Devuelve a la vida a todos los miembros caídos de tu grupo o banda en un radio de 40 yardas y dentro de tu línea de visión, de vuelta a tu lado con un 30% de salud y maná. No puede lanzarse en combate. (Bendición y Doctrina)"
       },
       "bear_charge": {
         "name": "Embestida de Bruin",

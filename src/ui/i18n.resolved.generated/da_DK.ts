@@ -10480,7 +10480,7 @@ export const da_DK: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Kald de Faldne",
-        "description": "Bringer et dødt gruppemedlem tilbage til livet med 35% sundhed og mana. En Solheler på niveau 16 eller derover kalder i stedet ethvert faldent medlem af gruppen tilbage."
+        "description": "Bringer et dødt gruppemedlem tilbage til livet ved din side med 35% sundhed og mana. En Solheler på niveau 16 eller derover kalder i stedet ethvert faldent medlem af gruppen, som er inden for 30 meter og i din synsvidde, tilbage."
       },
       "beacon_of_light": {
         "name": "Lysets Bavn",
@@ -11217,12 +11217,12 @@ export const da_DK: EnTranslations = {
         "description": "Forbruger 5 Grønske. Høster hver af dine helbredelser over tid på alle allierede for {buff}% af den resterende helbredelse, fjerner de virkninger og planter en frisk Vildblomst på målet."
       },
       "wildwake": {
-        "name": "Wildwake",
-        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+        "name": "Vildopvågnen",
+        "description": "Lokker en falden allieret til pludselig blomstring og bringer vedkommende tilbage til livet ved din side med 35% sundhed og mana, selv midt i kampens hede. (Lundhjerte)"
       },
       "grove_awakening": {
-        "name": "Grove Awakening",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+        "name": "Lundens Opvågnen",
+        "description": "Kalder ethvert faldent medlem af din gruppe eller dit togt, som er inden for 40 meter og i din synsvidde, tilbage til din side med 30% sundhed og mana. Kan ikke kastes i kamp. (Lundhjerte)"
       },
       "summon_imp": {
         "name": "Tilkald Emberkin",
@@ -11530,15 +11530,15 @@ export const da_DK: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Tidsvending",
-        "description": "Tilbagespoler en falden allieredes tidslinje og bringer dem tilbage til livet ved deres krop med en del af deres helbred og mana, selv midt i kamp. (Kronomantik)"
+        "description": "Tilbagespoler en falden allieredes tidslinje og bringer dem tilbage til livet ved din side med 35% af deres helbred og mana, selv midt i kamp. (Kronomantik)"
       },
       "collective_reversal": {
         "name": "Kollektiv tilbagespoling",
-        "description": "Spoler tidslinjen tilbage for hvert faldet medlem af din gruppe eller dit raid og genopliver dem ved deres krop med 30% helbred og mana. Kan ikke kastes i kamp. (Kronomanti)"
+        "description": "Spoler tidslinjen tilbage for hvert faldet medlem af din gruppe eller dit raid, som er inden for 40 meter og i din synsvidde, og genopliver dem ved din side med 30% helbred og mana. Kan ikke kastes i kamp. (Kronomanti)"
       },
       "ancestor_return": {
         "name": "Forfædrenes Tilbagekomst",
-        "description": "Kalder ethvert faldent medlem af din gruppe eller dit togt tilbage til livet ved deres krop med 30% sundhed og mana. Kan ikke kastes i kamp. (Åndelapning)"
+        "description": "Kalder ethvert faldent medlem af din gruppe eller dit togt, som er inden for 40 meter og i din synsvidde, tilbage til din side med 30% sundhed og mana. Kan ikke kastes i kamp. (Åndelapning)"
       },
       "temporal_rewind": {
         "name": "Tilbagespoling",
@@ -11686,8 +11686,8 @@ export const da_DK: EnTranslations = {
         "description": "Kanaliserer i 6 sek. og helbreder gruppemedlemmer inden for 30 meter for {damage} hvert 2. sek. Helbredelsen øges med besværgelseskraft."
       },
       "prayer_of_returning": {
-        "name": "Prayer of Returning",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
+        "name": "Tilbagekomstens Bøn",
+        "description": "Kalder ethvert faldent medlem af din gruppe eller dit togt, som er inden for 40 meter og i din synsvidde, tilbage til din side med 30% sundhed og mana. Kan ikke kastes i kamp. (Velsignelse og Lære)"
       },
       "bear_charge": {
         "name": "Bruin-storm",

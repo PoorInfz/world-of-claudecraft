@@ -10480,7 +10480,7 @@ export const tr_TR: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Düşenleri Çağır",
-        "description": "Ölü bir grup üyesini 35% can ve manayla yaşama döndürür. 16. seviye ya da üzeri bir Güneş Şifacısı bunun yerine grubun düşmüş tüm üyelerini geri çağırır."
+        "description": "Ölü bir grup üyesini yanına, 35% can ve manayla yaşama döndürür. 16. seviye ya da üzeri bir Güneş Şifacısı bunun yerine grubun 30 yarda yakınındaki ve görüş hattındaki düşmüş tüm üyelerini geri çağırır."
       },
       "beacon_of_light": {
         "name": "Işık Feneri",
@@ -11217,12 +11217,12 @@ export const tr_TR: EnTranslations = {
         "description": "5 Yeşillik tüketir. Tüm müttefiklerdeki her süreli iyileştirmeni kalan iyileştirmesinin {buff}% kadarıyla hasat eder, o etkileri kaldırır ve hedefe taze bir Yaban Çiçeği eker."
       },
       "wildwake": {
-        "name": "Wildwake",
-        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+        "name": "Yaban Uyanışı",
+        "description": "Düşmüş bir müttefiği ansızın çiçeğe durmaya çağırır ve savaşın tam ortasında bile yanına, canının ve manasının 35% kadarıyla hayata döndürür. (Koru Yüreği)"
       },
       "grove_awakening": {
-        "name": "Grove Awakening",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+        "name": "Koru Uyanışı",
+        "description": "Grubunun ya da akınının, 40 yarda yakınındaki ve görüş hattındaki düşmüş her üyesini 30% can ve manayla yanına çağırır. Savaşta okunamaz. (Koru Yüreği)"
       },
       "summon_imp": {
         "name": "Emberkin Çağırma",
@@ -11530,15 +11530,15 @@ export const tr_TR: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Zamansal Tersine Çevirme",
-        "description": "Düşmüş bir müttefikin zaman çizelgesini geri sararak onları savaşın tam ortasında bile bedeninin yanında, canının ve manasının bir kısmıyla hayata döndürür. (Kronomansi)"
+        "description": "Düşmüş bir müttefikin zaman çizelgesini geri sararak onları savaşın tam ortasında bile yanına, canının ve manasının 35% kadarıyla hayata döndürür. (Kronomansi)"
       },
       "collective_reversal": {
         "name": "Toplu Geri Sarım",
-        "description": "Grubunuzdaki veya baskınınızdaki her ölü üyenin zaman çizgisini geri sarar ve onları bedenlerinin yanında %30 sağlık ve mana ile hayata döndürür. Savaş sırasında kullanılamaz. (Kronomansi)"
+        "description": "Grubunuzdaki veya baskınınızdaki, 40 yarda yakınındaki ve görüş hattınızdaki her ölü üyenin zaman çizgisini geri sarar ve onları yanınıza %30 sağlık ve mana ile hayata döndürür. Savaş sırasında kullanılamaz. (Kronomansi)"
       },
       "ancestor_return": {
         "name": "Ataların Dönüşü",
-        "description": "Grubunun ya da akınının düşmüş her üyesini bedeninin başında 30% can ve manayla yaşama döndürür. Savaşta okunamaz. (Ruh Onarımı)"
+        "description": "Grubunun ya da akınının, 40 yarda yakınındaki ve görüş hattındaki düşmüş her üyesini 30% can ve manayla yanına çağırır. Savaşta okunamaz. (Ruh Onarımı)"
       },
       "temporal_rewind": {
         "name": "Geri Sar",
@@ -11686,8 +11686,8 @@ export const tr_TR: EnTranslations = {
         "description": "6 sn kanalize eder, 30 metre içindeki grup üyelerini her 2 saniyede {damage} kadar iyileştirir. İyileştirme büyü gücüyle artar."
       },
       "prayer_of_returning": {
-        "name": "Prayer of Returning",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
+        "name": "Dönüş Duası",
+        "description": "Grubunun ya da akınının, 40 yarda yakınındaki ve görüş hattındaki düşmüş her üyesini 30% can ve manayla yanına çağırır. Savaşta okunamaz. (Kutsal ve Disiplin)"
       },
       "bear_charge": {
         "name": "Bruin Hücumu",

@@ -10480,7 +10480,7 @@ export const de_DE: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Ruf der Gefallenen",
-        "description": "Erweckt ein totes Gruppenmitglied mit 35% Gesundheit und Mana wieder zum Leben. Ein Sonnenheiler der Stufe 16 oder höher ruft stattdessen alle gefallenen Mitglieder der Gruppe zurück."
+        "description": "Erweckt ein totes Gruppenmitglied mit 35% Gesundheit und Mana an Eurer Seite wieder zum Leben. Ein Sonnenheiler der Stufe 16 oder höher ruft stattdessen alle gefallenen Mitglieder der Gruppe innerhalb von 30 Metern und in Eurer Sichtlinie zurück."
       },
       "beacon_of_light": {
         "name": "Leuchtfeuer des Lichts",
@@ -11217,12 +11217,12 @@ export const de_DE: EnTranslations = {
         "description": "Verbraucht 5 Grünkraft. Erntet jede Eurer Heilungen über Zeit auf allen Verbündeten für {buff}% ihrer verbleibenden Heilung, entfernt diese Effekte und pflanzt eine frische Wildblüte auf das Ziel."
       },
       "wildwake": {
-        "name": "Wildwake",
-        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+        "name": "Wildwecken",
+        "description": "Lockt einen gefallenen Verbündeten zu plötzlicher Blüte und ruft ihn mit 35% seiner Gesundheit und seines Manas an Eure Seite ins Leben zurück, selbst mitten im Kampf. (Hainherz)"
       },
       "grove_awakening": {
-        "name": "Grove Awakening",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+        "name": "Erwachen des Hains",
+        "description": "Ruft jedes gefallene Mitglied Eurer Gruppe oder Eures Schlachtzugs innerhalb von 40 Metern und in Eurer Sichtlinie mit 30% Gesundheit und Mana an Eure Seite ins Leben zurück. Kann nicht im Kampf gewirkt werden. (Hainherz)"
       },
       "summon_imp": {
         "name": "Emberkin beschwören",
@@ -11530,15 +11530,15 @@ export const de_DE: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Temporale Umkehr",
-        "description": "Spult den Zeitstrang eines gefallenen Verbündeten zurück und erweckt ihn an seinem Körper mit einem Teil seiner Gesundheit und seines Manas, selbst mitten im Kampf. (Chronomantie)"
+        "description": "Spult den Zeitstrang eines gefallenen Verbündeten zurück und erweckt ihn an deiner Seite mit 35% seiner Gesundheit und seines Manas, selbst mitten im Kampf. (Chronomantie)"
       },
       "collective_reversal": {
         "name": "Kollektive Umkehr",
-        "description": "Spult die Zeitlinie jedes gefallenen Mitglieds eurer Gruppe oder Schlachtgruppe zurück und erweckt es bei seinem Körper mit 30% Gesundheit und Mana wieder. Kann nicht im Kampf gewirkt werden. (Chronomantie)"
+        "description": "Spult die Zeitlinie jedes gefallenen Mitglieds eurer Gruppe oder Schlachtgruppe innerhalb von 40 Metern und in eurer Sichtlinie zurück und erweckt es an eurer Seite mit 30% Gesundheit und Mana wieder. Kann nicht im Kampf gewirkt werden. (Chronomantie)"
       },
       "ancestor_return": {
         "name": "Rückkehr der Ahnen",
-        "description": "Ruft jedes gefallene Mitglied Eurer Gruppe oder Eures Schlachtzugs an seinem Körper mit 30% Gesundheit und Mana ins Leben zurück. Kann nicht im Kampf gewirkt werden. (Geistflickung)"
+        "description": "Ruft jedes gefallene Mitglied Eurer Gruppe oder Eures Schlachtzugs innerhalb von 40 Metern und in Eurer Sichtlinie mit 30% Gesundheit und Mana an Eure Seite ins Leben zurück. Kann nicht im Kampf gewirkt werden. (Geistflickung)"
       },
       "temporal_rewind": {
         "name": "Rückspulen",
@@ -11686,8 +11686,8 @@ export const de_DE: EnTranslations = {
         "description": "Kanalisiert 6 Sek. lang und heilt Gruppenmitglieder im Umkreis von 30 Metern alle 2 Sek. um {damage}. Die Heilung steigt mit Zaubermacht."
       },
       "prayer_of_returning": {
-        "name": "Prayer of Returning",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
+        "name": "Gebet der Rückkehr",
+        "description": "Ruft jedes gefallene Mitglied Eurer Gruppe oder Eures Schlachtzugs innerhalb von 40 Metern und in Eurer Sichtlinie mit 30% Gesundheit und Mana an Eure Seite ins Leben zurück. Kann nicht im Kampf gewirkt werden. (Heilig und Doktrin)"
       },
       "bear_charge": {
         "name": "Bruin-Ansturm",

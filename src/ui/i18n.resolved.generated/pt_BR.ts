@@ -10480,7 +10480,7 @@ export const pt_BR: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Chamar os Caídos",
-        "description": "Traz de volta à vida um membro morto do grupo com 35% de vida e mana. Um Curassol de nível 16 ou superior, em vez disso, chama de volta todos os membros caídos do grupo."
+        "description": "Traz de volta à vida, ao seu lado, um membro morto do grupo com 35% de vida e mana. Um Curassol de nível 16 ou superior, em vez disso, chama de volta todos os membros caídos do grupo a até 30 m e dentro da sua linha de visão."
       },
       "beacon_of_light": {
         "name": "Farol de Luz",
@@ -11217,12 +11217,12 @@ export const pt_BR: EnTranslations = {
         "description": "Consome 5 de Verdor. Colhe cada cura ao longo do tempo sua em todos os aliados por {buff}% da cura restante, remove esses efeitos e planta um Florescer Selvagem novo no alvo."
       },
       "wildwake": {
-        "name": "Wildwake",
-        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+        "name": "Despertar Selvagem",
+        "description": "Induz um aliado caído a um florescer repentino, trazendo-o de volta à vida ao seu lado com 35% de vida e mana, mesmo em pleno combate. (Coração do Bosque)"
       },
       "grove_awakening": {
-        "name": "Grove Awakening",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+        "name": "Despertar do Bosque",
+        "description": "Chama de volta para o seu lado, com 30% de vida e mana, todos os membros caídos do seu grupo ou raide a até 40 m e dentro da sua linha de visão. Não pode ser conjurada em combate. (Coração do Bosque)"
       },
       "summon_imp": {
         "name": "Invocar Emberkin",
@@ -11530,15 +11530,15 @@ export const pt_BR: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Reversão Temporal",
-        "description": "Reverte a linha do tempo de um aliado caído, retornando-o à vida junto ao seu corpo com uma parcela de vida e mana, mesmo no meio do combate. (Cronomancia)"
+        "description": "Reverte a linha do tempo de um aliado caído, retornando-o à vida ao seu lado com 35% de vida e mana, mesmo no meio do combate. (Cronomancia)"
       },
       "collective_reversal": {
         "name": "Reversão coletiva",
-        "description": "Rebobina a linha temporal de cada membro morto do seu grupo ou raide e o traz de volta à vida junto ao corpo com 30% de vida e mana. Não pode ser lançada em combate. (Cronomancia)"
+        "description": "Rebobina a linha temporal de cada membro morto do seu grupo ou raide a até 40 m e dentro da sua linha de visão, trazendo-o de volta à vida ao seu lado com 30% de vida e mana. Não pode ser lançada em combate. (Cronomancia)"
       },
       "ancestor_return": {
         "name": "Retorno dos Ancestrais",
-        "description": "Chama de volta à vida, junto ao próprio corpo, todos os membros caídos do seu grupo ou raide com 30% de vida e mana. Não pode ser conjurada em combate. (Remendo Espiritual)"
+        "description": "Chama de volta para o seu lado, com 30% de vida e mana, todos os membros caídos do seu grupo ou raide a até 40 m e dentro da sua linha de visão. Não pode ser conjurada em combate. (Remendo Espiritual)"
       },
       "temporal_rewind": {
         "name": "Rebobinar",
@@ -11686,8 +11686,8 @@ export const pt_BR: EnTranslations = {
         "description": "Canaliza por 6 s, curando membros do grupo num raio de 30 metros em {damage} a cada 2 s. A cura aumenta com o poder mágico."
       },
       "prayer_of_returning": {
-        "name": "Prayer of Returning",
-        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
+        "name": "Prece do Retorno",
+        "description": "Chama de volta para o seu lado, com 30% de vida e mana, todos os membros caídos do seu grupo ou raide a até 40 m e dentro da sua linha de visão. Não pode ser conjurada em combate. (Sagrado e Disciplina)"
       },
       "bear_charge": {
         "name": "Investida de Bruin",
