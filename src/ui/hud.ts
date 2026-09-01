@@ -706,6 +706,7 @@ import {
 import { buildProfessionTutorialModel } from './profession_tutorial_view';
 import { renderProfessionTutorial } from './profession_tutorial_window';
 import { ProfessionsWindow } from './professions_window';
+import { modalPromptOpen } from './prompt_dialog';
 import {
   QUEST_ITEM_TOOLTIP_COLOR,
   type QuestItemTooltipModel,
@@ -18694,16 +18695,14 @@ export class Hud {
     }
   }
 
-  // True while an aria-modal quantity/confirm prompt (the bank/bags
-  // installPromptDialog family) owns the keyboard. Game keybinds must not fire
-  // then: the Enter that confirms a prompt re-focuses a button synchronously, so
-  // the same keydown would bubble to the window handler and open chat, stealing
-  // the WCAG 2.4.3 focus return. Deliberately NOT part of isModalOpen(): these
-  // prompts do not pause movement (the confirm-dialog family precedent), and the
-  // party/trade/duel prompts (no aria-modal) stay non-blocking. Called from
-  // keydown paths only, never per frame.
+  // True while an aria-modal quantity/confirm prompt (the installPromptDialog
+  // family) owns the keyboard; game keybinds must not fire then (the WCAG 2.4.3
+  // focus-return rationale, the isModalOpen() separation, and the mount-aware
+  // matcher, which must see the body-level Store decision as well as the
+  // #prompt-stack members, all live with the family in prompt_dialog.ts).
+  // Called from keydown paths only, never per frame.
   promptModalOpen(): boolean {
-    return $('#prompt-stack').querySelector('.prompt[aria-modal="true"]') !== null;
+    return modalPromptOpen();
   }
 
   // True when any interactive HUD surface is open: a modal OR a managed window

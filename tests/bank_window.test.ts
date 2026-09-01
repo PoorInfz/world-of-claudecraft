@@ -750,11 +750,15 @@ describe('bank_window: keyboard a11y (non-modal activation + prompt Enter)', () 
     // bind fires and steals the focus return. promptModalOpen() matches ONLY the
     // installPromptDialog family (party/trade/duel prompts carry no aria-modal and
     // must stay non-blocking), and the shared gameplay gate consults it before
-    // every keyboard/gamepad action predicate.
+    // every keyboard/gamepad action predicate. The matcher itself lives with the
+    // family in prompt_dialog.ts and must cover BOTH mounts: the bank prompts in
+    // #prompt-stack AND the body-level Store decision (a stack-scoped selector
+    // left that decision ungated, so Tab inside it fired the target-nearest
+    // bind; behavior is driven in tests/store_decision_prompt.test.ts).
     expect(hud).toContain('promptModalOpen(): boolean {');
-    expect(hud).toContain(
-      `$('#prompt-stack').querySelector('.prompt[aria-modal="true"]') !== null`,
-    );
+    expect(hud).toContain('return modalPromptOpen()');
+    expect(promptDialog).toContain('#prompt-stack .prompt[aria-modal="true"]');
+    expect(promptDialog).toContain('body > .prompt[aria-modal="true"]');
     const gateStart = mainSrc.indexOf('const gameplayInputBlocked = () =>');
     const gate = mainSrc.slice(gateStart, mainSrc.indexOf(';', gateStart));
     expect(gateStart).toBeGreaterThan(0);
