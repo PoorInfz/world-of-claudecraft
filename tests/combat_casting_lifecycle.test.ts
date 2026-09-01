@@ -1089,10 +1089,13 @@ describe('casting_lifecycle: GCD-tail queue (WotLK-style spell queue)', () => {
     spawnTarget(sim, p, 1, 2); // dz 2: inside melee range for the hamstring press
     castAbility(sim.ctx, 'hamstring', p.id); // instant on-GCD press arms the GCD
     expect(p.gcdRemaining).toBeGreaterThan(0);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    castAbility(sim.ctx, 'hamstring', p.id); // load the slot: a held press to protect
+    expect(p.queuedCastAbility).toBe('hamstring');
 
     castAbility(sim.ctx, 'berserker_rage', p.id); // offGcd: bypasses the GCD outright
-    expect(p.queuedCastAbility).toBeNull();
     expect(p.cooldowns.has('berserker_rage')).toBe(true); // it fired now, not later
+    expect(p.queuedCastAbility).toBe('hamstring'); // and the held press is undisturbed
   });
 
   it('pins the exact window boundary: gcdRemaining at the window queues, just above drops', () => {

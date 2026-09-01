@@ -721,8 +721,10 @@ export function releaseEmpoweredAbility(ctx: SimContext, abilityId: string, pid?
 // AFTER the updateCasting retry arm ran), where a fresh press passes the GCD
 // gate before the retry can fire the slot; without this clear the stale press
 // fires when the fresh cast completes. Off-GCD weaves never touch the slot,
-// and the normal queued fire is unaffected (fireQueuedCast empties the slot
-// before calling back in).
+// and neither does a blink-through commit (excluded at its call site: the
+// escape weave leaves the cast in progress, and therefore the follow-up
+// queued behind it, untouched). The normal queued fire is unaffected
+// (fireQueuedCast empties the slot before calling back in).
 function dropStaleHeldPressOnCommit(p: Entity, ability: AbilityDef): void {
   if (ability.offGcd) return;
   p.queuedCastAbility = null;
