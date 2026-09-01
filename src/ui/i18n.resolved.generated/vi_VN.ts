@@ -9764,7 +9764,8 @@ export const vi_VN: EnTranslations = {
       "potion": "Thuốc",
       "elixir": "Tiên Dược",
       "bag": "Túi",
-      "mount": "Thú Cưỡi"
+      "mount": "Thú Cưỡi",
+      "skin": "Ngoại hình"
     },
     "stats": {
       "armor": "Giáp",
@@ -10479,7 +10480,7 @@ export const vi_VN: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Gọi Người Ngã Xuống",
-        "description": "Đưa một thành viên nhóm đã chết trở lại sự sống với 35% máu và mana. Người Chữa Lành Mặt Trời cấp 16 trở lên sẽ thay vào đó gọi về mọi thành viên đã ngã xuống của nhóm."
+        "description": "Đưa một thành viên nhóm đã chết trở lại sự sống bên cạnh bạn với 35% máu và mana. Người Chữa Lành Mặt Trời cấp 16 trở lên sẽ thay vào đó gọi về mọi thành viên đã ngã xuống của nhóm trong phạm vi 30 mét và trong tầm nhìn thẳng của bạn."
       },
       "beacon_of_light": {
         "name": "Ngọn Hải Đăng Ánh Sáng",
@@ -11215,6 +11216,14 @@ export const vi_VN: EnTranslations = {
         "name": "Mãn Khai",
         "description": "Tiêu 5 Sắc Xanh. Thu hoạch mọi hồi máu theo thời gian của bạn trên tất cả đồng minh với {buff}% lượng hồi còn lại, gỡ bỏ các hiệu ứng đó và trồng một Hoa Nở Hoang Dã mới lên mục tiêu."
       },
+      "wildwake": {
+        "name": "Bừng Nở Hoang Dã",
+        "description": "Dỗ dành một đồng minh đã ngã xuống bừng nở đột ngột, đưa họ trở lại sự sống ngay bên cạnh bạn với 35% máu và mana của họ, ngay cả khi đang giao tranh ác liệt. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Thức Tỉnh Khu Rừng",
+        "description": "Gọi mọi thành viên đã ngã xuống trong nhóm hoặc đội của bạn, trong phạm vi 40 mét và trong tầm nhìn thẳng của bạn, trở lại sự sống bên cạnh bạn với 30% máu và mana. Không thể niệm khi đang chiến đấu. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Triệu Hồi Emberkin",
         "description": "Triệu hồi một Emberkin dưới lệnh của thuật sĩ. Emberkin niệm Tiễn Tro vào kẻ địch của bạn từ xa. Triệu hồi một quỷ mới sẽ giải tán con hiện tại. Bạn chỉ có thể có một quỷ tại một thời điểm."
@@ -11521,15 +11530,15 @@ export const vi_VN: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Đảo Ngược Thời Gian",
-        "description": "Tua lại dòng thời gian của một đồng minh đã ngã xuống, đưa họ trở lại cuộc sống tại thân xác với một phần máu và mana, ngay cả giữa chiến đấu. (Thời Thuật)"
+        "description": "Tua lại dòng thời gian của một đồng minh đã ngã xuống, đưa họ trở lại cuộc sống bên cạnh bạn với 35% máu và mana của họ, ngay cả giữa chiến đấu. (Thời Thuật)"
       },
       "collective_reversal": {
         "name": "Đảo ngược tập thể",
-        "description": "Tua ngược dòng thời gian của mọi thành viên đã chết trong nhóm hoặc đội đột kích, hồi sinh họ bên cạnh thi thể với 30% máu và năng lượng phép. Không thể thi triển khi đang chiến đấu. (Thời thuật)"
+        "description": "Tua ngược dòng thời gian của mọi thành viên đã chết trong nhóm hoặc đội đột kích, trong phạm vi 40 mét và trong tầm nhìn thẳng của bạn, hồi sinh họ bên cạnh bạn với 30% máu và năng lượng phép. Không thể thi triển khi đang chiến đấu. (Thời thuật)"
       },
       "ancestor_return": {
         "name": "Tổ Tiên Hồi Quy",
-        "description": "Gọi mọi thành viên đã ngã xuống trong nhóm hoặc đội của bạn trở lại sự sống ngay tại thi thể với 30% máu và mana. Không thể niệm khi đang chiến đấu. (Vá Hồn)"
+        "description": "Gọi mọi thành viên đã ngã xuống trong nhóm hoặc đội của bạn, trong phạm vi 40 mét và trong tầm nhìn thẳng của bạn, trở lại sự sống bên cạnh bạn với 30% máu và mana. Không thể niệm khi đang chiến đấu. (Vá Hồn)"
       },
       "temporal_rewind": {
         "name": "Quay Ngược",
@@ -11675,6 +11684,10 @@ export const vi_VN: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Hợp Xướng Giải Thoát",
         "description": "Vận phép trong 6 giây, hồi máu cho các thành viên trong nhóm trong phạm vi 30 mét {damage} mỗi 2 giây. Lượng hồi tăng theo sức mạnh phép thuật."
+      },
+      "prayer_of_returning": {
+        "name": "Lời Nguyện Hồi Quy",
+        "description": "Gọi mọi thành viên đã ngã xuống trong nhóm hoặc đội của bạn, trong phạm vi 40 mét và trong tầm nhìn thẳng của bạn, trở lại sự sống bên cạnh bạn với 30% máu và mana. Không thể niệm khi đang chiến đấu. (Thần Thánh và Giáo Lý)"
       },
       "bear_charge": {
         "name": "Cú Lao Bruin",

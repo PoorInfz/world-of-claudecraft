@@ -428,6 +428,9 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'seraphic_vigil',
       'shadowform',
       'summon_tithefiend',
+      // Out-of-combat mass resurrection shared by the two healing specs
+      // (Benison and Doctrine), the collective_reversal twin.
+      'prayer_of_returning',
     ],
     color: 0xc6d4f0,
   },
@@ -605,6 +608,10 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'hurricane',
       'skull_bash',
       'primal_reflexes',
+      // Groveheart resurrections: the in-combat single rez and the
+      // out-of-combat group rez (collective_reversal twin).
+      'wildwake',
+      'grove_awakening',
     ],
     color: 0xff8c1a,
   },
@@ -7906,6 +7913,56 @@ export const ABILITIES: Record<string, AbilityDef> = {
     // there, everyone else the base 60.
     description:
       'Spends your 5 Verdance: every ally carrying your heal-over-time effects is instantly healed for $b% of the healing those effects had left, the effects are removed, and the target gets a fresh Wildbloom.',
+  },
+  // In-combat single-target resurrection, the Groveheart sibling of Temporal
+  // Reversal: same offer flow (combat/resurrection_offer.ts), so the accept
+  // returns the fallen at the caster's side with no resurrection sickness.
+  // Five minutes, the shared resurrection cooldown (owner directive
+  // 2026-09-01): the cooldown is the real throttle on chaining combat rezzes
+  // inside one encounter.
+  wildwake: {
+    id: 'wildwake',
+    name: 'Wildwake',
+    class: 'druid',
+    specs: ['restoration'],
+    learnLevel: 16,
+    cost: 60,
+    castTime: 2,
+    cooldown: 300,
+    range: 30,
+    school: 'nature',
+    requiresTarget: true,
+    targetType: 'friendly',
+    targetsDead: true,
+    effects: [{ type: 'resurrectAlly', hpFrac: 0.35 }],
+    description:
+      'Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)',
+  },
+  // Out-of-combat mass resurrection, the ancestor_return / collective_reversal
+  // twin. The five-minute cooldown is the real throttle: requiresOutOfCombat
+  // alone is not one, because a backline healer who never draws aggro drops
+  // combat mid-fight the moment combatTimer passes the 5s linger (see the
+  // engagedPids pass in sim.ts), so a zero-cooldown mass rez could be chained
+  // repeatedly inside a single encounter. Kept equal to collective_reversal so
+  // the mass rezzes cannot be played against each other; tests pin that
+  // equality.
+  grove_awakening: {
+    id: 'grove_awakening',
+    name: 'Grove Awakening',
+    class: 'druid',
+    specs: ['restoration'],
+    learnLevel: 20,
+    cost: 250,
+    castTime: 7,
+    cooldown: 300,
+    range: 0,
+    school: 'nature',
+    requiresTarget: false,
+    requiresOutOfCombat: true,
+    projectile: false,
+    effects: [{ type: 'massResurrectGroup', hpFrac: 0.3 }],
+    description:
+      'Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)',
   },
 
   // Baseline class interrupts: every caster-pressuring class trains a short-cooldown

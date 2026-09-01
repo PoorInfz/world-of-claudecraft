@@ -157,6 +157,11 @@ import { ensureWarriorStance } from './combat/warrior_stances';
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
 import { applyTalentMods } from './content/classes';
+import {
+  CRUCIBLE_VENDOR_ENTITY_ID,
+  CRUCIBLE_VENDOR_ENTRANCE_POS,
+  CRUCIBLE_VENDOR_NPC_ID,
+} from './content/ignivar_loot';
 import { DEFAULT_MOUNT, type MountKey } from './content/mounts';
 import { GATHERING_PROFESSION_IDS, type GatheringProfessionId } from './content/professions';
 import { PROVING_SHORE_ARRIVAL } from './content/proving_shore';
@@ -299,6 +304,10 @@ import {
 } from './leaderboard_page';
 import { entityLineOfSightClear } from './line_of_sight_elevation';
 import type { Ante, PickAction } from './lockpick';
+import {
+  normalizePartyTradeContainers,
+  normalizePersistedPartyTradeContainers,
+} from './loot/bop_trade_cleanup';
 import { withoutPartyTradeMarker } from './loot/bop_trade_window';
 // L1: the loot-distribution layer (party-loot strategy, the rollLoot roller, copper
 // split, need-greed roll lifecycle, corpse-loot helpers) moved to ./loot/loot_roll.ts;
@@ -322,6 +331,14 @@ import { defaultMarketQuery, type MarketQuery } from './market_query';
 import type { MaterialsVaultState } from './materials_vault';
 import * as vaultMod from './materials_vault';
 import { accountCosmeticsWithWornMechChroma } from './mech_chroma_ownership';
+import {
+  carriesWornPlate,
+  releaseMechPlateCustody,
+  restoredMechPlateOwed,
+  savedMechPlateOwedField,
+  settleMechPlateCustody,
+  stampMechPlateCustody,
+} from './mech_plate_custody';
 import {
   mobCombatProfile as mobCombatProfileFn,
   mobEffectiveMeleeRange as mobEffectiveMeleeRangeImpl,
@@ -1289,6 +1306,12 @@ export interface PlayerMeta {
   pendingSkinRank: SkinRank | null;
   pendingSkinCatalog: SkinCatalog | null;
   pendingSkinItemId: string | null;
+  // Mech chroma plate custody (issue #3680): the chroma whose armor plate the
+  // CURRENT wear consumed, or null for a display-only wear (a free changeSkin
+  // re-select over the permanent account unlock). setPlayerSkin settles it on
+  // every transition away, returning the plate to the bags exactly once.
+  // Persisted; src/sim/mech_plate_custody.ts owns the rules.
+  mechPlateOwedChromaId: string | null;
   // The active riding-lesson attempt, or null. Session state, never persisted:
   // src/sim/mounts_training.ts owns the rules; this is the same
   // optional-plus-null shape as other transient session fields below (e.g.
@@ -2303,6 +2326,21 @@ export class Sim {
       }
     }
 
+    // Quartermaster Bronn Emberward at the Crucible entrance: spawn after
+    // world generation under a reserved id so replay entity ids remain stable.
+    {
+      const bronn = worldContent.npcs[CRUCIBLE_VENDOR_NPC_ID];
+      if (bronn && !this.entities.has(CRUCIBLE_VENDOR_ENTITY_ID)) {
+        const safe = this.findSafePos(
+          CRUCIBLE_VENDOR_ENTRANCE_POS.x,
+          CRUCIBLE_VENDOR_ENTRANCE_POS.z,
+          waterLevel() + 0.6,
+        );
+        const npc = createNpc(CRUCIBLE_VENDOR_ENTITY_ID, bronn, this.groundPos(safe.x, safe.z));
+        this.addEntity(npc);
+      }
+    }
+
     for (const delve of DELVE_LIST) {
       for (let i = 0; i < DELVE_SLOT_COUNT; i++) {
         const origin = delveOrigin(delve.index, i);
@@ -2680,6 +2718,7 @@ export class Sim {
       pendingSkinRank: savedState?.pendingSkinRank ?? null,
       pendingSkinCatalog: savedState?.pendingSkinCatalog ?? null,
       pendingSkinItemId: savedState?.pendingSkinItemId ?? null,
+      mechPlateOwedChromaId: savedState ? restoredMechPlateOwed(savedState) : null,
       moveInput: emptyMoveInput(),
       wireRev: 0,
       inventory: [],
@@ -3047,6 +3086,9 @@ export class Sim {
       // save sanitizes to the empty locked vault): restoreVaultStateOnLoad owns the
       // whole-record replacement AND its vaultWireRev bump (the rationale sits there).
       vaultMod.restoreVaultStateOnLoad(meta, s.vault, droppedInstanceJunk, player.id);
+      const partyTradeNowMs = this.lockoutNowMs();
+      normalizePartyTradeContainers(meta, partyTradeNowMs);
+      vaultMod.normalizeVaultPartyTradeState(meta.vault, partyTradeNowMs);
       warnDroppedInstanceKeys(meta.name, droppedInstanceJunk);
       let questRevReset = false;
       for (const q of s.questLog) {
@@ -3985,6 +4027,9 @@ export class Sim {
       pendingSkinRank: meta.pendingSkinRank,
       pendingSkinCatalog: meta.pendingSkinCatalog,
       pendingSkinItemId: meta.pendingSkinItemId,
+      // Absent while no plate is owed (zero-default omission), see
+      // savedMechPlateOwedField.
+      ...savedMechPlateOwedField(meta),
       // Absent until the fee is actually charged (back-compat + parity-stable saves).
       ...(meta.mountTrainingFeePaid ? { mountTrainingFeePaid: true } : {}),
       // Absent until riding skill is purchased (back-compat).
@@ -4064,6 +4109,12 @@ export class Sim {
         return reliquary ? { reliquary } : {};
       })(),
     };
+    // Retire expired BoP party-trade metadata at the existing per-character
+    // persistence boundary. This keeps saved JSON compact without adding a
+    // synchronized realm-wide container scan to the simulation tick.
+    const partyTradeNowMs = this.lockoutNowMs();
+    normalizePersistedPartyTradeContainers(state, partyTradeNowMs);
+    if (state.vault) vaultMod.normalizeSavedVaultPartyTradeState(state.vault, partyTradeNowMs);
     return sanitizeRemovedZone1Content(state).state;
   }
 
@@ -4076,6 +4127,11 @@ export class Sim {
     if (!meta || !e) return false;
     const maxSkin = catalog === 'mech' ? MECH_CHROMAS.length - 1 : 7;
     const idx = Math.max(0, Math.min(maxSkin, Math.floor(skin)));
+    // Plate custody settles at THE skin choke point (every host's unequip and
+    // swatch change lands here), so an item-backed wear returns its armor
+    // plate on any transition away, and a display-only wear returns nothing
+    // (issue #3680; the grant is below, after the look actually changed).
+    const returnedPlateItemId = settleMechPlateCustody(meta, idx, catalog);
     meta.skin = idx;
     meta.skinCatalog = catalog;
     e.skin = idx;
@@ -4091,6 +4147,9 @@ export class Sim {
       catalog,
     );
     deedsMod.markDeedsDirty(this.ctx, meta.entityId); // col_true_colors reads the skin state
+    // movement: the plate re-materializes the very copy equipping it consumed,
+    // so this relocates an owned copy rather than sourcing a new one.
+    if (returnedPlateItemId) this.addItem(returnedPlateItemId, 1, meta.entityId, MOVEMENT_GRANT);
     return true;
   }
 
@@ -4391,6 +4450,15 @@ export class Sim {
         : [...this.accountCosmetics.mechChromaIds, chroma.id];
       this.accountCosmetics = { ...this.accountCosmetics, mechChromaIds };
       this.setPlayerSkin(meta.entityId, skin, 'mech');
+      // The claim consumed the spinner token, so the wear carries the chroma's
+      // plate: unequipping returns it to the bags (issue #3680). Claiming the
+      // chroma already worn item-backed hands the displaced plate back first
+      // (setPlayerSkin only settles a CHANGED look), so two consumed items
+      // never collapse into one custody.
+      const displacedPlateItemId = releaseMechPlateCustody(meta);
+      if (displacedPlateItemId)
+        this.addItem(displacedPlateItemId, 1, meta.entityId, MOVEMENT_GRANT);
+      stampMechPlateCustody(meta, chroma.id);
       return { catalog: 'mech', skin, chromaId: chroma.id };
     }
     if (!rankAllowsSkin(granted, skin)) return null; // tier above the rolled rank
@@ -4411,12 +4479,19 @@ export class Sim {
     const skin = mechChromaSkinIndex(chromaId);
     if (skin < 0) return undefined;
     if (this.countItem(itemId, meta.entityId) <= 0) return undefined;
+    // The worn look already carries this chroma's plate: consuming a spare
+    // copy would strand it (custody holds at most one plate), so the re-use
+    // is a no-op success and the spare stays in the bags.
+    if (carriesWornPlate(meta, chromaId)) return { type: 'mechChroma', chromaId };
     this.removeItem(itemId, 1, meta.entityId);
     const mechChromaIds = this.accountCosmetics.mechChromaIds.includes(chromaId)
       ? this.accountCosmetics.mechChromaIds
       : [...this.accountCosmetics.mechChromaIds, chromaId];
     this.accountCosmetics = { ...this.accountCosmetics, mechChromaIds };
     this.setPlayerSkin(meta.entityId, skin, 'mech');
+    // The equip consumed the plate, so the wear carries it: unequipping (or
+    // swapping the look) returns it to the bags (issue #3680).
+    stampMechPlateCustody(meta, chromaId);
     return { type: 'mechChroma', chromaId };
   }
 
@@ -4424,8 +4499,11 @@ export class Sim {
    *  reverting to the class body. The account-wide unlock
    *  (accountCosmetics.mechChromaIds) is permanent, exactly like a purchased
    *  Season 1 Armory weapon skin: this only changes what is CURRENTLY
-   *  displayed, never revokes ownership, so any character on the account can
-   *  freely re-select it later via changeSkin with no item involved. */
+   *  displayed and never revokes ownership, so any character on the account
+   *  can freely re-select it later via changeSkin with no item involved. An
+   *  ITEM-BACKED wear (the equip consumed an armor plate or the claim token)
+   *  additionally returns the chroma's plate to the bags, exactly once, via
+   *  the custody settle inside setPlayerSkin (issue #3680). */
   unequipMechChroma(chromaId: string, pid?: number): boolean {
     const r = this.resolve(pid);
     if (!r) return false;

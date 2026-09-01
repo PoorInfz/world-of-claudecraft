@@ -9764,7 +9764,8 @@ export const da_DK: EnTranslations = {
       "potion": "Eliksir",
       "elixir": "Eliksir",
       "bag": "Taske",
-      "mount": "Ridedyr"
+      "mount": "Ridedyr",
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Rustning",
@@ -10479,7 +10480,7 @@ export const da_DK: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Kald de Faldne",
-        "description": "Bringer et dødt gruppemedlem tilbage til livet med 35% sundhed og mana. En Solheler på niveau 16 eller derover kalder i stedet ethvert faldent medlem af gruppen tilbage."
+        "description": "Bringer et dødt gruppemedlem tilbage til livet ved din side med 35% sundhed og mana. En Solheler på niveau 16 eller derover kalder i stedet ethvert faldent medlem af gruppen, som er inden for 30 meter og i din synsvidde, tilbage."
       },
       "beacon_of_light": {
         "name": "Lysets Bavn",
@@ -11215,6 +11216,14 @@ export const da_DK: EnTranslations = {
         "name": "Overblomstring",
         "description": "Forbruger 5 Grønske. Høster hver af dine helbredelser over tid på alle allierede for {buff}% af den resterende helbredelse, fjerner de virkninger og planter en frisk Vildblomst på målet."
       },
+      "wildwake": {
+        "name": "Vildopvågnen",
+        "description": "Lokker en falden allieret til pludselig blomstring og bringer vedkommende tilbage til livet ved din side med 35% sundhed og mana, selv midt i kampens hede. (Lundhjerte)"
+      },
+      "grove_awakening": {
+        "name": "Lundens Opvågnen",
+        "description": "Kalder ethvert faldent medlem af din gruppe eller dit togt, som er inden for 40 meter og i din synsvidde, tilbage til din side med 30% sundhed og mana. Kan ikke kastes i kamp. (Lundhjerte)"
+      },
       "summon_imp": {
         "name": "Tilkald Emberkin",
         "description": "Fremmaner en Emberkin under heksemesterens kommando. Emberkin kaster Dæmonlyn mod jeres fjender på afstand. At fremmane en ny dæmon sender jeres nuværende bort. I kan have én dæmon ad gangen."
@@ -11521,15 +11530,15 @@ export const da_DK: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Tidsvending",
-        "description": "Tilbagespoler en falden allieredes tidslinje og bringer dem tilbage til livet ved deres krop med en del af deres helbred og mana, selv midt i kamp. (Kronomantik)"
+        "description": "Tilbagespoler en falden allieredes tidslinje og bringer dem tilbage til livet ved din side med 35% af deres helbred og mana, selv midt i kamp. (Kronomantik)"
       },
       "collective_reversal": {
         "name": "Kollektiv tilbagespoling",
-        "description": "Spoler tidslinjen tilbage for hvert faldet medlem af din gruppe eller dit raid og genopliver dem ved deres krop med 30% helbred og mana. Kan ikke kastes i kamp. (Kronomanti)"
+        "description": "Spoler tidslinjen tilbage for hvert faldet medlem af din gruppe eller dit raid, som er inden for 40 meter og i din synsvidde, og genopliver dem ved din side med 30% helbred og mana. Kan ikke kastes i kamp. (Kronomanti)"
       },
       "ancestor_return": {
         "name": "Forfædrenes Tilbagekomst",
-        "description": "Kalder ethvert faldent medlem af din gruppe eller dit togt tilbage til livet ved deres krop med 30% sundhed og mana. Kan ikke kastes i kamp. (Åndelapning)"
+        "description": "Kalder ethvert faldent medlem af din gruppe eller dit togt, som er inden for 40 meter og i din synsvidde, tilbage til din side med 30% sundhed og mana. Kan ikke kastes i kamp. (Åndelapning)"
       },
       "temporal_rewind": {
         "name": "Tilbagespoling",
@@ -11675,6 +11684,10 @@ export const da_DK: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Befrielsens Kor",
         "description": "Kanaliserer i 6 sek. og helbreder gruppemedlemmer inden for 30 meter for {damage} hvert 2. sek. Helbredelsen øges med besværgelseskraft."
+      },
+      "prayer_of_returning": {
+        "name": "Tilbagekomstens Bøn",
+        "description": "Kalder ethvert faldent medlem af din gruppe eller dit togt, som er inden for 40 meter og i din synsvidde, tilbage til din side med 30% sundhed og mana. Kan ikke kastes i kamp. (Velsignelse og Lære)"
       },
       "bear_charge": {
         "name": "Bruin-storm",

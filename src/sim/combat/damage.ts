@@ -1357,6 +1357,7 @@ export function handleDeath(
   e.castAim = null;
   e.queuedCastAbility = null;
   e.queuedCastAim = null;
+  e.queuedCastTargetId = null;
   clearRadiantResonanceReservation(e);
   // Hidden per-cast state: death ends any gather/fishing session, so
   // the fields must return to inert here too (the parity samplers rely on them
@@ -1457,6 +1458,7 @@ export function handleDeath(
     delete e.queuedOnSwingCostMultiplier;
     e.queuedCastAbility = null;
     e.queuedCastAim = null;
+    e.queuedCastTargetId = null;
     e.comboPoints = 0;
     e.eating = null;
     e.drinking = null;

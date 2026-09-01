@@ -9764,7 +9764,8 @@ export const zh_CN: EnTranslations = {
       "potion": "药水",
       "elixir": "药剂",
       "bag": "背包",
-      "mount": "坐骑"
+      "mount": "坐骑",
+      "skin": "外观"
     },
     "stats": {
       "armor": "护甲",
@@ -10479,7 +10480,7 @@ export const zh_CN: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "唤回逝者",
-        "description": "使一名死亡的小队成员复活，并恢复 35% 的生命值和法力值。"
+        "description": "使一名死亡的小队成员回到你身边复活，并恢复 35% 的生命值和法力值。16 级或以上的黎明愈者则会改为呼唤小队中 30 码内且在你视线内的所有阵亡成员回到你身边复活。"
       },
       "beacon_of_light": {
         "name": "圣光道标",
@@ -11215,6 +11216,14 @@ export const zh_CN: EnTranslations = {
         "name": "盛放",
         "description": "消耗你的5层繁茂：每个持有你的持续治疗效果的盟友立即恢复这些效果剩余治疗量的{buff}%，这些效果随之移除，并为目标种下一个新的野性绽放。"
       },
+      "wildwake": {
+        "name": "野性复苏",
+        "description": "催发倒下的盟友骤然绽放，使其回到你身边复活，恢复35%生命值和法力值，即使激战正酣也可施放。（恢复）"
+      },
+      "grove_awakening": {
+        "name": "林地觉醒",
+        "description": "呼唤小队或团队中 40 码内且在你视线内的所有阵亡成员回到你身边复活，并恢复30%生命值和法力值。战斗中无法施放。（恢复）"
+      },
       "summon_imp": {
         "name": "召唤烬裔",
         "description": "召唤一只听从术士号令的烬裔。烬裔会从远处向你的敌人施放邪能箭。召唤新的恶魔会遣散你当前的恶魔。你同一时间只能拥有一只恶魔。"
@@ -11521,15 +11530,15 @@ export const zh_CN: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "时光逆转",
-        "description": "倒转一名阵亡盟友的时间线，使其在遗体处以部分生命值和法力值复活，即使正在激烈战斗中也可使用。（时光术）"
+        "description": "倒转一名阵亡盟友的时间线，使其回到你身边以35%生命值和法力值复活，即使正在激烈战斗中也可使用。（时光术）"
       },
       "collective_reversal": {
         "name": "集体逆转",
-        "description": "倒转队伍或团队中每位阵亡成员的时间线，使其在遗体旁以30%生命值和法力值复活。无法在战斗中施放。（时空魔法）"
+        "description": "倒转队伍或团队中 40 码内且在你视线内的每位阵亡成员的时间线，使其回到你身边以30%生命值和法力值复活。无法在战斗中施放。（时空魔法）"
       },
       "ancestor_return": {
         "name": "先祖归来",
-        "description": "呼唤小队或团队中所有阵亡成员，使其在尸体处复活并恢复30%生命值和法力值。战斗中无法施放。（灵愈）"
+        "description": "呼唤小队或团队中 40 码内且在你视线内的所有阵亡成员回到你身边复活，并恢复30%生命值和法力值。战斗中无法施放。（灵愈）"
       },
       "temporal_rewind": {
         "name": "回溯",
@@ -11675,6 +11684,10 @@ export const zh_CN: EnTranslations = {
       "choir_of_deliverance": {
         "name": "救赎圣咏团",
         "description": "引导6秒，每2秒为30码内的队伍成员恢复{damage}点生命值。治疗量随法术强度提高。"
+      },
+      "prayer_of_returning": {
+        "name": "归返祈祷",
+        "description": "呼唤小队或团队中 40 码内且在你视线内的所有阵亡成员回到你身边复活，并恢复30%生命值和法力值。战斗中无法施放。（神圣与戒律）"
       },
       "bear_charge": {
         "name": "巨熊冲锋",

@@ -1100,6 +1100,7 @@ export function readyArenaFighter(
   delete e.queuedOnSwingCostMultiplier;
   e.queuedCastAbility = null;
   e.queuedCastAim = null;
+  e.queuedCastTargetId = null;
   emitRainOfFireStop(ctx, e);
   e.castingAbility = null;
   e.castRemaining = 0;

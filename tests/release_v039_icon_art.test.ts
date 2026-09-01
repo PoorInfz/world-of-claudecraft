@@ -38,7 +38,7 @@ const ACCEPTED_ART_SHA256 = '3d8cb36726050e3a708720b650744005f4ce23d3ac49c032376
 const SECOND_PASS_RECORD =
   'docs/achievements/release-v039-icon-art-second-pass-2026-08-16/accepted-art.json';
 const SECOND_PASS_RECORD_SHA256 =
-  '95d1b967dd1f9601d1a207b29a3ea5069d0f03fbe94d20a424e69b05276e23d0';
+  '7a2c77f58ac2b26c929f59e0b2cbd643af36e8ce7a8aaf8f20b4d36305ea5648';
 const EVIDENCE = {
   'icon-art-before-after-desktop.png': {
     sha256: '61d19fb321f2b30eb3749e0966f26efea0fa4df53edae4b253cfd70edb82cd7a',
@@ -327,10 +327,11 @@ describe('release v0.39 icon-art second-pass lineage', () => {
         retriedAssets: ['dismiss_pet'],
       },
       runtimeClosure: {
-        // 402: the ten Vale Cup sport abilities retired with the New
-        // Eastbrook program's Sowfield demolition, plus the release arm's
-        // two new abilities riding the v0.40.0 sync merge.
-        abilities: { live: 402, painted: 402 },
+        // 405: the ten Vale Cup sport abilities retired with the New
+        // Eastbrook program's Sowfield demolition, the release arm's two new
+        // abilities riding the v0.40.0 sync merge, plus the three healer
+        // resurrections (prayer_of_returning, wildwake, grove_awakening).
+        abilities: { live: 405, painted: 405 },
         hotbarItems: { live: 73, painted: 73 },
         fixedActions: { painted: 11 },
         mobAuraRouting: { paintedFamilies: 44, exactRuntimeIds: 89 },
@@ -414,7 +415,7 @@ describe('release v0.39 icon-art second-pass lineage', () => {
     expect(new Set(liveAbilityIds).size, 'live ability ids remain unique').toBe(
       liveAbilityIds.length,
     );
-    expect(liveAbilityIds, 'live production ability inventory').toHaveLength(402);
+    expect(liveAbilityIds, 'live production ability inventory').toHaveLength(405);
     expect(
       liveAbilityIds.filter((id) => !paintedAbilityIds.has(id)),
       'every live ability resolves through production to committed painted art',

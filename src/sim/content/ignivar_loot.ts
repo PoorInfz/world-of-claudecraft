@@ -2633,7 +2633,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hitRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['mage', 'priest', 'warlock'],
   },
   cindersoaked_slippers: {
@@ -2649,7 +2648,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     critRating: 60,
     hasteRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['mage', 'priest', 'warlock'],
   },
   // ---- Cloth healing ----
@@ -2666,7 +2664,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hasteRating: 25,
     hitRating: 60,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['mage', 'priest'],
   },
   steps_of_quiet_water: {
@@ -2682,7 +2679,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hasteRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['mage', 'priest'],
   },
   // ---- Leather tanking ----
@@ -2698,7 +2694,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hitRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['druid'],
   },
   ashenbark_treads: {
@@ -2713,7 +2708,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     critRating: 60,
     hasteRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['druid'],
   },
   // ---- Leather dps ----
@@ -2729,7 +2723,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hitRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['rogue', 'hunter', 'druid'],
   },
   ashrunner_boots: {
@@ -2744,7 +2737,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     critRating: 60,
     hasteRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['rogue', 'hunter', 'druid'],
   },
   // ---- Leather spell damage ----
@@ -2761,7 +2753,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hitRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['druid'],
   },
   scorchgrove_striders: {
@@ -2777,7 +2768,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     critRating: 60,
     hasteRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['druid'],
   },
   // ---- Leather healing ----
@@ -2794,7 +2784,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hasteRating: 25,
     hitRating: 60,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['druid'],
   },
   dewfall_moccasins: {
@@ -2810,7 +2799,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hasteRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['druid'],
   },
   // ---- Mail tanking ----
@@ -2826,7 +2814,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hitRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['warrior', 'paladin', 'shaman'],
   },
   anvilstance_sabatons: {
@@ -2841,7 +2828,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     critRating: 60,
     hasteRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['warrior', 'paladin', 'shaman'],
   },
   // ---- Mail dps ----
@@ -2857,7 +2843,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hitRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['warrior', 'paladin', 'shaman'],
   },
   furnace_march_greaves: {
@@ -2872,7 +2857,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     critRating: 60,
     hasteRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['warrior', 'paladin', 'shaman'],
   },
   // ---- Mail spell damage ----
@@ -2889,7 +2873,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hitRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['shaman'],
   },
   thundershock_treads: {
@@ -2905,7 +2888,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     critRating: 60,
     hasteRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['shaman'],
   },
   // ---- Mail healing ----
@@ -2922,7 +2904,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hasteRating: 25,
     hitRating: 60,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['paladin', 'shaman'],
   },
   springwarden_sabatons: {
@@ -2938,7 +2919,6 @@ export const IGNIVAR_OFFSET_ITEMS: Record<string, ItemDef> = {
     hasteRating: 60,
     critRating: 25,
     sellValue: 10000,
-    soulbound: true,
     requiredClass: ['paladin', 'shaman'],
   },
 };
@@ -2956,7 +2936,6 @@ export const IGNIVAR_JEWELRY_ITEMS: Record<string, ItemDef> = {
     stats: { str: 7, sta: 9 },
     critRating: 25,
     sellValue: 8000,
-    soulbound: true,
   },
   // ---- physical dps ----
   ignivars_ember_choker: {
@@ -2969,7 +2948,6 @@ export const IGNIVAR_JEWELRY_ITEMS: Record<string, ItemDef> = {
     stats: { str: 8, agi: 8 },
     hitRating: 25,
     sellValue: 8000,
-    soulbound: true,
   },
   // ---- spell damage ----
   locket_of_the_last_flame: {
@@ -2983,7 +2961,6 @@ export const IGNIVAR_JEWELRY_ITEMS: Record<string, ItemDef> = {
     spellPower: 4,
     critRating: 25,
     sellValue: 8000,
-    soulbound: true,
   },
   // ---- healing ----
   heartspring_amulet: {
@@ -2997,7 +2974,6 @@ export const IGNIVAR_JEWELRY_ITEMS: Record<string, ItemDef> = {
     healPower: 8,
     hasteRating: 25,
     sellValue: 8000,
-    soulbound: true,
   },
   // ---- tank ----
   seal_of_the_forgewall: {
@@ -3010,7 +2986,6 @@ export const IGNIVAR_JEWELRY_ITEMS: Record<string, ItemDef> = {
     stats: { str: 7, sta: 8 },
     hitRating: 25,
     sellValue: 8000,
-    soulbound: true,
   },
   // ---- physical dps ----
   band_of_marked_strikes: {
@@ -3023,7 +2998,6 @@ export const IGNIVAR_JEWELRY_ITEMS: Record<string, ItemDef> = {
     stats: { str: 8, agi: 7 },
     hitRating: 25,
     sellValue: 8000,
-    soulbound: true,
   },
   // ---- spell damage ----
   circle_of_cinders: {
@@ -3037,7 +3011,6 @@ export const IGNIVAR_JEWELRY_ITEMS: Record<string, ItemDef> = {
     spellPower: 4,
     hitRating: 25,
     sellValue: 8000,
-    soulbound: true,
   },
   // ---- healing ----
   loop_of_quiet_springs: {
@@ -3051,7 +3024,6 @@ export const IGNIVAR_JEWELRY_ITEMS: Record<string, ItemDef> = {
     healPower: 8,
     hitRating: 25,
     sellValue: 8000,
-    soulbound: true,
   },
 };
 
@@ -3070,7 +3042,6 @@ export const IGNIVAR_HELD_ITEMS: Record<string, ItemDef> = {
     blockValue: 30,
     critRating: 25,
     sellValue: 12000,
-    soulbound: true,
     requiredClass: ['warrior', 'paladin', 'shaman'],
   },
   ember_wardens_barrier: {
@@ -3087,7 +3058,6 @@ export const IGNIVAR_HELD_ITEMS: Record<string, ItemDef> = {
     healPower: 18,
     hasteRating: 25,
     sellValue: 12000,
-    soulbound: true,
     requiredClass: ['paladin', 'shaman'],
   },
   orb_of_the_last_spring: {
@@ -3101,7 +3071,6 @@ export const IGNIVAR_HELD_ITEMS: Record<string, ItemDef> = {
     healPower: 28,
     hasteRating: 25,
     sellValue: 12000,
-    soulbound: true,
     requiredClass: ['priest', 'mage', 'druid', 'paladin', 'shaman'],
   },
   cinder_of_the_first_design: {
@@ -3115,7 +3084,6 @@ export const IGNIVAR_HELD_ITEMS: Record<string, ItemDef> = {
     spellPower: 14,
     critRating: 25,
     sellValue: 12000,
-    soulbound: true,
     requiredClass: ['mage', 'priest', 'warlock', 'druid'],
   },
 };
@@ -3139,7 +3107,6 @@ export const IGNIVAR_WEAPON_ITEMS: Record<string, ItemDef> = {
     critRating: 70,
     hitRating: 30,
     sellValue: 14000,
-    soulbound: true,
     requiredClass: ['warrior', 'rogue', 'hunter', 'shaman', 'paladin'],
   },
   cinderfang_kris: {
@@ -3154,7 +3121,6 @@ export const IGNIVAR_WEAPON_ITEMS: Record<string, ItemDef> = {
     critRating: 70,
     hitRating: 30,
     sellValue: 14000,
-    soulbound: true,
     requiredClass: ['rogue', 'hunter'],
   },
   slagrender_cleaver: {
@@ -3169,7 +3135,6 @@ export const IGNIVAR_WEAPON_ITEMS: Record<string, ItemDef> = {
     critRating: 70,
     hitRating: 30,
     sellValue: 14000,
-    soulbound: true,
     requiredClass: ['warrior', 'rogue', 'hunter', 'shaman', 'paladin'],
   },
   anvilguard_blade: {
@@ -3184,7 +3149,6 @@ export const IGNIVAR_WEAPON_ITEMS: Record<string, ItemDef> = {
     critRating: 70,
     hitRating: 30,
     sellValue: 14000,
-    soulbound: true,
     requiredClass: ['warrior', 'rogue', 'hunter', 'shaman', 'paladin'],
   },
   heart_of_the_end_greatblade: {
@@ -3200,7 +3164,6 @@ export const IGNIVAR_WEAPON_ITEMS: Record<string, ItemDef> = {
     critRating: 70,
     hitRating: 30,
     sellValue: 16000,
-    soulbound: true,
     // No rogue: the equipment boundary hard-blocks rogues from two-handers,
     // and requiredClass must list exactly who canEquipItem admits
     // (tests/equipment_proficiency.test.ts).
@@ -3220,7 +3183,6 @@ export const IGNIVAR_WEAPON_ITEMS: Record<string, ItemDef> = {
     hasteRating: 70,
     hitRating: 30,
     sellValue: 16000,
-    soulbound: true,
     requiredClass: ['mage', 'priest', 'warlock', 'shaman', 'paladin', 'druid'],
   },
   forgefire_spire: {
@@ -3237,7 +3199,6 @@ export const IGNIVAR_WEAPON_ITEMS: Record<string, ItemDef> = {
     critRating: 70,
     hitRating: 30,
     sellValue: 16000,
-    soulbound: true,
     requiredClass: ['mage', 'priest', 'warlock', 'shaman', 'paladin', 'druid'],
   },
   springtouched_crozier: {
@@ -3253,7 +3214,6 @@ export const IGNIVAR_WEAPON_ITEMS: Record<string, ItemDef> = {
     hasteRating: 70,
     hitRating: 30,
     sellValue: 14000,
-    soulbound: true,
     requiredClass: ['mage', 'priest', 'warlock', 'shaman', 'paladin', 'druid'],
   },
   wand_of_quenched_sparks: {
@@ -3269,7 +3229,6 @@ export const IGNIVAR_WEAPON_ITEMS: Record<string, ItemDef> = {
     critRating: 70,
     hitRating: 30,
     sellValue: 12000,
-    soulbound: true,
     requiredClass: ['mage', 'priest', 'warlock', 'shaman', 'paladin', 'druid'],
   },
 };
@@ -3303,6 +3262,14 @@ export const IGNIVAR_ART_PENDING_ITEM_IDS: readonly string[] = [];
 // validates the buyer's class against the piece's requiredClass, so one
 // token serves its three classes and each class picks its spec's set.
 export const CRUCIBLE_VENDOR_NPC_ID = 'crucible_quartermaster';
+
+// Reserved so this overworld service NPC does not shift the sequential entity
+// ids pinned by replay parity. The other reserved NPC singletons occupy
+// 1_000_000_000 through 1_000_000_002.
+export const CRUCIBLE_VENDOR_ENTITY_ID = 1_000_000_003;
+
+/** Overworld entrance position, separate from the inert dynamic NPC definition. */
+export const CRUCIBLE_VENDOR_ENTRANCE_POS = { x: 510.5, z: 2242.5 } as const;
 
 export interface CrucibleVendorOffer {
   itemId: string;
@@ -3457,24 +3424,23 @@ export const CRUCIBLE_VENDOR_STOCK: readonly CrucibleVendorOffer[] = [
   { itemId: 'grovespring_legs', sigilId: 'sigil_anvil_legs' },
 ];
 
-// The Crucible Quartermaster herself. Dynamic on the Maelin pattern
-// (content/ignivar_raid_lore.ts): the overworld bootstrap never places her;
-// the Halls of the First Tempering lists her in its `npcs` array beside the
-// raid entrance. The crucibleVendor flag routes her dialog to the sigil shop.
+// The Crucible Quartermaster herself, stationed outside the Forgefather's
+// Isle keep door so raiders can redeem sigils without entering an instance.
+// The crucibleVendor flag routes her dialog to the sigil shop.
 export const IGNIVAR_VENDOR_NPCS: Record<string, NpcDef> = {
   [CRUCIBLE_VENDOR_NPC_ID]: {
     id: CRUCIBLE_VENDOR_NPC_ID,
     name: 'Quartermaster Bronn Emberward',
     title: 'Crucible Quartermaster',
-    // Dynamic NPCs use an authored instance-local spawn; this placeholder is
-    // never read by the overworld placement loop.
+    // Dynamic definitions remain inert so the generic placement collider veto
+    // cannot suppress nearby raid-entrance structures or terrain edits.
     pos: { x: 0, z: 0 },
-    facing: 0,
+    facing: Math.PI,
+    dynamic: true,
     color: 0xb3702d,
     questIds: [],
     crucibleVendor: true,
     greeting:
       'The forge marks its own. Bring me a sigil from the Crucible and I will fit you for war.',
-    dynamic: true,
   },
 };

@@ -446,8 +446,8 @@ export const NPCS: Record<string, NpcDef> = {
   // for the same insertion-order stability reason as the realms above.
   ...PROVING_SHORE_NPCS,
   ...IGNIVAR_RAID_LORE_NPCS,
-  // The Crucible Quartermaster (dynamic: true, spawned by the raid's approach
-  // room), appended after the lore NPCs for insertion-order stability.
+  // The Crucible Quartermaster at the raid's overworld entrance, appended
+  // after the lore NPCs for insertion-order stability.
   ...IGNIVAR_VENDOR_NPCS,
   // The Spirit Healer template (dynamic: true, so the ctor's surface-placement
   // loop skips it). Kept in NPCS so the online client and world_entity_i18n can

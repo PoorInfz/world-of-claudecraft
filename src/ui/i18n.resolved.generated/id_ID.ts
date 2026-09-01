@@ -9764,7 +9764,8 @@ export const id_ID: EnTranslations = {
       "potion": "Ramuan",
       "elixir": "Eliksir",
       "bag": "Tas",
-      "mount": "Tunggangan"
+      "mount": "Tunggangan",
+      "skin": "Tampilan"
     },
     "stats": {
       "armor": "Zirah",
@@ -10479,7 +10480,7 @@ export const id_ID: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Panggil yang Gugur",
-        "description": "Menghidupkan kembali anggota kelompok yang mati dengan 35% nyawa dan mana. Penyembuh Surya level 16 atau lebih tinggi justru memanggil kembali seluruh anggota kelompok yang gugur."
+        "description": "Menghidupkan kembali anggota kelompok yang mati ke sisimu dengan 35% nyawa dan mana. Penyembuh Surya level 16 atau lebih tinggi justru memanggil kembali seluruh anggota kelompok yang gugur dalam 30 m dan dalam garis pandangmu."
       },
       "beacon_of_light": {
         "name": "Mercusuar Cahaya",
@@ -11215,6 +11216,14 @@ export const id_ID: EnTranslations = {
         "name": "Mekar Raya",
         "description": "Menghabiskan 5 Kehijauan. Memanen setiap penyembuhan berkala milikmu pada semua sekutu sebesar {buff}% dari penyembuhan tersisa, menghapus efek itu, dan menanam Mekar Liar segar pada sasaran."
       },
+      "wildwake": {
+        "name": "Bangkit Liar",
+        "description": "Membujuk sekutu yang gugur untuk mekar seketika, menghidupkannya kembali di sisimu dengan 35% nyawa dan mananya, bahkan di tengah pertempuran. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Kebangkitan Rimba",
+        "description": "Memanggil kembali ke sisimu setiap anggota kelompok atau serbuanmu yang gugur dalam 40 m dan dalam garis pandangmu, dengan 30% nyawa dan mana. Tidak dapat dirapal dalam pertempuran. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Panggil Emberkin",
         "description": "Memanggil Emberkin di bawah perintah sang penyihir. Emberkin merapal Baut Fel ke musuhmu dari kejauhan. Memanggil iblis baru melepaskan iblismu yang sekarang. Kamu hanya boleh punya satu iblis pada satu waktu."
@@ -11521,15 +11530,15 @@ export const id_ID: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Pembalikan Waktu",
-        "description": "Memundurkan garis waktu sekutu yang gugur, menghidupkan mereka kembali di dekat jasad dengan sebagian kesehatan dan mana mereka, bahkan di tengah pertempuran. (Kronomansi)"
+        "description": "Memundurkan garis waktu sekutu yang gugur, menghidupkan mereka kembali di sisimu dengan 35% kesehatan dan mana mereka, bahkan di tengah pertempuran. (Kronomansi)"
       },
       "collective_reversal": {
         "name": "Pembalikan Kolektif",
-        "description": "Memundurkan alur waktu setiap anggota grup atau raid yang gugur, menghidupkan mereka kembali di dekat jasad dengan 30% kesehatan dan mana. Tidak dapat digunakan saat bertarung. (Kronomansi)"
+        "description": "Memundurkan alur waktu setiap anggota grup atau raid yang gugur dalam 40 m dan dalam garis pandangmu, menghidupkan mereka kembali di sisimu dengan 30% kesehatan dan mana. Tidak dapat digunakan saat bertarung. (Kronomansi)"
       },
       "ancestor_return": {
         "name": "Kembalinya Leluhur",
-        "description": "Memanggil kembali setiap anggota kelompok atau serbuanmu yang gugur ke kehidupan di sisi jasadnya dengan 30% nyawa dan mana. Tidak dapat dirapal dalam pertempuran. (Tambal Roh)"
+        "description": "Memanggil kembali ke sisimu setiap anggota kelompok atau serbuanmu yang gugur dalam 40 m dan dalam garis pandangmu, dengan 30% nyawa dan mana. Tidak dapat dirapal dalam pertempuran. (Tambal Roh)"
       },
       "temporal_rewind": {
         "name": "Putar Balik Waktu",
@@ -11675,6 +11684,10 @@ export const id_ID: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Paduan Suara Pembebasan",
         "description": "Merapal selama 6 dtk, menyembuhkan anggota grup dalam radius 30 meter sebesar {damage} setiap 2 dtk. Penyembuhan meningkat dengan kekuatan mantra."
+      },
+      "prayer_of_returning": {
+        "name": "Doa Kepulangan",
+        "description": "Memanggil kembali ke sisimu setiap anggota kelompok atau serbuanmu yang gugur dalam 40 m dan dalam garis pandangmu, dengan 30% nyawa dan mana. Tidak dapat dirapal dalam pertempuran. (Suci dan Disiplin)"
       },
       "bear_charge": {
         "name": "Terjangan Bruin",

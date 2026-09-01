@@ -319,7 +319,13 @@ follow the root `extract-and-test` skill for the move-not-rewrite mechanics. The
   `prompt_dialog.ts` (`installPromptDialog`: the window behind it goes inert while open, EVERY
   teardown path routes through the returned `dismiss()`, focus returns to the opener), never a
   hand-rolled trap; a caller whose window can be force-closed under an open prompt also clears
-  `inert` in its own teardown as a backstop, so a root is never left inert while hidden. **For a hot
+  `inert` in its own teardown as a backstop, so a root is never left inert while hidden. One
+  family member deliberately mounts on `document.body` instead of the stack: the Store decision
+  (`store_decision_prompt.ts`), because `#prompt-stack` sits inside `#ui`'s fixed z-index 10
+  stacking context and could never clear the body-level armory inspect overlay (z 90). The
+  keybind gate's modal matcher (`modalPromptOpen` in `prompt_dialog.ts`, consumed by
+  `Hud.promptModalOpen()`) covers BOTH mounts; a new mount point joins that selector in the
+  same change. **For a hot
   component:** keep the core allocation-light, pass the perf gate, read the static preset (not
   the governor), and apply the matching canvas hot-path technique.
 - **Reuse a FAMILY before building bespoke:** a unit-style frame is a new `UnitFramePainter`

@@ -1281,6 +1281,7 @@ function beginCraftCast(
   }
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
+  p.queuedCastTargetId = null;
   const duration = craftCastDurationSec(recipe);
   p.castingAbility = CRAFT_CAST_ID;
   p.castTotal = duration;

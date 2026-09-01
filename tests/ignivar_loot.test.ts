@@ -31,6 +31,7 @@ import {
   itemSourceLevel,
   primaryStatSum,
 } from '../src/sim/item_level';
+import { Sim } from '../src/sim/sim';
 import type { ItemDef } from '../src/sim/types';
 import { HIT_RATING_PER_PCT, meleeMissChance, spellHitChance } from '../src/sim/types';
 import { ITEM_WEAPON_VARIANTS } from '../src/ui/weapon_variants';
@@ -79,7 +80,6 @@ describe('ignivar loot: every gear piece is item level 35 and budget-exact', () 
       expect(item.quality, item.id).toBe('epic');
       expect(itemLevel(item), `${item.id} ilvl`).toBe(35);
       expect(item.requiredLevel, item.id).toBe(20);
-      expect(item.soulbound, item.id).toBe(true);
     }
   });
 
@@ -108,6 +108,83 @@ describe('ignivar loot: every gear piece is item level 35 and budget-exact', () 
       );
       expect(primaryStatSum(item), `${item.id} stat sum == budget`).toBe(want);
     }
+  });
+});
+
+describe('ignivar loot: binding policy (sigils and tier pieces bind, drops trade)', () => {
+  it('keeps every class-tier redemption sigil soulbound', () => {
+    for (const sigil of Object.values(IGNIVAR_SIGIL_ITEMS)) {
+      expect(sigil.soulbound, sigil.id).toBe(true);
+    }
+  });
+
+  it('keeps every redeemed tier set piece soulbound', () => {
+    for (const item of Object.values(IGNIVAR_SET_ITEMS)) {
+      expect(item.soulbound, item.id).toBe(true);
+    }
+  });
+
+  it('keeps every ordinary raid gear drop transferable', () => {
+    const droppedGear = [
+      ...Object.values(IGNIVAR_OFFSET_ITEMS),
+      ...Object.values(IGNIVAR_JEWELRY_ITEMS),
+      ...Object.values(IGNIVAR_HELD_ITEMS),
+      ...Object.values(IGNIVAR_WEAPON_ITEMS),
+    ];
+    expect(droppedGear.length).toBe(41);
+    for (const item of droppedGear) {
+      expect(item.soulbound, item.id).toBeFalsy();
+    }
+  });
+
+  it('refuses trading a redeemed tier piece even inside the party', () => {
+    const sim = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
+    const recipient = sim.addPlayer('warrior', 'Redeemer');
+    const partyMember = sim.addPlayer('warrior', 'PartyMember');
+    for (const pid of [recipient, partyMember]) {
+      const entity = sim.entities.get(pid);
+      if (!entity) throw new Error(`missing player ${pid}`);
+      entity.pos = { x: 0, y: 0, z: 0 };
+      entity.prevPos = { x: 0, y: 0, z: 0 };
+      sim.rebucket(entity);
+    }
+    sim.partyInvite(partyMember, recipient);
+    sim.partyAccept(partyMember);
+    sim.addItem('slagbreaker_helmet', 1, recipient);
+
+    sim.tradeRequest(partyMember, recipient);
+    sim.tradeAccept(partyMember);
+    sim.tradeSetOffer([{ itemId: 'slagbreaker_helmet', count: 1 }], 0, recipient);
+    sim.tradeConfirm(recipient);
+    sim.tradeConfirm(partyMember);
+
+    expect(sim.countItem('slagbreaker_helmet', recipient)).toBe(1);
+    expect(sim.countItem('slagbreaker_helmet', partyMember)).toBe(0);
+  });
+
+  it('lets a Heartspring Amulet recipient trade it to a party member', () => {
+    const sim = new Sim({ seed: 7, playerClass: 'priest', noPlayer: true });
+    const recipient = sim.addPlayer('priest', 'Recipient');
+    const partyMember = sim.addPlayer('priest', 'PartyMember');
+    for (const pid of [recipient, partyMember]) {
+      const entity = sim.entities.get(pid);
+      if (!entity) throw new Error(`missing player ${pid}`);
+      entity.pos = { x: 0, y: 0, z: 0 };
+      entity.prevPos = { x: 0, y: 0, z: 0 };
+      sim.rebucket(entity);
+    }
+    sim.partyInvite(partyMember, recipient);
+    sim.partyAccept(partyMember);
+    sim.addItem('heartspring_amulet', 1, recipient);
+
+    sim.tradeRequest(partyMember, recipient);
+    sim.tradeAccept(partyMember);
+    sim.tradeSetOffer([{ itemId: 'heartspring_amulet', count: 1 }], 0, recipient);
+    sim.tradeConfirm(recipient);
+    sim.tradeConfirm(partyMember);
+
+    expect(sim.countItem('heartspring_amulet', recipient)).toBe(0);
+    expect(sim.countItem('heartspring_amulet', partyMember)).toBe(1);
   });
 });
 

@@ -8,6 +8,7 @@ import {
   awardSharedLootItem,
   CORPSE_INTERACT_GRACE_SECONDS,
   distributeLootCopper,
+  killSnapshotEligibility,
   lootRollGroupStatus,
   lootSlotVisibleTo,
   partyLootCandidatesForMob,
@@ -795,19 +796,43 @@ describe('loot_roll: heroic-append cross-group dedup arm', () => {
 });
 
 describe('loot_roll: bind-on-pickup party trade window on soulbound awards', () => {
+  it('keeps the exact drop group eligible when a member disconnects before distribution', () => {
+    const { sim, a, b, c } = partyOfThree();
+    playerMeta(sim, a).characterId = 101;
+    playerMeta(sim, b).characterId = 102;
+    playerMeta(sim, c).characterId = 103;
+    const mob = createMob(sim.nextId++, MOBS.ignivar_herald_of_the_last_flame, 20, {
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+    mob.lootRecipientIds = [a, b, c];
+    rollLoot(sim.ctx, mob, playerMeta(sim, a), [
+      playerMeta(sim, a),
+      playerMeta(sim, b),
+      playerMeta(sim, c),
+    ]);
+    playerMeta(sim, b).leaving = true;
+
+    expect(killSnapshotEligibility(sim.ctx, mob)).toEqual({
+      names: ['Aaa', 'Bbb', 'Ccc'],
+      characterIds: [101, 102, 103],
+    });
+  });
+
   it('stamps the drop-moment candidate snapshot onto a need/greed win of a soulbound item', () => {
     const { sim, a, b, c } = partyOfThree();
     const mob = deadCorpse(sim, a, [a, b, c], {
       copper: 0,
-      items: [{ itemId: 'slagbreaker_helmet', count: 1 }],
+      items: [{ itemId: 'sigil_anvil_helmet', count: 1 }],
     });
-    awardSharedLootItem(sim.ctx, 'slagbreaker_helmet', mob, playerMeta(sim, a));
+    awardSharedLootItem(sim.ctx, 'sigil_anvil_helmet', mob, playerMeta(sim, a));
     const rollId = lootRollEvent(sim).rollId;
     submitLootRoll(sim.ctx, rollId, 'need', a);
     submitLootRoll(sim.ctx, rollId, 'pass', b);
     submitLootRoll(sim.ctx, rollId, 'pass', c);
     const slot = expectDefined(
-      playerMeta(sim, a).inventory.find((s) => s.itemId === 'slagbreaker_helmet'),
+      playerMeta(sim, a).inventory.find((s) => s.itemId === 'sigil_anvil_helmet'),
     );
     // Winner included: the whole kill-time candidate set may receive the copy.
     expect(slot.instance?.partyTrade?.eligible).toEqual(['Aaa', 'Bbb', 'Ccc']);
@@ -837,15 +862,15 @@ describe('loot_roll: bind-on-pickup party trade window on soulbound awards', () 
     const { sim, a, b, c } = partyOfThree();
     const mob = deadCorpse(sim, a, [a, b, c], {
       copper: 0,
-      items: [{ itemId: 'slagbreaker_helmet', count: 1 }],
+      items: [{ itemId: 'sigil_anvil_helmet', count: 1 }],
     });
-    awardSharedLootItem(sim.ctx, 'slagbreaker_helmet', mob, playerMeta(sim, a));
+    awardSharedLootItem(sim.ctx, 'sigil_anvil_helmet', mob, playerMeta(sim, a));
     mob.loot = { copper: 0, items: [] };
     const rollId = lootRollEvent(sim).rollId;
     submitLootRoll(sim.ctx, rollId, 'pass', a);
     submitLootRoll(sim.ctx, rollId, 'pass', b);
     submitLootRoll(sim.ctx, rollId, 'pass', c);
-    expect(mob.loot?.items.find((s) => s.itemId === 'slagbreaker_helmet')?.openToAll).toBe(true);
+    expect(mob.loot?.items.find((s) => s.itemId === 'sigil_anvil_helmet')?.openToAll).toBe(true);
 
     // The pickup from the returned openToAll slot is the interaction path,
     // which must route through the same windowed grant as a roll win: the
@@ -857,7 +882,7 @@ describe('loot_roll: bind-on-pickup party trade window on soulbound awards', () 
     sim.rebucket(looter);
     expect(sim.lootCorpse(mob.id, b)).toBe(true);
     const slot = expectDefined(
-      playerMeta(sim, b).inventory.find((s) => s.itemId === 'slagbreaker_helmet'),
+      playerMeta(sim, b).inventory.find((s) => s.itemId === 'sigil_anvil_helmet'),
     );
     expect(slot.instance?.partyTrade?.eligible).toEqual(['Aaa', 'Bbb', 'Ccc']);
   });
@@ -867,12 +892,12 @@ describe('loot_roll: bind-on-pickup party trade window on soulbound awards', () 
     const a = sim.addPlayer('warrior', 'Solo');
     const mob = deadCorpse(sim, a, [a], {
       copper: 0,
-      items: [{ itemId: 'slagbreaker_helmet', count: 1 }],
+      items: [{ itemId: 'sigil_anvil_helmet', count: 1 }],
     });
-    const taken = awardSharedLootItem(sim.ctx, 'slagbreaker_helmet', mob, playerMeta(sim, a));
+    const taken = awardSharedLootItem(sim.ctx, 'sigil_anvil_helmet', mob, playerMeta(sim, a));
     expect(taken).toBe(true);
     const slot = expectDefined(
-      playerMeta(sim, a).inventory.find((s) => s.itemId === 'slagbreaker_helmet'),
+      playerMeta(sim, a).inventory.find((s) => s.itemId === 'sigil_anvil_helmet'),
     );
     expect(slot.instance).toBeUndefined();
   });

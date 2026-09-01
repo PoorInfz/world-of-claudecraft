@@ -9764,7 +9764,8 @@ export const cs_CZ: EnTranslations = {
       "potion": "Lektvar",
       "elixir": "Elixír",
       "bag": "Batoh",
-      "mount": "Jízdní zvíře"
+      "mount": "Jízdní zvíře",
+      "skin": "Vzhled"
     },
     "stats": {
       "armor": "Brnění",
@@ -10479,7 +10480,7 @@ export const cs_CZ: EnTranslations = {
       },
       "recall_the_fallen": {
         "name": "Povolej padlé",
-        "description": "Vrátí mrtvého člena skupiny zpět k životu s 35% zdraví a many. Slunečný léčitel na úrovni 16 nebo vyšší místo toho povolá zpět každého padlého člena skupiny."
+        "description": "Vrátí mrtvého člena skupiny zpět k životu po tvém boku s 35% zdraví a many. Slunečný léčitel na úrovni 16 nebo vyšší místo toho povolá zpět každého padlého člena skupiny do 30 yardů a na dohled."
       },
       "beacon_of_light": {
         "name": "Maják světla",
@@ -11215,6 +11216,14 @@ export const cs_CZ: EnTranslations = {
         "name": "Překvět",
         "description": "Spotřebuje 5 Zeleně. Sklidí každé tvé léčení v čase na všech spojencích za {buff}% zbývajícího léčení, odstraní tyto efekty a zasadí na cíl čerstvý Divoký květ."
       },
+      "wildwake": {
+        "name": "Divoké probuzení",
+        "description": "Vyláká padlého spojence k náhlému rozkvětu a přivede ho zpět k životu po tvém boku s 35% zdraví a many, i uprostřed boje. (Srdce háje)"
+      },
+      "grove_awakening": {
+        "name": "Probuzení háje",
+        "description": "Povolá zpět k životu po tvém boku každého padlého člena tvé skupiny nebo výpravy do 40 yardů a na dohled s 30% zdraví a many. Nelze seslat v boji. (Srdce háje)"
+      },
       "summon_imp": {
         "name": "Vyvolat Žhavorozeného",
         "description": "Přivolá Žhavorodého pod velení čarodějníka. Žhavorodý z dálky sesílá na tvé nepřátele Běsový výstřel. Přivolání nového démona propustí toho současného. Můžeš mít vždy jen jednoho démona."
@@ -11521,15 +11530,15 @@ export const cs_CZ: EnTranslations = {
       },
       "temporal_reversal": {
         "name": "Časový návrat",
-        "description": "Přetočíš časovou linku padlého spojence a navrátíš ho k životu u jeho těla se zlomkem zdraví a many, i uprostřed boje. (Chronomagie)"
+        "description": "Přetočíš časovou linku padlého spojence a navrátíš ho k životu po tvém boku s 35% zdraví a many, i uprostřed boje. (Chronomagie)"
       },
       "collective_reversal": {
         "name": "Hromadné navrácení",
-        "description": "Vrátí časovou osu každého padlého člena vaší skupiny nebo raidu a oživí ho u jeho těla s 30% zdraví a many. Nelze seslat v boji. (Chronomancie)"
+        "description": "Vrátí časovou osu každého padlého člena vaší skupiny nebo raidu do 40 yardů a na dohled a oživí ho po vašem boku s 30% zdraví a many. Nelze seslat v boji. (Chronomancie)"
       },
       "ancestor_return": {
         "name": "Návrat předků",
-        "description": "Povolá zpět k životu u jejich těla každého padlého člena tvé skupiny nebo výpravy s 30% zdraví a many. Nelze seslat v boji. (Duchovní látka)"
+        "description": "Povolá zpět k životu po tvém boku každého padlého člena tvé skupiny nebo výpravy do 40 yardů a na dohled s 30% zdraví a many. Nelze seslat v boji. (Duchovní látka)"
       },
       "temporal_rewind": {
         "name": "Přetočení",
@@ -11675,6 +11684,10 @@ export const cs_CZ: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Sbor vysvobození",
         "description": "Kanalizuje po dobu 6 s a každé 2 s léčí členy skupiny do 30 metrů za {damage}. Léčení roste se silou kouzel."
+      },
+      "prayer_of_returning": {
+        "name": "Modlitba návratu",
+        "description": "Povolá zpět k životu po tvém boku každého padlého člena tvé skupiny nebo výpravy do 40 yardů a na dohled s 30% zdraví a many. Nelze seslat v boji. (Požehnání a Věrouka)"
       },
       "bear_charge": {
         "name": "Medvědí výpad",

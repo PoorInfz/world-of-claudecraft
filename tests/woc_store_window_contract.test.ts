@@ -829,10 +829,18 @@ describe('WOC Store window contract', () => {
     expect(request).toContain('if (this.charterInFlight.has(itemId)) return;');
   });
 
-  it('owns Store decisions in the prompt stack instead of the HUD confirm dialog', () => {
+  it('owns Store decisions on a body-level modal instead of the HUD confirm dialog', () => {
     expect(storeWindow).not.toContain('this.deps.confirmDialog?.(');
     expect(storeWindow).toContain('private readonly storeRuntime = new StoreSurfaceRuntime');
     expect(storeSurfaceRuntime).toContain('this.prompts = new StoreDecisionPrompts(root)');
+    // The DECISION mounts on document.body, never in #prompt-stack: the stack
+    // lives inside #ui, a fixed z-index 10 stacking context, so no z-index
+    // inside it can clear the body-level armory inspect overlay (z 90) and a
+    // stack-hosted decision opened invisibly under an open inspector while
+    // both surfaces sat inert (the v0.41.0 desktop Purchase Skin freeze). The
+    // nonmodal RESULT stays a stack child (it must survive the Store's close).
+    expect(storeDecisionPrompt).toContain('document.body.appendChild(prompt)');
+    expect(storeDecisionPrompt).not.toContain('stack.appendChild(prompt)');
     expect(storeDecisionPrompt).toContain("document.getElementById('prompt-stack')");
     expect(storeDecisionPrompt).toContain("prompt.id = 'confirm-dialog'");
     expect(storeDecisionPrompt).toContain('installPromptDialog(prompt, opener, close');

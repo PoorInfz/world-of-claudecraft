@@ -5362,7 +5362,10 @@ async function startOffline(
       ...sim.accountCosmetics,
       mechChromaIds: MECH_CHROMAS.map((c) => c.id),
     };
-    sim.setPlayerSkin(sim.playerId, 0, 'mech');
+    // Item-backed wear (uses a real plate), so the described loop holds: only
+    // an equip that consumed the plate returns it to the bag on Unequip.
+    sim.addItem('amber_crimson_armor_plate', 1);
+    sim.useItem('amber_crimson_armor_plate');
     // One weapon per held-model family (sword / axe / mace / dagger / staff / wand
     // / polearm); only the ones this class can wield are granted, so every bag
     // weapon is swappable and the first one auto-equips.

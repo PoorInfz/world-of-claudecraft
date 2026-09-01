@@ -177,6 +177,14 @@ export interface CharacterState {
   pendingSkinRank?: SkinRank | null;
   pendingSkinCatalog?: SkinCatalog | null;
   pendingSkinItemId?: string | null;
+  // Mech chroma plate custody (issue #3680): the chroma whose armor plate the
+  // saved wear consumed, returned to the bags when the look changes. Omitted
+  // while nothing is owed (zero-default omission; a display-only wear over
+  // the account unlock owes nothing), so pre-custody saves load clean and
+  // at-default saves stay byte-equal. src/sim/mech_plate_custody.ts owns the
+  // rules; regression-window plate losses are an operator data repair, never
+  // a load-time stamp (see restoredMechPlateOwed's doc for why).
+  mechChromaPlateOwed?: string | null;
   // LEGACY. The old "selected mount" pick, written by builds before reins became
   // usable items. Still declared so an existing save deserializes without a type
   // error, but nothing reads it and nothing writes it any more: the field simply

@@ -3567,12 +3567,12 @@ export class GameServer {
   }
 
   /** Take a mech chroma off the acting character's own current appearance. The
-   *  account-wide unlock (accountCosmetics.mechChromaIds) is permanent, exactly
-   *  like an owned Season 1 Armory weapon skin: this never revokes it, so any
-   *  character on the account (online or not, now or later) can still take the
-   *  look off, and can freely put it back on via change_skin with no item
-   *  involved. Only the acting character's OWN display changes; every other
-   *  character's independently chosen look is left alone. */
+   *  account-wide unlock (accountCosmetics.mechChromaIds) is permanent, like an
+   *  owned Armory weapon skin: never revoked, so any character on the account
+   *  can still take the look off and put it back on via change_skin, item-free.
+   *  Only the acting character's OWN display changes. An ITEM-BACKED wear also
+   *  returns its armor plate to the bags, exactly once: the custody settle sits
+   *  inside Sim.setPlayerSkin (src/sim/mech_plate_custody.ts, issue #3680). */
   private unequipAccountMechChroma(session: ClientSession, chromaId: string): void {
     const skin = mechChromaSkinIndex(chromaId);
     if (skin < 0) return;

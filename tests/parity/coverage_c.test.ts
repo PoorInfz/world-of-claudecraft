@@ -871,4 +871,12 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect(notes.raiderCooldownReset).toBe(true);
     expect(notes.encounterReset).toBe(true);
   });
+
+  it('bop_party_trade_eligibility: a leaving drop-mate stays on the awarded copy', () => {
+    const rec = run('bop_party_trade_eligibility');
+    expect(rec.notes.eligibleCharacterIds).toEqual([101, 102]);
+    const alice = [...rec.sim.ctx.players.values()].find((meta) => meta.name === 'AliceParity');
+    const awarded = alice?.inventory.find((slot) => slot.itemId === 'sigil_anvil_helmet');
+    expect(awarded?.instance?.partyTrade?.eligibleIds).toEqual([101, 102]);
+  });
 });

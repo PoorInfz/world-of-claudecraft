@@ -491,6 +491,7 @@ function completeBattlegroundUnstuck(
   delete p.queuedOnSwingCostMultiplier;
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
+  p.queuedCastTargetId = null;
   settleTeleportArrival(p);
   if (!p.dead && !p.ghost) applyUnstuckSickness(ctx, p);
   return unstuckLocationAt(ctx, p.id, p.pos)?.point ?? null;

@@ -207,7 +207,11 @@ const common: AbilityDef[] = [
     learnLevel: 6,
     cost: 60,
     castTime: 8,
-    cooldown: 0,
+    // Five minutes, the shared resurrection cooldown (owner directive 2026-09-01):
+    // requiresOutOfCombat alone is not a throttle, because a caster who never
+    // draws aggro drops combat mid-fight once the linger passes, so a
+    // zero-cooldown rez could be chained repeatedly inside a single encounter.
+    cooldown: 300,
     range: 30,
     school: 'holy',
     requiresTarget: true,
