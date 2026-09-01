@@ -12932,6 +12932,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.ancestor_return.description':
     'Возвращает к жизни всех погибших участников группы или рейда у их тел с 30% здоровья и маны. Нельзя применять в бою. (Целитель духов)',
   'entities.abilities.ancestor_return.name': 'Возвращение предков',
+  'entities.abilities.grove_awakening.description':
+    'Призывает всех погибших участников группы или рейда в пределах 40 м и в поле зрения к вам и возвращает их к жизни с 30% здоровья и маны. Нельзя применять в бою. (Исцеление)',
+  'entities.abilities.grove_awakening.name': 'Пробуждение рощи',
+  'entities.abilities.prayer_of_returning.description':
+    'Призывает всех погибших участников группы или рейда в пределах 40 м и в поле зрения к вам и возвращает их к жизни с 30% здоровья и маны. Нельзя применять в бою. (Свет и Послушание)',
+  'entities.abilities.prayer_of_returning.name': 'Молитва возвращения',
+  'entities.abilities.wildwake.description':
+    'Пробуждает в павшем союзнике внезапное цветение, возвращая его к жизни рядом с вами с 35% здоровья и маны даже в разгар боя. (Исцеление)',
+  'entities.abilities.wildwake.name': 'Дикое пробуждение',
   'entities.abilities.army_of_the_dead.description':
     'Открывает могильный портал и на 20 сек. поднимает временных Скелета-воина, Костяного мага и Могильное крыло в дополнение к выбранным прислужникам Господства.',
   'entities.abilities.army_of_the_dead.name': 'Армия мертвых',

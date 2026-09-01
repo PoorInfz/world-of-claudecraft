@@ -1198,6 +1198,10 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "summon_tithefiend",
         "name": "Call Tithefiend"
+      },
+      {
+        "id": "prayer_of_returning",
+        "name": "Prayer of Returning"
       }
     ],
     "model": "player_priest",
@@ -2040,6 +2044,14 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "primal_reflexes",
         "name": "Primal Reflexes"
+      },
+      {
+        "id": "wildwake",
+        "name": "Wildwake"
+      },
+      {
+        "id": "grove_awakening",
+        "name": "Grove Awakening"
       }
     ],
     "model": "player_druid",

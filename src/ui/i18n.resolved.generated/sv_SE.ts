@@ -11216,6 +11216,14 @@ export const sv_SE: EnTranslations = {
         "name": "Överblomning",
         "description": "Förbrukar 5 Grönska. Skördar varje läkning över tid du äger på alla allierade för {buff}% av dess återstående läkning, tar bort de effekterna och planterar en färsk Vildblomning på målet."
       },
+      "wildwake": {
+        "name": "Wildwake",
+        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Grove Awakening",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Frammana Emberkin",
         "description": "Frammanar en Emberkin under häxmästarens befäl. Emberkin kastar Felbolt mot era fiender på avstånd. Att frammana en ny demon avskedar er nuvarande. Ni kan ha en demon åt gången."
@@ -11676,6 +11684,10 @@ export const sv_SE: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Befrielsens kör",
         "description": "Kanaliserar i 6 sek och läker gruppmedlemmar inom 30 meter för {damage} varannan sekund. Läkningen ökar med besvärjelsekraft."
+      },
+      "prayer_of_returning": {
+        "name": "Prayer of Returning",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
       },
       "bear_charge": {
         "name": "Bruinrusning",

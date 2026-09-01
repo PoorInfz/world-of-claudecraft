@@ -12719,6 +12719,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.ancestor_return.description':
     'グループまたはレイドの倒れたメンバー全員を遺体の場所で蘇生し、体力とマナを30%回復させる。戦闘中は使用できない。（霊癒）',
   'entities.abilities.ancestor_return.name': '祖霊の帰還',
+  'entities.abilities.grove_awakening.description':
+    'グループまたはレイドの、40ヤード以内で視線の通る倒れたメンバー全員をあなたのそばに呼び戻し、体力とマナが30%の状態で蘇生する。戦闘中は詠唱できない。（回復）',
+  'entities.abilities.grove_awakening.name': '樹林の覚醒',
+  'entities.abilities.prayer_of_returning.description':
+    'グループまたはレイドの、40ヤード以内で視線の通る倒れたメンバー全員をあなたのそばに呼び戻し、体力とマナが30%の状態で蘇生する。戦闘中は詠唱できない。（聖なる・ディシプリン）',
+  'entities.abilities.prayer_of_returning.name': '帰還の祈り',
+  'entities.abilities.wildwake.description':
+    '倒れた味方を不意の開花へと促し、戦闘の最中でも、体力とマナが35%の状態であなたのそばに蘇生させる。（回復）',
+  'entities.abilities.wildwake.name': '野性の目覚め',
   'entities.abilities.army_of_the_dead.description':
     '墓所の門を開き、選んだドミニオンの従者に加えて、スケルタル・ウォリアー、ボーン・メイジ、グレイヴウィングを20秒間召喚する。',
   'entities.abilities.army_of_the_dead.name': '亡者の軍勢',

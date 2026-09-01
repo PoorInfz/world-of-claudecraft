@@ -1246,11 +1246,13 @@ export function runEffects(
           break;
         }
         offerResurrection(ctx, p, ally, eff.hpFrac, resurrectionCastRange(ability.range));
+        // The ability's own school, not a hardcoded arcane: Temporal Reversal
+        // is arcane either way, and the Groveheart combat rez reads as nature.
         ctx.emit({
           type: 'spellfx',
           sourceId: p.id,
           targetId: ally.id,
-          school: 'arcane',
+          school: ability.school,
           fx: 'temporalGlyph',
           ability: ability.id,
         });

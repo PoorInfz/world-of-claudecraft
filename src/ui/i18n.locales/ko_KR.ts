@@ -12696,6 +12696,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.ancestor_return.description':
     '파티 또는 공격대에서 쓰러진 모든 구성원을 시체가 있는 곳에서 생명력과 마나 30%로 되살립니다. 전투 중에는 시전할 수 없습니다. (영혼치유사)',
   'entities.abilities.ancestor_return.name': '선조의 귀환',
+  'entities.abilities.grove_awakening.description':
+    '파티 또는 공격대에서 40야드 내 시야가 닿는 쓰러진 모든 구성원을 당신 곁으로 불러 생명력과 마나 30%로 되살립니다. 전투 중에는 시전할 수 없습니다. (회복)',
+  'entities.abilities.grove_awakening.name': '숲의 각성',
+  'entities.abilities.prayer_of_returning.description':
+    '파티 또는 공격대에서 40야드 내 시야가 닿는 쓰러진 모든 구성원을 당신 곁으로 불러 생명력과 마나 30%로 되살립니다. 전투 중에는 시전할 수 없습니다. (신성 및 수양)',
+  'entities.abilities.prayer_of_returning.name': '귀환의 기도',
+  'entities.abilities.wildwake.description':
+    '쓰러진 아군을 갑작스러운 개화로 이끌어, 치열한 전투 중에도 생명력과 마나 35%로 당신 곁에 되살립니다. (회복)',
+  'entities.abilities.wildwake.name': '야생의 소생',
   'entities.abilities.army_of_the_dead.description':
     '무덤 차원문을 열어 선택한 지배 하수인에 더해 해골 전사, 뼈 마법사, 무덤날개를 20초 동안 임시로 일으킵니다.',
   'entities.abilities.army_of_the_dead.name': '망자의 군세',

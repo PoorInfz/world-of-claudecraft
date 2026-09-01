@@ -11216,6 +11216,14 @@ export const zh_CN: EnTranslations = {
         "name": "盛放",
         "description": "消耗你的5层繁茂：每个持有你的持续治疗效果的盟友立即恢复这些效果剩余治疗量的{buff}%，这些效果随之移除，并为目标种下一个新的野性绽放。"
       },
+      "wildwake": {
+        "name": "野性复苏",
+        "description": "催发倒下的盟友骤然绽放，使其回到你身边复活，恢复35%生命值和法力值，即使激战正酣也可施放。（恢复）"
+      },
+      "grove_awakening": {
+        "name": "林地觉醒",
+        "description": "呼唤小队或团队中 40 码内且在你视线内的所有阵亡成员回到你身边复活，并恢复30%生命值和法力值。战斗中无法施放。（恢复）"
+      },
       "summon_imp": {
         "name": "召唤烬裔",
         "description": "召唤一只听从术士号令的烬裔。烬裔会从远处向你的敌人施放邪能箭。召唤新的恶魔会遣散你当前的恶魔。你同一时间只能拥有一只恶魔。"
@@ -11676,6 +11684,10 @@ export const zh_CN: EnTranslations = {
       "choir_of_deliverance": {
         "name": "救赎圣咏团",
         "description": "引导6秒，每2秒为30码内的队伍成员恢复{damage}点生命值。治疗量随法术强度提高。"
+      },
+      "prayer_of_returning": {
+        "name": "归返祈祷",
+        "description": "呼唤小队或团队中 40 码内且在你视线内的所有阵亡成员回到你身边复活，并恢复30%生命值和法力值。战斗中无法施放。（神圣与戒律）"
       },
       "bear_charge": {
         "name": "巨熊冲锋",

@@ -11216,6 +11216,14 @@ export const pl_PL: EnTranslations = {
         "name": "Nadrozkwit",
         "description": "Zużywa 5 Zieleni. Zbiera każde twoje leczenie w czasie na wszystkich sojusznikach za {buff}% pozostałego leczenia, usuwa te efekty i sadzi świeży Dziki rozkwit na celu."
       },
+      "wildwake": {
+        "name": "Wildwake",
+        "description": "Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)"
+      },
+      "grove_awakening": {
+        "name": "Grove Awakening",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)"
+      },
       "summon_imp": {
         "name": "Przywołanie Emberkina",
         "description": "Przyzywa Emberkina pod rozkazy czarnoksiężnika. Emberkin z dystansu rzuca w twoich wrogów Plugawym pociskiem. Przyzwanie nowego demona odprawia obecnego. Możesz mieć jednego demona naraz."
@@ -11676,6 +11684,10 @@ export const pl_PL: EnTranslations = {
       "choir_of_deliverance": {
         "name": "Chór Wybawienia",
         "description": "Kanałuje przez 6 s, lecząc członków grupy w promieniu 30 metrów za {damage} co 2 s. Leczenie rośnie wraz z mocą zaklęć."
+      },
+      "prayer_of_returning": {
+        "name": "Prayer of Returning",
+        "description": "Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)"
       },
       "bear_charge": {
         "name": "Szarża Bruina",

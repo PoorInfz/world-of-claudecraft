@@ -114,4 +114,30 @@ export const PRIEST_ABILITIES: Record<string, AbilityDef> = {
     description:
       'Channel for 6 sec, healing party members within 30 yards for $d every 2 sec. Healing increases with Spell Power.',
   },
+  // Out-of-combat mass resurrection for the two healing priest specs, the
+  // ancestor_return / collective_reversal twin. The five-minute cooldown is the
+  // real throttle: requiresOutOfCombat alone is not one, because a backline
+  // healer who never draws aggro drops combat mid-fight the moment combatTimer
+  // passes the 5s linger (see the engagedPids pass in sim.ts), so a
+  // zero-cooldown mass rez could be chained repeatedly inside a single
+  // encounter. Kept equal to collective_reversal so the mass rezzes cannot be
+  // played against each other; tests pin that equality.
+  prayer_of_returning: {
+    id: 'prayer_of_returning',
+    name: 'Prayer of Returning',
+    class: 'priest',
+    specs: ['holy', 'discipline'],
+    learnLevel: 20,
+    cost: 250,
+    castTime: 7,
+    cooldown: 300,
+    range: 0,
+    school: 'holy',
+    requiresTarget: false,
+    requiresOutOfCombat: true,
+    projectile: false,
+    effects: [{ type: 'massResurrectGroup', hpFrac: 0.3 }],
+    description:
+      'Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Benison and Doctrine)',
+  },
 };
