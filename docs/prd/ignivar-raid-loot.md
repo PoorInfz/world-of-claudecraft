@@ -513,7 +513,7 @@ coverage in both leather and Agility mail.
   fifth slot is a genuine choice between finishing the look and taking a
   strong off-set piece. The 2-piece is a flat stat line; the 4-piece is a
   proc or rating package with a set-specific flavor name.
-- Every piece is epic, requiredLevel 20, transferable, class-locked via
+- Every piece is epic, requiredLevel 20, soulbound, class-locked via
   requiredClass to its single class, and stat-shaped for its single spec.
 - Set ids are new one-word theme slugs (below); piece ids are
   `<set_id>_<slot>`. Piece display names follow the armor-type noun table:
@@ -989,11 +989,12 @@ Each phase is a reviewable commit (or small commit series) with its tests:
    catalog of 58 bonuses lives in the set tables above and in the item
    catalog; implementation rides the TalentEffect seam.
 
-## Binding rules: tier sigils and the party trade window
+## Binding rules: sigils and tier pieces bind, ordinary drops trade
 
-Only the 15 class-tier redemption sigils are soulbound. Redeemed set
-pieces and all other Crucible gear are transferable. The existing party
-trade window applies when a soulbound sigil is awarded from party loot:
+The 15 class-tier redemption sigils and the 145 redeemed tier set pieces
+are soulbound. The ordinary boss drops (offset, jewelry, held, weapons)
+are transferable. The party trade window applies when a soulbound item,
+in this tier a sigil, is awarded from party loot:
 
 - Every SOULBOUND item awarded from party boss loot (need/greed win,
   master-loot assignment, round-robin, or a shared direct pickup) is
@@ -1028,8 +1029,8 @@ trade window applies when a soulbound sigil is awarded from party loot:
   remaining span, a "Binds when picked up" note on need/greed and
   master-loot prompts, and a confirm dialog on Take Loot when the
   visible loot contains a soulbound item.
-- Vendor-bought tier gear from the Crucible Quartermaster remains
-  transferable after redemption.
+- Vendor-bought tier gear (the Crucible Quartermaster) binds at purchase
+  with NO window: the buyer chose the piece; there is no shared drop.
 
 Pinned by `tests/bop_trade_window.test.ts`, `tests/bop_party_trade.test.ts`,
 and the award describes in `tests/loot_roll.test.ts`.

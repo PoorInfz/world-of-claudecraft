@@ -111,17 +111,55 @@ describe('ignivar loot: every gear piece is item level 35 and budget-exact', () 
   });
 });
 
-describe('ignivar loot: only tier sigils are soulbound', () => {
+describe('ignivar loot: binding policy (sigils and tier pieces bind, drops trade)', () => {
   it('keeps every class-tier redemption sigil soulbound', () => {
     for (const sigil of Object.values(IGNIVAR_SIGIL_ITEMS)) {
       expect(sigil.soulbound, sigil.id).toBe(true);
     }
   });
 
-  it('keeps every raid gear drop transferable', () => {
-    for (const item of gearItems()) {
+  it('keeps every redeemed tier set piece soulbound', () => {
+    for (const item of Object.values(IGNIVAR_SET_ITEMS)) {
+      expect(item.soulbound, item.id).toBe(true);
+    }
+  });
+
+  it('keeps every ordinary raid gear drop transferable', () => {
+    const droppedGear = [
+      ...Object.values(IGNIVAR_OFFSET_ITEMS),
+      ...Object.values(IGNIVAR_JEWELRY_ITEMS),
+      ...Object.values(IGNIVAR_HELD_ITEMS),
+      ...Object.values(IGNIVAR_WEAPON_ITEMS),
+    ];
+    expect(droppedGear.length).toBe(41);
+    for (const item of droppedGear) {
       expect(item.soulbound, item.id).toBeFalsy();
     }
+  });
+
+  it('refuses trading a redeemed tier piece even inside the party', () => {
+    const sim = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
+    const recipient = sim.addPlayer('warrior', 'Redeemer');
+    const partyMember = sim.addPlayer('warrior', 'PartyMember');
+    for (const pid of [recipient, partyMember]) {
+      const entity = sim.entities.get(pid);
+      if (!entity) throw new Error(`missing player ${pid}`);
+      entity.pos = { x: 0, y: 0, z: 0 };
+      entity.prevPos = { x: 0, y: 0, z: 0 };
+      sim.rebucket(entity);
+    }
+    sim.partyInvite(partyMember, recipient);
+    sim.partyAccept(partyMember);
+    sim.addItem('slagbreaker_helmet', 1, recipient);
+
+    sim.tradeRequest(partyMember, recipient);
+    sim.tradeAccept(partyMember);
+    sim.tradeSetOffer([{ itemId: 'slagbreaker_helmet', count: 1 }], 0, recipient);
+    sim.tradeConfirm(recipient);
+    sim.tradeConfirm(partyMember);
+
+    expect(sim.countItem('slagbreaker_helmet', recipient)).toBe(1);
+    expect(sim.countItem('slagbreaker_helmet', partyMember)).toBe(0);
   });
 
   it('lets a Heartspring Amulet recipient trade it to a party member', () => {
