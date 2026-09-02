@@ -462,7 +462,8 @@ const MONOLITHS: MonolithRow[] = [
     // Lowered 12465 -> 12251 for the sticky-encounter combat fix: the engaged
     // pass's hate-table walk (and PET_COMBAT_LINGER) moved to
     // combat/engaged_combat.ts, leaving one collectEngagedPids call in tick().
-    // Exact count, zero slack.
+    // The old row had been carrying slack on this branch; re-pinned to the
+    // measured count. Exact count, zero slack.
     ceiling: 12251,
     seam: 'a sim system module behind SimContext (src/sim/CLAUDE.md)',
   },
