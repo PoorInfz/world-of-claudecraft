@@ -2326,18 +2326,16 @@ export class Sim {
       }
     }
 
-    // Quartermaster Bronn Emberward at the Crucible entrance: spawn after
+    // Quartermaster Bronn Emberward on the keep's landing court: spawn after
     // world generation under a reserved id so replay entity ids remain stable.
+    // Placed EXACTLY where authored: findSafePos reads the court's floor plate
+    // as a wall and would spiral him onto the summit flat inside the door's
+    // walk-in trigger (tests/crucible_vendor_reach.test.ts pins the spot).
     {
       const bronn = worldContent.npcs[CRUCIBLE_VENDOR_NPC_ID];
       if (bronn && !this.entities.has(CRUCIBLE_VENDOR_ENTITY_ID)) {
-        const safe = this.findSafePos(
-          CRUCIBLE_VENDOR_ENTRANCE_POS.x,
-          CRUCIBLE_VENDOR_ENTRANCE_POS.z,
-          waterLevel() + 0.6,
-        );
-        const npc = createNpc(CRUCIBLE_VENDOR_ENTITY_ID, bronn, this.groundPos(safe.x, safe.z));
-        this.addEntity(npc);
+        const at = this.groundPos(CRUCIBLE_VENDOR_ENTRANCE_POS.x, CRUCIBLE_VENDOR_ENTRANCE_POS.z);
+        this.addEntity(createNpc(CRUCIBLE_VENDOR_ENTITY_ID, bronn, at));
       }
     }
 
