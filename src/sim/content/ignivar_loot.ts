@@ -3268,8 +3268,21 @@ export const CRUCIBLE_VENDOR_NPC_ID = 'crucible_quartermaster';
 // 1_000_000_000 through 1_000_000_002.
 export const CRUCIBLE_VENDOR_ENTITY_ID = 1_000_000_003;
 
-/** Overworld entrance position, separate from the inert dynamic NPC definition. */
-export const CRUCIBLE_VENDOR_ENTRANCE_POS = { x: 510.5, z: 2242.5 } as const;
+/** Overworld entrance position, separate from the inert dynamic NPC definition.
+ *
+ *  The Forgefather's Isle keep door (IGNIVAR_KEEP_DOOR_POS, 503.05 / 2243.7) sits at
+ *  the top of a walled stair passage up the keep's south face, on the summit flat
+ *  at 18.85. The quartermaster stands on the LANDING COURT one flight below it
+ *  (the stair band's level run at 15.34, x 500.6 to 506.1, z 2236 to 2238.5), at
+ *  the west edge so the flight stays open, six yards from the door and outside its
+ *  2 yd walk-in trigger. Both hosts spawn him there (src/sim/sim.ts, reserved id).
+ *
+ *  The earlier spot, 510.5 / 2242.5, is OUTSIDE the passage's west wall on the
+ *  raw terrain shelf at 6.1, thirteen yards below the door with a wall between:
+ *  reachable only by leaving the fortress, swimming round the isle and walking
+ *  to the foot of the wall. tests/crucible_vendor_reach.test.ts walks the real
+ *  motion kernel from the door and from the tier-three court to pin this. */
+export const CRUCIBLE_VENDOR_ENTRANCE_POS = { x: 505.5, z: 2237.6 } as const;
 
 export interface CrucibleVendorOffer {
   itemId: string;
