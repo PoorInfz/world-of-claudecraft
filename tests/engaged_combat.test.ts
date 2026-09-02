@@ -143,6 +143,7 @@ function wolfFight(): { sim: Sim; wolf: Entity; tank: number; dps: number } {
   sim.tick();
   expect(wolf.aggroTargetId).toBe(tank);
   expect(wolf.threat.has(dps)).toBe(true);
+  expect(isHeldInCombat(sim.ctx, dps)).toBe(true);
   return { sim, wolf, tank, dps };
 }
 
@@ -209,6 +210,7 @@ describe('hate-table combat: every attacker on a live mob stays in combat', () =
     expect(wolf.dead).toBe(true);
     for (let i = 0; i < LINGER_TICKS + 1; i++) sim.tick();
     expect(entity(sim, dps).inCombat).toBe(false);
+    expect(isHeldInCombat(sim.ctx, dps)).toBe(false);
   });
 
   it('releases the attacker once the mob leashes home and wipes its hate table', () => {
@@ -532,7 +534,6 @@ describe('collectEngagedPids guards (unit)', () => {
   it('holds every table entry of an engaged wild mob', () => {
     const ctx = fakeCtx([fakePlayer(DPS_ID), fakeMob()]);
     expect(held(ctx).has(DPS_ID)).toBe(true);
-    expect(isHeldInCombat(ctx, DPS_ID)).toBe(true);
     expect(ctx.mobScanCounters.threatEntryVisits).toBeGreaterThan(0);
   });
 
@@ -557,7 +558,6 @@ describe('collectEngagedPids guards (unit)', () => {
     for (const [label, overrides] of cases) {
       const ctx = fakeCtx([fakePlayer(DPS_ID), fakeMob(overrides)]);
       expect(held(ctx).has(DPS_ID), label).toBe(false);
-      expect(isHeldInCombat(ctx, DPS_ID), label).toBe(false);
     }
   });
 
@@ -634,6 +634,42 @@ describe('collectEngagedPids guards (unit)', () => {
     expect(out.has(far)).toBe(false);
     expect(out.has(deadNear)).toBe(false);
     expect(out.has(stranger)).toBe(false);
+  });
+
+  it('holds every in-range member of a full raid, deduped through one party lookup', () => {
+    const members = Array.from({ length: 10 }, (_, i) => 520 + i);
+    const raid = { id: 2, leader: members[0], members, raid: true } as unknown as ReturnType<
+      SimContext['partyOf']
+    >;
+    let partyLookups = 0;
+    const partyOf: SimContext['partyOf'] = (pid) => {
+      partyLookups++;
+      return members.includes(pid) ? raid : null;
+    };
+    // Three raiders on the boss's table, the rest parked inside the range.
+    const boss = fakeMob({
+      templateId: 'gorrak',
+      threat: new Map<number, number>(members.slice(0, 3).map((id) => [id, 10])),
+    });
+    const ctx = fakeCtx([...members.map((id, i) => fakePlayer(id, i * 9)), boss], partyOf);
+    const out = held(ctx);
+    for (const id of members) expect(out.has(id), String(id)).toBe(true);
+    // One partyOf per table entry (3), and the roster walk ran once.
+    expect(partyLookups).toBe(3);
+  });
+
+  it('isHeldInCombat reads the cached pass output, never re-walking the world', () => {
+    let lookups = 0;
+    const ctx = {
+      engagedPids: new Set<number>([DPS_ID]),
+      get entities() {
+        lookups++;
+        return new Map<number, Entity>();
+      },
+    } as unknown as SimContext;
+    expect(isHeldInCombat(ctx, DPS_ID)).toBe(true);
+    expect(isHeldInCombat(ctx, TANK_ID)).toBe(false);
+    expect(lookups).toBe(0);
   });
 
   it('a trash mob never consults the party at all', () => {

@@ -42,10 +42,11 @@ export const PET_COMBAT_LINGER = 5;
 // flat (dist2d), so a member on another floor of the same instance still counts.
 export const BOSS_ENCOUNTER_COMBAT_RANGE = 100;
 
-/** A wild mob whose hate table currently holds its attackers in combat: engaged
- *  (in combat, or actively chasing / attacking / fleeing, which is what the
- *  coordinator's old target-only rule keyed on) and not walking home. */
-function mobHoldsCombat(mob: Entity, template: MobTemplate | undefined): boolean {
+/** A live wild mob that is engaged: in combat, or actively chasing / attacking /
+ *  fleeing (what the coordinator's old target-only rule keyed on), and not
+ *  walking home. Field reads only, so the idle crowd never pays a template
+ *  lookup. */
+function mobEngaged(mob: Entity): boolean {
   if (!mob.hostile) return false;
   // A mob walking home (or parked in 'evade' by the instance exit hold, hate
   // table intact) is out of the fight.
@@ -53,9 +54,7 @@ function mobHoldsCombat(mob: Entity, template: MobTemplate | undefined): boolean
   const active = mob.aiState === 'chase' || mob.aiState === 'attack' || mob.aiState === 'flee';
   // A scripted boss parked at 'idle' for an intermission stays inCombat, and
   // keeps holding the raid through it.
-  if (!active && !mob.inCombat) return false;
-  // A practice dummy never fights back; it must not hold anyone past the linger.
-  return template?.dummy !== true;
+  return active || mob.inCombat;
 }
 
 function isEncounterBoss(template: MobTemplate | undefined): boolean {
@@ -142,21 +141,19 @@ export function collectEngagedPids(ctx: SimContext, out: Set<number>): void {
       if (e.aggroTargetId !== null && e.combatTimer < PET_COMBAT_LINGER) out.add(e.ownerId);
       continue;
     }
-    // Cheap field gates first; the template lookup only lands on engaged mobs.
-    if (!e.hostile || e.aiState === 'evade' || (e.aiState === 'idle' && !e.inCombat)) continue;
+    if (!mobEngaged(e)) continue;
     const template = MOBS[e.templateId];
-    if (!mobHoldsCombat(e, template)) continue;
+    // A practice dummy never fights back; it must not hold anyone past the linger.
+    if (template?.dummy === true) continue;
     holdHateTable(ctx, e, isEncounterBoss(template), out, counters);
   }
 }
 
 /**
- * Whether an enemy currently holds this player in combat (as opposed to the
- * player's own post-event linger). Recomputes the pass on demand for the
- * command-driven readouts; never call it per tick, the engaged pass owns that.
+ * Whether an enemy held this player in combat on the most recent tick (as
+ * opposed to the player's own post-event linger). Reads the coordinator's
+ * cached pass output, so a command-driven readout never re-walks the world.
  */
 export function isHeldInCombat(ctx: SimContext, playerId: number): boolean {
-  const held = new Set<number>();
-  collectEngagedPids(ctx, held);
-  return held.has(playerId);
+  return ctx.engagedPids.has(playerId);
 }

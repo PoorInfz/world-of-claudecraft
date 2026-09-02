@@ -463,8 +463,10 @@ const MONOLITHS: MonolithRow[] = [
     // pass's hate-table walk (and PET_COMBAT_LINGER) moved to
     // combat/engaged_combat.ts, leaving one collectEngagedPids call in tick().
     // The old row had been carrying slack on this branch; re-pinned to the
-    // measured count. Exact count, zero slack.
-    ceiling: 12251,
+    // measured count. Plus 3 for the engagedPids SimContext host binding (the
+    // cached engaged-pass set the /combat readout reads through the seam).
+    // Exact count, zero slack.
+    ceiling: 12254,
     seam: 'a sim system module behind SimContext (src/sim/CLAUDE.md)',
   },
   {

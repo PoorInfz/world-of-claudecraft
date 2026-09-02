@@ -1826,7 +1826,7 @@ export class Sim {
   // and kept roster-exact on spawn/despawn/teleport
   readonly grid = new SpatialGrid();
   readonly playerGrid = new SpatialGrid();
-  private engagedPids = new Set<number>();
+  readonly engagedPids = new Set<number>();
   primaryId = -1; // the local/RL player in single-player contexts
   // The pid of the player the CONSTRUCTOR itself created (cfg.noPlayer false),
   // -1 on a server-shaped sim. The compulsory-tutorial sweep ferries only this
@@ -5221,6 +5221,9 @@ export class Sim {
       get mobScanCounters() {
         return sim._mobScanCounters;
       },
+      // The engaged pass output (combat/engaged_combat.ts), cleared and refilled
+      // in place each tick; the /combat readout reads it instead of re-walking.
+      engagedPids: sim.engagedPids,
       // Offline Fiesta practice-bot roster (fiesta_bots.ts mutates it in place);
       // the deeds real-bout gate reads it through the seam.
       get fiestaBotPids() {
