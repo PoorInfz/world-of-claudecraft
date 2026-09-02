@@ -277,9 +277,9 @@ describe('installOtaUpdateGate', () => {
     expect(rig.onFatalRecoveryFailed).not.toHaveBeenCalled();
   });
 
-  it('claims the incompatible-version disconnect while an update is in flight', () => {
+  it('claims the incompatible-version disconnect, in flight or not, and never another reason', () => {
     const idle = makeRig();
-    expect(idle.gate.handleIncompatibleDisconnect(ONLINE_WORLD_INCOMPATIBLE_MESSAGE)).toBe(false);
+    expect(idle.gate.handleIncompatibleDisconnect(ONLINE_WORLD_INCOMPATIBLE_MESSAGE)).toBe(true);
     expect(idle.gate.handleIncompatibleDisconnect('rejected by server')).toBe(false);
 
     const downloading = makeRig();
@@ -327,22 +327,29 @@ describe('installOtaUpdateGate', () => {
     await flushMicrotasks();
     expect(rig.apply).not.toHaveBeenCalled();
     rig.setInWorld(true); // whatever body still says after the session died
-    expect(rig.gate.handleIncompatibleDisconnect(ONLINE_WORLD_INCOMPATIBLE_MESSAGE)).toBe(false);
+    expect(rig.gate.handleIncompatibleDisconnect(ONLINE_WORLD_INCOMPATIBLE_MESSAGE)).toBe(true);
     await flushMicrotasks();
     expect(rig.pending).toHaveBeenCalledTimes(2);
     expect(rig.apply).toHaveBeenCalledTimes(1);
     expect(rig.apply).toHaveBeenCalledWith({ bundleId: 'b9' });
     expect(rig.render).toHaveBeenLastCalledWith({ phase: 'applying', percent: 100, fatal: true });
+    // The caller's dead-end overlay never painted, so the resume marker it
+    // clears survives and the reload lands back in the world on the new bundle.
+    expect(rig.onFatalRecoveryFailed).not.toHaveBeenCalled();
   });
 
-  it('a miss on that re-probe leaves the caller overlay alone but keeps fatal for a later download', async () => {
+  it('a miss on that re-probe hands the screen back exactly once and keeps fatal for a later download', async () => {
     const rig = makeRig();
     await flushMicrotasks();
-    expect(rig.gate.handleIncompatibleDisconnect(ONLINE_WORLD_INCOMPATIBLE_MESSAGE)).toBe(false);
+    expect(rig.gate.handleIncompatibleDisconnect(ONLINE_WORLD_INCOMPATIBLE_MESSAGE)).toBe(true);
+    // Claimed but nothing painted yet: the hand-back waits for the plugin's
+    // answer because the caller's overlay is what clears the resume marker.
+    expect(rig.render).not.toHaveBeenCalled();
+    expect(rig.onFatalRecoveryFailed).not.toHaveBeenCalled();
     await flushMicrotasks();
     expect(rig.apply).not.toHaveBeenCalled();
     expect(rig.render).not.toHaveBeenCalled();
-    expect(rig.onFatalRecoveryFailed).not.toHaveBeenCalled();
+    expect(rig.onFatalRecoveryFailed).toHaveBeenCalledTimes(1);
     // The plugin re-checks on the next foreground; that download now paints
     // and applies over the dead end without another rejection round trip.
     rig.setInWorld(true);
@@ -351,6 +358,30 @@ describe('installOtaUpdateGate', () => {
     rig.handlers.onStaged('b3');
     await flushMicrotasks();
     expect(rig.apply).toHaveBeenCalledWith({ bundleId: 'b3' });
+  });
+
+  it('a download that starts while the re-probe runs keeps the screen instead of handing back', async () => {
+    const probe: { answer: ((id: string | null) => void) | null } = { answer: null };
+    let probes = 0;
+    const rig = makeRig({
+      pending: vi.fn(
+        () =>
+          new Promise<string | null>((resolve) => {
+            if (++probes === 1)
+              resolve(null); // the boot probe
+            else probe.answer = resolve;
+          }),
+      ),
+    });
+    await flushMicrotasks();
+    expect(rig.gate.handleIncompatibleDisconnect(ONLINE_WORLD_INCOMPATIBLE_MESSAGE)).toBe(true);
+    rig.handlers.onProgress(20); // the plugin's foreground re-check started a download
+    probe.answer?.(null);
+    await flushMicrotasks();
+    expect(rig.onFatalRecoveryFailed).not.toHaveBeenCalled();
+    expect(rig.render).toHaveBeenLastCalledWith({ phase: 'downloading', percent: 20, fatal: true });
+    rig.handlers.onFailed(); // that download's own failure is what hands back
+    expect(rig.onFatalRecoveryFailed).toHaveBeenCalledTimes(1);
   });
 
   it('fatal-mode dead ends hand the screen back through onFatalRecoveryFailed', async () => {

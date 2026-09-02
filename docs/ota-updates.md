@@ -81,12 +81,14 @@ The plugin itself is MPL-2.0; self-hosting is a documented, supported mode.
    reloaded) and no event replays, so the gate asks the plugin for an
    already-staged bundle at install and applies that too. When the server
    rejects a stale bundle's world-layout epoch
-   (`ONLINE_WORLD_INCOMPATIBLE_MESSAGE`) while a download is in flight or
-   staged, the gate replaces the dead-end fatal overlay: progress, then
-   auto-apply, and the resume marker survives so the reload lands back in the
-   world on the new bundle; with nothing in flight it asks the plugin once
-   more and, finding a staged bundle, applies it out from under the fatal
-   overlay. In-world sessions are never interrupted: the overlay stays hidden
+   (`ONLINE_WORLD_INCOMPATIBLE_MESSAGE`), the gate claims the screen instead
+   of the dead-end fatal overlay: progress for a download in flight, then
+   auto-apply once staged; with nothing in flight it asks the plugin once
+   more, applies a staged bundle it finds, and hands the dead-end overlay
+   back only on a miss. The resume marker survives every apply (the dead-end
+   overlay is what clears it, and it paints only once there is provably
+   nothing to apply), so the reload lands back in the world on the new
+   bundle. In-world sessions are never interrupted: the overlay stays hidden
    and the apply falls back to the plugin's apply-on-background behavior.
 
 Bandwidth economics: the update CHECK is a tiny JSON POST against the game

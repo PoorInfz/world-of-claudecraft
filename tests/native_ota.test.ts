@@ -228,10 +228,19 @@ describe('pendingOtaBundleId', () => {
   });
 
   it('is null when the plugin has no marker, however the bridge spells "none"', async () => {
-    for (const next of [undefined, null, {}, { id: '' }, 'builtin']) {
+    for (const next of [undefined, null, {}, { id: '' }]) {
       const scope = scopeWith(queryPlugin({ current: running('cur'), next }));
       await expect(pendingOtaBundleId({ native: true, scope })).resolves.toBeNull();
     }
+  });
+
+  it('names a revert to the shipped bundle too: set({ id: "builtin" }) is the plugin reset', async () => {
+    // The plugin records builtin as next when the store build overtakes the
+    // OTA channel; installNext() would switch to it on backgrounding anyway.
+    const scope = scopeWith(
+      queryPlugin({ current: running('cur'), next: { id: 'builtin', status: 'success' } }),
+    );
+    await expect(pendingOtaBundleId({ native: true, scope })).resolves.toBe('builtin');
   });
 
   it('is null when the running bundle cannot be read (never guess: a wrong apply reload-loops)', async () => {

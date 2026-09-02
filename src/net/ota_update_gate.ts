@@ -16,9 +16,11 @@
 //   entered the world, the bundle is applied immediately via a WebView reload
 //   instead of waiting for a backgrounding.
 // - The incompatible-version rejection: when the server refuses the bundle's
-//   world-layout epoch and a download is in flight (or already staged), the
-//   dead-end fatal overlay is replaced by this gate in "fatal" mode: progress,
-//   then auto-apply (there is nothing playable behind it).
+//   world-layout epoch, this gate claims the screen in "fatal" mode instead of
+//   the dead-end overlay: progress for a download in flight, then auto-apply
+//   once staged (there is nothing playable behind it). With nothing in flight
+//   it asks the plugin for a bundle staged before this context existed and
+//   hands the dead-end overlay back only on a miss.
 //
 // "Staged" is load-bearing. The plugin emits downloadComplete before it has
 // verified the bundle or recorded it as the next bundle, so an apply issued on
@@ -176,10 +178,13 @@ export interface OtaUpdateGateDeps {
 export interface OtaUpdateGate {
   /**
    * Claim an ended session's disconnect reason: returns true (and takes over
-   * the screen) only for the incompatible-version rejection while an update
-   * is downloading or staged. On false the caller shows its usual overlay;
-   * the gate still asks the plugin for a bundle it never heard about and,
-   * finding one, applies it out from under that overlay.
+   * the screen) for the incompatible-version rejection, false for any other
+   * reason, which the caller shows as usual. With an update downloading or
+   * staged the gate paints progress and applies; with nothing in flight it
+   * asks the plugin for a bundle it never heard about, applies a hit, and on
+   * a miss hands the screen back through onFatalRecoveryFailed. Claiming
+   * before the plugin answers keeps the caller's dead-end overlay, which
+   * clears the resume marker, off the screen until it is the truth.
    */
   handleIncompatibleDisconnect(reason: string | undefined): boolean;
   /** Snapshot for tests/diagnostics. */
@@ -300,29 +305,34 @@ export function installOtaUpdateGate(deps: OtaUpdateGateDeps): OtaUpdateGate {
   // catch; the plugin's own record is the only trace.
   probeStaged();
 
+  const isUpdateInFlight = (): boolean =>
+    state.phase === 'downloading' || state.phase === 'ready' || state.phase === 'applying';
+
   return {
     handleIncompatibleDisconnect: (reason) => {
       if (reason !== incompatibleReason) return false;
-      // Claim the recovery when an update is in flight or staged.
-      if (state.phase === 'downloading' || state.phase === 'ready' || state.phase === 'applying') {
-        state = reduceOtaGateEvent(state, { type: 'incompatible' });
+      state = reduceOtaGateEvent(state, { type: 'incompatible' });
+      if (isUpdateInFlight()) {
         maybeApply();
         return true;
       }
       // Nothing known in flight (no check answered yet, the download already
-      // failed, or it finished before this context existed). The caller's
-      // overlay is the honest answer NOW, but the plugin may still hold the
-      // fix: ask it, and on a hit take over in fatal mode. Fatal is set
-      // before the probe answers so the apply is unconditional (the session
-      // is dead either way) and the overlay carries the update-required copy.
-      // A successful apply reloads out from under the caller's overlay; a
-      // failed one hands back through onFatalRecoveryFailed, which the caller
-      // treats as a repaint. The flag also outlives a miss: a download that
-      // starts later (the plugin re-checks on foreground) paints and applies
-      // in fatal mode over the same dead end.
-      state = reduceOtaGateEvent(state, { type: 'incompatible' });
-      probeStaged();
-      return false;
+      // failed, or it finished before this context existed). The plugin may
+      // still hold the fix, so the screen is claimed NOW and the plugin asked.
+      // A hit applies in fatal mode (the session is dead either way) with the
+      // caller's resume marker intact, so the reload lands back in the world
+      // on the new bundle; a miss hands back through onFatalRecoveryFailed,
+      // whose dead-end overlay is what drops that marker, so it paints only
+      // once there is provably nothing to apply. Fatal outlives a miss: a
+      // download that starts later (the plugin re-checks on foreground)
+      // paints and applies in fatal mode over the same dead end.
+      probeStaged(() => {
+        // Re-check: a download may have started while the probe ran, and the
+        // gate then owns the screen through its own apply or failure paths.
+        if (isUpdateInFlight()) return;
+        deps.onFatalRecoveryFailed?.();
+      });
+      return true;
     },
     state: () => state,
   };
