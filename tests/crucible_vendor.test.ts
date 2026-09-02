@@ -6,6 +6,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   CRUCIBLE_VENDOR_ENTITY_ID,
+  CRUCIBLE_VENDOR_ENTRANCE_POS,
   CRUCIBLE_VENDOR_NPC_ID,
   CRUCIBLE_VENDOR_STOCK,
   IGNIVAR_VENDOR_NPCS,
@@ -51,7 +52,19 @@ describe('crucible quartermaster: spawn and dialog routing', () => {
     const sim = vendorSim();
     const npc = vendorEntity(sim);
     expect(npc.dungeonId).toBeNull();
-    expect(Math.hypot(npc.pos.x - 503.05, npc.pos.z - 2243.7)).toBeLessThanOrEqual(15);
+    // On the keep's landing court (floor 15.34, one flight below the door), not on
+    // the terrain shelf outside the wall (6.1) where he first landed: close enough
+    // to read as "beside the door", clear of its 2 yd walk-in trigger.
+    const doorDist = Math.hypot(npc.pos.x - 503.05, npc.pos.z - 2243.7);
+    expect(doorDist).toBeGreaterThan(4);
+    expect(doorDist).toBeLessThanOrEqual(8);
+    expect(npc.pos.y).toBeGreaterThan(15);
+    // The authored spot itself: the west edge of the keep's landing court. A
+    // literal pin, so moving the constant is a deliberate, reviewed change.
+    expect(CRUCIBLE_VENDOR_ENTRANCE_POS).toEqual({ x: 505.5, z: 2237.6 });
+    // Exactly where authored: no safe-spot spiral may displace him off the plate.
+    expect(npc.pos.x).toBeCloseTo(CRUCIBLE_VENDOR_ENTRANCE_POS.x, 6);
+    expect(npc.pos.z).toBeCloseTo(CRUCIBLE_VENDOR_ENTRANCE_POS.z, 6);
     expect(IGNIVAR_VENDOR_NPCS[CRUCIBLE_VENDOR_NPC_ID].crucibleVendor).toBe(true);
     expect(npc.id).toBe(CRUCIBLE_VENDOR_ENTITY_ID);
     expect(IGNIVAR_VENDOR_NPCS[CRUCIBLE_VENDOR_NPC_ID].dynamic).toBe(true);

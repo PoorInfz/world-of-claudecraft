@@ -229,6 +229,7 @@ import {
   zoneAt,
 } from './data';
 import { refusedWhileDead } from './dead_gate';
+import { deckFloorHeight } from './deck_floor';
 import * as deedsMod from './deeds';
 import {
   createDeedRuntime,
@@ -2326,18 +2327,17 @@ export class Sim {
       }
     }
 
-    // Quartermaster Bronn Emberward at the Crucible entrance: spawn after
+    // Quartermaster Bronn Emberward on the keep's landing court: spawn after
     // world generation under a reserved id so replay entity ids remain stable.
+    // Placed EXACTLY where authored, feet on the court's floor plate: findSafePos
+    // reads that plate as a wall and would spiral him onto the summit flat inside
+    // the door's walk-in trigger (tests/crucible_vendor_reach.test.ts pins it).
     {
       const bronn = worldContent.npcs[CRUCIBLE_VENDOR_NPC_ID];
       if (bronn && !this.entities.has(CRUCIBLE_VENDOR_ENTITY_ID)) {
-        const safe = this.findSafePos(
-          CRUCIBLE_VENDOR_ENTRANCE_POS.x,
-          CRUCIBLE_VENDOR_ENTRANCE_POS.z,
-          waterLevel() + 0.6,
-        );
-        const npc = createNpc(CRUCIBLE_VENDOR_ENTITY_ID, bronn, this.groundPos(safe.x, safe.z));
-        this.addEntity(npc);
+        const { x, z } = CRUCIBLE_VENDOR_ENTRANCE_POS;
+        const at = { x, y: deckFloorHeight(this.cfg.seed, x, z), z };
+        this.addEntity(createNpc(CRUCIBLE_VENDOR_ENTITY_ID, bronn, at));
       }
     }
 
