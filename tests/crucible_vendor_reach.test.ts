@@ -84,7 +84,8 @@ describe('crucible quartermaster: walkable from the raid entrance', () => {
       DUNGEONS[IGNIVAR_LIFT_ROOM_ID].doorPos.z,
     );
     expect(door.y).toBeGreaterThan(18);
-    expect(npc.pos.y).toBeGreaterThan(15);
+    // Feet on the landing plate's top (15.34), not the terrain a hand's width under it.
+    expect(npc.pos.y).toBeCloseTo(15.34, 1);
     expect(dist2d(npc.pos, door)).toBeLessThan(8);
   });
 
