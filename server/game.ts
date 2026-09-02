@@ -1206,9 +1206,7 @@ export interface ClientSession extends MovementInputSessionState {
   // only bounds how long a session waits for the other officer's commit before
   // it is rolled back and disconnected instead.
   guildBankDeficitSkips: Map<number, number>;
-  // The coalesced holder flush (server/guild_book_holders.ts
-  // requestGuildBookFlush): one flush queued or running per holder, one
-  // re-arm behind it.
+  // Coalesced holder flush state (server/guild_book_holders.ts).
   guildBookFlushInFlight: boolean;
   guildBookFlushRearm: boolean;
   // Set once this session's book work can never become durable and its live
@@ -1830,11 +1828,8 @@ export class GameServer {
   // One FIFO per character id: every durable LIVE-SESSION character write
   // rides it, so commit order is enqueue order (exceptions: server/CLAUDE.md).
   readonly characterSaveQueues = createKeyedSerialWriter<number>();
-  // Which sessions hold unflushed work on which guild's book, with each
-  // holder's unsettled contribution cached (server/guild_book_holders.ts).
-  // Maintained at every mark or log change: markGuildBankDirty (touch), the
-  // post-commit prefix consume and revertOwnGuildBookOps (resync),
-  // onGuildDisbanded (dropGuild), leave (dropSession).
+  // The per-guild holder index behind the unsettled gate
+  // (server/guild_book_holders.ts owns the maintenance contract).
   private readonly guildBookHolders = new GuildBookHolderIndex<ClientSession>();
   // Weapon-skin loadouts are whole-record replacements in their dedicated paid
   // state row. Keep one FIFO per account so rapid apply/detach commands cannot
@@ -5143,10 +5138,8 @@ export class GameServer {
   // round trip instead of an autosave interval.
   static readonly GUILD_BANK_DEFICIT_MAX_SKIPS = 2;
 
-  // The escrow REFUSAL arm lives in server/guild_bank_escrow_refusal.ts (its
-  // design note is there); this is the GameServer seam it runs behind. The
-  // holder flush it shares with the dispatch-time unsettled gate is
-  // flushGuildBookHolders below.
+  // The escrow REFUSAL arm (server/guild_bank_escrow_refusal.ts) behind its
+  // GameServer seam; it shares flushGuildBookHolders with the unsettled gate.
   private handleGuildBankEscrowRefusal(
     session: ClientSession,
     results: readonly GuildBankWriteResult[],
@@ -5172,14 +5165,9 @@ export class GameServer {
     );
   }
 
-  // Flush the holders whose unflushed work FEEDS the named dependency (never
-  // an unrelated holder), at most GUILD_BOOK_FLUSH_FAN_OUT_MAX of them, each
-  // through the background-permit save with one flush in flight per holder
-  // and a single re-arm behind it (server/guild_book_holders.ts). The
-  // unsettled gate's refusal and the escrow refusal's retry arm both call it,
-  // so the retry lands a round trip later rather than an autosave later; a
-  // refusal costs its sender only an op-guard token, so anything looser would
-  // let one officer stack saves on the realm's writer.
+  // Flush the holders feeding the named dependency, bounded and coalesced,
+  // through the background-permit save (server/guild_book_holders.ts): the
+  // gate's refusal and the escrow arm's retry both land here.
   private flushGuildBookHolders(
     guildId: number,
     except: ClientSession,

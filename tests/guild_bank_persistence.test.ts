@@ -2829,6 +2829,44 @@ describe('the unsettled gate (server/guild_bank_settle_gate.ts) at the real disp
     expect(saved).toHaveLength(GUILD_BOOK_FLUSH_FAN_OUT_MAX);
     expect(holders.filter((h) => h.dirtyGuildBanks.size > 0)).toHaveLength(1);
   });
+
+  it('the holder index follows a commit, a leave, and a disband at the server seams, and agrees with a full scan', async () => {
+    const server = new GameServer();
+    const a = joinServer(server, 1, 'IdxA').session;
+    const b = joinServer(server, 2, 'IdxB').session;
+    const c = joinServer(server, 3, 'IdxC').session;
+    officerSetup(server, a, 0);
+    secondOfficer(server, b);
+    secondOfficer(server, c);
+    const index = priv(server).guildBookHolders as {
+      holders(g: number, e: ClientSession | null, o: { includeLeaving: boolean }): ClientSession[];
+      readonly size: number;
+    };
+    const holders = () => index.holders(GUILD_ID, null, { includeLeaving: true });
+    // The oracle: the index must say exactly what a scan of every live
+    // session says, so a mark or log site that forgets the index shows here.
+    const scan = () =>
+      [...(priv(server).sessionsByCharacterId.values() as Iterable<ClientSession>)].filter(
+        (s) => !s.escrowQuarantined && s.dirtyGuildBanks.has(GUILD_ID),
+      );
+    dispatch(server, a, { cmd: 'guild_bank_deposit_gold', amount: 1_000 });
+    dispatch(server, b, { cmd: 'guild_bank_deposit_gold', amount: 1_000 });
+    dispatch(server, c, { cmd: 'guild_bank_deposit_gold', amount: 1_000 });
+    expect(holders()).toEqual([a, b, c]);
+    expect(holders()).toEqual(scan());
+    // A commit releases A's mark: gone from the index.
+    expect(await priv(server).saveCharacter(a)).toBe(true);
+    expect(holders()).toEqual([b, c]);
+    expect(holders()).toEqual(scan());
+    // A leave tears B down (its leave flush lands first): dropped.
+    await server.leave(b, 'test disconnect');
+    expect(holders()).toEqual([c]);
+    expect(holders()).toEqual(scan());
+    // A disband drops the guild entirely.
+    priv(server).social.tx.onGuildDisbanded(GUILD_ID);
+    expect(holders()).toEqual([]);
+    expect(index.size).toBe(0);
+  });
 });
 
 describe('guild bank incident counters at their real emission sites', () => {

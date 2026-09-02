@@ -578,7 +578,7 @@ const MONOLITHS: MonolithRow[] = [
     // Re-pinned to the exact merged count of the OSSBrain v0.41.0 base
     // merge: both parents had already ratcheted for their own work, so
     // the composite is the honest size. Exact count, zero slack.
-    // LOWERED 10641 -> 10598 by the guild bank unsettled gate (2026-09-02): the
+    // LOWERED 10641 -> 10586 by the guild bank unsettled gate (2026-09-02): the
     // escrow REFUSAL arm moved behind a GameServer port into
     // server/guild_bank_escrow_refusal.ts, and the gate itself landed in the op
     // coordinator (server/guild_bank_op_coordinator.ts) plus its own pure
@@ -586,7 +586,7 @@ const MONOLITHS: MonolithRow[] = [
     // pass-through and the two port entries with room to spare; the review
     // hardening added the per-guild holder index hooks (touch, resync,
     // dropGuild, dropSession) and the coalesced flush fields. Zero margin.
-    ceiling: 10598,
+    ceiling: 10586,
     seam: 'a sibling server module; see the hot-path seams in server/CLAUDE.md',
   },
   {
