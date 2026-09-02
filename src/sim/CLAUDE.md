@@ -72,6 +72,7 @@ plausibly covers means the table needs a new row in the same change.
 |--------|------|
 | `combat/damage.ts` | `dealDamage`, `handleDeath`, `grantXp` (+ lifetime-XP; milestone unlocks absorbed into `deeds.ts`) |
 | `combat/heal.ts` | `applyHeal`, healing threat/taken-mult, hex/crit-vuln mults, heal-absorb |
+| `combat/engaged_combat.ts` | the per-tick player combat flag (`collectEngagedPids`): the classic hate-table rule (anyone a live mob still carries on its table stays in combat, pets flag their owner) plus the boss "zone in combat" rule (an engaged boss holds its attackers' nearby group members); called from the coordinator's engaged pass, draws no rng |
 | `combat/auras.ts` + `combat/cc.ts` | per-tick auras/regen/timers, NPC aura cleanse; CC predicates (stun/root/silence/disarm/lockout/blind/tongues) |
 | `combat/casting_lifecycle.ts` | `updateCasting`, `castAbility(BySlot)`, `cancelCast`, `pushbackCast`, GCD/cost/cooldown |
 | `combat/effect_dispatch.ts` | `runEffects` (the per-effect switch) |
@@ -277,7 +278,8 @@ decay, in-flight projectiles); the per-player loop (movement/doors/casting/auto-
 regen for live players, the ghost-run arm for released spirits, timers + auras for dead
 players too, intentionally); the per-entity loop (mob update + auras, friendly-NPC aura
 cleanse, object respawn); the `engagedPids` combat-flag pass (reads pet AND mob state
-after both update: this STAYS in the coordinator, never moves into a slice); the
+after both update: the PHASE stays in the coordinator, never moves into a slice; the
+derivation itself is `combat/engaged_combat.ts`'s `collectEngagedPids`); the
 end-of-tick system block in fixed order (duels, Card Duel pairing + AFK deadlines,
 arena, trades/ready-checks, ..., through the delayed-event drain, then the
 deeds evaluator `updateDeeds`: zero rng, after the drain so it sees same-tick results); grid
