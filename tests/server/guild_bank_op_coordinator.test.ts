@@ -642,8 +642,25 @@ describe('the unsettled gate (server/guild_bank_settle_gate.ts) inside the coord
     expect(rig.session.unflushedGuildBankOps.size).toBe(0);
     expect(rig.unsettledGuildBook).toHaveBeenCalledWith(23);
     expect(rig.sendPlayerNotice).toHaveBeenCalledWith(NOTICE);
-    expect(rig.flushUnsettledGuildBook).toHaveBeenCalledWith(23);
+    expect(rig.flushUnsettledGuildBook).toHaveBeenCalledWith(23, { kind: 'items', key: legsKey });
     expect(rig.recordGuildBankIncident).toHaveBeenCalledWith('unsettled_refused');
+  });
+
+  it('never gates a READ-ONLY view: a plain member buys neither an incident nor a flush', () => {
+    // guildBankInfoFor hands every member a view; only officer-plus get
+    // canEdit. The sim refuses the member's op on rank, and the gate must not
+    // run first (it would count an incident and flush a holder for a request
+    // that can never succeed).
+    const rig = makeRig();
+    rig.state.playerBook = book({ slots: [slot('spider_leg', 20)], canEdit: false });
+    rig.unsettledGuildBook.mockReturnValue(unsettledLegs());
+    const run = vi.fn();
+    runGuildBankOp(rig.host, rig.session, { pid: 5 }, 'withdraw', run, { slot: 0 });
+    expect(run).toHaveBeenCalledTimes(1);
+    expect(rig.unsettledGuildBook).not.toHaveBeenCalled();
+    expect(rig.sendPlayerNotice).not.toHaveBeenCalled();
+    expect(rig.flushUnsettledGuildBook).not.toHaveBeenCalled();
+    expect(rig.recordGuildBankIncident).not.toHaveBeenCalledWith('unsettled_refused');
   });
 
   it('passes a settled withdraw through to admission and the mutation, with no notice and no flush', () => {

@@ -1234,7 +1234,20 @@ the deployment premise the cache bust and the single-writer narrowing both rest 
   backstop SEED the log under the gate (`seedUnflushed` in
   `tests/guild_bank_persistence.test.ts`); the gate's own pins are
   `tests/guild_bank_settle_gate.test.ts` and the gate describe block in the persistence
-  suite. Metered as `unsettled_refused` (rate, never presence). The holder flush is
-  DAMPED (`GUILD_BOOK_FLUSH_COOLDOWN_MS`, one flush per holder per window, shared with
-  the refusal arm's retry flush): a refusal costs its sender only an op-guard token, so
-  an undamped fan-out would let one officer force a save per dirty guildmate per refusal.
+  suite. Metered as `unsettled_refused` (rate, never presence). Review hardening
+  (2026-09-02): (a) EDIT AUTHORITY FIRST: a read-only member view (`canEdit` false) never
+  reaches the gate, so a plain member can buy neither an incident nor a flush; (b) the
+  gate reads a per-guild HOLDER INDEX with each holder's contribution cached
+  (`server/guild_book_holders.ts` GuildBookHolderIndex: touch on every op, resync after
+  every commit and rollback, dropGuild on disband, dropSession on leave), never a
+  realm-wide session scan per op, and a cached contribution is invalidated, never
+  patched (a commit that consumed one entry while an op pushed another keeps the log
+  LENGTH and changes its contents); (c) the refusal flush reaches only the holders whose
+  contribution FEEDS the refused dependency (`GuildBookDependency`: the exact identity,
+  the arm's item id, copper, or the ladder), at most `GUILD_BOOK_FLUSH_FAN_OUT_MAX` of
+  them, through the background-permit save, with ONE flush queued or running per holder
+  and a single re-arm behind it (`requestGuildBookFlush`), shared with the refusal arm's
+  retry flush; (d) the gate mirrors the sim's admissibility checks (floored count within
+  the stack, positive safe-integer amount within the treasury, a priced rung the
+  treasury covers) and passes every inadmissible shape through unjudged, so a request
+  the sim refuses anyway can never buy a refusal, an incident, or a flush.

@@ -4,7 +4,7 @@
 // UNSETTLED: consuming it puts a replay dependency on that session into this
 // session's escrow log, and the escrow save honours only a ONE-WAY dependency
 // (its refusal arm flushes the other session and retries, see
-// server/game.ts handleGuildBankEscrowRefusal).
+// server/guild_bank_escrow_refusal.ts).
 //
 // Two sessions that each consumed the other's unsettled value can never
 // commit in any order. The 2026-09-01 production incident was exactly that
@@ -26,10 +26,12 @@
 // an officer reaches for a deposit made moments ago, and the host flushes the
 // depositor on the spot so the retry lands a round trip later.
 //
-// Pure: the host hands over the live book snapshot and the OTHER live
-// sessions' unflushed logs; nothing here touches a session or the sim.
+// Pure: the host hands over the live book snapshot and the OTHER holders'
+// contributions (server/guild_book_holders.ts keeps them indexed per guild and
+// cached per holder); nothing here touches a session or the sim.
 
 import {
+  type GuildBankDeltaDeficit,
   type GuildBankOpDelta,
   guildBankDeltaIdentityKey,
   guildBankRungsBought,
@@ -48,47 +50,34 @@ export function isGuildBankGatedOp(op: string): op is GuildBankGatedOp {
 }
 
 /** The client-supplied inputs of one op, as the dispatch site received them
- *  (already type-checked there; the gate re-validates the shapes it reads). */
+ *  (already type-checked there). The gate mirrors the sim's own admissibility
+ *  checks on them and passes every inadmissible shape through UNJUDGED, so a
+ *  request the sim is going to refuse anyway can never buy a refusal, an
+ *  incident, or a holder flush. */
 export interface GuildBankOpRequest {
   readonly slot?: number;
   readonly count?: number;
   readonly amount?: number;
 }
 
-export type GuildBankUnsettledKind = 'items' | 'copper' | 'ladder';
-
-/** How long after a holder was flushed the host must NOT flush it again, in
- *  milliseconds. The flush exists so a refused op's retry lands a round trip
- *  later, and one flush per holder buys exactly that; a second one inside
- *  the window would only stack a save behind one still in flight. The bound
- *  it gives: a refusal costs its sender no more than an op-guard token, so
- *  without it one officer refusing at the guard's rate could force a save per
- *  dirty guildmate per refusal. With it, the fan-out is at most one extra save
- *  per holder per window, whoever is refusing and however often. */
-export const GUILD_BOOK_FLUSH_COOLDOWN_MS = 1_000;
-
-/** What OTHER sessions' unflushed logs still hold on one guild's book: the
- *  part of the live book durable truth may not have when the acting session's
- *  replay runs.
+/** One holder's contribution to a book's unsettled value: its OWN net per
+ *  identity key and net treasury copper, positives only, plus whether it holds
+ *  a ladder rung. The sum over holders is what the gate judges against.
  *
- *  Summed PER SESSION, positives only. A commit is atomic per session, so the
- *  worst durable base for the acting replay is every net-REMOVING holder
- *  already committed (durable lowered) and every net-DEPOSITING holder not
- *  yet committed (its copies still unsettled): `live - sum over holders of
- *  max(0, holder's net)`. Netting one holder's withdrawal against another
- *  holder's deposit would hide the deposit (holder C's withdraw of 10 cancels
- *  holder B's deposit of 10, and the acting officer takes B's copies ungated),
- *  which is the same two-identity cycle the gate exists to refuse, one officer
- *  removed. */
-export interface UnsettledGuildBook {
-  /** Per identity key (the escrow replay's three-dimensional key): the sum
-   *  over holders of each holder's POSITIVE net copies (deposits minus its own
-   *  removals, floored at zero). */
+ *  Positives only, PER HOLDER: a commit is atomic per session, so the worst
+ *  durable base for the acting replay is every net-REMOVING holder already
+ *  committed (durable lowered) and every net-DEPOSITING holder not yet
+ *  committed (its copies still unsettled). Netting one holder's withdrawal
+ *  against another holder's deposit would hide the deposit (holder C's
+ *  withdraw of 10 cancels holder B's deposit of 10, and the acting officer
+ *  takes B's copies ungated), which is the same two-identity cycle the gate
+ *  exists to refuse, one officer removed. */
+export interface GuildBookContribution {
+  /** Per identity key (the escrow replay's three-dimensional key). */
   readonly items: ReadonlyMap<string, number>;
-  /** The sum over holders of each holder's POSITIVE net treasury copper the
-   *  replay would MOVE. open_bank is excluded (rung 0 is purse-paid and the
-   *  applier never moves it), buy_slots is included (its charge left the
-   *  treasury). */
+  /** Net treasury copper the replay would MOVE. open_bank is excluded (rung 0
+   *  is purse-paid and the applier never moves it), buy_slots is included (its
+   *  charge left the treasury). */
   readonly copper: number;
   /** True while any slot op is outstanding: a rung replays only onto the exact
    *  ladder position its witness names, so a rung bought on top of an
@@ -96,39 +85,99 @@ export interface UnsettledGuildBook {
   readonly ladder: boolean;
 }
 
-export function unsettledGuildBook(
-  logs: Iterable<readonly GuildBankOpDelta[]>,
+/** The sum of the OTHER holders' contributions on one guild's book. */
+export type UnsettledGuildBook = GuildBookContribution;
+
+export const SETTLED_BOOK: UnsettledGuildBook = { items: new Map(), copper: 0, ladder: false };
+
+export function holderContribution(log: readonly GuildBankOpDelta[]): GuildBookContribution {
+  const own = new Map<string, number>();
+  let copper = 0;
+  let ladder = false;
+  for (const d of log) {
+    if (d.op === 'open_bank' || d.op === 'buy_slots') {
+      ladder = true;
+      if (d.op === 'buy_slots') copper += Number(d.copperDelta) || 0;
+      continue;
+    }
+    if (d.op === 'deposit_gold' || d.op === 'withdraw_gold') {
+      copper += Number(d.copperDelta) || 0;
+      continue;
+    }
+    if (typeof d.itemId !== 'string' || d.itemId === '') continue;
+    const count = Math.max(0, Math.floor(Number(d.count)) || 0);
+    if (count === 0) continue;
+    const key = guildBankDeltaIdentityKey(d);
+    own.set(key, (own.get(key) ?? 0) + (d.op === 'deposit' ? count : -count));
+  }
+  const items = new Map<string, number>();
+  for (const [key, net] of own) if (net > 0) items.set(key, net);
+  return { items, copper: Math.max(0, copper), ladder };
+}
+
+export function sumContributions(
+  contributions: Iterable<GuildBookContribution>,
 ): UnsettledGuildBook {
   const items = new Map<string, number>();
   let copper = 0;
   let ladder = false;
-  for (const log of logs) {
-    // One holder's own net, keyed like the replay; only its positive part
-    // joins the total (see the interface note).
-    const own = new Map<string, number>();
-    let ownCopper = 0;
-    for (const d of log) {
-      if (d.op === 'open_bank' || d.op === 'buy_slots') {
-        ladder = true;
-        if (d.op === 'buy_slots') ownCopper += Number(d.copperDelta) || 0;
-        continue;
-      }
-      if (d.op === 'deposit_gold' || d.op === 'withdraw_gold') {
-        ownCopper += Number(d.copperDelta) || 0;
-        continue;
-      }
-      if (typeof d.itemId !== 'string' || d.itemId === '') continue;
-      const count = Math.max(0, Math.floor(Number(d.count)) || 0);
-      if (count === 0) continue;
-      const key = guildBankDeltaIdentityKey(d);
-      own.set(key, (own.get(key) ?? 0) + (d.op === 'deposit' ? count : -count));
-    }
-    for (const [key, net] of own) {
-      if (net > 0) items.set(key, (items.get(key) ?? 0) + net);
-    }
-    if (ownCopper > 0) copper += ownCopper;
+  for (const c of contributions) {
+    for (const [key, net] of c.items) items.set(key, (items.get(key) ?? 0) + net);
+    copper += c.copper;
+    ladder = ladder || c.ladder;
   }
   return { items, copper, ladder };
+}
+
+/** Convenience for callers holding raw logs (tests, the unit pins). */
+export function unsettledGuildBook(
+  logs: Iterable<readonly GuildBankOpDelta[]>,
+): UnsettledGuildBook {
+  const contributions: GuildBookContribution[] = [];
+  for (const log of logs) contributions.push(holderContribution(log));
+  return sumContributions(contributions);
+}
+
+/** What a refused op would have consumed, named so the host flushes ONLY the
+ *  holders whose work feeds it. `items` names the exact identity the gate
+ *  matched; `items_of` is the escrow refusal arm's coarser view (its deficit
+ *  carries an item id and no payload). */
+export type GuildBookDependency =
+  | { readonly kind: 'items'; readonly key: string }
+  | { readonly kind: 'items_of'; readonly itemId: string }
+  | { readonly kind: 'copper' }
+  | { readonly kind: 'ladder' };
+
+export function contributesTo(c: GuildBookContribution, dep: GuildBookDependency): boolean {
+  switch (dep.kind) {
+    case 'items':
+      return (c.items.get(dep.key) ?? 0) > 0;
+    case 'items_of': {
+      const prefix = `${dep.itemId}|`;
+      for (const [key, net] of c.items) if (net > 0 && key.startsWith(prefix)) return true;
+      return false;
+    }
+    case 'copper':
+      return c.copper > 0;
+    case 'ladder':
+      return c.ladder;
+  }
+}
+
+/** The escrow refusal arm's deficit, as a dependency the flush can filter on. */
+export function deficitDependency(
+  deficit: GuildBankDeltaDeficit | null,
+): GuildBookDependency | null {
+  if (!deficit) return null;
+  switch (deficit.kind) {
+    case 'missing_items':
+      return deficit.itemId ? { kind: 'items_of', itemId: deficit.itemId } : null;
+    case 'treasury_underflow':
+    case 'treasury_overflow':
+      return { kind: 'copper' };
+    case 'ladder_behind':
+      return { kind: 'ladder' };
+  }
 }
 
 /** The identity the replay would match this slot's copies on. */
@@ -140,78 +189,53 @@ function slotIdentityKey(slot: InvSlot): string {
   });
 }
 
-/** Why the op must be refused, or null when it may run. `live` is the acting
- *  player's book snapshot (guildBankInfoFor); `unsettled` aggregates every
- *  OTHER live session's unflushed log for the same guild. A shape the sim
- *  would refuse anyway (a bad slot, a non-positive amount) passes through
- *  unjudged so the sim's own refusal and wording stay authoritative. */
+/** The dependency the op must be refused for, or null when it may run.
+ *  `live` is the acting player's EDITABLE book snapshot (guildBankInfoFor with
+ *  canEdit; the host never calls this for a read-only view); `unsettled` sums
+ *  every OTHER holder's contribution for the same guild.
+ *
+ *  Every shape the sim refuses on its own passes through unjudged: the same
+ *  count and amount rules as src/sim/bank.ts moveBetweenContainers and
+ *  src/sim/guild_bank.ts (a plain stack takes a floored count within the
+ *  stack, an instanced stack moves whole, an amount is a positive safe
+ *  integer within the treasury, a rung has a table price the treasury
+ *  covers), so the sim's refusal and wording stay authoritative and an
+ *  inadmissible request never buys a refusal, an incident, or a flush. */
 export function guildBankUnsettledRefusal(
   op: GuildBankGatedOp,
   request: GuildBankOpRequest,
   live: GuildBankInfo,
   unsettled: UnsettledGuildBook,
-): GuildBankUnsettledKind | null {
+): GuildBookDependency | null {
   if (op === 'withdraw') {
     const slot = Number.isInteger(request.slot) ? live.slots[request.slot as number] : undefined;
     if (!slot) return null;
-    // An instanced stack moves whole; a plain stack moves the asked count or,
-    // with none asked, the whole stack (src/sim/bank.ts moveBetweenContainers).
     const want = slot.instance
       ? slot.count
       : request.count === undefined
         ? slot.count
         : Math.floor(request.count);
-    if (!(want > 0)) return null;
+    if (!(want > 0) || want > slot.count) return null;
     const key = slotIdentityKey(slot);
     const others = unsettled.items.get(key) ?? 0;
-    // Others' net REMOVALS only lower the live count, which the sim already
-    // bounds the withdraw by; only their net deposits are copies durable truth
-    // lacks.
     if (others <= 0) return null;
     let held = 0;
     for (const s of live.slots) if (slotIdentityKey(s) === key) held += s.count;
-    return want > held - others ? 'items' : null;
+    return want > held - others ? { kind: 'items', key } : null;
   }
   if (op === 'withdraw_gold') {
-    const amount = Math.floor(Number(request.amount));
-    if (!(amount > 0) || unsettled.copper <= 0) return null;
-    return amount > live.treasury - unsettled.copper ? 'copper' : null;
+    const amount = request.amount;
+    if (typeof amount !== 'number' || !Number.isSafeInteger(amount) || amount <= 0) return null;
+    if (amount > live.treasury || unsettled.copper <= 0) return null;
+    return amount > live.treasury - unsettled.copper ? { kind: 'copper' } : null;
   }
   // buy_slots: the ladder is strictly ordered, so ANY outstanding rung blocks
   // the next; rung 0 (open_bank) is purse-paid and moves no treasury copper,
   // rungs 1+ charge the treasury the table price and answer to the copper rule.
-  if (unsettled.ladder) return 'ladder';
-  if (guildBankRungsBought(live.purchasedSlots) === 0 || unsettled.copper <= 0) return null;
-  const price = live.nextExpansionPrice ?? 0;
-  return price > live.treasury - unsettled.copper ? 'copper' : null;
-}
-
-/** The slice of a live session the holder selection reads (structural, so
- *  GameServer's ClientSession satisfies it without the type dragging the
- *  whole class in). */
-export interface GuildBookHolderSession {
-  readonly escrowQuarantined: boolean;
-  readonly left: boolean;
-  readonly dirtyGuildBanks: ReadonlyMap<number, number>;
-}
-
-/** Sessions other than `except` whose unflushed log still holds work on this
- *  guild's book. A quarantined session is never a holder: its work was undone
- *  on the live book the moment it was quarantined. A LEAVING session's work is
- *  still on the live book until its leave flush commits, so the gate counts it
- *  (`includeLeaving: true`); the escrow refusal arm does not, because a
- *  departing session is neither one to wait on nor one to flush again. */
-export function guildBookHolders<S extends GuildBookHolderSession>(
-  sessions: Iterable<S>,
-  guildId: number,
-  except: S,
-  opts: { readonly includeLeaving: boolean },
-): S[] {
-  const holders: S[] = [];
-  for (const s of sessions) {
-    if (s === except || s.escrowQuarantined) continue;
-    if (s.left && !opts.includeLeaving) continue;
-    if (s.dirtyGuildBanks.has(guildId)) holders.push(s);
-  }
-  return holders;
+  const price = live.nextExpansionPrice;
+  if (price === null) return null;
+  if (unsettled.ladder) return { kind: 'ladder' };
+  if (guildBankRungsBought(live.purchasedSlots) === 0) return null;
+  if (price > live.treasury || unsettled.copper <= 0) return null;
+  return price > live.treasury - unsettled.copper ? { kind: 'copper' } : null;
 }

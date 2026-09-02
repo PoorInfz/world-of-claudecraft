@@ -1,14 +1,20 @@
-// The unsettled gate, unit: what OTHER sessions' unflushed logs make
-// unsettled on a book, and which withdraws / gold withdraws / rung purchases
-// that refuses. The server-level pins (the 2026-09-01 two-material swap, the
-// flush, the counter, the notice) live in tests/guild_bank_persistence.test.ts.
+// The unsettled gate, unit: what one holder's log contributes, how holders
+// sum, which withdraws / gold withdraws / rung purchases that refuses (and
+// which inadmissible shapes it leaves to the sim), and the dependency a
+// refusal names for the flush. The server-level pins (the 2026-09-01
+// two-material swap, the flush, the counter, the notice) live in
+// tests/guild_bank_persistence.test.ts; the holder index and the coalesced
+// flush in tests/guild_book_holders.test.ts.
 import { describe, expect, it } from 'vitest';
 import {
+  contributesTo,
+  deficitDependency,
   GUILD_BANK_GATED_OPS,
   type GuildBankOpRequest,
   guildBankUnsettledRefusal,
-  guildBookHolders,
+  holderContribution,
   isGuildBankGatedOp,
+  sumContributions,
   unsettledGuildBook,
 } from '../server/guild_bank_settle_gate';
 import { type GuildBankOpDelta, guildBankDeltaIdentityKey } from '../src/sim/guild_bank';
@@ -31,8 +37,19 @@ const withdraw = (itemId: string, count: number, extra: Partial<GuildBankOpDelta
   delta({ op: 'withdraw', itemId, count, ...extra });
 const gold = (copperDelta: number) =>
   delta({ op: copperDelta > 0 ? 'deposit_gold' : 'withdraw_gold', copperDelta });
+const keyOf = (itemId: string, extra: Partial<GuildBankOpDelta> = {}) =>
+  guildBankDeltaIdentityKey({
+    itemId,
+    instance: extra.instance ?? null,
+    craftedRecipeId: extra.craftedRecipeId ?? null,
+  });
 
-function book(slots: InvSlot[], treasury = 0, purchasedSlots = 24): GuildBankInfo {
+function book(
+  slots: InvSlot[],
+  treasury = 0,
+  purchasedSlots = 24,
+  overrides: Partial<GuildBankInfo> = {},
+): GuildBankInfo {
   return {
     treasury,
     slots,
@@ -40,6 +57,7 @@ function book(slots: InvSlot[], treasury = 0, purchasedSlots = 24): GuildBankInf
     purchasedSlots,
     nextExpansionPrice: purchasedSlots === 0 ? 10_000 : 50_000,
     canEdit: true,
+    ...overrides,
   };
 }
 
@@ -50,33 +68,35 @@ const refusal = (
   logs: readonly (readonly GuildBankOpDelta[])[],
 ) => guildBankUnsettledRefusal(op, request, live, unsettledGuildBook(logs));
 
-describe('unsettledGuildBook (what other sessions have not made durable)', () => {
-  it('nets item deltas per identity key WITHIN each log, then sums the positive nets', () => {
-    const u = unsettledGuildBook([
-      [deposit('spider_leg', 20), withdraw('spider_leg', 5)],
-      [deposit('spider_leg', 3), delta({ op: 'admin_purge', itemId: 'spider_leg', count: 1 })],
-      [deposit('venom_gland', 7)],
+describe('holderContribution and the sum over holders', () => {
+  it('nets item deltas per identity key within a log and keeps the positive nets', () => {
+    const c = holderContribution([
+      deposit('spider_leg', 20),
+      withdraw('spider_leg', 5),
+      deposit('venom_gland', 7),
+      withdraw('wolf_fang', 3),
+      delta({ op: 'admin_purge', itemId: 'venom_gland', count: 1 }),
     ]);
-    expect([...u.items.entries()]).toEqual([
-      [expect.stringContaining('spider_leg'), 17],
-      [expect.stringContaining('venom_gland'), 7],
+    expect([...c.items.entries()]).toEqual([
+      [keyOf('spider_leg'), 15],
+      [keyOf('venom_gland'), 6],
     ]);
-    expect(u.copper).toBe(0);
-    expect(u.ladder).toBe(false);
+    expect(c.copper).toBe(0);
+    expect(c.ladder).toBe(false);
   });
 
-  it("never lets one holder's removal hide another holder's deposit (per-session positives)", () => {
+  it("never lets one holder's removal hide another holder's deposit (positives per holder)", () => {
     // Holder B deposited 10, holder C withdrew 10 (of the durable copies): a
     // single net would read 0 and wave the acting officer through onto B's
     // unsettled copies. C's commit lowers durable, B's may never land.
     const u = unsettledGuildBook([[deposit('spider_leg', 10)], [withdraw('spider_leg', 10)]]);
-    expect(u.items.get(guildBankDeltaIdentityKey(deposit('spider_leg', 1)))).toBe(10);
-    // The same for copper: B's deposit stays unsettled whatever C withdrew.
+    expect(u.items.get(keyOf('spider_leg'))).toBe(10);
     const g = unsettledGuildBook([[gold(10_000)], [gold(-10_000)]]);
     expect(g.copper).toBe(10_000);
     // A holder that is net-negative on its own contributes nothing.
-    const n = unsettledGuildBook([[deposit('spider_leg', 4), withdraw('spider_leg', 9)]]);
+    const n = holderContribution([deposit('spider_leg', 4), withdraw('spider_leg', 9), gold(-5)]);
     expect(n.items.size).toBe(0);
+    expect(n.copper).toBe(0);
   });
 
   it('keeps the three identity dimensions apart (instance payload and craft provenance)', () => {
@@ -90,34 +110,42 @@ describe('unsettledGuildBook (what other sessions have not made durable)', () =>
   });
 
   it('nets treasury copper the replay would move within a log: gold both ways and buy_slots, never open_bank', () => {
-    const u = unsettledGuildBook([
-      [
-        gold(40_000),
-        gold(-15_000),
-        delta({
-          op: 'buy_slots',
-          copperDelta: -5_000,
-          purchasedSlotsBefore: 24,
-          purchasedSlotsAfter: 30,
-        }),
-      ],
-      [delta({ op: 'open_bank', copperDelta: -10_000, purchasedSlotsAfter: 24 })],
+    const c = holderContribution([
+      gold(40_000),
+      gold(-15_000),
+      delta({
+        op: 'buy_slots',
+        copperDelta: -5_000,
+        purchasedSlotsBefore: 24,
+        purchasedSlotsAfter: 30,
+      }),
     ]);
-    expect(u.copper).toBe(20_000);
-    expect(u.ladder).toBe(true);
+    expect(c.copper).toBe(20_000);
+    expect(c.ladder).toBe(true);
+    const opened = holderContribution([
+      delta({ op: 'open_bank', copperDelta: -10_000, purchasedSlotsAfter: 24 }),
+    ]);
+    expect(opened.copper).toBe(0);
+    expect(opened.ladder).toBe(true);
+    expect(sumContributions([c, opened])).toEqual({
+      items: new Map(),
+      copper: 20_000,
+      ladder: true,
+    });
   });
 
   it('ignores a malformed item delta rather than keying on it', () => {
-    const u = unsettledGuildBook([[deposit('', 5), withdraw('wolf_fang', Number.NaN)]]);
-    expect(u.items.size).toBe(0);
+    const c = holderContribution([deposit('', 5), withdraw('wolf_fang', Number.NaN)]);
+    expect(c.items.size).toBe(0);
   });
 });
 
 describe('guildBankUnsettledRefusal: withdraws', () => {
   const live = book([{ itemId: 'spider_leg', count: 20 }]);
+  const legs = { kind: 'items', key: keyOf('spider_leg') } as const;
 
-  it("refuses a withdraw of another session's unsettled stack", () => {
-    expect(refusal('withdraw', { slot: 0 }, live, [[deposit('spider_leg', 20)]])).toBe('items');
+  it("refuses a withdraw of another session's unsettled stack, naming the identity", () => {
+    expect(refusal('withdraw', { slot: 0 }, live, [[deposit('spider_leg', 20)]])).toEqual(legs);
   });
 
   it('passes the same withdraw once nothing is unsettled (the stack is durable)', () => {
@@ -133,10 +161,13 @@ describe('guildBankUnsettledRefusal: withdraws', () => {
     ]);
     const logs = [[deposit('spider_leg', 20)]];
     expect(refusal('withdraw', { slot: 0, count: 10 }, two, logs)).toBeNull();
-    expect(refusal('withdraw', { slot: 0, count: 11 }, two, logs)).toBe('items');
+    expect(refusal('withdraw', { slot: 0, count: 11 }, two, logs)).toEqual(legs);
     // No count asked means the whole stack.
     expect(refusal('withdraw', { slot: 1 }, two, logs)).toBeNull();
-    expect(refusal('withdraw', { slot: 0 }, two, logs)).toBe('items');
+    expect(refusal('withdraw', { slot: 0 }, two, logs)).toEqual(legs);
+    // The sim floors a fractional count, so the gate judges the floor.
+    expect(refusal('withdraw', { slot: 0, count: 10.9 }, two, logs)).toBeNull();
+    expect(refusal('withdraw', { slot: 0, count: 11.1 }, two, logs)).toEqual(legs);
   });
 
   it("is blind to another session's unsettled REMOVAL (the live count already reflects it)", () => {
@@ -150,7 +181,7 @@ describe('guildBankUnsettledRefusal: withdraws', () => {
       refusal('withdraw', { slot: 0 }, signed, [
         [deposit('iron_ore', 5, { instance: { signer: 'BigDamage' } })],
       ]),
-    ).toBe('items');
+    ).toEqual({ kind: 'items', key: keyOf('iron_ore', { instance: { signer: 'BigDamage' } }) });
     const crafted = book([{ itemId: 'iron_ore', count: 5, craftedRecipeId: 'smelt_iron' }]);
     expect(refusal('withdraw', { slot: 0 }, crafted, [[deposit('iron_ore', 5)]])).toBeNull();
   });
@@ -158,15 +189,22 @@ describe('guildBankUnsettledRefusal: withdraws', () => {
   it('treats an instanced stack as moving whole, whatever count was asked', () => {
     const signed = book([{ itemId: 'iron_ore', count: 5, instance: { signer: 'BigDamage' } }]);
     const logs = [[deposit('iron_ore', 5, { instance: { signer: 'BigDamage' } })]];
-    expect(refusal('withdraw', { slot: 0, count: 1 }, signed, logs)).toBe('items');
+    expect(refusal('withdraw', { slot: 0, count: 1 }, signed, logs)).toMatchObject({
+      kind: 'items',
+    });
   });
 
-  it('passes a shape the sim refuses itself (a missing slot, a bad count) unjudged', () => {
+  it('passes every shape the sim refuses itself unjudged (missing slot, bad or over-stack count)', () => {
     const logs = [[deposit('spider_leg', 20)]];
     expect(refusal('withdraw', { slot: 7 }, live, logs)).toBeNull();
     expect(refusal('withdraw', { slot: -1 }, live, logs)).toBeNull();
     expect(refusal('withdraw', { slot: 0.5 }, live, logs)).toBeNull();
     expect(refusal('withdraw', { slot: 0, count: 0 }, live, logs)).toBeNull();
+    expect(refusal('withdraw', { slot: 0, count: -3 }, live, logs)).toBeNull();
+    expect(refusal('withdraw', { slot: 0, count: Number.NaN }, live, logs)).toBeNull();
+    // Over the stack: moveBetweenContainers refuses it as 'invalid'.
+    expect(refusal('withdraw', { slot: 0, count: 21 }, live, logs)).toBeNull();
+    expect(refusal('withdraw', { slot: 0, count: Number.MAX_SAFE_INTEGER }, live, logs)).toBeNull();
     expect(refusal('withdraw', {}, live, logs)).toBeNull();
   });
 });
@@ -176,7 +214,7 @@ describe('guildBankUnsettledRefusal: gold and ladder rungs', () => {
     const live = book([], 140_000);
     const logs = [[gold(40_000)]];
     expect(refusal('withdraw_gold', { amount: 100_000 }, live, logs)).toBeNull();
-    expect(refusal('withdraw_gold', { amount: 100_001 }, live, logs)).toBe('copper');
+    expect(refusal('withdraw_gold', { amount: 100_001 }, live, logs)).toEqual({ kind: 'copper' });
   });
 
   it("is blind to another session's unsettled gold WITHDRAW", () => {
@@ -184,18 +222,22 @@ describe('guildBankUnsettledRefusal: gold and ladder rungs', () => {
     expect(refusal('withdraw_gold', { amount: 60_000 }, live, [[gold(-40_000)]])).toBeNull();
   });
 
-  it('passes a non-positive or malformed amount unjudged', () => {
+  it('passes every amount the sim refuses itself unjudged (non-positive, fractional, unsafe, over the treasury)', () => {
     const live = book([], 40_000);
     const logs = [[gold(40_000)]];
     expect(refusal('withdraw_gold', { amount: 0 }, live, logs)).toBeNull();
     expect(refusal('withdraw_gold', { amount: -5 }, live, logs)).toBeNull();
+    expect(refusal('withdraw_gold', { amount: 100.5 }, live, logs)).toBeNull();
+    expect(refusal('withdraw_gold', { amount: Number.NaN }, live, logs)).toBeNull();
+    expect(refusal('withdraw_gold', { amount: 2 ** 53 }, live, logs)).toBeNull();
+    expect(refusal('withdraw_gold', { amount: 40_001 }, live, logs)).toBeNull();
     expect(refusal('withdraw_gold', {}, live, logs)).toBeNull();
   });
 
   it('refuses a rung purchase while any rung is unsettled (the ladder is strictly ordered)', () => {
     const live = book([], 500_000, 24);
     const opened = [[delta({ op: 'open_bank', copperDelta: -10_000, purchasedSlotsAfter: 24 })]];
-    expect(refusal('buy_slots', {}, live, opened)).toBe('ladder');
+    expect(refusal('buy_slots', {}, live, opened)).toEqual({ kind: 'ladder' });
     expect(refusal('buy_slots', {}, live, [])).toBeNull();
   });
 
@@ -203,10 +245,57 @@ describe('guildBankUnsettledRefusal: gold and ladder rungs', () => {
     // Rung 1+ costs nextExpansionPrice (50_000 here) from the treasury.
     const live = book([], 60_000, 24);
     expect(refusal('buy_slots', {}, live, [[gold(10_000)]])).toBeNull();
-    expect(refusal('buy_slots', {}, live, [[gold(10_001)]])).toBe('copper');
+    expect(refusal('buy_slots', {}, live, [[gold(10_001)]])).toEqual({ kind: 'copper' });
     // Rung 0 opens the bank from the acting officer's own purse: no copper rule.
     const unopened = book([], 0, 0);
     expect(refusal('buy_slots', {}, unopened, [[gold(10_000)]])).toBeNull();
+  });
+
+  it('passes a rung the sim refuses itself unjudged (ladder finished, treasury short of the price)', () => {
+    const done = book([], 500_000, 24, { nextExpansionPrice: null });
+    expect(refusal('buy_slots', {}, done, [[gold(10_000)]])).toBeNull();
+    const poor = book([], 40_000, 24);
+    expect(refusal('buy_slots', {}, poor, [[gold(10_000)]])).toBeNull();
+  });
+});
+
+describe('the dependency a refusal names, and who feeds it', () => {
+  it('contributesTo matches the exact identity, any identity of an item, copper, or the ladder', () => {
+    const c = holderContribution([
+      deposit('iron_ore', 5, { instance: { signer: 'BigDamage' } }),
+      gold(1),
+      delta({ op: 'open_bank', copperDelta: -10_000, purchasedSlotsAfter: 24 }),
+    ]);
+    const signedKey = keyOf('iron_ore', { instance: { signer: 'BigDamage' } });
+    expect(contributesTo(c, { kind: 'items', key: signedKey })).toBe(true);
+    expect(contributesTo(c, { kind: 'items', key: keyOf('iron_ore') })).toBe(false);
+    expect(contributesTo(c, { kind: 'items_of', itemId: 'iron_ore' })).toBe(true);
+    expect(contributesTo(c, { kind: 'items_of', itemId: 'iron' })).toBe(false);
+    expect(contributesTo(c, { kind: 'copper' })).toBe(true);
+    expect(contributesTo(c, { kind: 'ladder' })).toBe(true);
+    const plain = holderContribution([withdraw('wolf_fang', 2)]);
+    expect(contributesTo(plain, { kind: 'copper' })).toBe(false);
+    expect(contributesTo(plain, { kind: 'ladder' })).toBe(false);
+    expect(contributesTo(plain, { kind: 'items_of', itemId: 'wolf_fang' })).toBe(false);
+  });
+
+  it('maps the escrow refusal deficit onto the same dependency vocabulary', () => {
+    const base = { op: 'withdraw' as const, shortfall: 1, copperDelta: 0 };
+    expect(deficitDependency({ ...base, kind: 'missing_items', itemId: 'spider_leg' })).toEqual({
+      kind: 'items_of',
+      itemId: 'spider_leg',
+    });
+    expect(deficitDependency({ ...base, kind: 'missing_items', itemId: null })).toBeNull();
+    expect(deficitDependency({ ...base, kind: 'treasury_underflow', itemId: null })).toEqual({
+      kind: 'copper',
+    });
+    expect(deficitDependency({ ...base, kind: 'treasury_overflow', itemId: null })).toEqual({
+      kind: 'copper',
+    });
+    expect(deficitDependency({ ...base, kind: 'ladder_behind', itemId: null })).toEqual({
+      kind: 'ladder',
+    });
+    expect(deficitDependency(null)).toBeNull();
   });
 });
 
@@ -216,34 +305,5 @@ describe('the gated op set', () => {
     for (const op of ['deposit', 'deposit_gold', 'open_bank', 'admin_purge']) {
       expect(isGuildBankGatedOp(op)).toBe(false);
     }
-  });
-});
-
-describe('guildBookHolders (which sessions hold unflushed work on a book)', () => {
-  const session = (
-    dirty: number[],
-    flags: { escrowQuarantined?: boolean; left?: boolean } = {},
-  ) => ({
-    escrowQuarantined: flags.escrowQuarantined ?? false,
-    left: flags.left ?? false,
-    dirtyGuildBanks: new Map(dirty.map((g) => [g, 1])),
-  });
-
-  it('returns every other session with a dirty mark on the guild, never the caller or a quarantined one', () => {
-    const me = session([9]);
-    const holder = session([9]);
-    const otherGuild = session([10]);
-    const quarantined = session([9], { escrowQuarantined: true });
-    const holders = guildBookHolders([me, holder, otherGuild, quarantined], 9, me, {
-      includeLeaving: false,
-    });
-    expect(holders).toEqual([holder]);
-  });
-
-  it('counts a departing session only when asked to (the gate does, the refusal arm does not)', () => {
-    const me = session([]);
-    const leaving = session([9], { left: true });
-    expect(guildBookHolders([me, leaving], 9, me, { includeLeaving: false })).toEqual([]);
-    expect(guildBookHolders([me, leaving], 9, me, { includeLeaving: true })).toEqual([leaving]);
   });
 });

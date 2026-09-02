@@ -80,6 +80,7 @@ import {
   mergeGuildBankRow,
   nettedReplayRescueCount,
 } from '../server/guild_bank_state';
+import { GUILD_BOOK_FLUSH_FAN_OUT_MAX } from '../server/guild_book_holders';
 import {
   type GameMetricsCounters,
   type GuildBankIncident,
@@ -2655,15 +2656,17 @@ describe('the unsettled gate (server/guild_bank_settle_gate.ts) at the real disp
     secondOfficer(server, b);
     secondOfficer(server, c);
     server.sim.addItem('spider_leg', 20, b.pid);
+    server.sim.addItem('spider_leg', 20, c.pid);
     dispatch(server, b, { cmd: 'guild_bank_deposit', slot: bagIndex(server, b.pid, 'spider_leg') });
-    dispatch(server, c, { cmd: 'guild_bank_deposit_gold', amount: 5_000 }); // C: an unrelated holder
+    // C feeds the same dependency (the flush reaches only contributing holders).
+    dispatch(server, c, { cmd: 'guild_bank_deposit', slot: bagIndex(server, c.pid, 'spider_leg') });
     // The window between leave() and the leave flush's commit: B's deposit is
     // on the live book, not durable, and B's own flush is already in flight.
     b.left = true;
     dbMock.saveCharacterAndGuildBankState.mockClear();
     dispatch(server, a, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'spider_leg') });
     expect(notices(aJoin.sent)).toContain(NOTICE);
-    expect(bookCount(server, 'spider_leg')).toBe(20);
+    expect(bookCount(server, 'spider_leg')).toBe(40);
     // The positive control: the staying holder IS flushed by that refusal...
     await vi.waitFor(() => expect(c.dirtyGuildBanks.size).toBe(0));
     // ...and the departing one is not (its mark survives, no save was queued
@@ -2722,7 +2725,7 @@ describe('the unsettled gate (server/guild_bank_settle_gate.ts) at the real disp
     expect(server.sim.serializeGuildBank(GUILD_ID)).toEqual(durableBook());
   });
 
-  it('the holder flush is DAMPED: refusals inside the cooldown never stack a second save', async () => {
+  it('the holder flush is COALESCED: refusals while a flush is queued or running never stack a second save', async () => {
     const server = new GameServer();
     const aJoin = joinServer(server, 1, 'Spammer');
     const a = aJoin.session;
@@ -2732,17 +2735,99 @@ describe('the unsettled gate (server/guild_bank_settle_gate.ts) at the real disp
     server.sim.addItem('spider_leg', 20, b.pid);
     dispatch(server, b, { cmd: 'guild_bank_deposit', slot: bagIndex(server, b.pid, 'spider_leg') });
     dbMock.saveCharacterAndGuildBankState.mockClear();
-    // Three refusals back to back, well inside GUILD_BOOK_FLUSH_COOLDOWN_MS.
+    // Three refusals back to back while the first flush is still queued.
     for (let n = 0; n < 3; n++) {
       dispatch(server, a, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'spider_leg') });
     }
     expect(notices(aJoin.sent).filter((text) => text === NOTICE)).toHaveLength(3);
     await vi.waitFor(() => expect(b.dirtyGuildBanks.size).toBe(0));
-    // ONE save for the holder, not three: the fan-out is bounded per holder
-    // per window, whatever the refusal rate.
+    // ONE save for the holder, not three: the flush is one in flight per
+    // holder with a single re-arm, and the re-arm finds the holder clean.
     const saved = dbMock.saveCharacterAndGuildBankState.mock.calls.map((call) => call[0]);
     expect(saved).toEqual([2]);
-    expect(b.guildBookFlushedAtMs).toBeGreaterThan(0);
+    expect(b.guildBookFlushInFlight).toBe(false);
+    expect(b.guildBookFlushRearm).toBe(false);
+  });
+
+  it('a plain member with unsettled work in the book is refused by the sim, never by the gate', async () => {
+    // A read-only view never reaches the gate: no notice from it, no
+    // incident, and no holder flush a member could force.
+    const server = new GameServer();
+    const aJoin = joinServer(server, 1, 'Depositor');
+    const a = aJoin.session;
+    const mJoin = joinServer(server, 2, 'Member');
+    const m = mJoin.session;
+    officerSetup(server, a, 0);
+    moveToBanker(server, m.pid);
+    stampMember(server, m, 'member');
+    server.sim.addItem('spider_leg', 20, a.pid);
+    dispatch(server, a, { cmd: 'guild_bank_deposit', slot: bagIndex(server, a.pid, 'spider_leg') });
+    const rec = recordingIncidents();
+    setGameMetricsCounters(rec.sink);
+    dbMock.saveCharacterAndGuildBankState.mockClear();
+    dispatch(server, m, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'spider_leg') });
+    expect(notices(mJoin.sent)).not.toContain(NOTICE);
+    expect(bookCount(server, 'spider_leg')).toBe(20);
+    expect(rec.kinds).toEqual([]);
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(dbMock.saveCharacterAndGuildBankState).not.toHaveBeenCalled();
+    expect(a.dirtyGuildBanks.has(GUILD_ID)).toBe(true);
+  });
+
+  it('a refusal flushes ONLY the holder whose work feeds it, never an unrelated holder', async () => {
+    const server = new GameServer();
+    const aJoin = joinServer(server, 1, 'Taker');
+    const a = aJoin.session;
+    const legs = joinServer(server, 2, 'LegsHolder').session;
+    const copper = joinServer(server, 3, 'CopperHolder').session;
+    officerSetup(server, a, 0);
+    secondOfficer(server, legs);
+    secondOfficer(server, copper);
+    server.sim.addItem('spider_leg', 20, legs.pid);
+    dispatch(server, legs, {
+      cmd: 'guild_bank_deposit',
+      slot: bagIndex(server, legs.pid, 'spider_leg'),
+    });
+    dispatch(server, copper, { cmd: 'guild_bank_deposit_gold', amount: 5_000 });
+    dbMock.saveCharacterAndGuildBankState.mockClear();
+    dispatch(server, a, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'spider_leg') });
+    expect(notices(aJoin.sent)).toContain(NOTICE);
+    await vi.waitFor(() => expect(legs.dirtyGuildBanks.size).toBe(0));
+    const saved = dbMock.saveCharacterAndGuildBankState.mock.calls.map((call) => call[0]);
+    expect(saved).toEqual([2]);
+    expect(copper.dirtyGuildBanks.has(GUILD_ID)).toBe(true);
+  });
+
+  it('a refusal flushes at most GUILD_BOOK_FLUSH_FAN_OUT_MAX holders, however many feed it', async () => {
+    const server = new GameServer();
+    const aJoin = joinServer(server, 1, 'Taker');
+    const a = aJoin.session;
+    officerSetup(server, a, 0);
+    const holders: ClientSession[] = [];
+    for (let n = 0; n < GUILD_BOOK_FLUSH_FAN_OUT_MAX + 1; n++) {
+      const h = joinServer(server, 10 + n, `Holder${n}`).session;
+      secondOfficer(server, h);
+      server.sim.addItem('spider_leg', 4, h.pid);
+      dispatch(server, h, {
+        cmd: 'guild_bank_deposit',
+        slot: bagIndex(server, h.pid, 'spider_leg'),
+      });
+      holders.push(h);
+    }
+    expect(bookCount(server, 'spider_leg')).toBe(4 * holders.length);
+    dbMock.saveCharacterAndGuildBankState.mockClear();
+    dispatch(server, a, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'spider_leg') });
+    expect(notices(aJoin.sent)).toContain(NOTICE);
+    await vi.waitFor(() =>
+      expect(holders.filter((h) => h.dirtyGuildBanks.size === 0)).toHaveLength(
+        GUILD_BOOK_FLUSH_FAN_OUT_MAX,
+      ),
+    );
+    await Promise.resolve();
+    const saved = dbMock.saveCharacterAndGuildBankState.mock.calls.map((call) => call[0]);
+    expect(saved).toHaveLength(GUILD_BOOK_FLUSH_FAN_OUT_MAX);
+    expect(holders.filter((h) => h.dirtyGuildBanks.size > 0)).toHaveLength(1);
   });
 });
 

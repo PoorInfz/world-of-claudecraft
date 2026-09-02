@@ -265,12 +265,7 @@ import {
   createGuildBankOpGuard,
   type GuildBankOpGuardState,
 } from './guild_bank_op_guard';
-import {
-  GUILD_BOOK_FLUSH_COOLDOWN_MS,
-  type GuildBankOpRequest,
-  guildBookHolders,
-  unsettledGuildBook,
-} from './guild_bank_settle_gate';
+import type { GuildBankOpRequest, GuildBookDependency } from './guild_bank_settle_gate';
 import {
   collectGuildBankDeltas,
   // Imported from the module that DEFINES it, never through ./db: every test
@@ -280,6 +275,7 @@ import {
   type GuildBankWriteResult,
   loadGuildBanksIntoSim,
 } from './guild_bank_state';
+import { GuildBookHolderIndex, requestGuildBookFlush } from './guild_book_holders';
 import { createPaidGuildWithLeaderAtomic } from './guild_create_db';
 import { gameMetricsCounters, type WsDropCause } from './http/game_signals';
 import { bgWideInterestApplies, buildSharedInterestCandidates } from './interest_candidates';
@@ -1210,10 +1206,11 @@ export interface ClientSession extends MovementInputSessionState {
   // only bounds how long a session waits for the other officer's commit before
   // it is rolled back and disconnected instead.
   guildBankDeficitSkips: Map<number, number>;
-  // When this session was last flushed as a guild book HOLDER (the unsettled
-  // gate's refusal, the escrow refusal's retry arm); flushGuildBookHolders
-  // damps on it. Zero until the first flush.
-  guildBookFlushedAtMs: number;
+  // The coalesced holder flush (server/guild_book_holders.ts
+  // requestGuildBookFlush): one flush queued or running per holder, one
+  // re-arm behind it.
+  guildBookFlushInFlight: boolean;
+  guildBookFlushRearm: boolean;
   // Set once this session's book work can never become durable and its live
   // state has therefore been abandoned. A quarantined session persists
   // NOTHING, ever again: its character half is the half that would carry the
@@ -1833,6 +1830,12 @@ export class GameServer {
   // One FIFO per character id: every durable LIVE-SESSION character write
   // rides it, so commit order is enqueue order (exceptions: server/CLAUDE.md).
   readonly characterSaveQueues = createKeyedSerialWriter<number>();
+  // Which sessions hold unflushed work on which guild's book, with each
+  // holder's unsettled contribution cached (server/guild_book_holders.ts).
+  // Maintained at every mark or log change: markGuildBankDirty (touch), the
+  // post-commit prefix consume and revertOwnGuildBookOps (resync),
+  // onGuildDisbanded (dropGuild), leave (dropSession).
+  private readonly guildBookHolders = new GuildBookHolderIndex<ClientSession>();
   // Weapon-skin loadouts are whole-record replacements in their dedicated paid
   // state row. Keep one FIFO per account so rapid apply/detach commands cannot
   // commit on separate pool clients in reverse order and resurrect stale state.
@@ -2596,6 +2599,7 @@ export class GameServer {
           s.unflushedGuildBankOps.delete(guildId);
           s.guildBankDeficitSkips.delete(guildId);
         }
+        this.guildBookHolders.dropGuild(guildId);
       },
       // The disband guard's read, and the OPEN of the guild-delete window it
       // has to hold. Returns the LIVE sim book's holdings, or null (the guard
@@ -3850,7 +3854,8 @@ export class GameServer {
       bankLedgerSaveScheduled: false,
       unflushedGuildBankOps: new Map(),
       guildBankDeficitSkips: new Map(),
-      guildBookFlushedAtMs: 0,
+      guildBookFlushInFlight: false,
+      guildBookFlushRearm: false,
       escrowQuarantined: false,
       inFlightGuildBankOps: new Map(),
       ignoredIds: new Set(),
@@ -4333,6 +4338,7 @@ export class GameServer {
     }
     session.bankLedgerJournal.outbox.discard();
     this.sessionsByCharacterId.delete(session.characterId);
+    this.guildBookHolders.dropSession(session);
     storageRecovery.offline(session.characterId);
     // Release the per-character load lease so a fresh login (here or on another
     // process) can reload the character without waiting out the TTL. Order
@@ -4494,6 +4500,7 @@ export class GameServer {
     }
     if (!session.bankLedgerJournal.outbox.acknowledgeCommittedPrefix(snapshot, batches)) return;
     consumeCommittedGuildLedgerPrefix(session, guildCounts);
+    this.guildBookHolders.resync(session);
     visitGuildLedgerIdsForOps(batches, GUILD_BANK_LOG_VISIBLE_OPS, bustGuildBankLog);
   }
 
@@ -4827,6 +4834,7 @@ export class GameServer {
             session.guildBankDeficitSkips.delete(guildId);
           }
         }
+        this.guildBookHolders.resync(session);
         // The blob is durable: publish every unlock it contains. A rejected
         // save skips this (the throw propagates past it), leaving the ids
         // pending for the next save attempt (the 30s autosave, the next
@@ -5084,6 +5092,7 @@ export class GameServer {
   // Schedule a guild's book for the next fenced escrow save of this session.
   private markGuildBankDirty(session: ClientSession, guildId: number): void {
     session.dirtyGuildBanks.set(guildId, (session.dirtyGuildBanks.get(guildId) ?? 0) + 1);
+    this.guildBookHolders.touch(session, guildId);
   }
 
   // When this session's escrow can never commit again, its guild-book
@@ -5109,6 +5118,7 @@ export class GameServer {
       dead.dirtyGuildBanks.delete(guildId);
       dead.unflushedGuildBankOps.delete(guildId);
       dead.guildBankDeficitSkips.delete(guildId);
+      this.guildBookHolders.resync(dead);
       if (log.length === 0) continue;
       // Counted per GUILD, the unit the remedy applies to: reaching this at
       // all means a session that can never commit again held unflushed book
@@ -5145,8 +5155,10 @@ export class GameServer {
     handleEscrowRefusal(
       {
         maxDeficitSkips: GameServer.GUILD_BANK_DEFICIT_MAX_SKIPS,
-        sessions: () => this.sessionsByCharacterId.values(),
-        flushHolders: (guildId, except) => this.flushGuildBookHolders(guildId, except),
+        holders: (guildId, except) =>
+          this.guildBookHolders.holders(guildId, except, { includeLeaving: false }),
+        flushHolders: (guildId, except, dependency) =>
+          this.flushGuildBookHolders(guildId, except, dependency),
         revertOwnGuildBookOps: (s, guildIds) => this.revertOwnGuildBookOps(s, guildIds),
         kickSession: (s) => {
           void this.kickSession(s, 'character taken over', 'guild bank escrow rollback');
@@ -5160,24 +5172,24 @@ export class GameServer {
     );
   }
 
-  // Fire-and-forget saves for the sessions whose unflushed work on this
-  // guild's book another session is waiting on: the unsettled gate's refusal
-  // and the escrow refusal's retry arm both call it, so the retry lands a
-  // round trip later rather than an autosave interval later. Never a
-  // departing session (its leave flush is already in flight), and never the
-  // same holder twice inside GUILD_BOOK_FLUSH_COOLDOWN_MS: a refusal costs its
-  // sender only an op-guard token, so an undamped fan-out would let one
-  // officer force a save per dirty guildmate per refusal.
-  private flushGuildBookHolders(guildId: number, except: ClientSession): void {
-    const now = Date.now();
-    const holders = guildBookHolders(this.sessionsByCharacterId.values(), guildId, except, {
-      includeLeaving: false,
-    });
-    for (const s of holders) {
-      if (now - s.guildBookFlushedAtMs < GUILD_BOOK_FLUSH_COOLDOWN_MS) continue;
-      s.guildBookFlushedAtMs = now;
-      void this.saveCharacter(s).catch((err) =>
-        console.error(`guild bank deficit flush failed for ${s.name}:`, err),
+  // Flush the holders whose unflushed work FEEDS the named dependency (never
+  // an unrelated holder), at most GUILD_BOOK_FLUSH_FAN_OUT_MAX of them, each
+  // through the background-permit save with one flush in flight per holder
+  // and a single re-arm behind it (server/guild_book_holders.ts). The
+  // unsettled gate's refusal and the escrow refusal's retry arm both call it,
+  // so the retry lands a round trip later rather than an autosave later; a
+  // refusal costs its sender only an op-guard token, so anything looser would
+  // let one officer stack saves on the realm's writer.
+  private flushGuildBookHolders(
+    guildId: number,
+    except: ClientSession,
+    dependency: GuildBookDependency | null,
+  ): void {
+    for (const holder of this.guildBookHolders.contributors(guildId, except, dependency)) {
+      requestGuildBookFlush(holder, (s) =>
+        this.saveCharacterWithBackgroundPermit(s).catch((err) =>
+          console.error(`guild bank deficit flush failed for ${s.name}:`, err),
+        ),
       );
     }
   }
@@ -5201,16 +5213,12 @@ export class GameServer {
         bankLedgerNeedsSave: () => bankLedgerJournalNeedsSave(session.bankLedgerJournal.outbox),
         scheduleBankLedgerHighWaterSave: () => this.scheduleBankLedgerHighWaterSave(session),
         markGuildBankDirty: (guildId) => this.markGuildBankDirty(session, guildId),
-        // The unsettled gate's inputs: every OTHER live session's unflushed
-        // work on this book (a departing session's included, its leave flush
-        // has not committed yet), and the flush a refusal fires.
-        unsettledGuildBook: (guildId) =>
-          unsettledGuildBook(
-            guildBookHolders(this.sessionsByCharacterId.values(), guildId, session, {
-              includeLeaving: true,
-            }).map((s) => s.unflushedGuildBankOps.get(guildId) ?? []),
-          ),
-        flushUnsettledGuildBook: (guildId) => this.flushGuildBookHolders(guildId, session),
+        // The unsettled gate's inputs: every OTHER holder's cached
+        // contribution on this book (a departing session's included, its
+        // leave flush has not committed yet), and the flush a refusal fires.
+        unsettledGuildBook: (guildId) => this.guildBookHolders.unsettled(guildId, session),
+        flushUnsettledGuildBook: (guildId, dependency) =>
+          this.flushGuildBookHolders(guildId, session, dependency),
         recordGuildBankIncident: (kind) => gameMetricsCounters().guildBankIncident(kind),
         logError: (message) => console.error(message),
       },

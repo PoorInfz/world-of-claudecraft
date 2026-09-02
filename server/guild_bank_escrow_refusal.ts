@@ -38,7 +38,7 @@
 
 import type { GuildBankOpDelta } from '../src/sim/guild_bank';
 import { recordGuildBankEscrowRollback } from './bank_ledger';
-import { guildBookHolders } from './guild_bank_settle_gate';
+import { deficitDependency, type GuildBookDependency } from './guild_bank_settle_gate';
 import type { GuildBankWriteResult } from './guild_bank_state';
 import type { GuildBankIncident } from './http/game_signals';
 
@@ -58,11 +58,16 @@ export interface EscrowRefusalHostPort<S extends EscrowRefusalSession> {
   /** GameServer.GUILD_BANK_DEFICIT_MAX_SKIPS: how many consecutive refusals
    *  one session tolerates for one guild before it is rolled back. */
   readonly maxDeficitSkips: number;
-  /** Every live session of the realm (the holder scan reads all of them). */
-  readonly sessions: () => Iterable<S>;
-  /** Fire-and-forget saves for the sessions whose unflushed work on this
-   *  book the refused replay is waiting on. */
-  readonly flushHolders: (guildId: number, except: S) => void;
+  /** The OTHER live, non-departing sessions holding unflushed work on this
+   *  guild's book (server/guild_book_holders.ts). */
+  readonly holders: (guildId: number, except: S) => readonly S[];
+  /** Flush the holders whose unflushed work FEEDS the refused dependency, so
+   *  the retry lands a round trip later (bounded and coalesced by the host). */
+  readonly flushHolders: (
+    guildId: number,
+    except: S,
+    dependency: GuildBookDependency | null,
+  ) => void;
   /** Undo exactly this session's own unflushed deltas on the live books. */
   readonly revertOwnGuildBookOps: (session: S, guildIds: number[]) => void;
   /** Disconnect the abandoned session so it reloads from its durable row. */
@@ -90,8 +95,7 @@ export function handleGuildBankEscrowRefusal<S extends EscrowRefusalSession>(
     // it will never commit them, so counting it would burn every retry
     // (blocking this session's character saves the whole time) before
     // reaching the same rollback.
-    const anotherSessionDirty =
-      guildBookHolders(host.sessions(), guildId, session, { includeLeaving: false }).length > 0;
+    const anotherSessionDirty = host.holders(guildId, session).length > 0;
     const skips = (session.guildBankDeficitSkips.get(guildId) ?? 0) + 1;
     const canResolve =
       !final && anotherSessionDirty && !result.rowUnusable && skips < host.maxDeficitSkips;
@@ -116,7 +120,7 @@ export function handleGuildBankEscrowRefusal<S extends EscrowRefusalSession>(
       // flush back, and an unbounded ping-pong of fire-and-forget saves
       // between two mutually-stuck sessions is worse than the wait it saves.
       if (skips > 1) continue;
-      host.flushHolders(guildId, session);
+      host.flushHolders(guildId, session, deficitDependency(result.deficit));
       continue;
     }
     const log = session.unflushedGuildBankOps.get(guildId) ?? [];

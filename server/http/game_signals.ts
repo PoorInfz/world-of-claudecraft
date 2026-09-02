@@ -171,7 +171,7 @@ export const GUILD_BANK_INCIDENTS = [
   'unsettled_refused',
 ] as const;
 
-/** One of the fixed eleven guild-bank incident kinds. */
+/** One of the fixed twelve guild-bank incident kinds. */
 export type GuildBankIncident = (typeof GUILD_BANK_INCIDENTS)[number];
 
 /** The marketplace escrow-queue outcomes (the per-character save FIFO's
