@@ -1806,7 +1806,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 1007,
-      "state": "3fa0841a",
+      "state": "651c20d2",
       "events": "39d0785b",
       "rng": {
         "draws": 10,
@@ -1817,7 +1817,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 1007,
-      "state": "4d5f6495",
+      "state": "0eb5d4ae",
       "events": "2d045465",
       "rng": {
         "draws": 10,
@@ -2189,6 +2189,7 @@
           "healPower": 12,
           "hp": 51,
           "id": 998,
+          "inCombat": true,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -2241,6 +2242,7 @@
           "healPower": 7,
           "hp": 105,
           "id": 999,
+          "inCombat": true,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -2250,9 +2252,7 @@
           "offhandItemId": "eastbrook_buckler",
           "onGround": true,
           "overpowerUntil": -1,
-          "paladinDevotion": {
-            "outOfCombatTime": 0.4
-          },
+          "paladinDevotion": {},
           "petMode": "defensive",
           "pos": {
             "x": 3,
@@ -2436,6 +2436,7 @@
           "healPower": 5,
           "hp": 2800,
           "id": 1002,
+          "inCombat": true,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
