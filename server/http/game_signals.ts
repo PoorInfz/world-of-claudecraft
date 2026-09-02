@@ -163,6 +163,12 @@ export const GUILD_BANK_INCIDENTS = [
   // creation commits the guild and fee in one transaction, so a new sample is
   // a single-sample mixed-release or invariant defect and remains page-worthy.
   'create_fee_unpaid',
+  // The dispatch-time unsettled gate (server/guild_bank_settle_gate.ts)
+  // refused a withdraw, gold withdraw, or rung purchase that would have
+  // consumed another session's not-yet-durable work, and flushed that
+  // session instead. Ordinary two-officer concurrency, like
+  // escrow_refused_retry before it: watch its RATE, never its presence.
+  'unsettled_refused',
 ] as const;
 
 /** One of the fixed eleven guild-bank incident kinds. */

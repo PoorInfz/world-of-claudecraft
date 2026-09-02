@@ -204,6 +204,30 @@ function officerSetup(server: GameServer, session: ClientSession, treasury = 100
 const dispatch = (server: GameServer, session: ClientSession, msg: Record<string, unknown>) =>
   priv(server).dispatchMessage(session, { t: 'cmd', ...msg }, JSON.stringify(msg), 0);
 
+/** Dispatch one op with `hidden` sessions invisible to the dispatch-time
+ *  unsettled gate (server/guild_bank_settle_gate.ts): they read as quarantined
+ *  for the duration, so the gate sees no holder and the op lands through the
+ *  REAL coordinator (journal, log, mark) exactly as every op did before the
+ *  gate. The tests that use it pin the refusal/rollback machinery UNDER the
+ *  gate, which ordinary dispatch can no longer reach: a dependency the gate
+ *  could not see is the shape the backstop exists for. */
+function dispatchUnderGate(
+  server: GameServer,
+  session: ClientSession,
+  msg: Record<string, unknown>,
+  hidden: readonly ClientSession[],
+): void {
+  const was = hidden.map((s) => s.escrowQuarantined);
+  for (const s of hidden) s.escrowQuarantined = true;
+  try {
+    dispatch(server, session, msg);
+  } finally {
+    hidden.forEach((s, n) => {
+      s.escrowQuarantined = was[n] ?? false;
+    });
+  }
+}
+
 type CapturedLedgerEffects = {
   batches?: readonly { rows?: readonly Record<string, unknown>[] }[];
 };
@@ -2124,13 +2148,16 @@ describe('the guild_create fee gate + the create/disband hooks', () => {
     expect(priv(server).social.tx.beginGuildBankDelete(GUILD_ID)).toEqual({ copper: 0, items: 0 });
   });
 
-  // Two officers alternating LADDER rungs is the only shape that can deadlock
-  // both replays at once: gold and items cannot, because the live book never
-  // goes below zero, so at least one session's net is non-negative and lands
-  // (and the flush a refusal fires then unblocks the other). A rung, by
-  // contrast, replays only onto the exact position its witness names, so
-  // officer A's rung waits on officer B's opening while officer B's next rung
-  // waits on officer A's.
+  // Two officers alternating LADDER rungs: officer A's rung waits on officer
+  // B's opening while officer B's next rung waits on officer A's, so neither
+  // replay can ever apply first. (This used to be described as the ONLY shape
+  // that can deadlock both replays, gold and items being unable to: true for
+  // one fungible, false for two item identities, which is the 2026-09-01
+  // production incident the unsettled gate now refuses at dispatch; see the
+  // gate's own describe block below.) The gate refuses a rung on top of an
+  // unsettled one, so the deadlock is SEEDED under it: B's opening and both
+  // gold deposits go through dispatch (never gated), the two rungs are
+  // dispatched with the other officer hidden from the gate.
   function ladderDeadlock(server: GameServer, a: ClientSession, b: ClientSession): void {
     officerSetup(server, a, 0);
     durableBooks.set(GUILD_ID, { treasury: 0, inventory: [], purchasedSlots: 0 });
@@ -2149,10 +2176,12 @@ describe('the guild_create fee gate + the create/disband hooks', () => {
     dispatch(server, b, { cmd: 'guild_bank_buy_slots' }); // B opens, 0 -> 24
     stampBoth();
     dispatch(server, a, { cmd: 'guild_bank_deposit_gold', amount: 25_000 });
-    dispatch(server, a, { cmd: 'guild_bank_buy_slots' }); // A buys rung 1, 24 -> 30
+    // A buys rung 1, 24 -> 30, on top of B's unsettled opening.
+    dispatchUnderGate(server, a, { cmd: 'guild_bank_buy_slots' }, [b]);
     stampBoth();
     dispatch(server, b, { cmd: 'guild_bank_deposit_gold', amount: 50_000 });
-    dispatch(server, b, { cmd: 'guild_bank_buy_slots' }); // B buys rung 2, 30 -> 36
+    // B buys rung 2, 30 -> 36, on top of A's unsettled rung.
+    dispatchUnderGate(server, b, { cmd: 'guild_bank_buy_slots' }, [a]);
     stampBoth();
     expect(server.sim.guildBanks.get(GUILD_ID)?.purchasedSlots).toBe(36);
     // Neither log can be replayed: A's rung needs the ladder at exactly 24
@@ -2225,7 +2254,10 @@ describe('the guild_create fee gate + the create/disband hooks', () => {
     bMeta.copper = 500_000;
     dispatch(server, b, { cmd: 'guild_bank_deposit_gold', amount: 40_000 });
     server.sim.setPlayerGuildMembership(a.pid, { guildId: GUILD_ID, rank: 'officer' });
-    dispatch(server, a, { cmd: 'guild_bank_withdraw_gold', amount: 40_000 });
+    // A's withdraw of B's unsettled copper is exactly what the dispatch-time
+    // gate now refuses, so it is dispatched with B hidden from the gate to
+    // reach the refusal arm.
+    dispatchUnderGate(server, a, { cmd: 'guild_bank_withdraw_gold', amount: 40_000 }, [b]);
     const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     await priv(server).saveCharacter(a); // refused, and flushes B
     await vi.waitFor(() => expect(b.dirtyGuildBanks.size).toBe(0));
@@ -2435,6 +2467,204 @@ function recordingIncidents(): { sink: GameMetricsCounters; kinds: GuildBankInci
     },
   };
 }
+
+describe('the unsettled gate (server/guild_bank_settle_gate.ts) at the real dispatch seam', () => {
+  afterEach(() => {
+    setGameMetricsCounters(noopGameMetricsCounters);
+  });
+
+  // English on the wire; the client matcher re-localizes it (guild.bankSettling).
+  const NOTICE = 'The guild bank is still saving a recent change. Try again in a moment.';
+  /** Every player-facing error line a fake socket received. */
+  const notices = (sent: unknown[]): string[] =>
+    sent.flatMap((frame) => {
+      const f = frame as { t?: string; list?: { type?: string; text?: string }[] };
+      if (f.t !== 'events') return [];
+      return (f.list ?? []).filter((e) => e.type === 'error').map((e) => e.text ?? '');
+    });
+  /** A second officer of the same guild at the banker, with copper. */
+  function secondOfficer(server: GameServer, b: ClientSession): void {
+    moveToBanker(server, b.pid);
+    stampMember(server, b, 'officer');
+    const meta = server.sim.players.get(b.pid);
+    if (!meta) throw new Error('missing meta');
+    meta.copper = 500_000;
+  }
+  /** Re-seat the officer stamps after any await: the join's async social load
+   *  lands there and re-stamps from the (mocked, empty) social read, exactly
+   *  why the ladder tests above call stampBoth() between their steps. */
+  const restamp = (server: GameServer, ...sessions: ClientSession[]): void => {
+    for (const s of sessions) {
+      server.sim.setPlayerGuildMembership(s.pid, { guildId: GUILD_ID, rank: 'officer' });
+    }
+  };
+  const bagIndex = (server: GameServer, pid: number, itemId: string): number => {
+    const idx = server.sim.players.get(pid)?.inventory.findIndex((s) => s.itemId === itemId) ?? -1;
+    if (idx < 0) throw new Error(`${itemId} is not in the bags of ${pid}`);
+    return idx;
+  };
+  const liveBook = (server: GameServer) => {
+    const book = server.sim.guildBanks.get(GUILD_ID);
+    if (!book) throw new Error('missing book');
+    return book;
+  };
+  const bookIndex = (server: GameServer, itemId: string): number => {
+    const idx = liveBook(server).inventory.findIndex((s) => s.itemId === itemId);
+    if (idx < 0) throw new Error(`${itemId} is not in the book`);
+    return idx;
+  };
+  const bookCount = (server: GameServer, itemId: string): number =>
+    liveBook(server)
+      .inventory.filter((s) => s.itemId === itemId)
+      .reduce((n, s) => n + s.count, 0);
+  const durableBags = (characterId: number) =>
+    (durableChars.get(characterId) as { inventory?: { itemId: string; count: number }[] })
+      ?.inventory ?? [];
+
+  it('the 2026-09-01 shape: two officers swapping two materials inside one save window quarantine nobody and strand nothing', async () => {
+    const server = new GameServer();
+    const aJoin = joinServer(server, 1, 'Legs');
+    const bJoin = joinServer(server, 2, 'Glands');
+    const a = aJoin.session;
+    const b = bJoin.session;
+    officerSetup(server, a, 0);
+    secondOfficer(server, b);
+    server.sim.addItem('spider_leg', 20, a.pid);
+    server.sim.addItem('venom_gland', 20, b.pid);
+    dispatch(server, a, { cmd: 'guild_bank_deposit', slot: bagIndex(server, a.pid, 'spider_leg') });
+    dispatch(server, b, {
+      cmd: 'guild_bank_deposit',
+      slot: bagIndex(server, b.pid, 'venom_gland'),
+    });
+    expect(bookCount(server, 'spider_leg')).toBe(20);
+    expect(bookCount(server, 'venom_gland')).toBe(20);
+    const rec = recordingIncidents();
+    setGameMetricsCounters(rec.sink);
+    // B reaches for A's not-yet-durable spider legs: refused at dispatch, the
+    // book untouched, B's log still only its own deposit and its mark
+    // unchanged, the notice sent, and A flushed on the spot.
+    const bSeq = b.dirtyGuildBanks.get(GUILD_ID);
+    dispatch(server, b, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'spider_leg') });
+    expect(notices(bJoin.sent)).toContain(NOTICE);
+    expect(bookCount(server, 'spider_leg')).toBe(20);
+    expect(b.unflushedGuildBankOps.get(GUILD_ID)?.map((d) => d.op)).toEqual(['deposit']);
+    expect(b.dirtyGuildBanks.get(GUILD_ID)).toBe(bSeq);
+    expect(rec.kinds).toEqual(['unsettled_refused']);
+    await vi.waitFor(() => expect(a.dirtyGuildBanks.size).toBe(0));
+    restamp(server, a, b);
+    // A reaches for B's venom glands: the mirror image, and B is flushed.
+    dispatch(server, a, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'venom_gland') });
+    expect(notices(aJoin.sent)).toContain(NOTICE);
+    await vi.waitFor(() => expect(b.dirtyGuildBanks.size).toBe(0));
+    restamp(server, a, b);
+    // Both stacks are settled now: the retries land, and so do both saves.
+    dispatch(server, b, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'spider_leg') });
+    dispatch(server, a, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'venom_gland') });
+    expect(await priv(server).saveCharacter(a)).toBe(true);
+    expect(await priv(server).saveCharacter(b)).toBe(true);
+    expect(a.escrowQuarantined).toBe(false);
+    expect(b.escrowQuarantined).toBe(false);
+    expect(rec.kinds).toEqual(['unsettled_refused', 'unsettled_refused']);
+    // The swap went through durably, and the live book equals the durable
+    // one: no phantom stack survives for the next officer to trip over.
+    expect(durableBook()).toEqual({ treasury: 0, inventory: [], purchasedSlots: 24 });
+    expect(server.sim.serializeGuildBank(GUILD_ID)).toEqual(durableBook());
+    expect(durableBags(1)).toContainEqual(
+      expect.objectContaining({ itemId: 'venom_gland', count: 20 }),
+    );
+    expect(durableBags(2)).toContainEqual(
+      expect.objectContaining({ itemId: 'spider_leg', count: 20 }),
+    );
+  });
+
+  it('a gold withdraw beyond the settled treasury is refused and lands after the flush; one within it passes at once', async () => {
+    const server = new GameServer();
+    const aJoin = joinServer(server, 1, 'Taker');
+    const a = aJoin.session;
+    const b = joinServer(server, 2, 'Giver').session;
+    officerSetup(server, a, 100_000);
+    secondOfficer(server, b);
+    dispatch(server, b, { cmd: 'guild_bank_deposit_gold', amount: 40_000 });
+    // 100_000 is settled: it passes even while B's 40_000 is not.
+    dispatch(server, a, { cmd: 'guild_bank_withdraw_gold', amount: 100_000 });
+    expect(notices(aJoin.sent)).not.toContain(NOTICE);
+    expect(liveBook(server).treasury).toBe(40_000);
+    // The remaining 40_000 is B's unsettled deposit: refused, and B flushed.
+    dispatch(server, a, { cmd: 'guild_bank_withdraw_gold', amount: 40_000 });
+    expect(notices(aJoin.sent)).toContain(NOTICE);
+    expect(liveBook(server).treasury).toBe(40_000);
+    await vi.waitFor(() => expect(b.dirtyGuildBanks.size).toBe(0));
+    restamp(server, a);
+    dispatch(server, a, { cmd: 'guild_bank_withdraw_gold', amount: 40_000 });
+    expect(liveBook(server).treasury).toBe(0);
+    expect(await priv(server).saveCharacter(a)).toBe(true);
+    expect(a.escrowQuarantined).toBe(false);
+    expect(durableBook()).toEqual({ treasury: 0, inventory: [], purchasedSlots: 24 });
+    expect(durableChars.get(1)?.copper).toBe(640_000);
+  });
+
+  it("a rung bought on top of another officer's unsettled rung is refused, never deadlocked", async () => {
+    const server = new GameServer();
+    const aJoin = joinServer(server, 1, 'RungA');
+    const a = aJoin.session;
+    const b = joinServer(server, 2, 'OpenerB').session;
+    officerSetup(server, a, 0);
+    durableBooks.set(GUILD_ID, { treasury: 0, inventory: [], purchasedSlots: 0 });
+    liveBook(server).purchasedSlots = 0; // unopened, matching the durable row
+    secondOfficer(server, b);
+    dispatch(server, b, { cmd: 'guild_bank_buy_slots' }); // B opens, 0 -> 24, unsettled
+    expect(liveBook(server).purchasedSlots).toBe(24);
+    dispatch(server, a, { cmd: 'guild_bank_deposit_gold', amount: 100_000 });
+    dispatch(server, a, { cmd: 'guild_bank_buy_slots' }); // refused: B's opening is unsettled
+    expect(notices(aJoin.sent)).toContain(NOTICE);
+    expect(liveBook(server).purchasedSlots).toBe(24);
+    await vi.waitFor(() => expect(b.dirtyGuildBanks.size).toBe(0));
+    restamp(server, a);
+    dispatch(server, a, { cmd: 'guild_bank_buy_slots' });
+    expect(liveBook(server).purchasedSlots).toBe(30);
+    expect(await priv(server).saveCharacter(a)).toBe(true);
+    expect(a.escrowQuarantined).toBe(false);
+    expect(durableBook()).toEqual(expect.objectContaining({ purchasedSlots: 30 }));
+  });
+
+  it('a session may take back its OWN unsettled deposit while another officer is dirty on the book', async () => {
+    const server = new GameServer();
+    const aJoin = joinServer(server, 1, 'Own');
+    const a = aJoin.session;
+    const b = joinServer(server, 2, 'Bystander').session;
+    officerSetup(server, a, 0);
+    secondOfficer(server, b);
+    server.sim.addItem('spider_leg', 20, a.pid);
+    dispatch(server, a, { cmd: 'guild_bank_deposit', slot: bagIndex(server, a.pid, 'spider_leg') });
+    dispatch(server, b, { cmd: 'guild_bank_deposit_gold', amount: 5_000 });
+    dispatch(server, a, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'spider_leg') });
+    expect(notices(aJoin.sent)).not.toContain(NOTICE);
+    expect(bookCount(server, 'spider_leg')).toBe(0);
+    expect(await priv(server).saveCharacter(a)).toBe(true);
+    expect(a.escrowQuarantined).toBe(false);
+    expect(durableBook()).toEqual({ treasury: 0, inventory: [], purchasedSlots: 24 });
+  });
+
+  it("a departing officer's deposit stays unsettled until their leave flush lands, and is never flushed again", () => {
+    const server = new GameServer();
+    const aJoin = joinServer(server, 1, 'Stayer');
+    const a = aJoin.session;
+    const b = joinServer(server, 2, 'Leaver').session;
+    officerSetup(server, a, 0);
+    secondOfficer(server, b);
+    server.sim.addItem('spider_leg', 20, b.pid);
+    dispatch(server, b, { cmd: 'guild_bank_deposit', slot: bagIndex(server, b.pid, 'spider_leg') });
+    // The window between leave() and the leave flush's commit: B's deposit is
+    // on the live book, not durable, and B's own flush is already in flight.
+    b.left = true;
+    dbMock.saveCharacterAndGuildBankState.mockClear();
+    dispatch(server, a, { cmd: 'guild_bank_withdraw', slot: bookIndex(server, 'spider_leg') });
+    expect(notices(aJoin.sent)).toContain(NOTICE);
+    expect(bookCount(server, 'spider_leg')).toBe(20);
+    expect(b.dirtyGuildBanks.has(GUILD_ID)).toBe(true);
+    expect(dbMock.saveCharacterAndGuildBankState).not.toHaveBeenCalled();
+  });
+});
 
 describe('guild bank incident counters at their real emission sites', () => {
   afterEach(() => {
@@ -2681,7 +2911,12 @@ describe('guild bank incident counters at their real emission sites', () => {
     expect(other.dirtyGuildBanks.has(GUILD_ID)).toBe(true);
     // This officer consumes value durable truth does not hold yet, so its own
     // escrow replay is refused until the other one commits.
-    dispatch(server, session, { cmd: 'guild_bank_withdraw_gold', amount: 120_000 });
+    // The dispatch-time gate now refuses exactly this consume, so it is
+    // dispatched with the other officer hidden from the gate to reach the
+    // refusal arm.
+    dispatchUnderGate(server, session, { cmd: 'guild_bank_withdraw_gold', amount: 120_000 }, [
+      other,
+    ]);
     const rec = recordingIncidents();
     setGameMetricsCounters(rec.sink);
     await priv(server).saveCharacter(session);

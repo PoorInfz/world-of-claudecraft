@@ -49,6 +49,7 @@ describe('server-sent message localization', () => {
     // literal and these matchers ships English to every locale.
     'You need 1 gold to found a guild.',
     'The guild bank must be emptied before the guild can be disbanded.',
+    'The guild bank is still saving a recent change. Try again in a moment.',
     // guildCreate's screened-name refusal (guild.nameNotAllowed): emitted from
     // server/social.ts, which the S3 guard does not scan, so the emit literal
     // is pinned to the EXACT matcher here like the tiers above.

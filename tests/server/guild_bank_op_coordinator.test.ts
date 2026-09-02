@@ -5,6 +5,7 @@ import {
   type GuildBankOpSessionPort,
   runGuildBankOp,
 } from '../../server/guild_bank_op_coordinator';
+import type { UnsettledGuildBook } from '../../server/guild_bank_settle_gate';
 import type { InvSlot } from '../../src/sim/types';
 import type { GuildBankInfo } from '../../src/world_api';
 
@@ -48,6 +49,10 @@ function makeRig() {
   const bankLedgerNeedsSave = vi.fn(() => false);
   const scheduleBankLedgerHighWaterSave = vi.fn();
   const markGuildBankDirty = vi.fn();
+  const unsettledGuildBook = vi.fn(
+    (): UnsettledGuildBook => ({ items: new Map(), copper: 0, ladder: false }),
+  );
+  const flushUnsettledGuildBook = vi.fn();
   const recordGuildBankIncident = vi.fn();
   const logError = vi.fn();
   const host: GuildBankOpHostPort = {
@@ -57,6 +62,8 @@ function makeRig() {
     bankLedgerNeedsSave,
     scheduleBankLedgerHighWaterSave,
     markGuildBankDirty,
+    unsettledGuildBook,
+    flushUnsettledGuildBook,
     recordGuildBankIncident,
     logError,
   };
@@ -84,6 +91,8 @@ function makeRig() {
     bankLedgerNeedsSave,
     scheduleBankLedgerHighWaterSave,
     markGuildBankDirty,
+    unsettledGuildBook,
+    flushUnsettledGuildBook,
     recordGuildBankIncident,
     logError,
   };

@@ -117,7 +117,7 @@ import { recordOnlineSample } from './admin_db';
 import { type AdminGuildBankView, adminGuildBankView } from './admin_guild_bank_view';
 import { offensiveName } from './auth';
 import type { BackgroundDbGate } from './background_db_gate';
-import { type GuildBankLedgerOp, recordGuildBankEscrowRollback } from './bank_ledger';
+import type { GuildBankLedgerOp } from './bank_ledger';
 import type { BankLedgerProjectionSurface } from './bank_ledger_admission';
 import { BankLedgerGrowthLimitExceeded } from './bank_ledger_growth_budget';
 import {
@@ -255,6 +255,7 @@ import { mergedPrsForLogin } from './github_contributors';
 import { githubForAccount } from './github_db';
 import { groundTelegraphWireJson, groundTelegraphWorld } from './ground_telegraph_wire';
 import { forEachGuarded, runGuarded } from './guarded_iter';
+import { handleGuildBankEscrowRefusal as handleEscrowRefusal } from './guild_bank_escrow_refusal';
 import { createGuildBankLazyLoader, type GuildBankLazyLoader } from './guild_bank_lazy_loader';
 import { bustGuildBankLog, GUILD_BANK_LOG_VISIBLE_OPS } from './guild_bank_log';
 import { deliverGuildBankLog } from './guild_bank_log_delivery';
@@ -264,6 +265,11 @@ import {
   createGuildBankOpGuard,
   type GuildBankOpGuardState,
 } from './guild_bank_op_guard';
+import {
+  type GuildBankOpRequest,
+  guildBookHolders,
+  unsettledGuildBook,
+} from './guild_bank_settle_gate';
 import {
   collectGuildBankDeltas,
   // Imported from the module that DEFINES it, never through ./db: every test
@@ -5121,135 +5127,46 @@ export class GameServer {
   // round trip instead of an autosave interval.
   static readonly GUILD_BANK_DEFICIT_MAX_SKIPS = 2;
 
-  // The escrow REFUSAL arm. The book half could not be replayed onto durable
-  // truth, so the whole transaction rolled back and this save persisted
-  // NOTHING: not the books, not the character. That is the invariant the
-  // feature rests on, stated as a rule rather than as a residue:
-  //
-  //   If the book half cannot be applied, the character half must not commit.
-  //
-  // Carrying the shortfall and recording it was the alternative, and it is a
-  // two-account money printer: officer A deposits without flushing, officer B
-  // withdraws, B's character half commits while the book half does not, then A
-  // gets itself fenced (an ordinary re-login) so nothing will ever make A's
-  // deposit durable. B keeps the copper, A's stake comes back, repeatable on
-  // demand. Refusing removes it: B's purse can never durably gain what the
-  // book never durably lost.
-  //
-  // Two outcomes:
-  // - RETRY, while another session still holds unflushed work for the guild:
-  //   their commit is what makes this replay applicable, and it lands within
-  //   an autosave interval. Nothing is consumed; the marks and the log are
-  //   exactly as they were.
-  // - ROLL BACK, when no other session holds unflushed work (so nothing will
-  //   ever make the missing value durable) or the retries ran out. This
-  //   session's live state is abandoned: its own book ops come back off the
-  //   live book, it is QUARANTINED so it can never persist again, one
-  //   aggregate anomaly row records the incident, and it is disconnected to
-  //   reload from its durable row. Everything it did since its last successful
-  //   save is lost, which is exactly what a lease fence-out already does, and
-  //   it conserves precisely because none of it was ever durable.
+  // The escrow REFUSAL arm lives in server/guild_bank_escrow_refusal.ts (its
+  // design note is there); this is the GameServer seam it runs behind. The
+  // holder flush it shares with the dispatch-time unsettled gate is
+  // flushGuildBookHolders below.
   private handleGuildBankEscrowRefusal(
     session: ClientSession,
     results: readonly GuildBankWriteResult[],
-    // True when this is the LAST save this session will ever get (the leave
-    // flush, or the shutdown flush's second pass). There is no later retry to
-    // wait for, so the refusal is resolved now rather than left to a save that
-    // will never come: otherwise the session would tear down with its progress
-    // discarded and no log line and no ledger row to say why.
     final = false,
   ): void {
-    let quarantine = false;
-    for (const result of results) {
-      if (result.written) continue;
-      const guildId = result.guildId;
-      let anotherSessionDirty = false;
-      for (const s of this.sessionsByCharacterId.values()) {
-        // A quarantined or departing session's marks are NOT a reason to wait:
-        // it will never commit them, so counting it would burn every retry
-        // (blocking this session's character saves the whole time) before
-        // reaching the same rollback.
-        if (s === session || s.escrowQuarantined || s.left) continue;
-        if (s.dirtyGuildBanks.has(guildId)) {
-          anotherSessionDirty = true;
-          break;
-        }
-      }
-      const skips = (session.guildBankDeficitSkips.get(guildId) ?? 0) + 1;
-      const canResolve =
-        !final &&
-        anotherSessionDirty &&
-        !result.rowUnusable &&
-        skips < GameServer.GUILD_BANK_DEFICIT_MAX_SKIPS;
-      if (canResolve) {
-        // ORDINARY CONCURRENCY, not a failure: another officer of this guild
-        // holds unflushed work, their commit is what makes this replay
-        // applicable, and the flush below makes that a round trip rather than
-        // an autosave interval. Nothing was consumed and nothing is lost, so
-        // it gets its own counter kind: sharing escrow_save_failed made that
-        // counter unusable for `> 0` alerting. Counted per GUILD, the unit the
-        // retry applies to.
-        gameMetricsCounters().guildBankIncident('escrow_refused_retry');
-        session.guildBankDeficitSkips.set(guildId, skips);
-        // Do not wait out an autosave interval: FLUSH the sessions whose
-        // unflushed work this replay is waiting on, so the retry lands a round
-        // trip later rather than 30 seconds later. This is what keeps the
-        // blocked window (during which THIS character persists nothing at all,
-        // including progress that has nothing to do with the guild bank) to
-        // the shortest it can be, and it is why the skip bound is small.
-        //
-        // Only on the FIRST refusal: if that flush is itself refused it will
-        // flush back, and an unbounded ping-pong of fire-and-forget saves
-        // between two mutually-stuck sessions is worse than the wait it saves.
-        if (skips > 1) continue;
-        for (const s of this.sessionsByCharacterId.values()) {
-          if (s === session || s.escrowQuarantined || s.left) continue;
-          if (!s.dirtyGuildBanks.has(guildId)) continue;
-          void this.saveCharacter(s).catch((err) =>
-            console.error(`guild bank deficit flush failed for ${s.name}:`, err),
-          );
-        }
-        continue;
-      }
-      const log = session.unflushedGuildBankOps.get(guildId) ?? [];
-      recordGuildBankEscrowRollback(session, guildId, log, result.deficit);
-      console.error(
-        `guild bank escrow rolled back for guild ${guildId} (character ${session.characterId}): ${
-          result.rowUnusable
-            ? 'the stored row is oversized or malformed, its live shadow vanished, or the merged book would cross the size bound, so it is preserved untouched'
-            : `${result.deficit?.kind} shortfall ${result.deficit?.shortfall} on ${result.deficit?.op}${result.deficit?.itemId ? ` (${result.deficit.itemId})` : ''}, and ${
-                anotherSessionDirty
-                  ? `it did not resolve within ${skips} escrow saves`
-                  : 'no other session holds unflushed work for this guild, so it never can'
-              }`
-        }. The session is quarantined and disconnected; nothing it did since its last save was durable, so nothing is lost that was.`,
+    handleEscrowRefusal(
+      {
+        maxDeficitSkips: GameServer.GUILD_BANK_DEFICIT_MAX_SKIPS,
+        sessions: () => this.sessionsByCharacterId.values(),
+        flushHolders: (guildId, except) => this.flushGuildBookHolders(guildId, except),
+        revertOwnGuildBookOps: (s, guildIds) => this.revertOwnGuildBookOps(s, guildIds),
+        kickSession: (s) => {
+          void this.kickSession(s, 'character taken over', 'guild bank escrow rollback');
+        },
+        recordIncident: (kind) => gameMetricsCounters().guildBankIncident(kind),
+        logError: (message) => console.error(message),
+      },
+      session,
+      results,
+      final,
+    );
+  }
+
+  // Fire-and-forget saves for the sessions whose unflushed work on this
+  // guild's book another session is waiting on: the unsettled gate's refusal
+  // and the escrow refusal's retry arm both call it, so the retry lands a
+  // round trip later rather than an autosave interval later. Never a
+  // departing session (its leave flush is already in flight).
+  private flushGuildBookHolders(guildId: number, except: ClientSession): void {
+    const holders = guildBookHolders(this.sessionsByCharacterId.values(), guildId, except, {
+      includeLeaving: false,
+    });
+    for (const s of holders) {
+      void this.saveCharacter(s).catch((err) =>
+        console.error(`guild bank deficit flush failed for ${s.name}:`, err),
       );
-      quarantine = true;
-    }
-    if (!quarantine) return;
-    // TERMINAL: this refusal will never resolve, so the save really did fail
-    // for good (character half included, nothing durable). That is what
-    // escrow_save_failed means, and it is booked here rather than at the throw
-    // site so a refusal that merely RETRIES never reaches it. Counted once per
-    // SAVE, matching the db-threw arm above.
-    gameMetricsCounters().guildBankIncident('escrow_save_failed');
-    // The terminal arm of the escrow design and the one an operator should
-    // alert on: a live session is being abandoned because its book half can
-    // never be replayed onto durable truth. Counted once per SESSION (the unit
-    // the remedy applies to; the per-guild reverts it triggers are counted as
-    // 'reconcile' inside revertOwnGuildBookOps), beside the loud log that
-    // carries the guild id and the deficit.
-    gameMetricsCounters().guildBankIncident('escrow_quarantined');
-    // The character half is the half that would carry the value the book half
-    // could not, so this session must never save again.
-    session.escrowQuarantined = true;
-    // Undo EVERY book this session dirtied, not only the refused one: the
-    // session as a whole is abandoned, so its deltas in a second guild's book
-    // are live value nobody will ever make durable, and another officer
-    // withdrawing that phantom value would be refused in turn.
-    this.revertOwnGuildBookOps(session, [...session.dirtyGuildBanks.keys()]);
-    if (!session.left) {
-      void this.kickSession(session, 'character taken over', 'guild bank escrow rollback');
     }
   }
 
@@ -5262,6 +5179,7 @@ export class GameServer {
     target: { pid: number } | { guildId: number; actorAccountId: number },
     op: GuildBankLedgerOp,
     run: () => void,
+    request?: GuildBankOpRequest,
   ): void {
     coordinateGuildBankOp(
       {
@@ -5271,6 +5189,16 @@ export class GameServer {
         bankLedgerNeedsSave: () => bankLedgerJournalNeedsSave(session.bankLedgerJournal.outbox),
         scheduleBankLedgerHighWaterSave: () => this.scheduleBankLedgerHighWaterSave(session),
         markGuildBankDirty: (guildId) => this.markGuildBankDirty(session, guildId),
+        // The unsettled gate's inputs: every OTHER live session's unflushed
+        // work on this book (a departing session's included, its leave flush
+        // has not committed yet), and the flush a refusal fires.
+        unsettledGuildBook: (guildId) =>
+          unsettledGuildBook(
+            guildBookHolders(this.sessionsByCharacterId.values(), guildId, session, {
+              includeLeaving: true,
+            }).map((s) => s.unflushedGuildBankOps.get(guildId) ?? []),
+          ),
+        flushUnsettledGuildBook: (guildId) => this.flushGuildBookHolders(guildId, session),
         recordGuildBankIncident: (kind) => gameMetricsCounters().guildBankIncident(kind),
         logError: (message) => console.error(message),
       },
@@ -5278,6 +5206,7 @@ export class GameServer {
       target,
       op,
       run,
+      request,
     );
   }
 
@@ -8124,8 +8053,12 @@ export class GameServer {
         if (!this.consumeGuildBankOp(session, receivedAtMs / 1000)) break;
         if (typeof msg.amount === 'number') {
           const amount = msg.amount;
-          this.runGuildBankOp(session, { pid }, 'withdraw_gold', () =>
-            sim.guildBankWithdrawGoldFor(pid, amount),
+          this.runGuildBankOp(
+            session,
+            { pid },
+            'withdraw_gold',
+            () => sim.guildBankWithdrawGoldFor(pid, amount),
+            { amount },
           );
         }
         break;
@@ -8144,8 +8077,12 @@ export class GameServer {
         if (typeof msg.slot === 'number') {
           const slot = msg.slot;
           const count = typeof msg.count === 'number' ? msg.count : undefined;
-          this.runGuildBankOp(session, { pid }, 'withdraw', () =>
-            sim.guildBankWithdrawFor(pid, slot, count),
+          this.runGuildBankOp(
+            session,
+            { pid },
+            'withdraw',
+            () => sim.guildBankWithdrawFor(pid, slot, count),
+            { slot, count },
           );
         }
         break;
