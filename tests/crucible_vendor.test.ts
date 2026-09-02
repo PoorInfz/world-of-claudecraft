@@ -59,6 +59,9 @@ describe('crucible quartermaster: spawn and dialog routing', () => {
     expect(doorDist).toBeGreaterThan(4);
     expect(doorDist).toBeLessThanOrEqual(8);
     expect(npc.pos.y).toBeGreaterThan(15);
+    // The authored spot itself: the west edge of the keep's landing court. A
+    // literal pin, so moving the constant is a deliberate, reviewed change.
+    expect(CRUCIBLE_VENDOR_ENTRANCE_POS).toEqual({ x: 505.5, z: 2237.6 });
     // Exactly where authored: no safe-spot spiral may displace him off the plate.
     expect(npc.pos.x).toBeCloseTo(CRUCIBLE_VENDOR_ENTRANCE_POS.x, 6);
     expect(npc.pos.z).toBeCloseTo(CRUCIBLE_VENDOR_ENTRANCE_POS.z, 6);
