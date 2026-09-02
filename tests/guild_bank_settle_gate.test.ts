@@ -11,7 +11,7 @@ import {
   isGuildBankGatedOp,
   unsettledGuildBook,
 } from '../server/guild_bank_settle_gate';
-import type { GuildBankOpDelta } from '../src/sim/guild_bank';
+import { type GuildBankOpDelta, guildBankDeltaIdentityKey } from '../src/sim/guild_bank';
 import type { InvSlot } from '../src/sim/types';
 import type { GuildBankInfo } from '../src/world_api';
 
@@ -51,7 +51,7 @@ const refusal = (
 ) => guildBankUnsettledRefusal(op, request, live, unsettledGuildBook(logs));
 
 describe('unsettledGuildBook (what other sessions have not made durable)', () => {
-  it('nets item deltas per identity key, deposits minus removals, across every log', () => {
+  it('nets item deltas per identity key WITHIN each log, then sums the positive nets', () => {
     const u = unsettledGuildBook([
       [deposit('spider_leg', 20), withdraw('spider_leg', 5)],
       [deposit('spider_leg', 3), delta({ op: 'admin_purge', itemId: 'spider_leg', count: 1 })],
@@ -65,6 +65,20 @@ describe('unsettledGuildBook (what other sessions have not made durable)', () =>
     expect(u.ladder).toBe(false);
   });
 
+  it("never lets one holder's removal hide another holder's deposit (per-session positives)", () => {
+    // Holder B deposited 10, holder C withdrew 10 (of the durable copies): a
+    // single net would read 0 and wave the acting officer through onto B's
+    // unsettled copies. C's commit lowers durable, B's may never land.
+    const u = unsettledGuildBook([[deposit('spider_leg', 10)], [withdraw('spider_leg', 10)]]);
+    expect(u.items.get(guildBankDeltaIdentityKey(deposit('spider_leg', 1)))).toBe(10);
+    // The same for copper: B's deposit stays unsettled whatever C withdrew.
+    const g = unsettledGuildBook([[gold(10_000)], [gold(-10_000)]]);
+    expect(g.copper).toBe(10_000);
+    // A holder that is net-negative on its own contributes nothing.
+    const n = unsettledGuildBook([[deposit('spider_leg', 4), withdraw('spider_leg', 9)]]);
+    expect(n.items.size).toBe(0);
+  });
+
   it('keeps the three identity dimensions apart (instance payload and craft provenance)', () => {
     const u = unsettledGuildBook([
       [deposit('iron_ore', 5, { instance: { signer: 'BigDamage' } })],
@@ -75,11 +89,11 @@ describe('unsettledGuildBook (what other sessions have not made durable)', () =>
     for (const net of u.items.values()) expect(net).toBe(5);
   });
 
-  it('nets treasury copper the replay would move: gold both ways and buy_slots, never open_bank', () => {
+  it('nets treasury copper the replay would move within a log: gold both ways and buy_slots, never open_bank', () => {
     const u = unsettledGuildBook([
-      [gold(40_000), gold(-15_000)],
-      [delta({ op: 'open_bank', copperDelta: -10_000, purchasedSlotsAfter: 24 })],
       [
+        gold(40_000),
+        gold(-15_000),
         delta({
           op: 'buy_slots',
           copperDelta: -5_000,
@@ -87,6 +101,7 @@ describe('unsettledGuildBook (what other sessions have not made durable)', () =>
           purchasedSlotsAfter: 30,
         }),
       ],
+      [delta({ op: 'open_bank', copperDelta: -10_000, purchasedSlotsAfter: 24 })],
     ]);
     expect(u.copper).toBe(20_000);
     expect(u.ladder).toBe(true);

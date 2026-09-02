@@ -86,6 +86,7 @@ export const SERVER_NEW = {
     'guild.bankNotEmpty': 'Před rozpuštěním cechu musí být cechovní banka vyprázdněna.',
     'guild.bankClosing': 'Cechovní banka se zavírá. Zkus to za chvíli znovu.',
     'guild.bankSettling': 'Cechovní banka stále ukládá nedávnou změnu. Zkus to za chvíli znovu.',
+    'guild.bankBusy': 'Jsi zaneprázdněn. Zkus to za chvíli znovu.',
     'guild.notInYours': '{name} není ve tvém cechu.',
     'guild.nowRank': '{name} má nyní hodnost {rank}.',
     'guild.onlyGmChangeRanks': 'Hodnosti může měnit jen vůdce cechu.',
@@ -225,6 +226,7 @@ export const SERVER_NEW = {
     'guild.bankClosing': 'Lavsforeningens bank lukker. Prøv igen om et øjeblik.',
     'guild.bankSettling':
       'Lavsforeningens bank gemmer stadig en nylig ændring. Prøv igen om et øjeblik.',
+    'guild.bankBusy': 'Du er optaget. Prøv igen om et øjeblik.',
     'guild.notInYours': '{name} er ikke i din lavsforening.',
     'guild.nowRank': '{name} er nu {rank}.',
     'guild.onlyGmChangeRanks': 'Kun Lavsmesteren kan ændre rangordener.',
@@ -364,6 +366,7 @@ export const SERVER_NEW = {
     'guild.bankNotEmpty': 'Bank guild harus dikosongkan sebelum guild dapat dibubarkan.',
     'guild.bankClosing': 'Bank guild sedang ditutup. Coba lagi sebentar lagi.',
     'guild.bankSettling': 'Bank guild masih menyimpan perubahan terbaru. Coba lagi sebentar lagi.',
+    'guild.bankBusy': 'Kamu sedang sibuk. Coba lagi sebentar lagi.',
     'guild.notInYours': '{name} tidak ada dalam guild-mu.',
     'guild.nowRank': '{name} sekarang menjadi {rank}.',
     'guild.onlyGmChangeRanks': 'Hanya Guild Master yang boleh mengubah pangkat.',
@@ -505,6 +508,7 @@ export const SERVER_NEW = {
     'guild.bankClosing': 'De gildebank sluit. Probeer het zo meteen opnieuw.',
     'guild.bankSettling':
       'De gildebank slaat nog een recente wijziging op. Probeer het zo meteen opnieuw.',
+    'guild.bankBusy': 'Je bent bezig. Probeer het zo meteen opnieuw.',
     'guild.notInYours': '{name} zit niet in je gilde.',
     'guild.nowRank': '{name} is nu {rank}.',
     'guild.onlyGmChangeRanks': 'Alleen de Gildemeester mag rangen wijzigen.',
@@ -649,6 +653,7 @@ export const SERVER_NEW = {
       'Bank gildii musi zostać opróżniony, zanim gildia będzie mogła zostać rozwiązana.',
     'guild.bankClosing': 'Bank gildii jest zamykany. Spróbuj ponownie za chwilę.',
     'guild.bankSettling': 'Bank gildii wciąż zapisuje niedawną zmianę. Spróbuj ponownie za chwilę.',
+    'guild.bankBusy': 'Jesteś zajęty. Spróbuj ponownie za chwilę.',
     'guild.notInYours': '{name} nie należy do twojej gildii.',
     'guild.nowRank': '{name} ma teraz rangę {rank}.',
     'guild.onlyGmChangeRanks': 'Tylko Mistrz Gildii może zmieniać rangi.',
@@ -791,6 +796,7 @@ export const SERVER_NEW = {
     'guild.bankClosing': 'Gillesbanken stänger. Försök igen om ett ögonblick.',
     'guild.bankSettling':
       'Gillesbanken sparar fortfarande en nyligen gjord ändring. Försök igen om ett ögonblick.',
+    'guild.bankBusy': 'Du är upptagen. Försök igen om ett ögonblick.',
     'guild.notInYours': '{name} är inte med i ditt gille.',
     'guild.nowRank': '{name} är nu {rank}.',
     'guild.onlyGmChangeRanks': 'Endast gillesmästaren kan ändra rang.',
@@ -930,6 +936,7 @@ export const SERVER_NEW = {
     'guild.bankClosing': 'Lonca bankası kapanıyor. Birazdan tekrar dene.',
     'guild.bankSettling':
       'Lonca bankası hâlâ yakın zamandaki bir değişikliği kaydediyor. Birazdan tekrar dene.',
+    'guild.bankBusy': 'Meşgulsün. Birazdan tekrar dene.',
     'guild.notInYours': '{name} loncanda değil.',
     'guild.nowRank': '{name} artık {rank}.',
     'guild.onlyGmChangeRanks': 'Yalnızca Lonca Lideri rütbeleri değiştirebilir.',
@@ -1072,6 +1079,7 @@ export const SERVER_NEW = {
     'guild.bankClosing': 'Ngân hàng bang hội đang đóng. Hãy thử lại sau giây lát.',
     'guild.bankSettling':
       'Ngân hàng bang hội vẫn đang lưu một thay đổi gần đây. Hãy thử lại sau giây lát.',
+    'guild.bankBusy': 'Bạn đang bận. Hãy thử lại sau giây lát.',
     'guild.notInYours': '{name} không ở trong bang hội của bạn.',
     'guild.nowRank': '{name} giờ là {rank}.',
     'guild.onlyGmChangeRanks': 'Chỉ Bang Chủ mới có thể thay đổi cấp bậc.',

@@ -1234,4 +1234,7 @@ the deployment premise the cache bust and the single-writer narrowing both rest 
   backstop SEED the log under the gate (`seedUnflushed` in
   `tests/guild_bank_persistence.test.ts`); the gate's own pins are
   `tests/guild_bank_settle_gate.test.ts` and the gate describe block in the persistence
-  suite. Metered as `unsettled_refused` (rate, never presence).
+  suite. Metered as `unsettled_refused` (rate, never presence). The holder flush is
+  DAMPED (`GUILD_BOOK_FLUSH_COOLDOWN_MS`, one flush per holder per window, shared with
+  the refusal arm's retry flush): a refusal costs its sender only an op-guard token, so
+  an undamped fan-out would let one officer force a save per dirty guildmate per refusal.

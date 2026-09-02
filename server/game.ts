@@ -266,6 +266,7 @@ import {
   type GuildBankOpGuardState,
 } from './guild_bank_op_guard';
 import {
+  GUILD_BOOK_FLUSH_COOLDOWN_MS,
   type GuildBankOpRequest,
   guildBookHolders,
   unsettledGuildBook,
@@ -1209,6 +1210,10 @@ export interface ClientSession extends MovementInputSessionState {
   // only bounds how long a session waits for the other officer's commit before
   // it is rolled back and disconnected instead.
   guildBankDeficitSkips: Map<number, number>;
+  // When this session was last flushed as a guild book HOLDER (the unsettled
+  // gate's refusal, the escrow refusal's retry arm); flushGuildBookHolders
+  // damps on it. Zero until the first flush.
+  guildBookFlushedAtMs: number;
   // Set once this session's book work can never become durable and its live
   // state has therefore been abandoned. A quarantined session persists
   // NOTHING, ever again: its character half is the half that would carry the
@@ -3845,6 +3850,7 @@ export class GameServer {
       bankLedgerSaveScheduled: false,
       unflushedGuildBankOps: new Map(),
       guildBankDeficitSkips: new Map(),
+      guildBookFlushedAtMs: 0,
       escrowQuarantined: false,
       inFlightGuildBankOps: new Map(),
       ignoredIds: new Set(),
@@ -5158,12 +5164,18 @@ export class GameServer {
   // guild's book another session is waiting on: the unsettled gate's refusal
   // and the escrow refusal's retry arm both call it, so the retry lands a
   // round trip later rather than an autosave interval later. Never a
-  // departing session (its leave flush is already in flight).
+  // departing session (its leave flush is already in flight), and never the
+  // same holder twice inside GUILD_BOOK_FLUSH_COOLDOWN_MS: a refusal costs its
+  // sender only an op-guard token, so an undamped fan-out would let one
+  // officer force a save per dirty guildmate per refusal.
   private flushGuildBookHolders(guildId: number, except: ClientSession): void {
+    const now = Date.now();
     const holders = guildBookHolders(this.sessionsByCharacterId.values(), guildId, except, {
       includeLeaving: false,
     });
     for (const s of holders) {
+      if (now - s.guildBookFlushedAtMs < GUILD_BOOK_FLUSH_COOLDOWN_MS) continue;
+      s.guildBookFlushedAtMs = now;
       void this.saveCharacter(s).catch((err) =>
         console.error(`guild bank deficit flush failed for ${s.name}:`, err),
       );

@@ -86,6 +86,7 @@ export const DICT: Record<string, Record<string, string>> = {
     // row. Two DB round trips wide.
     'guild.bankClosing': 'The guild bank is closing. Try again in a moment.',
     'guild.bankSettling': 'The guild bank is still saving a recent change. Try again in a moment.',
+    'guild.bankBusy': 'You are busy. Try again in a moment.',
     'guild.onlyOfficersInvite': 'Only officers and the Guild Master may invite.',
     'guild.alreadyInThis': 'You are already in the guild.',
     'guild.mustBeOnline': '{name} must be online to be invited.',
@@ -239,6 +240,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankNotEmpty': 'The guild bank must be emptied before the guild can be disbanded.',
     'guild.bankClosing': 'The guild bank is closing. Try again in a moment.',
     'guild.bankSettling': 'The guild bank is still saving a recent change. Try again in a moment.',
+    'guild.bankBusy': 'You are busy. Try again in a moment.',
     'guild.onlyOfficersInvite': 'Only officers and the Guild Master may invite.',
     'guild.alreadyInThis': 'You are already in the guild.',
     'guild.mustBeOnline': '{name} must be online to be invited.',
@@ -383,6 +385,7 @@ export const DICT: Record<string, Record<string, string>> = {
       'El banco de hermandad se está cerrando. Inténtalo de nuevo en un momento.',
     'guild.bankSettling':
       'El banco de hermandad aún está guardando un cambio reciente. Inténtalo de nuevo en un momento.',
+    'guild.bankBusy': 'Estás ocupado. Inténtalo de nuevo en un momento.',
     'guild.onlyOfficersInvite': 'Solo los oficiales y el Maestro de hermandad pueden invitar.',
     'guild.alreadyInThis': 'Ya perteneces a la hermandad.',
     'guild.mustBeOnline': '{name} debe estar conectado para ser invitado.',
@@ -531,6 +534,7 @@ export const DICT: Record<string, Record<string, string>> = {
       'El banco de hermandad se está cerrando. Inténtalo de nuevo en un momento.',
     'guild.bankSettling':
       'El banco de hermandad aún está guardando un cambio reciente. Inténtalo de nuevo en un momento.',
+    'guild.bankBusy': 'Estás ocupado. Inténtalo de nuevo en un momento.',
     'guild.onlyOfficersInvite': 'Solo los oficiales y el Maestro de hermandad pueden invitar.',
     'guild.alreadyInThis': 'Ya perteneces a la hermandad.',
     'guild.mustBeOnline': '{name} debe estar conectado para poder ser invitado.',
@@ -679,6 +683,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankClosing': 'La banque de guilde est en cours de fermeture. Réessaie dans un instant.',
     'guild.bankSettling':
       'La banque de guilde enregistre encore une modification récente. Réessaie dans un instant.',
+    'guild.bankBusy': 'Tu es occupé. Réessaie dans un instant.',
     'guild.onlyOfficersInvite': 'Seuls les officiers et le maître de guilde peuvent inviter.',
     'guild.alreadyInThis': 'Vous appartenez déjà à cette guilde.',
     'guild.mustBeOnline': '{name} doit être en ligne pour être invité.',
@@ -827,6 +832,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankClosing': 'La banque de guilde est en cours de fermeture. Réessaie dans un instant.',
     'guild.bankSettling':
       'La banque de guilde enregistre encore une modification récente. Réessaie dans un instant.',
+    'guild.bankBusy': 'Tu es occupé. Réessaie dans un instant.',
     'guild.onlyOfficersInvite': 'Seuls les officiers et le maître de guilde peuvent inviter.',
     'guild.alreadyInThis': 'Vous faites déjà partie de la guilde.',
     'guild.mustBeOnline': '{name} doit être en ligne pour être invité.',
@@ -970,6 +976,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankClosing': 'La banca di gilda si sta chiudendo. Riprova tra un momento.',
     'guild.bankSettling':
       'La banca di gilda sta ancora salvando una modifica recente. Riprova tra un momento.',
+    'guild.bankBusy': 'Sei occupato. Riprova tra un momento.',
     'guild.onlyOfficersInvite': 'Solo gli ufficiali e il Maestro di Gilda possono invitare.',
     'guild.alreadyInThis': 'Fai già parte della gilda.',
     'guild.mustBeOnline': '{name} deve essere connesso per essere invitato.',
@@ -1118,6 +1125,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankClosing': 'Die Gildenbank wird geschlossen. Versuche es gleich noch einmal.',
     'guild.bankSettling':
       'Die Gildenbank speichert noch eine kürzliche Änderung. Versuche es gleich noch einmal.',
+    'guild.bankBusy': 'Du bist beschäftigt. Versuche es gleich noch einmal.',
     'guild.onlyOfficersInvite': 'Nur Offiziere und der Gildenmeister können einladen.',
     'guild.alreadyInThis': 'Ihr seid bereits in der Gilde.',
     'guild.mustBeOnline': '{name} muss online sein, um eingeladen zu werden.',
@@ -1257,6 +1265,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankNotEmpty': '必须先清空公会银行才能解散公会。',
     'guild.bankClosing': '公会银行正在关闭。请稍后再试。',
     'guild.bankSettling': '公会银行仍在保存最近的一次变动。请稍后再试。',
+    'guild.bankBusy': '你正忙着。请稍后再试。',
     'guild.onlyOfficersInvite': '只有官员和会长才能邀请成员。',
     'guild.alreadyInThis': '你已经在该公会中了。',
     'guild.mustBeOnline': '{name}必须在线才能被邀请。',
@@ -1392,6 +1401,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankNotEmpty': '必須先清空公會銀行才能解散公會。',
     'guild.bankClosing': '公會銀行正在關閉。請稍後再試。',
     'guild.bankSettling': '公會銀行仍在儲存最近的一次變動。請稍後再試。',
+    'guild.bankBusy': '你正在忙。請稍後再試。',
     'guild.onlyOfficersInvite': '只有幹部和會長才能邀請成員。',
     'guild.alreadyInThis': '你已經是這個公會的成員。',
     'guild.mustBeOnline': '{name} 必須在線上才能被邀請。',
@@ -1529,6 +1539,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankClosing': '길드 은행이 닫히는 중입니다. 잠시 후 다시 시도하세요.',
     'guild.bankSettling':
       '길드 은행이 아직 최근 변경 사항을 저장하는 중입니다. 잠시 후 다시 시도하세요.',
+    'guild.bankBusy': '지금은 바쁩니다. 잠시 후 다시 시도하세요.',
     'guild.onlyOfficersInvite': '장교와 길드장만 초대할 수 있습니다.',
     'guild.alreadyInThis': '이미 해당 길드에 가입되어 있습니다.',
     'guild.mustBeOnline': '{name}님을 초대하려면 접속 중이어야 합니다.',
@@ -1667,6 +1678,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankClosing': 'ギルド銀行は閉鎖中です。しばらくしてからもう一度お試しください。',
     'guild.bankSettling':
       'ギルド銀行は最近の変更をまだ保存中です。しばらくしてからもう一度お試しください。',
+    'guild.bankBusy': '現在は操作中です。しばらくしてからもう一度お試しください。',
     'guild.onlyOfficersInvite': '招待できるのはオフィサーとギルドマスターのみです。',
     'guild.alreadyInThis': 'あなたはすでにこのギルドに所属しています。',
     'guild.mustBeOnline': '{name}を招待するには、相手がオンラインである必要があります。',
@@ -1813,6 +1825,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankClosing': 'O banco da guilda está fechando. Tente novamente em um momento.',
     'guild.bankSettling':
       'O banco da guilda ainda está salvando uma alteração recente. Tente novamente em um momento.',
+    'guild.bankBusy': 'Você está ocupado. Tente novamente em um momento.',
     'guild.onlyOfficersInvite': 'Apenas oficiais e o Mestre da Guilda podem convidar.',
     'guild.alreadyInThis': 'Você já está na guilda.',
     'guild.mustBeOnline': '{name} precisa estar online para ser convidado.',
@@ -1955,6 +1968,7 @@ export const DICT: Record<string, Record<string, string>> = {
     'guild.bankClosing': 'Гильдейский банк закрывается. Попробуйте ещё раз через мгновение.',
     'guild.bankSettling':
       'Гильдейский банк ещё сохраняет недавнее изменение. Попробуйте ещё раз через мгновение.',
+    'guild.bankBusy': 'Вы заняты. Попробуйте ещё раз через мгновение.',
     'guild.onlyOfficersInvite': 'Приглашать могут только офицеры и глава гильдии.',
     'guild.alreadyInThis': 'Вы уже состоите в этой гильдии.',
     'guild.mustBeOnline': '{name} должен(на) быть в сети, чтобы получить приглашение.',

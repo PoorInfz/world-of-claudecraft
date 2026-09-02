@@ -57,15 +57,38 @@ export interface GuildBankOpRequest {
 
 export type GuildBankUnsettledKind = 'items' | 'copper' | 'ladder';
 
+/** How long after a holder was flushed the host must NOT flush it again, in
+ *  milliseconds. The flush exists so a refused op's retry lands a round trip
+ *  later, and one flush per holder buys exactly that; a second one inside
+ *  the window would only stack a save behind one still in flight. The bound
+ *  it gives: a refusal costs its sender no more than an op-guard token, so
+ *  without it one officer refusing at the guard's rate could force a save per
+ *  dirty guildmate per refusal. With it, the fan-out is at most one extra save
+ *  per holder per window, whoever is refusing and however often. */
+export const GUILD_BOOK_FLUSH_COOLDOWN_MS = 1_000;
+
 /** What OTHER sessions' unflushed logs still hold on one guild's book: the
- *  part of the live book durable truth does not have yet. */
+ *  part of the live book durable truth may not have when the acting session's
+ *  replay runs.
+ *
+ *  Summed PER SESSION, positives only. A commit is atomic per session, so the
+ *  worst durable base for the acting replay is every net-REMOVING holder
+ *  already committed (durable lowered) and every net-DEPOSITING holder not
+ *  yet committed (its copies still unsettled): `live - sum over holders of
+ *  max(0, holder's net)`. Netting one holder's withdrawal against another
+ *  holder's deposit would hide the deposit (holder C's withdraw of 10 cancels
+ *  holder B's deposit of 10, and the acting officer takes B's copies ungated),
+ *  which is the same two-identity cycle the gate exists to refuse, one officer
+ *  removed. */
 export interface UnsettledGuildBook {
-  /** Net copies per identity key (deposits minus removals), the same
-   *  three-dimensional key the escrow replay matches on. */
+  /** Per identity key (the escrow replay's three-dimensional key): the sum
+   *  over holders of each holder's POSITIVE net copies (deposits minus its own
+   *  removals, floored at zero). */
   readonly items: ReadonlyMap<string, number>;
-  /** Net treasury copper the replay would MOVE. open_bank is excluded (rung 0
-   *  is purse-paid and the applier never moves it), buy_slots is included (its
-   *  charge left the treasury). */
+  /** The sum over holders of each holder's POSITIVE net treasury copper the
+   *  replay would MOVE. open_bank is excluded (rung 0 is purse-paid and the
+   *  applier never moves it), buy_slots is included (its charge left the
+   *  treasury). */
   readonly copper: number;
   /** True while any slot op is outstanding: a rung replays only onto the exact
    *  ladder position its witness names, so a rung bought on top of an
@@ -80,22 +103,30 @@ export function unsettledGuildBook(
   let copper = 0;
   let ladder = false;
   for (const log of logs) {
+    // One holder's own net, keyed like the replay; only its positive part
+    // joins the total (see the interface note).
+    const own = new Map<string, number>();
+    let ownCopper = 0;
     for (const d of log) {
       if (d.op === 'open_bank' || d.op === 'buy_slots') {
         ladder = true;
-        if (d.op === 'buy_slots') copper += Number(d.copperDelta) || 0;
+        if (d.op === 'buy_slots') ownCopper += Number(d.copperDelta) || 0;
         continue;
       }
       if (d.op === 'deposit_gold' || d.op === 'withdraw_gold') {
-        copper += Number(d.copperDelta) || 0;
+        ownCopper += Number(d.copperDelta) || 0;
         continue;
       }
       if (typeof d.itemId !== 'string' || d.itemId === '') continue;
       const count = Math.max(0, Math.floor(Number(d.count)) || 0);
       if (count === 0) continue;
       const key = guildBankDeltaIdentityKey(d);
-      items.set(key, (items.get(key) ?? 0) + (d.op === 'deposit' ? count : -count));
+      own.set(key, (own.get(key) ?? 0) + (d.op === 'deposit' ? count : -count));
     }
+    for (const [key, net] of own) {
+      if (net > 0) items.set(key, (items.get(key) ?? 0) + net);
+    }
+    if (ownCopper > 0) copper += ownCopper;
   }
   return { items, copper, ladder };
 }
