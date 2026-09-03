@@ -521,6 +521,8 @@ function fakeCtx(entities: Entity[], partyOf: SimContext['partyOf'] = () => null
     players: new Map(),
     partyOf,
     mobScanCounters: createMobScanCounters(),
+    // Hand-built cases fight in the open world: no instance claim anywhere.
+    instanceClaimIdAt: () => null,
   } as unknown as SimContext;
 }
 

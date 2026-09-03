@@ -18,6 +18,7 @@
 // are unaffected: the accumulator stays 0 in every scenario where mobs fight
 // in contact or make chase progress.
 import { MOBS } from '../data';
+import { releasePin } from '../instances/instance_combat_hold';
 import { PLAYER_BODY_RADIUS, PLAYER_MAX_CLIMB_SLOPE, PLAYER_SWIM_DEPTH } from '../pathfind';
 import type { SimContext } from '../sim_context';
 import { angleTo, DT, dist2d, type Entity, type Vec3 } from '../types';
@@ -103,6 +104,7 @@ export function chaseStalledUnreachable(
   // (mob melee has no line-of-sight check), which is a fight, not a stall.
   if (dist2d(mob.pos, target.pos) <= reach) {
     mob.chaseStall = 0;
+    releasePin(mob);
     return false;
   }
   // Root is crowd control, not geometry: HOLD the accumulator (no growth, no
@@ -114,12 +116,14 @@ export function chaseStalledUnreachable(
   // mob commits exactly zero.
   if (dist2d(mob.pos, mob.prevPos) > 1e-3) {
     mob.chaseStall = 0;
+    releasePin(mob);
     return false;
   }
   // Stationary with open ground ahead is a transient AI hiccup, not an
   // unreachable target.
   if (!blockedTowardTarget(ctx, mob, target.pos, chaseSpeed)) {
     mob.chaseStall = 0;
+    releasePin(mob);
     return false;
   }
   mob.chaseStall += DT;

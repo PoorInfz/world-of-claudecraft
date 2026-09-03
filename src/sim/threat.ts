@@ -29,13 +29,15 @@ export const BEAR_FORM_THREAT_MULT = 1.3;
 export const CAT_FORM_THREAT_MULT = 0.71;
 export const RIGHTEOUS_FURY_THREAT_MULT = 1.3; // holy school only
 export const TAUNT_FORCE_SECONDS = 3;
-// An attacker this far (yards, 2D) from a mob is no longer part of its fight:
-// the engaged pass (combat/engaged_combat.ts) drops them off the hate table
-// instead of holding them in combat. Past every ability, heal and resurrection
-// reach (40 yd) with room for a boss arena, and under every instance slot pitch
-// (hundreds of yards), so stepping through an instance door or otherwise
-// teleporting away releases on the next tick: the classic map-change threat
-// drop. The boss encounter hold uses the same radius so the two rules agree.
+// An attacker this far (yards, 2D) from an OPEN-WORLD mob is no longer part of
+// its fight: the engaged pass (combat/engaged_combat.ts) drops them off the hate
+// table instead of holding them in combat. Past every ability, heal and
+// resurrection reach (40 yd) with room for a boss arena, and under every
+// instance slot pitch (hundreds of yards), so teleporting away releases on the
+// next tick: the classic map-change threat drop. The open-world boss encounter
+// hold uses the same radius so the two rules agree. Inside a claimed instance
+// slot distance never drops anyone; leaving the slot does
+// (instances/instance_combat_hold.ts).
 export const THREAT_DROP_RANGE = 100;
 // Stealth shrinks detection at equal level; higher-level observers pierce it
 // more easily, lower-level observers struggle. Shared by mobs and players.

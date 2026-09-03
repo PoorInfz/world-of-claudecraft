@@ -240,8 +240,14 @@ export function dealDamage(
   // Direct attacks report an Evade result (FCT word + combat log line); DoT and
   // reflect ticks stay silent so a dotted evader does not spam a word per tick.
   // The early return keeps every downstream effect off: no threat, no combat
-  // entry, no stealth break, no tap.
-  if (target.kind === 'mob' && target.aiState === 'evade' && target.ownerId === null) {
+  // entry, no stealth break, no tap. A mob holding in place inside an instance
+  // (evadeInPlace, instances/instance_combat_hold.ts: out of reach of its target,
+  // aggro intact) evades the same way, so a pinned mob cannot be chipped down.
+  if (
+    target.kind === 'mob' &&
+    (target.aiState === 'evade' || target.evadeInPlace === true) &&
+    target.ownerId === null
+  ) {
     if (direct && source) {
       ctx.emit({
         type: 'damage',

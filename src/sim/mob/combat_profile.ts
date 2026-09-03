@@ -1,5 +1,6 @@
 import { isLockedOut, isSilenced } from '../combat/cc';
 import { DUNGEON_X_THRESHOLD, MOBS } from '../data';
+import { holdsAggroInInstance, pinInPlace, releasePin } from '../instances/instance_combat_hold';
 import { combatProfileForMob, effectiveMobMeleeRange, type MobCombatProfile } from '../mob_combat';
 import type { SimContext } from '../sim_context';
 import { clearThreat } from '../threat';
@@ -37,6 +38,7 @@ function startEvadeHome(mob: Entity): void {
   clearThreat(mob);
   mob.leashAnchor = null;
   clearChainPullInbound(mob);
+  releasePin(mob);
   // A frozen windup must not detonate mid-walk-home (its ring is long gone);
   // the full evade reset on arrival clears the rest of the mechanic state.
   resetRiftMechanicWindups(mob);
@@ -96,6 +98,10 @@ export function updateMobCombatProfile(
   }
   if (ctx.maybeFlee(mob, target)) return 'done';
 
+  // Inside a claimed instance slot a mob never resets by distance
+  // (instances/instance_combat_hold.ts): no soft leash, and a tether or a
+  // stall holds it in place immune and aggro'd instead of sending it home.
+  const instanceHold = profile.canLeash && holdsAggroInInstance(ctx, mob);
   if (profile.canLeash) {
     // The hard tether measures from the SPAWN, never the refreshing anchor,
     // and ignores the flee-recovery grace: past it the mob goes home, however
@@ -103,8 +109,17 @@ export function updateMobCombatProfile(
     // mob can never be walked out one anchor-refresh at a time.
     const hardLeash = mob.ignoreHardLeash ? undefined : MOBS[mob.templateId]?.hardLeashRadius;
     if (hardLeash !== undefined && dist2d(mob.pos, mob.spawnPos) > hardLeash) {
-      startEvadeHome(mob);
-      return 'done';
+      const verdict = tetherVerdict(mob, target, profile.meleeRange, instanceHold);
+      if (verdict === 'evade') {
+        startEvadeHome(mob);
+        return 'done';
+      }
+      if (verdict === 'hold') {
+        pinInPlace(mob);
+        mob.facing = steadyAngleTo(mob.pos, target.pos, mob.facing);
+        return 'done';
+      }
+      releasePin(mob);
     }
     const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
     const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
@@ -121,7 +136,12 @@ export function updateMobCombatProfile(
     // so the hard tether above and the stall postlude below still apply. See
     // mob/chain_pull_transit.ts.
     const inTransit = chainPullTransitHoldsLeash(mob, leashAnchor, leash);
-    if (dist2d(mob.pos, leashAnchor) > leash && mob.fleeReturnTimer <= 0 && !inTransit) {
+    if (
+      !instanceHold &&
+      dist2d(mob.pos, leashAnchor) > leash &&
+      mob.fleeReturnTimer <= 0 &&
+      !inTransit
+    ) {
       startEvadeHome(mob);
       return 'done';
     }
@@ -175,7 +195,7 @@ export function updateMobCombatProfile(
   if (spell) {
     const result = updateCasterCombat(ctx, mob, target, profile, spell);
     if (profile.canLeash && chaseStalledUnreachable(ctx, mob, target, spell.range, chaseSpeed)) {
-      startEvadeHome(mob);
+      onChaseStalled(mob, instanceHold);
       return 'done';
     }
     return result;
@@ -186,10 +206,38 @@ export function updateMobCombatProfile(
     profile.canLeash &&
     chaseStalledUnreachable(ctx, mob, target, profile.meleeRange, chaseSpeed)
   ) {
-    startEvadeHome(mob);
+    onChaseStalled(mob, instanceHold);
     return 'done';
   }
   return mob.aiState === 'attack' ? 'runAttackMechanics' : 'done';
+}
+
+export type TetherVerdict = 'evade' | 'hold' | 'fight';
+
+/** The hard-tether verdict for a mob dragged past its tether: an open-world mob
+ *  goes home (the classic reset); an instance mob holds at the tether, immune
+ *  and aggro'd while its target is out of reach, and fights in place when the
+ *  target comes back (instances/instance_combat_hold.ts). */
+export function tetherVerdict(
+  mob: Entity,
+  target: Entity,
+  meleeRange: number,
+  instanceHold: boolean,
+): TetherVerdict {
+  if (!instanceHold) return 'evade';
+  return dist2d(mob.pos, target.pos) > meleeRange ? 'hold' : 'fight';
+}
+
+/** The stall verdict: an unreachable target sends an open-world mob home (the
+ *  classic evade, full heal on arrival), while an instance mob holds in place
+ *  immune and aggro'd (instances/instance_combat_hold.ts) so a perch inside a
+ *  dungeon neither resets the pull nor yields free damage. */
+export function onChaseStalled(mob: Entity, instanceHold: boolean): void {
+  if (instanceHold) {
+    pinInPlace(mob);
+    return;
+  }
+  startEvadeHome(mob);
 }
 
 // Healer-hold behavior for channelHeal mobs: stand a short distance from the

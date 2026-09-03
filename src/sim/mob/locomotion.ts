@@ -56,6 +56,7 @@ import {
 } from '../encounters/varkhul';
 import { isEscortNpcTemplate } from '../escort';
 import { unlockIgnivarRaidGate } from '../ignivar_raid_progression';
+import { releasePin } from '../instances/instance_combat_hold';
 import { PLAYER_BODY_RADIUS, PLAYER_SWIM_DEPTH } from '../pathfind';
 import { holdPetCorpseForBgWave } from '../pet/pet_corpse_hold';
 import { noteMatchPetUnravelled } from '../pet/pet_match_return';
@@ -1496,6 +1497,7 @@ export function resetEvadingMob(ctx: SimContext, mob: Entity): void {
   // whoever re-pulls this mob fresh inside the same memory window.
   mob.evadeEpoch++;
   mob.chainPullInbound = false;
+  releasePin(mob);
   mob.fleeTimer = 0;
   mob.fleeReturnTimer = 0;
   mob.hasFled = false;

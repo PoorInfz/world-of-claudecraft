@@ -5,11 +5,14 @@
 // stays in combat for the whole fight. The flag only clears when the mob dies,
 // evades home (which wipes its table), the player dies (dropped off every table
 // by combat/damage.ts), or an escape like Vanish deliberately strips them from
-// the tables (combat/effect_dispatch.ts), or they get further than
-// THREAT_DROP_RANGE from the mob: the same walk drops an out-of-reach attacker
-// off the table (releasing any taunt lock or current-target pointer at them),
-// the classic map-change threat drop, so stepping through an instance door or
-// otherwise leaving the fight behind never leaves a player stuck in combat.
+// the tables (combat/effect_dispatch.ts), or they leave the fight behind: in
+// the open world that is getting further than THREAT_DROP_RANGE from the mob,
+// inside a claimed instance slot it is leaving the slot (the door, a raid room
+// crossing, any teleport out), and never distance, so kiting a dungeon around
+// sheds nothing (instances/instance_combat_hold.ts). The same walk drops the
+// departed attacker off the table (releasing any taunt lock or current-target
+// pointer at them), the classic map-change threat drop, so leaving a fight
+// never leaves a player stuck in combat either.
 //
 // Boss encounters add the raid-boss "zone in combat" rule: an engaged boss holds
 // every living, nearby member of its attackers' groups in combat even if they
@@ -23,6 +26,7 @@
 // like the mob-AI walks in mob/targeting.ts, so the perf heartbeat's
 // threatVisits token keeps counting every table entry visited per tick.
 import { MOBS } from '../data';
+import { attackerLeftInstance, instanceClaimOf } from '../instances/instance_combat_hold';
 import { questGateBlocksAggro } from '../mob/quest_gated_aggro';
 import type { MobScanCounters } from '../mob/scan_counters';
 import type { SimContext } from '../sim_context';
@@ -78,9 +82,23 @@ function playerBehind(ctx: SimContext, entryId: number): number | null {
   return owner?.kind === 'player' && !owner.dead ? owner.id : null;
 }
 
+// Is this group member part of the boss's encounter: inside the boss's slot
+// (the whole raid room) when the boss fights in an instance, else within the
+// open-world encounter radius.
+function memberInEncounter(
+  ctx: SimContext,
+  boss: Entity,
+  bossClaim: number | null,
+  member: Entity,
+): boolean {
+  if (bossClaim !== null) return !attackerLeftInstance(ctx, bossClaim, member);
+  return dist2d(member.pos, boss.pos) <= BOSS_ENCOUNTER_COMBAT_RANGE;
+}
+
 function holdEncounterGroup(
   ctx: SimContext,
   boss: Entity,
+  bossClaim: number | null,
   pid: number,
   seenParties: Set<number>,
   out: Set<number>,
@@ -91,7 +109,7 @@ function holdEncounterGroup(
   for (const memberId of party.members) {
     const member = ctx.entities.get(memberId);
     if (!member || member.dead) continue;
-    if (dist2d(member.pos, boss.pos) > BOSS_ENCOUNTER_COMBAT_RANGE) continue;
+    if (!memberInEncounter(ctx, boss, bossClaim, member)) continue;
     // A quest-gated boss never pulls a member its own damage gate would refuse
     // (the same rule healing threat applies in combat/heal.ts).
     if (questGateBlocksAggro(ctx.players, boss, member)) continue;
@@ -99,8 +117,22 @@ function holdEncounterGroup(
   }
 }
 
-// One walk of the mob's hate table: an entry beyond THREAT_DROP_RANGE is dropped
-// (the mob's next target pass swings to whoever is left, or it evades home on an
+// Has this attacker left the mob's fight: out of the slot for an instance mob,
+// beyond THREAT_DROP_RANGE in the open world. A chain-pulled mob crossing to
+// its puller is meant to arrive (mob/chain_pull_transit.ts suspends its leash
+// the same way), so the open-world reach waits until it has spent that grace.
+function attackerLeftFight(
+  ctx: SimContext,
+  mob: Entity,
+  mobClaim: number | null,
+  entry: Entity,
+): boolean {
+  if (mobClaim !== null) return attackerLeftInstance(ctx, mobClaim, entry);
+  return !mob.chainPullInbound && beyondThreatRange(mob, entry);
+}
+
+// One walk of the mob's hate table: an entry that left the fight is dropped (the
+// mob's next target pass swings to whoever is left, or it evades home on an
 // empty table); every other entry (and the player behind a pet entry) is held,
 // and for an encounter boss each attacker's group is held too.
 function holdHateTable(
@@ -113,14 +145,12 @@ function holdHateTable(
   // Allocated per engaged BOSS per tick only (never per add or per entry), so it
   // is deliberately a local rather than a hoisted scratch structure.
   const seenParties = encounterBoss ? new Set<number>() : null;
-  // A chain-pulled mob crossing to its puller from the far end of an instance is
-  // meant to arrive (mob/chain_pull_transit.ts suspends its leash the same way);
-  // the reach applies once it has spent that grace.
-  const crossing = mob.chainPullInbound;
+  // Resolved once per mob: the slot it fights in, or null in the open world.
+  const mobClaim = instanceClaimOf(ctx, mob);
   for (const id of mob.threat.keys()) {
     counters.threatEntryVisits++;
     const entry = ctx.entities.get(id);
-    if (!crossing && entry && beyondThreatRange(mob, entry)) {
+    if (entry && attackerLeftFight(ctx, mob, mobClaim, entry)) {
       // Deleting the current key mid-iteration is safe on a Map. dropThreat also
       // releases a taunt lock on the dropped id; the target pointer goes with it.
       dropThreat(mob, id);
@@ -131,7 +161,7 @@ function holdHateTable(
     const pid = playerBehind(ctx, id);
     if (pid === null) continue;
     out.add(pid);
-    if (seenParties) holdEncounterGroup(ctx, mob, pid, seenParties, out);
+    if (seenParties) holdEncounterGroup(ctx, mob, mobClaim, pid, seenParties, out);
   }
   // The current target is normally on the table already (aggro seeds it); keep
   // it explicitly so a table pruned this tick cannot open a one-tick gap.
