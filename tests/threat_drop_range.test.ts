@@ -169,16 +169,6 @@ describe('hate-table reach: out-of-range attackers drop off the table', () => {
     expect(wolf.forcedTargetTimer).toBe(0);
   });
 
-  it('leaves a mob parked in evade by the instance-exit hold untouched', () => {
-    const { sim, wolf, dps } = wolfFight();
-    wolf.aiState = 'evade';
-    wolf.combatExitHoldUntil = sim.time + 60;
-    place(sim, entity(sim, dps), ARENA_X, ARENA_Z + 150);
-    for (let i = 0; i < 20 * 2; i++) sim.tick();
-    expect(wolf.aiState).toBe('evade');
-    expect(wolf.threat.has(dps)).toBe(true);
-  });
-
   it('a raider who steps through an instance door mid-fight is released next tick', () => {
     // The reported hazard: a mob the group keeps engaged never leashes, so
     // without the reach rule the member who zoned would stay in combat inside.

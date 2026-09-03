@@ -98,8 +98,7 @@ export function updateMobCombatProfile(
   const target = mob.aggroTargetId !== null ? ctx.entities.get(mob.aggroTargetId) : null;
   if (!target || target.dead) {
     mob.autoAttack = false;
-    // No target, no pin: a mob parked by the instance-exit hold must not resume
-    // a fight later still wearing the immune stance.
+    // No target, no pin: a mob that lost its fight never keeps the immune stance.
     releasePin(mob);
     retargetMob(ctx, mob);
     return 'done';

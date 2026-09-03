@@ -228,19 +228,6 @@ describe('hate-table combat: every attacker on a live mob stays in combat', () =
     expect(entity(sim, dps).inCombat).toBe(false);
   });
 
-  it('releases the attacker while the mob is parked in evade with its table intact', () => {
-    // The instance-exit hold (combatExitHoldUntil) keeps a leaver's mob parked in
-    // 'evade' with hate table and HP untouched; an evading mob is out of the fight.
-    const { sim, wolf, dps } = wolfFight();
-    wolf.aiState = 'evade';
-    wolf.combatExitHoldUntil = sim.time + 60;
-    entity(sim, dps).combatTimer = 99;
-    for (let i = 0; i < 20 * 3; i++) sim.tick();
-    expect(wolf.aiState).toBe('evade');
-    expect(wolf.threat.has(dps)).toBe(true);
-    expect(entity(sim, dps).inCombat).toBe(false);
-  });
-
   it('releases a dead attacker once their linger runs out (death drops them off every table)', () => {
     const { sim, wolf, tank, dps } = wolfFight();
     hit(sim, wolf, entity(sim, dps), 1_000_000);

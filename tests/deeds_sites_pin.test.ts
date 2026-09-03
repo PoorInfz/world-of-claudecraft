@@ -88,7 +88,6 @@ function encounterInstance(
     enteredBy: new Set(),
     raidReturnKeys: new Set(),
     raidBossWelcomeKeys: new Set(),
-    combatExitMemory: new Map(),
   };
   sim.ctx.instances.push(inst);
   const recipients = names.map((name) => {

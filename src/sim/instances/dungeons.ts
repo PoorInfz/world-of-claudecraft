@@ -40,13 +40,6 @@ import {
   VARKHUL_BOSS_ID,
 } from '../ignivar_raid_ids';
 import { updateIgnivarRaidProgression } from '../ignivar_raid_progression';
-import {
-  COMBAT_EXIT_MEMORY_SECONDS,
-  type CombatExitThreatEntry,
-  recordCombatExit,
-  takeCombatExit,
-} from '../instance_exit_memory';
-import { retargetMob } from '../mob/targeting';
 import { cancelProfessionSessionOnDisplacement } from '../professions/session_teardown';
 import type { InstanceSlot, PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
@@ -720,10 +713,6 @@ export function enterDungeon(
   const passingThroughNythraxisCrypt =
     dungeonId === 'nythraxis_crypt' && corpseRunClaim !== undefined;
   if (p.ghost && !passingThroughNythraxisCrypt) resurrectOnInstanceReentry(ctx, r.meta, p, p.pos);
-  // A living return within the memory window resumes whatever mid-combat exit
-  // this player left behind in this exact claim (issue #2653); a still-dead
-  // ghost passing through has nothing to resume (mobs never target the dead).
-  if (!p.dead) resumeRememberedCombat(ctx, inst, r.meta.entityId);
   ctx.emit({ type: 'log', text: dungeon.enterText, color: '#b9f', pid: r.meta.entityId });
   // Stepping through the moongate is a Chronicle task.
   if (dungeonId === 'drowned_temple') ctx.markVisited(r.meta, 'dungeon:drowned_temple');
@@ -910,29 +899,14 @@ export function detachFromDungeon(ctx: SimContext, p: Entity): { x: number; z: n
 // Drop one departing player (and every entity they own) from the hate tables of
 // all mobs in the instance, releasing any aggro locked onto them. With the table
 // entry gone, updateMobTarget re-targets the remaining party next tick, or the
-// mob evades home when nobody is left on the table. A player leaving while a mob
-// is genuinely fighting them also has that exact threat value snapshotted onto
-// the claim (issue #2653): re-entering the SAME live instance shortly after
-// resumes the fight (resumeRememberedCombat) instead of granting a free,
-// unengaged reset. An out-of-combat walk-out (mob never aggroed, or already
-// dead) drops nothing worth remembering, so no memory entry is made.
+// mob evades home when nobody is left on the table: the classic zone-out reset,
+// full health and an empty table by the time anyone walks back in. Leaving is
+// the ONE way out of a fight inside a slot (instances/instance_combat_hold.ts),
+// and the reset itself is what it costs: a pull left behind comes back whole.
 function scrubInstanceThreat(ctx: SimContext, inst: InstanceSlot, pid: number): void {
-  const mobThreat: CombatExitThreatEntry[] = [];
   for (const id of inst.mobIds) {
     const mob = ctx.entities.get(id);
     if (!mob || mob.dead) continue;
-    const priorThreat = mob.threat.get(pid);
-    if (mob.inCombat && priorThreat !== undefined && priorThreat > 0) {
-      mobThreat.push([id, priorThreat, mob.evadeEpoch]);
-      // Hold this mob's evade-home reset open until the memory window lapses
-      // (issue #2653): a genuinely-fighting leaver's mob must not heal or
-      // clear its hate table out from under a same-claim re-entry. Extends
-      // rather than shortens an already-live hold from an earlier leaver.
-      mob.combatExitHoldUntil = Math.max(
-        mob.combatExitHoldUntil,
-        ctx.time + COMBAT_EXIT_MEMORY_SECONDS,
-      );
-    }
     dropThreat(mob, pid);
     for (const srcId of [...mob.threat.keys()]) {
       if (ctx.entities.get(srcId)?.ownerId === pid) dropThreat(mob, srcId);
@@ -941,30 +915,6 @@ function scrubInstanceThreat(ctx: SimContext, inst: InstanceSlot, pid: number): 
       const tgt = ctx.entities.get(mob.aggroTargetId);
       if (mob.aggroTargetId === pid || tgt?.ownerId === pid) mob.aggroTargetId = null;
     }
-  }
-  recordCombatExit(inst.combatExitMemory, pid, ctx.time, mobThreat);
-}
-
-// Reapply a still-live mid-combat exit snapshot (issue #2653): if `pid` left this
-// SAME claim while genuinely fighting within the memory window, restore the
-// exact threat scrubbed at the door and force any mob that lost its target back
-// into the fight, instead of letting it sit idle/evading until manually re-pulled.
-// A lapsed or absent memory entry is a no-op: the claim resets exactly as before.
-//
-// Safe to restore unconditionally (no evadeEpoch check needed): resetEvadingMob
-// defers on `combatExitHoldUntil` for exactly this window, so a mob this snapshot
-// covers cannot have evade-reset or been re-pulled by anyone else in the meantime
-// (an 'evade' mob is damage-immune, see combat/damage.ts). A mob that DID evade
-// since (e.g. it was never actually held, a stale/foreign id) is caught below by
-// the dead/missing guard; `evadeEpoch` stays on the snapshot only as a diagnostic.
-function resumeRememberedCombat(ctx: SimContext, inst: InstanceSlot, pid: number): void {
-  const rec = takeCombatExit(inst.combatExitMemory, pid, ctx.time);
-  if (!rec) return;
-  for (const [mobId, threat] of rec.mobThreat) {
-    const mob = ctx.entities.get(mobId);
-    if (!mob || mob.dead) continue;
-    mob.threat.set(pid, threat);
-    if (mob.aggroTargetId === null) retargetMob(ctx, mob);
   }
 }
 
@@ -993,7 +943,6 @@ function claimInstance(
   inst.enteredBy = new Set();
   inst.raidReturnKeys = new Set();
   inst.raidBossWelcomeKeys = new Set();
-  inst.combatExitMemory = new Map();
   const origin = instanceOriginOf(inst);
   const mobDifficultyTuningId = dungeon.mobDifficultyTuningId ?? inst.dungeonId;
   for (const spawn of dungeon.spawns) {
@@ -1106,7 +1055,6 @@ function freeInstance(ctx: SimContext, inst: InstanceSlot): void {
   inst.enteredBy = new Set();
   inst.raidReturnKeys = new Set();
   inst.raidBossWelcomeKeys = new Set();
-  inst.combatExitMemory = new Map();
 }
 
 // Explicit classic-style reset for the caller's standard dungeon claims. Durable

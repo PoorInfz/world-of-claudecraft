@@ -624,7 +624,6 @@ export type { MarketSave } from './market';
 
 import { updateBreath } from './breath';
 import { updateSwimFatigue } from './fatigue';
-import type { CombatExitMemory } from './instance_exit_memory';
 import { chainPullInstanceOnBossAggro } from './instances/boss_chain_pull';
 import { buyCrucibleVendorItem as buyCrucibleVendorItemImpl } from './instances/crucible_vendor';
 import {
@@ -1204,12 +1203,6 @@ export interface InstanceSlot {
   // claim's first-entry raid-boss welcome. Session-only and cleared with the
   // claim so a relog cannot replay it while a fresh instance can.
   raidBossWelcomeKeys: Set<string>;
-  // Recently-exited-mid-combat memory (issue #2653): a player who left this claim
-  // while a mob was actively fighting them has their dropped threat snapshotted
-  // here for a short window. Re-entering before it lapses resumes the fight
-  // instead of granting a free, unengaged reset (instances/dungeons.ts). Session
-  // state, cleared with the claim, same as clearedBy/enteredBy above.
-  combatExitMemory: CombatExitMemory;
 }
 
 export interface ResolvedAbility {
@@ -2422,7 +2415,6 @@ export class Sim {
         progressed: false,
         seqResetAt: -Infinity,
         bossDeathZones: [],
-        combatExitMemory: new Map(),
       });
     }
 

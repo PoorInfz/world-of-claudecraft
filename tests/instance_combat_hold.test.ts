@@ -340,7 +340,7 @@ describe('instance combat hold: an out-of-reach mob holds in place instead of re
     expect(isPinnedInPlace(mob)).toBe(false);
 
     // Losing the target (the attacker left the slot) drops the pin on the next
-    // engaged tick, so a mob parked by the instance-exit hold never resumes immune.
+    // engaged tick, so nothing ever resumes a fight in the immune stance.
     engage(sim, player, mob);
     pinInPlace(mob);
     mob.aggroTargetId = null;

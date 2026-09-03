@@ -65,8 +65,7 @@ export const BOSS_ENCOUNTER_COMBAT_RANGE = THREAT_DROP_RANGE;
  *  lookup. */
 function mobEngaged(mob: Entity): boolean {
   if (!mob.hostile) return false;
-  // A mob walking home (or parked in 'evade' by the instance exit hold, hate
-  // table intact) is out of the fight.
+  // A mob walking home is out of the fight.
   if (mob.aiState === 'evade' || mob.aiState === 'dead') return false;
   const active = mob.aiState === 'chase' || mob.aiState === 'attack' || mob.aiState === 'flee';
   // A scripted boss parked at 'idle' for an intermission stays inCombat, and
