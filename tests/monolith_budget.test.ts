@@ -459,7 +459,14 @@ const MONOLITHS: MonolithRow[] = [
     // Plus 2 for the Phase B set-bonus seam: the set_bonus_mods import and
     // the setPlayerLevel writer routing through computeCharacterModifiers
     // (the resolver itself is the extracted module). Exact count, zero slack.
-    ceiling: 12465,
+    // Lowered 12465 -> 12332 for the sticky-encounter combat fix, measured on
+    // release/v0.41.3 (12351 there): the engaged pass's hate-table walk (and
+    // PET_COMBAT_LINGER) moved to combat/engaged_combat.ts, leaving one
+    // collectEngagedPids call in tick() (minus 22), plus 3 for the engagedPids
+    // SimContext host binding (the cached engaged-pass set the /combat readout
+    // reads through the seam). The old row had been carrying slack; re-pinned
+    // to the measured count. Exact count, zero slack.
+    ceiling: 12332,
     seam: 'a sim system module behind SimContext (src/sim/CLAUDE.md)',
   },
   {

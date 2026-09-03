@@ -35,6 +35,7 @@ import { MOBS } from '../data';
 import * as deedsMod from '../deeds';
 import { resetIgnivarEncounter } from '../encounters/ignivar';
 import { resetVarkhulEncounter, VARKHUL_BOSS_ID } from '../encounters/varkhul';
+import { releasePin } from '../instances/instance_combat_hold';
 import type { SimContext } from '../sim_context';
 import { clearThreat } from '../threat';
 import { dist2d, type Entity, IGNIVAR_BOSS_ID, NYTHRAXIS_BOSS_ID } from '../types';
@@ -78,6 +79,7 @@ export function respawnMob(ctx: SimContext, mob: Entity): void {
   mob.evadeStall = 0;
   mob.chaseStall = 0;
   mob.chainPullInbound = false;
+  releasePin(mob);
   mob.fleeTimer = 0;
   mob.fleeReturnTimer = 0;
   mob.hasFled = false;

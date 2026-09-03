@@ -2630,10 +2630,11 @@ export const ABILITIES: Record<string, AbilityDef> = {
   // ---- Chronomancy out-of-combat mass resurrection. The base seven-second cast
   // and mana cost are provisional playtest values. It has no target and rewinds all
   // dead members on the authoritative group or raid roster at cast completion.
-  // The five-minute cooldown is the real throttle: requiresOutOfCombat alone is not
-  // one, because a backline caster who never draws aggro drops combat mid-fight the
-  // moment combatTimer passes the 5s linger (see the engagedPids pass in sim.ts), so
-  // a zero-cooldown mass rez could be chained repeatedly inside a single encounter.
+  // requiresOutOfCombat is a real gate: the engaged pass (combat/engaged_combat.ts)
+  // holds everyone a live mob still carries on its hate table, and an engaged boss
+  // holds every nearby member of its attackers' group, so a backline caster cannot
+  // drop combat mid-fight by idling through the 5s linger. The five-minute cooldown
+  // is the throttle across encounters (and after a wipe, once the boss resets).
   collective_reversal: {
     id: 'collective_reversal',
     name: 'Collective Reversal',
@@ -4772,12 +4773,11 @@ export const ABILITIES: Record<string, AbilityDef> = {
       'Heal a friendly target for $d, then jump to up to 2 allies within 12 yards. Each jump heals for 50% of the previous target. Each ally reached consumes your remaining Mending Current and immediately heals for 125% of the amount consumed. The initial heal increases with Spell Power. (Spiritmend signature)',
   },
   // ---- Spiritmend out-of-combat mass resurrection, the Chronomancy
-  // collective_reversal twin. The five-minute cooldown is the real throttle:
-  // requiresOutOfCombat alone is not one, because a backline healer who never draws
-  // aggro drops combat mid-fight the moment combatTimer passes the 5s linger (see the
-  // engagedPids pass in sim.ts), so a zero-cooldown mass rez could be chained
-  // repeatedly inside a single encounter. Kept equal to collective_reversal so the two
-  // mass rezzes cannot be played against each other; both are pinned to that equality.
+  // collective_reversal twin. requiresOutOfCombat is a real gate (the engaged pass in
+  // combat/engaged_combat.ts holds a backline healer in combat for the whole
+  // encounter), and the five-minute cooldown is the throttle across encounters. Kept
+  // equal to collective_reversal so the two mass rezzes cannot be played against each
+  // other; both are pinned to that equality.
   ancestor_return: {
     id: 'ancestor_return',
     name: "Ancestors' Return",
