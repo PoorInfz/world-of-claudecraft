@@ -26,9 +26,10 @@
 // like the mob-AI walks in mob/targeting.ts, so the perf heartbeat's
 // threatVisits token keeps counting every table entry visited per tick.
 import { MOBS } from '../data';
-import { attackerLeftInstance, instanceClaimOf } from '../instances/instance_combat_hold';
+import { attackerLeftInstance, claimedSlotOf } from '../instances/instance_combat_hold';
 import { questGateBlocksAggro } from '../mob/quest_gated_aggro';
 import type { MobScanCounters } from '../mob/scan_counters';
+import type { InstanceSlot } from '../sim';
 import type { SimContext } from '../sim_context';
 import { beyondThreatRange, dropThreat, THREAT_DROP_RANGE } from '../threat';
 import type { Entity, MobTemplate } from '../types';
@@ -85,20 +86,15 @@ function playerBehind(ctx: SimContext, entryId: number): number | null {
 // Is this group member part of the boss's encounter: inside the boss's slot
 // (the whole raid room) when the boss fights in an instance, else within the
 // open-world encounter radius.
-function memberInEncounter(
-  ctx: SimContext,
-  boss: Entity,
-  bossClaim: number | null,
-  member: Entity,
-): boolean {
-  if (bossClaim !== null) return !attackerLeftInstance(ctx, bossClaim, member);
+function memberInEncounter(boss: Entity, bossSlot: InstanceSlot | null, member: Entity): boolean {
+  if (bossSlot !== null) return !attackerLeftInstance(bossSlot, member);
   return dist2d(member.pos, boss.pos) <= BOSS_ENCOUNTER_COMBAT_RANGE;
 }
 
 function holdEncounterGroup(
   ctx: SimContext,
   boss: Entity,
-  bossClaim: number | null,
+  bossSlot: InstanceSlot | null,
   pid: number,
   seenParties: Set<number>,
   out: Set<number>,
@@ -109,7 +105,7 @@ function holdEncounterGroup(
   for (const memberId of party.members) {
     const member = ctx.entities.get(memberId);
     if (!member || member.dead) continue;
-    if (!memberInEncounter(ctx, boss, bossClaim, member)) continue;
+    if (!memberInEncounter(boss, bossSlot, member)) continue;
     // A quest-gated boss never pulls a member its own damage gate would refuse
     // (the same rule healing threat applies in combat/heal.ts).
     if (questGateBlocksAggro(ctx.players, boss, member)) continue;
@@ -121,13 +117,8 @@ function holdEncounterGroup(
 // beyond THREAT_DROP_RANGE in the open world. A chain-pulled mob crossing to
 // its puller is meant to arrive (mob/chain_pull_transit.ts suspends its leash
 // the same way), so the open-world reach waits until it has spent that grace.
-function attackerLeftFight(
-  ctx: SimContext,
-  mob: Entity,
-  mobClaim: number | null,
-  entry: Entity,
-): boolean {
-  if (mobClaim !== null) return attackerLeftInstance(ctx, mobClaim, entry);
+function attackerLeftFight(mob: Entity, mobSlot: InstanceSlot | null, entry: Entity): boolean {
+  if (mobSlot !== null) return attackerLeftInstance(mobSlot, entry);
   return !mob.chainPullInbound && beyondThreatRange(mob, entry);
 }
 
@@ -145,12 +136,13 @@ function holdHateTable(
   // Allocated per engaged BOSS per tick only (never per add or per entry), so it
   // is deliberately a local rather than a hoisted scratch structure.
   const seenParties = encounterBoss ? new Set<number>() : null;
-  // Resolved once per mob: the slot it fights in, or null in the open world.
-  const mobClaim = instanceClaimOf(ctx, mob);
+  // Resolved once per mob: the claimed slot it fights in, or null in the open
+  // world (a cheap x-band early-out there).
+  const mobSlot = claimedSlotOf(ctx, mob);
   for (const id of mob.threat.keys()) {
     counters.threatEntryVisits++;
     const entry = ctx.entities.get(id);
-    if (entry && attackerLeftFight(ctx, mob, mobClaim, entry)) {
+    if (entry && attackerLeftFight(mob, mobSlot, entry)) {
       // Deleting the current key mid-iteration is safe on a Map. dropThreat also
       // releases a taunt lock on the dropped id; the target pointer goes with it.
       dropThreat(mob, id);
@@ -161,7 +153,7 @@ function holdHateTable(
     const pid = playerBehind(ctx, id);
     if (pid === null) continue;
     out.add(pid);
-    if (seenParties) holdEncounterGroup(ctx, mob, mobClaim, pid, seenParties, out);
+    if (seenParties) holdEncounterGroup(ctx, mob, mobSlot, pid, seenParties, out);
   }
   // The current target is normally on the table already (aggro seeds it); keep
   // it explicitly so a table pruned this tick cannot open a one-tick gap.

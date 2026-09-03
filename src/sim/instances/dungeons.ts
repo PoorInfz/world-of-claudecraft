@@ -1445,6 +1445,26 @@ export function instanceAt(ctx: SimContext, pos: Vec3): InstanceSlot | null {
   return null;
 }
 
+/** The CLAIMED slot whose footprint contains `pos`, or null: unclaimed slots are
+ *  skipped before any footprint work, so an open-world probe costs one pass over
+ *  the claimed handful. The instance combat hold resolves a mob's slot with this
+ *  once per tick and then tests each attacker against it with
+ *  instanceClaimHolds. */
+export function claimedInstanceAt(ctx: SimContext, pos: Vec3): InstanceSlot | null {
+  if (pos.x <= DUNGEON_X_THRESHOLD) return null;
+  for (const inst of ctx.instances) {
+    if (inst.partyKey === null || inst.exitId === null) continue;
+    if (instanceClaimContains(inst, pos)) return inst;
+  }
+  return null;
+}
+
+/** Is `pos` inside this slot's claim footprint (the same envelope every other
+ *  membership question uses)? */
+export function instanceClaimHolds(inst: InstanceSlot, pos: Vec3): boolean {
+  return pos.x > DUNGEON_X_THRESHOLD && instanceClaimContains(inst, pos);
+}
+
 export function instanceInfoAt(
   ctx: SimContext,
   pos: Vec3,

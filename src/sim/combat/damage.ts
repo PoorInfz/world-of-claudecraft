@@ -245,7 +245,7 @@ export function dealDamage(
   // aggro intact) evades the same way, so a pinned mob cannot be chipped down.
   if (
     target.kind === 'mob' &&
-    (target.aiState === 'evade' || target.evadeInPlace === true) &&
+    (target.aiState === 'evade' || target.evadeInPlace !== undefined) &&
     target.ownerId === null
   ) {
     if (direct && source) {

@@ -10,20 +10,25 @@ import { collectEngagedPids } from '../src/sim/combat/engaged_combat';
 import { BUILTIN_WORLD, DUNGEONS, MOBS } from '../src/sim/data';
 import {
   IGNIVAR_APPROACH_GUARDIAN_IDS,
+  IGNIVAR_CRUCIBLE_WARDEN_ID,
+  IGNIVAR_EMBER_SENTINEL_ID,
   IGNIVAR_FORGE_APPROACH_ID,
   IGNIVAR_LIFT_ROOM_ID,
   IGNIVAR_RAID_ARENA_ID,
 } from '../src/sim/ignivar_raid_ids';
-import { enterDungeon, instanceOriginOf } from '../src/sim/instances/dungeons';
+import { enterDungeon, instanceClaimHolds, instanceOriginOf } from '../src/sim/instances/dungeons';
 import {
   attackerLeftInstance,
+  claimedSlotOf,
   holdsAggroInInstance,
-  instanceClaimOf,
   isPinnedInPlace,
+  PIN_PHASE_SECONDS,
   pinInPlace,
   releasePin,
 } from '../src/sim/instances/instance_combat_hold';
-import { onChaseStalled, tetherVerdict } from '../src/sim/mob/combat_profile';
+import { onChaseStalled } from '../src/sim/mob/combat_profile';
+import { respawnMob } from '../src/sim/mob/lifecycle';
+import { resetEvadingMob } from '../src/sim/mob/locomotion';
 import { type InstanceSlot, Sim } from '../src/sim/sim';
 import { THREAT_DROP_RANGE } from '../src/sim/threat';
 import { DUNGEON_LEASH_DISTANCE, dist2d, type Entity, type WorldContent } from '../src/sim/types';
@@ -88,6 +93,28 @@ function insideSlotAwayFrom(
   return { x: from.pos.x, z };
 }
 
+// Walk the Ignivar chain to the forge approach via the dev arm and hand back one
+// living trash mob of the given template with an immortal level-30 raider.
+function approachTrash(templateId: string): { sim: Sim; player: Entity; mob: Entity } {
+  const sim = makeSim(91, true);
+  const pid = sim.addPlayer('warrior', 'Raider');
+  sim.setPlayerLevel(30, pid);
+  for (const roomId of [IGNIVAR_LIFT_ROOM_ID, IGNIVAR_FORGE_APPROACH_ID]) {
+    if (!enterDungeon(sim.ctx, roomId, pid, true)) throw new Error(`${roomId} entry failed`);
+  }
+  const approach = expectDefined(
+    sim.instances.find((c) => c.dungeonId === IGNIVAR_FORGE_APPROACH_ID && c.partyKey !== null),
+  );
+  const player = expectDefined(sim.entities.get(pid));
+  player.devGod = true;
+  const mob = expectDefined(
+    approach.mobIds
+      .map((id) => sim.entities.get(id))
+      .find((m): m is Entity => !!m && !m.dead && m.templateId === templateId),
+  );
+  return { sim, player, mob };
+}
+
 function engage(sim: Sim, player: Entity, mob: Entity): void {
   mob.maxHp = 50_000;
   mob.hp = 50_000;
@@ -105,7 +132,7 @@ describe('instance combat hold: hate tables are slot-scoped, never distance-scop
     engage(sim, player, mob);
     const far = insideSlotAwayFrom(instance, mob, THREAT_DROP_RANGE + 40);
     place(sim, player, far.x, far.z);
-    expect(instanceClaimOf(sim.ctx, player)).toBe(instanceClaimOf(sim.ctx, mob));
+    expect(claimedSlotOf(sim.ctx, player)).toBe(claimedSlotOf(sim.ctx, mob));
 
     for (let i = 0; i < 20 * 12; i++) sim.tick();
     expect(mob.aiState).not.toBe('evade');
@@ -123,7 +150,7 @@ describe('instance combat hold: hate tables are slot-scoped, never distance-scop
     const origin = instanceOriginOf(instance);
     // Just past the footprint's x half-width: still 500 yd from any other slot.
     place(sim, player, origin.x + 130, mob.pos.z);
-    expect(instanceClaimOf(sim.ctx, player)).toBeNull();
+    expect(claimedSlotOf(sim.ctx, player)).toBeNull();
     sim.tick();
     expect(mob.threat.has(player.id)).toBe(false);
     for (let i = 0; i < 20 * 5 && mob.aiState !== 'evade' && mob.inCombat; i++) sim.tick();
@@ -181,9 +208,9 @@ describe('instance combat hold: hate tables are slot-scoped, never distance-scop
     expect(guardian.threat.has(pid)).toBe(true);
 
     expect(enterDungeon(sim.ctx, IGNIVAR_RAID_ARENA_ID, pid, true)).toBe(true);
-    expect(
-      attackerLeftInstance(sim.ctx, expectDefined(instanceClaimOf(sim.ctx, guardian)), player),
-    ).toBe(true);
+    expect(attackerLeftInstance(expectDefined(claimedSlotOf(sim.ctx, guardian)), player)).toBe(
+      true,
+    );
     sim.tick();
     expect(guardian.threat.has(pid)).toBe(false);
     expect(guardian.aggroTargetId).not.toBe(pid);
@@ -194,21 +221,103 @@ describe('instance combat hold: hate tables are slot-scoped, never distance-scop
 });
 
 describe('instance combat hold: an out-of-reach mob holds in place instead of resetting', () => {
-  it('the tether verdict holds an instance mob at its tether and sends an open-world mob home', () => {
-    // No instance mob that chases carries a hard tether (the Derelict Mechs
-    // detonate where they stand), so the verdict is pinned at its seam; the
-    // pin's immunity is covered below.
+  it('a tethered Ignivar warden dragged past its tether keeps chasing instead of resetting', () => {
+    // The approach trash carries hardLeashRadius 18; inside the slot the tether
+    // never sends it home, so a kiter cannot reset a pack by dragging it.
+    const { sim, player, mob: warden } = approachTrash(IGNIVAR_CRUCIBLE_WARDEN_ID);
+    const tether = expectDefined(MOBS[warden.templateId]?.hardLeashRadius);
+    engage(sim, player, warden);
+    place(sim, player, warden.spawnPos.x, warden.spawnPos.z + tether + 30);
+    expect(claimedSlotOf(sim.ctx, player)).toBe(claimedSlotOf(sim.ctx, warden));
+    for (let i = 0; i < 20 * 15 && dist2d(warden.pos, player.pos) > 12; i++) sim.tick();
+    expect(warden.aiState).not.toBe('evade');
+    expect(dist2d(warden.pos, warden.spawnPos)).toBeGreaterThan(tether);
+    expect(warden.threat.has(player.id)).toBe(true);
+    expect(warden.aggroTargetId).toBe(player.id);
+    expect(isPinnedInPlace(warden)).toBe(false);
+  });
+
+  it('a pinned sentinel fires no Cinder Lance and takes no damage until released', () => {
+    const { sim, player, mob: sentinel } = approachTrash(IGNIVAR_EMBER_SENTINEL_ID);
+    engage(sim, player, sentinel);
+    player.devGod = false;
+    player.hp = player.maxHp;
+    // Out of the sentinel's reach but well inside its lance range.
+    place(sim, player, sentinel.pos.x + 15, sentinel.pos.z);
+    pinInPlace(sentinel);
+    const hp = player.hp;
+    for (let i = 0; i < 20 * 8; i++) {
+      // Re-pin each tick the way a live geometry stall would keep it pinned,
+      // without moving anyone: the clock must not reach the phase grace here.
+      if (!isPinnedInPlace(sentinel)) pinInPlace(sentinel);
+      sim.tick();
+      expect(player.hp, `tick ${i}`).toBe(hp);
+      expect(sentinel.castingAbility, `tick ${i}`).toBeNull();
+    }
+    expect(sentinel.threat.has(player.id)).toBe(true);
+    // (Open ground released the artificial pin inside the last tick, as it
+    // should; re-pin to probe the immunity itself.)
+    pinInPlace(sentinel);
+    const mobHp = sentinel.hp;
+    hit(sim, player, sentinel, 400);
+    expect(sentinel.hp).toBe(mobHp);
+    releasePin(sentinel);
+    hit(sim, player, sentinel, 400);
+    expect(sentinel.hp).toBe(mobHp - 400);
+  });
+
+  it('a pinned mob phases toward its target once the grace runs out, then fights', () => {
+    const { sim, player, mobs } = claim('wildheart_basin');
+    const mob = expectDefined(mobs.find((m) => !MOBS[m.templateId]?.boss));
+    const reach = MOBS[mob.templateId]?.petSpell?.range ?? 6;
+    engage(sim, player, mob);
+    place(sim, player, mob.pos.x, mob.pos.z + reach + 40);
+    pinInPlace(mob);
+    mob.evadeInPlace = PIN_PHASE_SECONDS;
+    const start = dist2d(mob.pos, player.pos);
+    sim.tick();
+    // Still pinned and immune while it phases: every tick is a step toward the target.
+    expect(dist2d(mob.pos, player.pos)).toBeLessThan(start);
+    expect(isPinnedInPlace(mob)).toBe(true);
+    const hpPhasing = mob.hp;
+    hit(sim, player, mob, 300);
+    expect(mob.hp).toBe(hpPhasing);
+    // It arrives in reach, drops the pin, and is killable again.
+    for (let i = 0; i < 20 * 15 && isPinnedInPlace(mob); i++) sim.tick();
+    expect(isPinnedInPlace(mob)).toBe(false);
+    expect(dist2d(mob.pos, player.pos)).toBeLessThanOrEqual(reach + 1);
+    expect(mob.threat.has(player.id)).toBe(true);
+    const hp = mob.hp;
+    hit(sim, player, mob, 300);
+    expect(mob.hp).toBe(hp - 300);
+  });
+
+  it('every pull reset releases the pin', () => {
     const { sim, player, mobs } = claim('wildheart_basin');
     const mob = expectDefined(mobs.find((m) => !MOBS[m.templateId]?.boss));
     engage(sim, player, mob);
-    const hold = holdsAggroInInstance(sim.ctx, mob);
-    expect(hold).toBe(true);
-    place(sim, player, mob.pos.x + 30, mob.pos.z);
-    expect(tetherVerdict(mob, player, 5, hold)).toBe('hold');
-    place(sim, player, mob.pos.x + 2, mob.pos.z);
-    expect(tetherVerdict(mob, player, 5, hold)).toBe('fight');
-    place(sim, player, mob.pos.x + 30, mob.pos.z);
-    expect(tetherVerdict(mob, player, 5, false)).toBe('evade');
+
+    pinInPlace(mob);
+    onChaseStalled(mob, false); // the open-world evade home
+    expect(isPinnedInPlace(mob)).toBe(false);
+
+    pinInPlace(mob);
+    mob.aiState = 'evade';
+    mob.pos = { ...mob.spawnPos };
+    resetEvadingMob(sim.ctx, mob);
+    expect(isPinnedInPlace(mob)).toBe(false);
+
+    pinInPlace(mob);
+    respawnMob(sim.ctx, mob);
+    expect(isPinnedInPlace(mob)).toBe(false);
+
+    // Losing the target (the attacker left the slot) drops the pin on the next
+    // engaged tick, so a mob parked by the instance-exit hold never resumes immune.
+    engage(sim, player, mob);
+    pinInPlace(mob);
+    mob.aggroTargetId = null;
+    sim.tick();
+    expect(isPinnedInPlace(mob)).toBe(false);
   });
 
   it('the stall verdict pins inside an instance and evades home outside it', () => {
@@ -248,14 +357,23 @@ describe('instance combat hold: an out-of-reach mob holds in place instead of re
     const pid = sim.addPlayer('warrior', 'Roamer');
     const player = expectDefined(sim.entities.get(pid));
     expect(holdsAggroInInstance(sim.ctx, player)).toBe(false);
-    expect(instanceClaimOf(sim.ctx, player)).toBeNull();
+    expect(claimedSlotOf(sim.ctx, player)).toBeNull();
   });
 });
 
 describe('instance combat hold: content sanity', () => {
-  it('every dungeon and raid room lives at an instance slot the claim lookup sees', () => {
+  it('every dungeon and raid room keeps its spawns inside the claim footprint the hold reads', () => {
+    // A spawn outside the footprint would read as "left the slot" and shed the
+    // pull at that dungeon's own far end.
+    const sim = makeSim();
     for (const dungeon of Object.values(DUNGEONS)) {
-      expect(dungeon.index, dungeon.id).toBeGreaterThanOrEqual(0);
+      const probe = { dungeonId: dungeon.id, slot: 0 } as InstanceSlot;
+      const origin = instanceOriginOf(probe);
+      for (const spawn of dungeon.spawns) {
+        const pos = { x: origin.x + spawn.x, y: 0, z: origin.z + spawn.z };
+        expect(instanceClaimHolds(probe, pos), `${dungeon.id} ${spawn.mobId}`).toBe(true);
+      }
+      expect(sim.instances.length).toBeGreaterThan(0);
     }
   });
 });

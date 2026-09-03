@@ -4802,9 +4802,11 @@ export interface Entity extends ClientMirroredEntityFields {
   combatExitHoldUntil: number; // sim time; while in the future, resetEvadingMob defers the full evade-home reset (issue #2653): a mob a player just left mid-combat stays parked in 'evade' (immune, undamaged, hate table intact) instead of healing/clearing so a same-claim re-entry within instance_exit_memory.ts's window resumes the exact fight it left, not a fresh unengaged pull
   chainPullInbound: boolean; // woken by a boss chain pull and still crossing to the puller; suspends the soft leash until it arrives (mob/chain_pull_transit.ts)
   // Holding in place in an evade stance inside an instance slot: immune, aggro
-  // intact, out of reach of its target (instances/instance_combat_hold.ts).
-  // Optional-true (never false) so the parity sampler sees no resting value.
-  evadeInPlace?: true;
+  // intact, out of reach of its target; the value is the seconds held so far
+  // (instances/instance_combat_hold.ts phases the mob to its target once the
+  // grace runs out). Absent whenever not pinned, so the parity sampler sees no
+  // resting value.
+  evadeInPlace?: number;
   fleeTimer: number; // seconds left in a low-HP panic flee; counts down in the 'flee' state
   fleeReturnTimer: number; // grace after a panic flee hits leash edge, letting it run back before normal leash reset resumes
   hasFled: boolean; // a cowardly mob flees only once per pull; cleared when it resets at spawn

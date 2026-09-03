@@ -56,7 +56,7 @@ import {
 } from '../encounters/varkhul';
 import { isEscortNpcTemplate } from '../escort';
 import { unlockIgnivarRaidGate } from '../ignivar_raid_progression';
-import { releasePin } from '../instances/instance_combat_hold';
+import { isPinnedInPlace, releasePin } from '../instances/instance_combat_hold';
 import { PLAYER_BODY_RADIUS, PLAYER_SWIM_DEPTH } from '../pathfind';
 import { holdPetCorpseForBgWave } from '../pet/pet_corpse_hold';
 import { noteMatchPetUnravelled } from '../pet/pet_match_return';
@@ -104,7 +104,7 @@ import {
   tryStartMobCharge,
   updateMobChargeDash,
 } from './charge';
-import { updateMobCombatProfile } from './combat_profile';
+import { holdPinnedMob, updateMobCombatProfile } from './combat_profile';
 import { applyBroodBurn } from './dragonkin_brood';
 import { resetDungeonMinibossStomp, updateDungeonMinibossStomp } from './dungeon_miniboss_stomp';
 import { idleRng, wanderPause } from './idle_rng';
@@ -637,6 +637,13 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
     }
     case 'chase':
     case 'attack': {
+      // A mob holding in place inside an instance (instances/instance_combat_hold.ts)
+      // is immune and does nothing this tick but re-check its hold: no stomp,
+      // no lance, no snare or yell, no swing (holdPinnedMob, combat_profile.ts).
+      if (isPinnedInPlace(mob)) {
+        holdPinnedMob(ctx, mob);
+        break;
+      }
       if (updateDungeonMinibossStomp(ctx, mob)) break;
       if (updateIgnivarTrashAutomaton(ctx, mob)) break;
       // A heroic charge dash in flight owns the mob's movement for the tick

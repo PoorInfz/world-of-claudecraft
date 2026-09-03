@@ -1,6 +1,11 @@
 import { isLockedOut, isSilenced } from '../combat/cc';
 import { DUNGEON_X_THRESHOLD, MOBS } from '../data';
-import { holdsAggroInInstance, pinInPlace, releasePin } from '../instances/instance_combat_hold';
+import {
+  advancePin,
+  holdsAggroInInstance,
+  pinInPlace,
+  releasePin,
+} from '../instances/instance_combat_hold';
 import { combatProfileForMob, effectiveMobMeleeRange, type MobCombatProfile } from '../mob_combat';
 import type { SimContext } from '../sim_context';
 import { clearThreat } from '../threat';
@@ -16,7 +21,7 @@ import { chainPullTransitHoldsLeash, clearChainPullInbound } from './chain_pull_
 import { updateDerelictBomber } from './derelict_bomber';
 import { dragonkinEngageShout } from './dragonkin_brood';
 import { NYTHRAXIS_SPIRIT_MENDING_CAST_ID } from './healer_channel';
-import { chaseStalledUnreachable } from './reachability';
+import { blockedTowardTarget, chaseStalledUnreachable } from './reachability';
 import { resetRiftMechanicWindups } from './rift_escape_window';
 import { retargetMob, updateMobTarget } from './targeting';
 
@@ -93,33 +98,29 @@ export function updateMobCombatProfile(
   const target = mob.aggroTargetId !== null ? ctx.entities.get(mob.aggroTargetId) : null;
   if (!target || target.dead) {
     mob.autoAttack = false;
+    // No target, no pin: a mob parked by the instance-exit hold must not resume
+    // a fight later still wearing the immune stance.
+    releasePin(mob);
     retargetMob(ctx, mob);
     return 'done';
   }
   if (ctx.maybeFlee(mob, target)) return 'done';
 
   // Inside a claimed instance slot a mob never resets by distance
-  // (instances/instance_combat_hold.ts): no soft leash, and a tether or a
-  // stall holds it in place immune and aggro'd instead of sending it home.
+  // (instances/instance_combat_hold.ts): neither leash sends it home, and a
+  // stall holds it in place immune and aggro'd instead.
   const instanceHold = profile.canLeash && holdsAggroInInstance(ctx, mob);
   if (profile.canLeash) {
     // The hard tether measures from the SPAWN, never the refreshing anchor,
     // and ignores the flee-recovery grace: past it the mob goes home, however
     // the fight has been dragged. Checked before the soft leash so a tethered
-    // mob can never be walked out one anchor-refresh at a time.
+    // mob can never be walked out one anchor-refresh at a time. Inside a slot
+    // neither leash ever sends the mob home; the bookkeeping below still runs
+    // so a chain pull's transit grace is spent on arrival as before.
     const hardLeash = mob.ignoreHardLeash ? undefined : MOBS[mob.templateId]?.hardLeashRadius;
-    if (hardLeash !== undefined && dist2d(mob.pos, mob.spawnPos) > hardLeash) {
-      const verdict = tetherVerdict(mob, target, profile.meleeRange, instanceHold);
-      if (verdict === 'evade') {
-        startEvadeHome(mob);
-        return 'done';
-      }
-      if (verdict === 'hold') {
-        pinInPlace(mob);
-        mob.facing = steadyAngleTo(mob.pos, target.pos, mob.facing);
-        return 'done';
-      }
-      releasePin(mob);
+    if (!instanceHold && hardLeash !== undefined && dist2d(mob.pos, mob.spawnPos) > hardLeash) {
+      startEvadeHome(mob);
+      return 'done';
     }
     const leash = mob.spawnPos.x > DUNGEON_X_THRESHOLD ? DUNGEON_LEASH_DISTANCE : LEASH_DISTANCE;
     const leashAnchor = mob.leashAnchor ?? mob.spawnPos;
@@ -212,20 +213,38 @@ export function updateMobCombatProfile(
   return mob.aiState === 'attack' ? 'runAttackMechanics' : 'done';
 }
 
-export type TetherVerdict = 'evade' | 'hold' | 'fight';
-
-/** The hard-tether verdict for a mob dragged past its tether: an open-world mob
- *  goes home (the classic reset); an instance mob holds at the tether, immune
- *  and aggro'd while its target is out of reach, and fights in place when the
- *  target comes back (instances/instance_combat_hold.ts). */
-export function tetherVerdict(
-  mob: Entity,
-  target: Entity,
-  meleeRange: number,
-  instanceHold: boolean,
-): TetherVerdict {
-  if (!instanceHold) return 'evade';
-  return dist2d(mob.pos, target.pos) > meleeRange ? 'hold' : 'fight';
+/**
+ * The pinned arm (instances/instance_combat_hold.ts): the whole engaged tick of
+ * a mob holding in place. It stands, faces its target, swings and casts nothing
+ * (the caller skips every mechanic), and re-checks the hold each tick: the
+ * target back in reach, or an open step toward it, releases the pin and the
+ * normal chase resumes next tick. Once the grace is spent it phases straight
+ * through the blocking geometry toward the target every tick until in reach,
+ * so a perch ends in a fight rather than a stalemate. A lost target drops the
+ * pin with the fight. Draws no rng.
+ */
+export function holdPinnedMob(ctx: SimContext, mob: Entity): void {
+  const target = mob.aggroTargetId !== null ? ctx.entities.get(mob.aggroTargetId) : null;
+  if (!target || target.dead) {
+    releasePin(mob);
+    mob.autoAttack = false;
+    retargetMob(ctx, mob);
+    return;
+  }
+  const profile = mobCombatProfile(mob);
+  const reach = MOBS[mob.templateId]?.petSpell?.range ?? profile.meleeRange;
+  const chaseSpeed = mob.moveSpeed * profile.chaseSpeedMult * ctx.moveSpeedMult(mob);
+  mob.autoAttack = false;
+  mob.facing = steadyAngleTo(mob.pos, target.pos, mob.facing);
+  if (dist2d(mob.pos, target.pos) <= reach) {
+    releasePin(mob);
+    return;
+  }
+  if (advancePin(mob)) {
+    ctx.moveToward(mob, target.pos, chaseSpeed, true);
+    return;
+  }
+  if (!blockedTowardTarget(ctx, mob, target.pos, chaseSpeed)) releasePin(mob);
 }
 
 /** The stall verdict: an unreachable target sends an open-world mob home (the
