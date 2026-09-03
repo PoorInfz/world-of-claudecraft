@@ -100,6 +100,7 @@ import {
 } from './combat/damage';
 import { druidEngineCombatState } from './combat/druid_engines';
 import { runEffects as runEffectsImpl } from './combat/effect_dispatch';
+import { collectEngagedPids } from './combat/engaged_combat';
 import { steerFearFromWalls } from './combat/fear_steering';
 import { applyIgnite } from './combat/fire_mage';
 import { frostMageChannelPulse } from './combat/frost_mage';
@@ -623,7 +624,6 @@ export type { MarketSave } from './market';
 
 import { updateBreath } from './breath';
 import { updateSwimFatigue } from './fatigue';
-import type { CombatExitMemory } from './instance_exit_memory';
 import { chainPullInstanceOnBossAggro } from './instances/boss_chain_pull';
 import { buyCrucibleVendorItem as buyCrucibleVendorItemImpl } from './instances/crucible_vendor';
 import {
@@ -976,13 +976,8 @@ const FOLLOW_MAX_RANGE = 60; // give up follow once the leader is this far away
 // src/sim/pet/pet_ai.ts (P1a). PET_GROWL_INTERVAL + PET_TELEPORT_DISTANCE relocated to
 // ./types: PET_GROWL_INTERVAL is consumed by pet_ai.ts + pet_commands.ts (petTaunt, P1b),
 // PET_TELEPORT_DISTANCE by pet_ai.ts + the delve-companion follow (delves/companion.ts);
-// sim.ts imports neither now.
-// A pet only keeps its OWNER flagged in combat while it is actively trading blows
-// (its combatTimer resets to 0 on every hit dealt/taken). A pet that merely holds a
-// target it is chasing or can't reach stops dragging the owner into perpetual combat
-// past this window, so the owner's out-of-combat health regen resumes. Matches the
-// 5s combat-linger used for the owner's own inCombat flag.
-const PET_COMBAT_LINGER = 5;
+// sim.ts imports neither now. PET_COMBAT_LINGER moved with the engaged pass to
+// src/sim/combat/engaged_combat.ts (the hate-table combat rule).
 // PET_TAUNT_RANGE / PET_FEED_DURATION / PET_FEED_TICK / DEMON_HEAL_MANA_COST /
 // DEMON_HEAL_DURATION / DEMON_HEAL_TICK / TAMED_TARGET_RESPAWN_SECONDS moved with the
 // slice to src/sim/pet/pet_commands.ts (P1b); DEMON_HEAL_CAST_ID -> ./types (read by the
@@ -1208,12 +1203,6 @@ export interface InstanceSlot {
   // claim's first-entry raid-boss welcome. Session-only and cleared with the
   // claim so a relog cannot replay it while a fresh instance can.
   raidBossWelcomeKeys: Set<string>;
-  // Recently-exited-mid-combat memory (issue #2653): a player who left this claim
-  // while a mob was actively fighting them has their dropped threat snapshotted
-  // here for a short window. Re-entering before it lapses resumes the fight
-  // instead of granting a free, unengaged reset (instances/dungeons.ts). Session
-  // state, cleared with the claim, same as clearedBy/enteredBy above.
-  combatExitMemory: CombatExitMemory;
 }
 
 export interface ResolvedAbility {
@@ -1830,7 +1819,7 @@ export class Sim {
   // and kept roster-exact on spawn/despawn/teleport
   readonly grid = new SpatialGrid();
   readonly playerGrid = new SpatialGrid();
-  private engagedPids = new Set<number>();
+  private readonly engagedPids = new Set<number>();
   primaryId = -1; // the local/RL player in single-player contexts
   // The pid of the player the CONSTRUCTOR itself created (cfg.noPlayer false),
   // -1 on a server-shaped sim. The compulsory-tutorial sweep ferries only this
@@ -2426,7 +2415,6 @@ export class Sim {
         progressed: false,
         seqResetAt: -Infinity,
         bossDeathZones: [],
-        combatExitMemory: new Map(),
       });
     }
 
@@ -5225,6 +5213,9 @@ export class Sim {
       get mobScanCounters() {
         return sim._mobScanCounters;
       },
+      // The engaged pass output (combat/engaged_combat.ts), cleared and refilled
+      // in place each tick; the /combat readout reads it instead of re-walking.
+      engagedPids: sim.engagedPids,
       // Offline Fiesta practice-bot roster (fiesta_bots.ts mutates it in place);
       // the deeds real-bout gate reads it through the seam.
       get fiestaBotPids() {
@@ -6089,30 +6080,12 @@ export class Sim {
     updateDragonkinBrood(this.ctx);
     lap?.('dragonkinBrood');
 
-    // one pass over the entities collects every player a mob is engaged
-    // with, instead of one full scan per player
-    this.engagedPids.clear();
-    for (const e of this.entities.values()) {
-      if (e.kind !== 'mob' || e.dead) continue;
-      // a wild mob actively engaged keeps its target in combat — and if that
-      // target is someone's pet, the pet's owner stays in combat too, so a
-      // hunter/warlock can't regen, eat/drink, or use out-of-combat abilities
-      // while their pet tanks
-      if (
-        e.ownerId === null &&
-        (e.aiState === 'chase' || e.aiState === 'attack' || e.aiState === 'flee') &&
-        e.aggroTargetId !== null
-      ) {
-        this.engagedPids.add(e.aggroTargetId);
-        const tgt = this.entities.get(e.aggroTargetId);
-        if (tgt && tgt.ownerId !== null) this.engagedPids.add(tgt.ownerId);
-      }
-      // a player's pet that is actively fighting an enemy keeps its owner in
-      // combat. A pet merely holding a target it is not trading blows with (out of
-      // reach, stale) must not freeze the owner's health regen indefinitely (#regen)
-      if (e.ownerId !== null && e.aggroTargetId !== null && e.combatTimer < PET_COMBAT_LINGER)
-        this.engagedPids.add(e.ownerId);
-    }
+    // The engaged pass (combat/engaged_combat.ts): one pass over the entities
+    // collects everyone a live mob still holds on its hate table (plus pet
+    // owners and, for an engaged boss, its attackers' nearby group members),
+    // instead of one full scan per player. Reads mob AND pet state after both
+    // updated above, so the phase stays here.
+    collectEngagedPids(this.ctx, this.engagedPids);
     for (const meta of this.players.values()) {
       const p = this.entities.get(meta.entityId);
       if (p) {

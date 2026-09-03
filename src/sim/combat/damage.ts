@@ -31,6 +31,7 @@ import { DAMAGE_IDLE_DESPAWN_MOB_IDS, DAMAGE_IDLE_DESPAWN_SECONDS } from '../ent
 import { weaponHand } from '../equipment_rules';
 import { emitIgnivarRaidNarrativeOnDeath } from '../ignivar_raid_lore';
 import { lockNormalDungeonResetOnBossKill, spawnBossExitPortal } from '../instances/dungeons';
+import { isImmuneInPlace } from '../instances/instance_combat_hold';
 import { spawnWidowHatchlingOnEggDeath } from '../mob/egg_hatchling';
 import { grantAbilityDevotion } from '../paladin_devotion';
 import { snapshotPetOnOwnerDeath } from '../pet/pet_owner_revive';
@@ -240,8 +241,15 @@ export function dealDamage(
   // Direct attacks report an Evade result (FCT word + combat log line); DoT and
   // reflect ticks stay silent so a dotted evader does not spam a word per tick.
   // The early return keeps every downstream effect off: no threat, no combat
-  // entry, no stealth break, no tap.
-  if (target.kind === 'mob' && target.aiState === 'evade' && target.ownerId === null) {
+  // entry, no stealth break, no tap. A mob holding in place inside an instance
+  // (instances/instance_combat_hold.ts: stuck out of reach of its target, aggro
+  // intact) evades the same way while it is stuck, so a pinned mob cannot be
+  // chipped down; once it phases toward its target it can be hit on the way in.
+  if (
+    target.kind === 'mob' &&
+    (target.aiState === 'evade' || isImmuneInPlace(target)) &&
+    target.ownerId === null
+  ) {
     if (direct && source) {
       ctx.emit({
         type: 'damage',

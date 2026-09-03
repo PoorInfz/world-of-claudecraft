@@ -190,8 +190,10 @@ export function blankEntity(id: number): Entity {
     evadeStall: 0,
     chaseStall: 0,
     evadeEpoch: 0,
-    combatExitHoldUntil: 0,
     chainPullInbound: false,
+    // The instance combat hold's pin clock (instances/instance_combat_hold.ts):
+    // present from birth on the mirror too, so both hosts build one entity shape.
+    evadeInPlace: undefined,
     fleeTimer: 0,
     fleeReturnTimer: 0,
     hasFled: false,
