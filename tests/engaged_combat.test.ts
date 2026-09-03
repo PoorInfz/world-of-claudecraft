@@ -572,7 +572,13 @@ describe('collectEngagedPids guards (unit)', () => {
   it('resolves a pet entry to its player owner, and a mob-owned add or NPC entry to nobody', () => {
     const pet = { ...fakeMob({ id: PET_ID, ownerId: LOCK_ID, aggroTargetId: null }) };
     const add = { ...fakeMob({ id: ADD_ID, ownerId: BOSS_ID, aggroTargetId: null }) };
-    const npc = { id: NPC_ID, kind: 'npc', dead: false, ownerId: null } as unknown as Entity;
+    const npc = {
+      id: NPC_ID,
+      kind: 'npc',
+      dead: false,
+      ownerId: null,
+      pos: { x: 0, y: 0, z: 0 },
+    } as unknown as Entity;
     const boss = fakeMob({
       threat: new Map<number, number>([
         [PET_ID, 5],
@@ -585,6 +591,15 @@ describe('collectEngagedPids guards (unit)', () => {
     expect(out.has(LOCK_ID)).toBe(true);
     // The add's owner is the boss itself: never resolved as a player.
     expect(out.has(BOSS_ID)).toBe(false);
+  });
+
+  it("does not re-flag a dead owner through a pet still on a mob's table", () => {
+    const deadOwner = { ...fakePlayer(LOCK_ID), dead: true } as Entity;
+    const pet = fakeMob({ id: PET_ID, ownerId: LOCK_ID, aggroTargetId: null });
+    const boss = fakeMob({ threat: new Map<number, number>([[PET_ID, 5]]) });
+    const out = held(fakeCtx([deadOwner, pet, boss]));
+    expect(out.has(LOCK_ID)).toBe(false);
+    expect(out.has(PET_ID)).toBe(true);
   });
 
   it('applies the pet linger to an owned mob instead of the hate-table rule', () => {

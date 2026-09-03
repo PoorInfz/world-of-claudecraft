@@ -5,9 +5,11 @@
 // stays in combat for the whole fight. The flag only clears when the mob dies,
 // evades home (which wipes its table), the player dies (dropped off every table
 // by combat/damage.ts), or an escape like Vanish deliberately strips them from
-// the tables (combat/effect_dispatch.ts). Like classic, the hold has no distance
-// bound of its own: an attacker who tags a mob a raid keeps engaged and walks
-// off stays in combat until that mob dies or resets.
+// the tables (combat/effect_dispatch.ts), or they get further than
+// THREAT_DROP_RANGE from the mob: the same walk drops an out-of-reach attacker
+// off the table (releasing any taunt lock or current-target pointer at them),
+// the classic map-change threat drop, so stepping through an instance door or
+// otherwise leaving the fight behind never leaves a player stuck in combat.
 //
 // Boss encounters add the raid-boss "zone in combat" rule: an engaged boss holds
 // every living, nearby member of its attackers' groups in combat even if they
@@ -24,6 +26,7 @@ import { MOBS } from '../data';
 import { questGateBlocksAggro } from '../mob/quest_gated_aggro';
 import type { MobScanCounters } from '../mob/scan_counters';
 import type { SimContext } from '../sim_context';
+import { beyondThreatRange, dropThreat, THREAT_DROP_RANGE } from '../threat';
 import type { Entity, MobTemplate } from '../types';
 import { dist2d } from '../types';
 
@@ -35,12 +38,14 @@ import { dist2d } from '../types';
 export const PET_COMBAT_LINGER = 5;
 
 // How far (yards, 2D) from an engaged boss a member of an attacker's group is
-// held in combat. Comfortably past every heal / resurrection reach (40 yd) so
-// nobody can stand just outside it and still act on the fight; still bounded so
-// a group member elsewhere in the world is never flagged. Instance slots sit
-// hundreds of yards apart, so this never reaches a neighbouring instance. Measured
-// flat (dist2d), so a member on another floor of the same instance still counts.
-export const BOSS_ENCOUNTER_COMBAT_RANGE = 100;
+// held in combat: the same reach an attacker drops off a hate table at, so a
+// raider is either inside the fight (held) or outside it (released) by one
+// number. Comfortably past every heal / resurrection reach (40 yd) so nobody can
+// stand just outside it and still act on the fight; bounded so a group member
+// elsewhere in the world is never flagged; under the instance slot pitch, so it
+// never reaches a neighbouring instance. Measured flat (dist2d), so a member on
+// another floor of the same instance still counts.
+export const BOSS_ENCOUNTER_COMBAT_RANGE = THREAT_DROP_RANGE;
 
 /** A live wild mob that is engaged: in combat, or actively chasing / attacking /
  *  fleeing (what the coordinator's old target-only rule keyed on), and not
@@ -61,14 +66,16 @@ function isEncounterBoss(template: MobTemplate | undefined): boolean {
   return template?.boss === true || template?.worldBoss === true;
 }
 
-/** The player behind a hate-table entry: the player itself, or the player who
- *  owns a pet entry. A mob-owned add or an NPC entry resolves to nobody. */
+/** The player behind a hate-table entry: the player itself, or the LIVING player
+ *  who owns a pet entry (a pet still trading blows after its owner died must not
+ *  re-flag the corpse). A mob-owned add or an NPC entry resolves to nobody. */
 function playerBehind(ctx: SimContext, entryId: number): number | null {
   const entry = ctx.entities.get(entryId);
   if (!entry) return null;
   if (entry.kind === 'player') return entry.id;
   if (entry.ownerId === null) return null;
-  return ctx.entities.get(entry.ownerId)?.kind === 'player' ? entry.ownerId : null;
+  const owner = ctx.entities.get(entry.ownerId);
+  return owner?.kind === 'player' && !owner.dead ? owner.id : null;
 }
 
 function holdEncounterGroup(
@@ -92,8 +99,10 @@ function holdEncounterGroup(
   }
 }
 
-// One walk of the mob's hate table: every entry (and the player behind a pet
-// entry) is held, and for an encounter boss each attacker's group is held too.
+// One walk of the mob's hate table: an entry beyond THREAT_DROP_RANGE is dropped
+// (the mob's next target pass swings to whoever is left, or it evades home on an
+// empty table); every other entry (and the player behind a pet entry) is held,
+// and for an encounter boss each attacker's group is held too.
 function holdHateTable(
   ctx: SimContext,
   mob: Entity,
@@ -106,6 +115,14 @@ function holdHateTable(
   const seenParties = encounterBoss ? new Set<number>() : null;
   for (const id of mob.threat.keys()) {
     counters.threatEntryVisits++;
+    const entry = ctx.entities.get(id);
+    if (entry && beyondThreatRange(mob, entry)) {
+      // Deleting the current key mid-iteration is safe on a Map. dropThreat also
+      // releases a taunt lock on the dropped id; the target pointer goes with it.
+      dropThreat(mob, id);
+      if (mob.aggroTargetId === id) mob.aggroTargetId = null;
+      continue;
+    }
     out.add(id);
     const pid = playerBehind(ctx, id);
     if (pid === null) continue;
@@ -123,10 +140,11 @@ function holdHateTable(
 
 /**
  * Fill `out` with every entity id an engaged mob or fighting pet holds in combat
- * this tick. One pass over the entities instead of one scan per player; the
- * coordinator then sets each player's `inCombat` from the set plus their own
- * 5s linger. The set may carry pet, mob, or departed ids too: readers only ever
- * ask `has(playerId)`.
+ * this tick, dropping out-of-reach attackers off the hate tables on the way.
+ * One pass over the entities instead of one scan per player; the coordinator
+ * then sets each player's `inCombat` from the set plus their own 5s linger. The
+ * set may carry pet, mob, or departed ids too: readers only ever ask
+ * `has(playerId)`.
  */
 export function collectEngagedPids(ctx: SimContext, out: Set<number>): void {
   out.clear();
