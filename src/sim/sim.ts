@@ -1826,7 +1826,7 @@ export class Sim {
   // and kept roster-exact on spawn/despawn/teleport
   readonly grid = new SpatialGrid();
   readonly playerGrid = new SpatialGrid();
-  readonly engagedPids = new Set<number>();
+  private readonly engagedPids = new Set<number>();
   primaryId = -1; // the local/RL player in single-player contexts
   // The pid of the player the CONSTRUCTOR itself created (cfg.noPlayer false),
   // -1 on a server-shaped sim. The compulsory-tutorial sweep ferries only this
