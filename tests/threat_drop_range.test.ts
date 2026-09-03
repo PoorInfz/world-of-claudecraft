@@ -276,6 +276,16 @@ describe('collectEngagedPids reach drop (unit)', () => {
     expect(mob.threat.has(DPS_ID)).toBe(true);
   });
 
+  it('spares a chain-pulled mob still crossing to its puller', () => {
+    const mob = fakeMob({ aiState: 'chase', aggroTargetId: DPS_ID, chainPullInbound: true });
+    const ctx = fakeCtx([fakePlayer(DPS_ID, THREAT_DROP_RANGE + 60), fakePlayer(TANK_ID, 3), mob]);
+    const out = new Set<number>();
+    collectEngagedPids(ctx, out);
+    expect(mob.threat.has(DPS_ID)).toBe(true);
+    expect(mob.aggroTargetId).toBe(DPS_ID);
+    expect(out.has(DPS_ID)).toBe(true);
+  });
+
   it('never touches the table of a mob that is not engaged', () => {
     const cases: Array<[string, Partial<Entity>]> = [
       ['evading', { aiState: 'evade' }],

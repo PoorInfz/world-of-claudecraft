@@ -113,10 +113,14 @@ function holdHateTable(
   // Allocated per engaged BOSS per tick only (never per add or per entry), so it
   // is deliberately a local rather than a hoisted scratch structure.
   const seenParties = encounterBoss ? new Set<number>() : null;
+  // A chain-pulled mob crossing to its puller from the far end of an instance is
+  // meant to arrive (mob/chain_pull_transit.ts suspends its leash the same way);
+  // the reach applies once it has spent that grace.
+  const crossing = mob.chainPullInbound;
   for (const id of mob.threat.keys()) {
     counters.threatEntryVisits++;
     const entry = ctx.entities.get(id);
-    if (entry && beyondThreatRange(mob, entry)) {
+    if (!crossing && entry && beyondThreatRange(mob, entry)) {
       // Deleting the current key mid-iteration is safe on a Map. dropThreat also
       // releases a taunt lock on the dropped id; the target pointer goes with it.
       dropThreat(mob, id);
