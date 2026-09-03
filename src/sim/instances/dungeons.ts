@@ -16,7 +16,17 @@
 // the N1/quest/delve code that reaches them through `ctx`.
 
 import { HEROIC_DUNGEON_TUNING, HEROIC_MARK_ITEM_ID } from '../content/dungeon_difficulty';
-import { DUNGEON_X_THRESHOLD, DUNGEONS, dungeonAt, instanceOrigin, MOBS, NPCS } from '../data';
+import {
+  DUNGEON_LIST,
+  DUNGEON_X_THRESHOLD,
+  DUNGEONS,
+  dungeonAt,
+  INSTANCE_SLOT_COUNT,
+  instanceOrigin,
+  instanceSlotForZ,
+  MOBS,
+  NPCS,
+} from '../data';
 import { clearIgnivarEncounterAuras } from '../encounters/ignivar';
 import { clearVarkhulEncounterAuras } from '../encounters/varkhul';
 import { createGroundObject, createMob, createNpc } from '../entity';
@@ -1445,18 +1455,31 @@ export function instanceAt(ctx: SimContext, pos: Vec3): InstanceSlot | null {
   return null;
 }
 
-/** The CLAIMED slot whose footprint contains `pos`, or null: unclaimed slots are
- *  skipped before any footprint work, so an open-world probe costs one pass over
- *  the claimed handful. The instance combat hold resolves a mob's slot with this
- *  once per tick and then tests each attacker against it with
- *  instanceClaimHolds. */
+// Position of each dungeon in DUNGEON_LIST: the slot pool is built in that
+// order, INSTANCE_SLOT_COUNT records per dungeon (Sim ctor), so a (dungeon,
+// slot) pair addresses its record directly. Keyed on an immutable content table.
+const DUNGEON_LIST_POSITION: ReadonlyMap<string, number> = new Map(
+  DUNGEON_LIST.map((dungeon, position) => [dungeon.id, position]),
+);
+
+/** The CLAIMED slot whose footprint contains `pos`, or null. Indexed, not
+ *  scanned: the x band names the dungeon (dungeonAt) and the z band the slot
+ *  (instanceSlotForZ, the inverse of instanceOrigin), so a probe is a handful of
+ *  reads with no allocation; the open world early-outs on the x threshold. The
+ *  instance combat hold resolves a mob's slot with this every engaged tick (the
+ *  mob AI and the engaged pass both ask) and then tests each attacker against
+ *  it with instanceClaimHolds. */
 export function claimedInstanceAt(ctx: SimContext, pos: Vec3): InstanceSlot | null {
   if (pos.x <= DUNGEON_X_THRESHOLD) return null;
-  for (const inst of ctx.instances) {
-    if (inst.partyKey === null || inst.exitId === null) continue;
-    if (instanceClaimContains(inst, pos)) return inst;
-  }
-  return null;
+  const dungeon = dungeonAt(pos.x);
+  if (!dungeon) return null;
+  const position = DUNGEON_LIST_POSITION.get(dungeon.id);
+  if (position === undefined) return null;
+  const slot = instanceSlotForZ(pos.z);
+  const inst = ctx.instances[position * INSTANCE_SLOT_COUNT + slot];
+  if (!inst || inst.dungeonId !== dungeon.id || inst.slot !== slot) return null;
+  if (inst.partyKey === null || inst.exitId === null) return null;
+  return instanceClaimContains(inst, pos) ? inst : null;
 }
 
 /** Is `pos` inside this slot's claim footprint (the same envelope every other

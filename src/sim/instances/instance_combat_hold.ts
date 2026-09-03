@@ -5,14 +5,17 @@
 // or escape through stealth. Neither the soft leash nor the hard tether ever
 // sends the mob home, so dragging a pull around the slot resets nothing. A mob
 // that cannot get to its target (pinned by geometry, the unreachable stall)
-// holds in place in an evade stance: immune to damage (combat/damage.ts), no
-// swings, casts, or mechanics (mob/locomotion.ts), aggro intact; it resumes the
-// moment the target is back in reach or the way is open, and once the hold has
-// lasted PIN_PHASE_SECONDS it phases straight through the blocking geometry to
-// its target (the same phasing a stuck evader uses to get home). So kiting the
-// instance around can neither reset the pull nor chip a pinned mob down for
-// free, and a perch only buys a few seconds, which is what a kited chain pull
-// was being farmed for.
+// holds in place in an evade stance: immune to damage while it is stuck
+// (combat/damage.ts), no swings, casts, or mechanics (mob/locomotion.ts), aggro
+// intact; it resumes the moment the target is back in reach or the way is open,
+// and once the hold has lasted PIN_PHASE_SECONDS it phases straight through the
+// blocking geometry to its target (the same phasing a stuck evader uses to get
+// home). The immunity's job, denying free damage to a mob that cannot fight
+// back, is done the moment it starts making progress, so a phasing mob can be
+// hit on its way in: a ranged player sees a killable mob coming through the
+// wall, not an unkillable one. So kiting the instance around can neither reset
+// the pull nor chip a pinned mob down for free, and a perch only buys a few
+// seconds, which is what a kited chain pull was being farmed for.
 //
 // Scope: the dungeon and raid slots in ctx.instances. Rifts and delves keep
 // their own instance records and the open-world rules (the hate-table reach in
@@ -48,22 +51,29 @@ export function attackerLeftInstance(slot: InstanceSlot, attacker: Entity): bool
   return !instanceClaimHolds(slot, attacker.pos);
 }
 
-/** Hold in place in an evade stance: immune, aggro intact, not swinging. Set by
- *  the stall verdict (mob/combat_profile.ts); released by the same reach /
- *  progress checks that reset the stall clock, by losing the target, and by
- *  every pull reset. The value is the seconds held; absent when not pinned, so
- *  the parity sampler never sees a resting value. */
+/** Hold in place in an evade stance: immune while stuck, aggro intact, not
+ *  swinging. Set by the stall verdict (mob/combat_profile.ts); released by the
+ *  pinned arm's reach / open-step checks, by losing the target, and by every
+ *  pull reset. The value is the seconds held; undefined when not pinned (never
+ *  deleted: a delete would flip the live Entity into dictionary mode, and the
+ *  parity sampler drops an undefined key exactly like an absent one). */
 export function pinInPlace(mob: Entity): void {
   if (mob.evadeInPlace === undefined) mob.evadeInPlace = 0;
   mob.autoAttack = false;
 }
 
 export function releasePin(mob: Entity): void {
-  if (mob.evadeInPlace !== undefined) delete mob.evadeInPlace;
+  mob.evadeInPlace = undefined;
 }
 
 export function isPinnedInPlace(mob: Entity): boolean {
   return mob.evadeInPlace !== undefined;
+}
+
+/** Immune only while genuinely stuck: once the grace is spent and the mob is
+ *  phasing toward its target it can be hit on the way in. */
+export function isImmuneInPlace(mob: Entity): boolean {
+  return mob.evadeInPlace !== undefined && mob.evadeInPlace < PIN_PHASE_SECONDS;
 }
 
 /** Advance the pin clock one tick; true once the phase grace has run out. */

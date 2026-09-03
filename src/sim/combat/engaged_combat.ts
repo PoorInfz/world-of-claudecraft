@@ -22,7 +22,14 @@
 //
 // Reads mob AND pet state after both updated this tick, so it runs from the
 // coordinator's engaged pass (sim.ts), never from a slice that ticks earlier.
-// Draws no rng. The hate-table walks bump ctx.mobScanCounters.threatEntryVisits
+// The walk is a derivation with one deliberate mutation: an attacker who left
+// the fight is dropped off the table here (taunt lock and current-target
+// pointer released with it) rather than in the mob AI's own target pass
+// (mob/targeting.ts), because this walk is the one that visits EVERY entry of
+// every engaged mob each tick, including a scripted boss parked at idle whose
+// AI skips its target pass; a mob whose current target was dropped carries a
+// null pointer for the rest of this tick and retargets on its next engaged
+// tick (combat_profile.ts). Draws no rng. The hate-table walks bump ctx.mobScanCounters.threatEntryVisits
 // like the mob-AI walks in mob/targeting.ts, so the perf heartbeat's
 // threatVisits token keeps counting every table entry visited per tick.
 import { MOBS } from '../data';
@@ -71,12 +78,11 @@ function isEncounterBoss(template: MobTemplate | undefined): boolean {
   return template?.boss === true || template?.worldBoss === true;
 }
 
-/** The player behind a hate-table entry: the player itself, or the LIVING player
- *  who owns a pet entry (a pet still trading blows after its owner died must not
- *  re-flag the corpse). A mob-owned add or an NPC entry resolves to nobody. */
-function playerBehind(ctx: SimContext, entryId: number): number | null {
-  const entry = ctx.entities.get(entryId);
-  if (!entry) return null;
+/** The player behind a resolved hate-table entry: the player itself, or the
+ *  LIVING player who owns a pet entry (a pet still trading blows after its owner
+ *  died must not re-flag the corpse). A mob-owned add or an NPC entry resolves
+ *  to nobody. */
+function playerBehind(ctx: SimContext, entry: Entity): number | null {
   if (entry.kind === 'player') return entry.id;
   if (entry.ownerId === null) return null;
   const owner = ctx.entities.get(entry.ownerId);
@@ -141,6 +147,8 @@ function holdHateTable(
   const mobSlot = claimedSlotOf(ctx, mob);
   for (const id of mob.threat.keys()) {
     counters.threatEntryVisits++;
+    // One lookup per entry: the reach test, the owner resolution, and the
+    // hold all read this same entity.
     const entry = ctx.entities.get(id);
     if (entry && attackerLeftFight(mob, mobSlot, entry)) {
       // Deleting the current key mid-iteration is safe on a Map. dropThreat also
@@ -150,7 +158,8 @@ function holdHateTable(
       continue;
     }
     out.add(id);
-    const pid = playerBehind(ctx, id);
+    if (!entry) continue;
+    const pid = playerBehind(ctx, entry);
     if (pid === null) continue;
     out.add(pid);
     if (seenParties) holdEncounterGroup(ctx, mob, mobSlot, pid, seenParties, out);
@@ -159,7 +168,8 @@ function holdHateTable(
   // it explicitly so a table pruned this tick cannot open a one-tick gap.
   if (mob.aggroTargetId !== null) {
     out.add(mob.aggroTargetId);
-    const pid = playerBehind(ctx, mob.aggroTargetId);
+    const target = ctx.entities.get(mob.aggroTargetId);
+    const pid = target ? playerBehind(ctx, target) : null;
     if (pid !== null) out.add(pid);
   }
 }

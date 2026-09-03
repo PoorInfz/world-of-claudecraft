@@ -276,20 +276,34 @@ describe('instance combat hold: an out-of-reach mob holds in place instead of re
     mob.evadeInPlace = PIN_PHASE_SECONDS;
     const start = dist2d(mob.pos, player.pos);
     sim.tick();
-    // Still pinned and immune while it phases: every tick is a step toward the target.
+    // Still pinned while it phases (every tick is a step toward the target), but
+    // no longer immune: a mob making progress can be hit on its way in.
     expect(dist2d(mob.pos, player.pos)).toBeLessThan(start);
     expect(isPinnedInPlace(mob)).toBe(true);
     const hpPhasing = mob.hp;
     hit(sim, player, mob, 300);
-    expect(mob.hp).toBe(hpPhasing);
-    // It arrives in reach, drops the pin, and is killable again.
+    expect(mob.hp).toBe(hpPhasing - 300);
+    // It arrives in reach and drops the pin.
     for (let i = 0; i < 20 * 15 && isPinnedInPlace(mob); i++) sim.tick();
     expect(isPinnedInPlace(mob)).toBe(false);
     expect(dist2d(mob.pos, player.pos)).toBeLessThanOrEqual(reach + 1);
     expect(mob.threat.has(player.id)).toBe(true);
+  });
+
+  it('is immune only while stuck: the grace runs out and the immunity with it', () => {
+    const { sim, player, mobs } = claim('wildheart_basin');
+    const mob = expectDefined(mobs.find((m) => !MOBS[m.templateId]?.boss));
+    engage(sim, player, mob);
+    pinInPlace(mob);
     const hp = mob.hp;
     hit(sim, player, mob, 300);
+    expect(mob.hp).toBe(hp);
+    mob.evadeInPlace = PIN_PHASE_SECONDS;
+    hit(sim, player, mob, 300);
     expect(mob.hp).toBe(hp - 300);
+    releasePin(mob);
+    expect(mob.evadeInPlace).toBeUndefined();
+    expect('evadeInPlace' in mob).toBe(true);
   });
 
   it('every pull reset releases the pin', () => {
