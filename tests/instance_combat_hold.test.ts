@@ -7,7 +7,16 @@
 // unreachable stall, and the pull was being farmed.
 import { describe, expect, it } from 'vitest';
 import { collectEngagedPids } from '../src/sim/combat/engaged_combat';
-import { BUILTIN_WORLD, DUNGEONS, MOBS } from '../src/sim/data';
+import {
+  BUILTIN_WORLD,
+  DUNGEON_LIST,
+  DUNGEONS,
+  dungeonAt,
+  INSTANCE_SLOT_COUNT,
+  instanceOrigin,
+  instanceSlotForZ,
+  MOBS,
+} from '../src/sim/data';
 import {
   IGNIVAR_APPROACH_GUARDIAN_IDS,
   IGNIVAR_CRUCIBLE_WARDEN_ID,
@@ -16,7 +25,12 @@ import {
   IGNIVAR_LIFT_ROOM_ID,
   IGNIVAR_RAID_ARENA_ID,
 } from '../src/sim/ignivar_raid_ids';
-import { enterDungeon, instanceClaimHolds, instanceOriginOf } from '../src/sim/instances/dungeons';
+import {
+  claimedInstanceAt,
+  enterDungeon,
+  instanceClaimHolds,
+  instanceOriginOf,
+} from '../src/sim/instances/dungeons';
 import {
   attackerLeftInstance,
   claimedSlotOf,
@@ -376,6 +390,38 @@ describe('instance combat hold: an out-of-reach mob holds in place instead of re
 });
 
 describe('instance combat hold: content sanity', () => {
+  it('addresses every slot record directly: x band, z band, and pool order agree', () => {
+    // claimedInstanceAt reads ctx.instances[position * INSTANCE_SLOT_COUNT + slot]
+    // and fails CLOSED on any disagreement, which would silently switch the hold
+    // off. Pin the three agreements it rests on for every dungeon and slot: the
+    // Sim builds the pool in DUNGEON_LIST order with INSTANCE_SLOT_COUNT records
+    // per dungeon, dungeonAt names the dungeon from its origin x (contiguous and
+    // overflow bands alike), and instanceSlotForZ inverts instanceOrigin's z term.
+    const sim = makeSim();
+    expect(sim.instances.length).toBe(DUNGEON_LIST.length * INSTANCE_SLOT_COUNT);
+    DUNGEON_LIST.forEach((dungeon, position) => {
+      for (let slot = 0; slot < INSTANCE_SLOT_COUNT; slot++) {
+        const origin = instanceOrigin(dungeon.index, slot);
+        const tag = `${dungeon.id} slot ${slot}`;
+        expect(dungeonAt(origin.x)?.id, tag).toBe(dungeon.id);
+        expect(instanceSlotForZ(origin.z), tag).toBe(slot);
+        const record = sim.instances[position * INSTANCE_SLOT_COUNT + slot];
+        expect(record?.dungeonId, tag).toBe(dungeon.id);
+        expect(record?.slot, tag).toBe(slot);
+      }
+    });
+  });
+
+  it('resolves a claimed slot from a spawn inside it and nothing from an unclaimed one', () => {
+    const { sim, instance, mobs } = claim('wildheart_basin');
+    const mob = expectDefined(mobs[0]);
+    expect(claimedInstanceAt(sim.ctx, mob.pos)).toBe(instance);
+    // The same dungeon's next slot is unclaimed: its origin resolves to nothing.
+    const nextSlot = (instance.slot + 1) % INSTANCE_SLOT_COUNT;
+    const origin = instanceOrigin(expectDefined(DUNGEONS.wildheart_basin).index, nextSlot);
+    expect(claimedInstanceAt(sim.ctx, { x: origin.x, y: 0, z: origin.z })).toBeNull();
+  });
+
   it('every dungeon and raid room keeps its spawns inside the claim footprint the hold reads', () => {
     // A spawn outside the footprint would read as "left the slot" and shed the
     // pull at that dungeon's own far end.
