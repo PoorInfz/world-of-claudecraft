@@ -35,7 +35,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "d9acb789",
+      "state": "c1e8cfaf",
       "events": "64482aed",
       "rng": {
         "draws": 6,
@@ -703,15 +703,13 @@
           "ownerId": 1002,
           "petMode": "defensive",
           "pos": {
-            "x": 80,
-            "y": -1.48336,
-            "z": 80
+            "x": 60,
+            "y": -1.48336
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
-            "x": 80,
-            "y": -1.48336,
-            "z": 80
+            "x": 60,
+            "y": -1.48336
           },
           "stats": {
             "armor": 40
@@ -747,13 +745,13 @@
           "pos": {
             "x": 90,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
             "x": 90,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "stats": {
             "armor": 40
@@ -805,15 +803,15 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": -90,
+            "x": -40,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
-            "x": -90,
+            "x": -40,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "stats": {
             "armor": 40
@@ -865,15 +863,15 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 90,
+            "x": 60,
             "y": -1.48336,
-            "z": -90
+            "z": 40
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
-            "x": 90,
+            "x": 60,
             "y": -1.48336,
-            "z": -90
+            "z": 40
           },
           "stats": {
             "armor": 40
@@ -909,7 +907,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "6c0430b0",
+      "state": "65fb3175",
       "events": "ada3aa31",
       "rng": {
         "draws": 6,
@@ -1582,15 +1580,13 @@
           "ownerId": 1002,
           "petMode": "defensive",
           "pos": {
-            "x": 80,
-            "y": -1.48336,
-            "z": 80
+            "x": 60,
+            "y": -1.48336
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
-            "x": 80,
-            "y": -1.48336,
-            "z": 80
+            "x": 60,
+            "y": -1.48336
           },
           "stats": {
             "armor": 40
@@ -1631,7 +1627,7 @@
           "leashAnchor": {
             "x": 90,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "level": 5,
           "lootFfaTimer": "Infinity",
@@ -1643,13 +1639,13 @@
           "pos": {
             "x": 90,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
             "x": 90,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "stats": {
             "armor": 40
@@ -1702,15 +1698,15 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": -90,
+            "x": -40,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
-            "x": -90,
+            "x": -40,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "stats": {
             "armor": 40
@@ -1762,15 +1758,15 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 90,
+            "x": 60,
             "y": -1.48336,
-            "z": -90
+            "z": 40
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
-            "x": 90,
+            "x": 60,
             "y": -1.48336,
-            "z": -90
+            "z": 40
           },
           "stats": {
             "armor": 40
@@ -1806,7 +1802,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 1007,
-      "state": "651c20d2",
+      "state": "b2be8189",
       "events": "39d0785b",
       "rng": {
         "draws": 10,
@@ -1817,7 +1813,7 @@
       "tick": 8,
       "time": 0.4,
       "nextId": 1007,
-      "state": "0eb5d4ae",
+      "state": "f603dcc7",
       "events": "2d045465",
       "rng": {
         "draws": 10,
@@ -2482,7 +2478,7 @@
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "facing": 2.190007,
+          "facing": -2.439336,
           "fallStartY": -1.48336,
           "fiveSecondRule": 99,
           "hp": 96,
@@ -2496,17 +2492,26 @@
           "overpowerUntil": -1,
           "ownerId": 1002,
           "petMode": "defensive",
-          "petPathCooldown": 0.3,
+          "petPath": [
+            {
+              "x": 43.5,
+              "z": -19.5
+            },
+            {
+              "x": 30,
+              "z": -30
+            }
+          ],
+          "petPathCooldown": 0.15,
           "pos": {
-            "x": 30,
-            "y": -1.48336,
-            "z": -30
+            "x": 57.932985,
+            "y": 3.634656,
+            "z": -2.442836
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
-            "x": 80,
-            "y": -1.48336,
-            "z": 80
+            "x": 60,
+            "y": -1.48336
           },
           "stats": {
             "armor": 40
@@ -2538,7 +2543,7 @@
           "critChance": 0.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
-          "facing": -2.530867,
+          "facing": -1.570796,
           "fallStartY": -1.48336,
           "fiveSecondRule": 99,
           "hostile": true,
@@ -2549,7 +2554,7 @@
           "leashAnchor": {
             "x": 90,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "level": 5,
           "lootFfaTimer": "Infinity",
@@ -2559,15 +2564,15 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 88.16492,
-            "y": -1.928089,
-            "z": 87.378458
+            "x": 86.8,
+            "y": 3.087563,
+            "z": -30
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
             "x": 90,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "stats": {
             "armor": 40
@@ -2585,7 +2590,7 @@
             ],
             [
               1000,
-              293.5
+              326.833333
             ],
             [
               1002,
@@ -2621,15 +2626,15 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": -89.524285,
-            "y": -5.05,
-            "z": 88.98605
+            "x": -39.524285,
+            "y": -1.056435,
+            "z": -31.01395
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
-            "x": -90,
+            "x": -40,
             "y": -1.48336,
-            "z": 90
+            "z": -30
           },
           "stats": {
             "armor": 40
@@ -2646,7 +2651,7 @@
             ],
             [
               1000,
-              187.5
+              220.833333
             ],
             [
               1002,
@@ -2654,9 +2659,9 @@
             ]
           ],
           "wanderTarget": {
-            "x": -88.015437,
-            "y": -7.4,
-            "z": 85.770061
+            "x": -38.015437,
+            "y": -1.458957,
+            "z": -34.229939
           },
           "wanderTimer": 29.65,
           "weapon": {
@@ -2688,15 +2693,15 @@
           "overpowerUntil": -1,
           "petMode": "defensive",
           "pos": {
-            "x": 89.037215,
-            "y": -3.025344,
-            "z": -89.427773
+            "x": 59.037215,
+            "y": 2.259801,
+            "z": 40.572227
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
-            "x": 90,
+            "x": 60,
             "y": -1.48336,
-            "z": -90
+            "z": 40
           },
           "stats": {
             "armor": 40
@@ -2713,7 +2718,7 @@
             ],
             [
               1000,
-              187.5
+              220.833333
             ],
             [
               1003,
@@ -2721,9 +2726,9 @@
             ]
           ],
           "wanderTarget": {
-            "x": 84.509994,
-            "y": -2.989979,
-            "z": -86.737038
+            "x": 54.509994,
+            "y": 1.357207,
+            "z": 43.262962
           },
           "wanderTimer": 29.65,
           "weapon": {
