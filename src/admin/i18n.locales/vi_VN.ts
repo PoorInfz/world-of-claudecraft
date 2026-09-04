@@ -1175,4 +1175,7 @@ export const vi_VN: Record<string, string> = {
   'wealth.purse': 'Về nhân vật:',
   'wealth.total': 'Tổng cộng:',
   'wealth.updatedAt': 'đã cập nhật {when}',
+  'usage.metric.walletHandoffAuthorizationEvicted':
+    'Lần bàn giao ví từ ứng dụng máy tính bị loại bỏ',
+  'usage.metric.walletHandoffCreateRejected': 'Lần bàn giao ví từ ứng dụng máy tính bị từ chối',
 };

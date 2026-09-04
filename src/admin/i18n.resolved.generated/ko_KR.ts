@@ -178,6 +178,8 @@ export const ko_KR: AdminTranslations = {
   "usage.cacheColEvictions": "제거",
   "usage.cacheEntriesOfMax": "{entries} / {max}",
   "usage.notAvailable": "없음",
+  "usage.metric.walletHandoffAuthorizationEvicted": "데스크톱 지갑 인증 제거",
+  "usage.metric.walletHandoffCreateRejected": "데스크톱 지갑 인증 거부",
   "usage.metric.wocBalanceApi": "$WOC 잔액 API 요청",
   "usage.metric.wocBalanceRateLimited": "$WOC 잔액 제한 요청",
   "usage.metric.wocBalanceRpc": "Solana RPC 잔액 읽기",

@@ -21,6 +21,7 @@
 import type { Pool as PgPool } from 'pg';
 import { Pool } from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { mailRecipientKey } from '../server/mail_partition_backfill';
 
 const ADMIN_URL = process.env.TEST_DATABASE_URL;
 const VERIFY_DB = 'wocc_account_wealth_verify';
@@ -76,6 +77,14 @@ describeDb('account wealth escrow aggregation (REAL Postgres)', () => {
        ON CONFLICT (key) DO UPDATE SET data = EXCLUDED.data, updated_at = now()`,
       [key, JSON.stringify(data)],
     );
+  }
+
+  async function putMailPartition(
+    charRealm: string,
+    recipientKey: string,
+    mail: unknown[],
+  ): Promise<void> {
+    await putWorldState(mailRecipientKey(charRealm, recipientKey), { mail });
   }
 
   async function wealthRow(
@@ -135,45 +144,50 @@ describeDb('account wealth escrow aggregation (REAL Postgres)', () => {
     await makeCharacter(accountB, 'AwvOldname', realm);
     await makeCharacter(accountC, 'AwvOldname', 'awv-frostmark');
 
-    await putWorldState(`mail:${realm}`, {
-      mail: [
-        // Ordinary id-keyed letters: sum, with a leading-zero and a padded
-        // variant merging into the same character id.
-        { recipientKey: String(idKeyed), copper: 500 },
-        { recipientKey: `0${idKeyed}`, copper: 250 },
-        { recipientKey: ` ${idKeyed} `, copper: 40 },
-        // Control-character padding trims like String.trim on both sides,
-        // and a whitespace-only key collapses to the skipped '' key.
-        { recipientKey: `\t${idKeyed}\n`, copper: 8 },
-        { recipientKey: '\t', copper: 11 },
-        // Legacy name-keyed letter, realm-scoped.
-        { recipientKey: 'AwvOldname', copper: 300 },
-        // Floors: 2.9 counts 2; 0.9 floors to zero and is skipped.
-        { recipientKey: String(idKeyed), copper: 2.9 },
-        { recipientKey: String(idKeyed), copper: 0.9 },
-        // Skipped entirely: house key, zero, negative, non-number copper,
-        // non-string key, missing fields, null entry.
-        { recipientKey: '', copper: 100 },
-        { recipientKey: String(idKeyed), copper: 0 },
-        { recipientKey: String(idKeyed), copper: -50 },
-        { recipientKey: String(idKeyed), copper: '50' },
-        // Non-castable coppers: '50' above would survive a ::numeric cast,
-        // so these three pin that the typeof CASE armor (not qual luck)
-        // keeps a string, object, or boolean copper from aborting the
-        // statement.
-        { recipientKey: String(idKeyed), copper: 'abc' },
-        { recipientKey: String(idKeyed), copper: { nested: true } },
-        { recipientKey: String(idKeyed), copper: true },
-        { recipientKey: 42, copper: 10 },
-        { recipientKey: String(idKeyed) },
-        null,
-        // All-digit keys past Number.MAX_SAFE_INTEGER stay name-resolved
-        // (and match no character, so they never reach account_wealth),
-        // including one long past the SQL's 16-significant-digit regex line.
-        { recipientKey: '9007199254740993', copper: 5 },
-        { recipientKey: '123456789012345678901', copper: 3 },
-      ],
-    });
+    await putMailPartition(realm, String(idKeyed), [
+      // Ordinary id-keyed letters: sum, with a leading-zero and a padded
+      // variant merging into the same character id.
+      { recipientKey: String(idKeyed), copper: 500 },
+      { recipientKey: `0${idKeyed}`, copper: 250 },
+      { recipientKey: ` ${idKeyed} `, copper: 40 },
+      // Control-character padding trims like String.trim on both sides,
+      // and a whitespace-only key collapses to the skipped '' key.
+      { recipientKey: `\t${idKeyed}\n`, copper: 8 },
+      { recipientKey: '\t', copper: 11 },
+      // Floors: 2.9 counts 2; 0.9 floors to zero and is skipped.
+      { recipientKey: String(idKeyed), copper: 2.9 },
+      { recipientKey: String(idKeyed), copper: 0.9 },
+      // Skipped entirely: house key, zero, negative, non-number copper,
+      // non-string key, missing fields, null entry.
+      { recipientKey: '', copper: 100 },
+      { recipientKey: String(idKeyed), copper: 0 },
+      { recipientKey: String(idKeyed), copper: -50 },
+      { recipientKey: String(idKeyed), copper: '50' },
+      // Non-castable coppers: '50' above would survive a ::numeric cast,
+      // so these three pin that the typeof CASE armor (not qual luck)
+      // keeps a string, object, or boolean copper from aborting the
+      // statement.
+      { recipientKey: String(idKeyed), copper: 'abc' },
+      { recipientKey: String(idKeyed), copper: { nested: true } },
+      { recipientKey: String(idKeyed), copper: true },
+      { recipientKey: 42, copper: 10 },
+      { recipientKey: String(idKeyed) },
+      null,
+    ]);
+    await putMailPartition(realm, 'AwvOldname', [
+      // Legacy name-keyed letter, realm-scoped.
+      { recipientKey: 'AwvOldname', copper: 300 },
+    ]);
+    await putMailPartition(realm, '9007199254740993', [
+      // All-digit keys past Number.MAX_SAFE_INTEGER stay name-resolved
+      // (and match no character, so they never reach account_wealth).
+      { recipientKey: '9007199254740993', copper: 5 },
+    ]);
+    await putMailPartition(realm, '123456789012345678901', [
+      // Long all-digit keys past the SQL's 16-significant-digit regex line
+      // stay name-resolved too.
+      { recipientKey: '123456789012345678901', copper: 3 },
+    ]);
     await putWorldState('mail:awv-frostmark', {
       mail: [
         // Id keys merge across realms; the twin name stays realm-scoped.
@@ -260,7 +274,10 @@ describeDb('account wealth escrow aggregation (REAL Postgres)', () => {
     expect(await wealthRow(accountC)).toEqual({ mail: 20, market: 0, total: 20 });
 
     // --- Collected books zero the escrow on the next pass. ---
-    await putWorldState(`mail:${realm}`, { mail: [] });
+    await putMailPartition(realm, String(idKeyed), []);
+    await putMailPartition(realm, 'AwvOldname', []);
+    await putMailPartition(realm, '9007199254740993', []);
+    await putMailPartition(realm, '123456789012345678901', []);
     await putWorldState('mail:awv-frostmark', { mail: [] });
     await putWorldState(`market:${realm}`, { collections: [] });
     await wealthDb.applyEscrowTotals(await wealthDb.aggregateEscrowTotals());

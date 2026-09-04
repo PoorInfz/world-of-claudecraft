@@ -349,6 +349,8 @@ export const zh_TW: Record<string, string> = {
   'usage.metric.walletUnlinkFailure': '錢包解除連結被拒',
   'usage.metric.walletUnlinkSuccess': '錢包解除連結完成',
   'usage.metric.walletLinkRateLimited': '錢包連結限流',
+  'usage.metric.walletHandoffAuthorizationEvicted': '桌面版錢包交接逐出',
+  'usage.metric.walletHandoffCreateRejected': '桌面版錢包交接被拒',
   'usage.metric.cardPublishRequest': '玩家卡片發布請求',
   'usage.metric.cardPublishRejected': '玩家卡片發布遭拒',
   'usage.metric.cardPublishRateLimited': '玩家卡片發布限流',

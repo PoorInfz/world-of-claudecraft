@@ -1176,4 +1176,6 @@ export const pt_BR: Record<string, string> = {
   'wealth.purse': 'Nos personagens:',
   'wealth.total': 'Total:',
   'wealth.updatedAt': 'atualizado {when}',
+  'usage.metric.walletHandoffAuthorizationEvicted': 'Expulsões de repasse de carteira do desktop',
+  'usage.metric.walletHandoffCreateRejected': 'Rejeições de repasse de carteira do desktop',
 };

@@ -148,6 +148,118 @@ describe('casting_lifecycle: timed cast start -> progress -> finish', () => {
     expect(secondTarget.hp).toBe(secondHp0);
   });
 
+  it('cancels a plain timed (non-channel) hostile cast the instant its locked target dies', () => {
+    const { sim, p, meta } = makeSim('mage', 12);
+    const mob = spawnTarget(sim, p, 12, 6);
+    sim.drainEvents();
+    castAbility(sim.ctx, 'fireball', p.id);
+    expect(p.castingAbility).toBe('fireball');
+    expect(p.castTargetId).toBe(mob.id);
+    expect(p.castRemaining).toBeGreaterThan(1); // well short of the 1.5s cast's natural finish
+
+    handleDeath(sim.ctx, mob, p); // another source (an AoE, a DoT tick, ...) kills it mid-cast
+    updateCasting(sim.ctx, p, meta); // the very next tick catches it, no waiting for a pulse
+
+    expect(p.castingAbility).toBeNull(); // interrupted immediately, never ran to completion
+    expect(p.castTargetId).toBeNull();
+    expect(p.castRemaining).toBe(0);
+    const events = sim.drainEvents();
+    const stops = events.filter((e: any) => e.type === 'castStop' && e.entityId === p.id);
+    expect(stops.some((e: any) => e.success === false)).toBe(true); // a genuine cancel
+    expect(events).toContainEqual(
+      expect.objectContaining({
+        type: 'error',
+        text: 'You have no target.',
+        reason: 'target_dead',
+      }),
+    );
+    expect(sim.ctx.pendingProjectiles.length).toBe(0); // the cast never resolved into a hit
+  });
+
+  it('cancels a plain timed hostile cast when its locked target is removed from the world entirely (not merely marked dead)', () => {
+    const { sim, p, meta } = makeSim('mage', 12);
+    const mob = spawnTarget(sim, p, 12, 6);
+    castAbility(sim.ctx, 'fireball', p.id);
+    expect(p.castTargetId).toBe(mob.id);
+    sim.drainEvents();
+
+    sim.entities.delete(mob.id); // despawned/removed outright, never marked .dead
+    updateCasting(sim.ctx, p, meta);
+
+    expect(p.castingAbility).toBeNull();
+    const events = sim.drainEvents();
+    expect(
+      events.some((e: any) => e.type === 'castStop' && e.entityId === p.id && e.success === false),
+    ).toBe(true);
+    // A target that vanished, rather than one confirmed dead, carries no
+    // target_dead reason (mirrors castAbility's own start-time gate).
+    const errEvent = events.find((e: any) => e.type === 'error') as any;
+    expect(errEvent?.text).toBe('You have no target.');
+    expect(errEvent?.reason).toBeUndefined();
+  });
+
+  it('does NOT cancel a channeling cast via the new tick-level check (channels keep their own per-pulse target check)', () => {
+    const { sim, p, meta } = makeSim('mage', 12);
+    expect(sim.setSpec('arcane')).toBe(true);
+    const mob = spawnTarget(sim, p, 12, 6);
+    p.resource = p.maxResource;
+    castAbility(sim.ctx, 'arcane_missiles', p.id);
+    expect(p.channeling).toBe(true);
+    expect(p.castTargetId).toBe(mob.id);
+
+    handleDeath(sim.ctx, mob, p); // dies well before the 1s-interval first pulse
+    updateCasting(sim.ctx, p, meta); // one tick later: the new timed-cast check must not fire here
+
+    expect(p.castingAbility).toBe('arcane_missiles'); // still running; only the per-pulse check may cancel it
+    expect(p.channeling).toBe(true);
+  });
+
+  it('does not cancel a combat-resurrection cast even though its (deliberately dead) target stays dead', () => {
+    const { sim, p, meta } = makeSim('mage', 20);
+    expect(sim.setSpec('arcane')).toBe(true);
+    const ally = sim.entities.get(sim.addPlayer('warrior', 'Fallen')) as AnyEntity;
+    placePlayerInOpenField(sim, ally.id, { x: 2 });
+    sim.partyInvite(ally.id, p.id);
+    sim.partyAccept(ally.id);
+    ally.dead = true;
+    ally.hp = 0;
+    ally.corpsePos = { ...ally.pos };
+    p.resource = p.maxResource;
+    sim.targetEntity(ally.id, p.id);
+    castAbility(sim.ctx, 'temporal_reversal', p.id);
+    expect(p.castingAbility).toBe('temporal_reversal');
+    expect(p.castTargetId).toBe(ally.id);
+
+    for (let i = 0; i < 10; i++) updateCasting(sim.ctx, p, meta); // well inside the 2s cast
+
+    // The new dead/gone-target check is excluded for targetsDead casts (its own
+    // reach/dead-ally gate above already owns this); it must still be running.
+    expect(p.castingAbility).toBe('temporal_reversal');
+  });
+
+  it('does not cancel a friendly heal when its target dies mid-cast (still falls back to self at completion)', () => {
+    const { sim, p, meta } = makeSim('priest', 12);
+    const ally = sim.entities.get(sim.addPlayer('warrior', 'Ally')) as AnyEntity;
+    placePlayerInOpenField(sim, ally.id, { x: 2 });
+    p.hp = Math.max(1, p.maxHp - 500);
+    const selfHp0 = p.hp;
+    sim.targetEntity(ally.id, p.id);
+    castAbility(sim.ctx, 'lesser_heal', p.id);
+    expect(p.castingAbility).toBe('lesser_heal');
+    expect(p.castTargetId).toBe(ally.id);
+
+    handleDeath(sim.ctx, ally, null); // the heal target dies mid-cast
+
+    for (let i = 0; i < 3; i++) {
+      updateCasting(sim.ctx, p, meta);
+      expect(p.castingAbility).toBe('lesser_heal'); // never cancelled early by the new check
+    }
+    drainCast(sim, p, meta);
+
+    expect(p.castingAbility).toBeNull(); // ran to its natural completion
+    expect(p.hp).toBeGreaterThan(selfHp0); // resolveFriendlyTarget fell back to the caster
+  });
+
   it('resolves a completed friendly heal against the target locked at cast start', () => {
     const { sim, p, meta } = makeSim('priest', 12);
     const ally = sim.entities.get(sim.addPlayer('warrior', 'Ally')) as AnyEntity;
@@ -547,7 +659,9 @@ describe('casting_lifecycle: pushbackCast', () => {
     pushbackCast(p);
     pushbackCast(p);
     expect(p.castRemaining).toBe(0);
-    expect(p.channelTicksLeft).toBe(2); // pushback itself never touches the tick count
+    // Pushback gives up the boundaries the shortened channel can no longer
+    // reach, so both owed ticks are already surrendered before completion.
+    expect(p.channelTicksLeft).toBe(0);
 
     let maxFiredInOneUpdate = 0;
     let updates = 0;
@@ -655,6 +769,107 @@ describe('casting_lifecycle: pushbackCast', () => {
     expect(p.castingAbility).toBeNull();
     expect(sim.ctx.pendingProjectiles).toHaveLength(0); // every tick dropped, none forced
     expect(p.channelTicksLeft).toBe(0);
+  });
+
+  it('drops the fixed-count ticks a shortened channel no longer reaches', () => {
+    const { sim, p } = makeSim('warlock', 12);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'drain_life', p.id);
+    // Consume runs 3s over 3 ticks with the first pulse front-loaded to one DT,
+    // so its tick boundaries sit at 0.05s, 1.05s and 2.05s.
+    expect(p.channelTicksLeft).toBe(3);
+    pushbackCast(p); // 3.00s to 2.25s: every boundary still fits
+    expect(p.channelTicksLeft).toBe(3);
+    pushbackCast(p); // 2.25s to 1.50s: the 2.05s boundary no longer fits
+    expect(p.channelTicksLeft).toBe(2);
+  });
+});
+
+// A fixed-count channel tick queues exactly one bolt (Aether Darts, Consume), and
+// driving updateCasting alone never advances the projectile queue, so the queue
+// length is a running count of the ticks fired.
+function runChannelTicks(
+  sim: AnySim,
+  p: AnyEntity,
+  meta: any,
+  pushbackOnTicks: number[],
+): number[] {
+  const firedPerTick: number[] = [];
+  let queued = sim.ctx.pendingProjectiles.length;
+  for (let i = 0; p.castingAbility && i < 400; i++) {
+    if (pushbackOnTicks.includes(i)) pushbackCast(p);
+    updateCasting(sim.ctx, p, meta);
+    const now = sim.ctx.pendingProjectiles.length;
+    firedPerTick.push(now - queued);
+    queued = now;
+  }
+  return firedPerTick;
+}
+
+function totalFired(perTick: number[]): number {
+  return perTick.reduce((a, b) => a + b, 0);
+}
+
+describe('casting_lifecycle: channel pushback costs the ticks it removes', () => {
+  // Aether Darts: 3s over 3 ticks with no front-load, so its boundaries land at
+  // 1s, 2s and 3s and the last one coincides with the channel's own end.
+  function aetherDartsCaster() {
+    const { sim, p, meta } = makeSim('mage', 20);
+    expect(sim.setSpec('arcane')).toBe(true);
+    spawnTarget(sim, p, 12);
+    castAbility(sim.ctx, 'arcane_missiles', p.id);
+    expect(p.channeling).toBe(true);
+    expect(p.channelTicksLeft).toBe(3);
+    return { sim, p, meta };
+  }
+
+  it('lands every authored tick, one per boundary, when nothing pushes back', () => {
+    const { sim, p, meta } = aetherDartsCaster();
+    const perTick = runChannelTicks(sim, p, meta, []);
+    expect(totalFired(perTick)).toBe(3);
+    expect(Math.max(...perTick)).toBe(1); // never two missiles inside one sim tick
+    // The final boundary coincides with the channel's end, so the drift-recovery
+    // flush is what delivers it: it must still land.
+    expect(perTick[perTick.length - 1]).toBe(1);
+  });
+
+  it('loses the tail ticks that no longer fit after two pushbacks', () => {
+    const { sim, p, meta } = aetherDartsCaster();
+    const perTick = runChannelTicks(sim, p, meta, [0, 1]);
+    expect(totalFired(perTick)).toBeLessThan(3); // the shortened channel costs ticks
+    expect(totalFired(perTick)).toBeGreaterThan(0);
+    expect(Math.max(...perTick)).toBe(1); // the end flush never dumps the rest of the barrage
+  });
+
+  it('never fires more ticks than the channel authored, however often it is hit', () => {
+    const { sim, p, meta } = aetherDartsCaster();
+    const everyTick = Array.from({ length: 60 }, (_, i) => i);
+    const perTick = runChannelTicks(sim, p, meta, everyTick);
+    expect(totalFired(perTick)).toBeLessThan(3);
+    expect(Math.max(...perTick, 0)).toBeLessThanOrEqual(1);
+  });
+
+  it('costs a pushed Consume real drain damage and self-heal', () => {
+    const runDrain = (pushbackOnTicks: number[]) => {
+      const { sim, p, meta } = makeSim('warlock', 12);
+      const mob = spawnTarget(sim, p);
+      p.hp = 1; // room for every self-heal to land unclamped
+      const mobHp0 = mob.hp;
+      castAbility(sim.ctx, 'drain_life', p.id);
+      const perTick = runChannelTicks(sim, p, meta, pushbackOnTicks);
+      for (let i = 0; i < 200 && sim.ctx.pendingProjectiles.length > 0; i++)
+        advancePendingProjectiles(sim.ctx);
+      return { perTick, simTicks: perTick.length, healed: p.hp - 1, dealt: mobHp0 - mob.hp };
+    };
+
+    const clean = runDrain([]);
+    const pushed = runDrain([0, 1]);
+    expect(totalFired(clean.perTick)).toBe(3);
+    expect(pushed.simTicks).toBeLessThan(clean.simTicks); // pushback did shorten it
+    expect(totalFired(pushed.perTick)).toBeLessThan(3); // and it cost pulses
+    expect(Math.max(...pushed.perTick)).toBe(1); // never a whole drain in one sim tick
+    expect(pushed.dealt).toBeLessThan(clean.dealt);
+    expect(pushed.healed).toBeLessThan(clean.healed);
   });
 });
 
@@ -787,6 +1002,279 @@ describe('casting_lifecycle: spell queue (#1360)', () => {
     while (p.queuedCastAbility) sim.tick(); // retried every tick until the GCD clears
     expect(p.queuedCastAbility).toBeNull();
     expect(p.castingAbility).toBe('flash_heal'); // the held press finally fired
+  });
+});
+
+describe('casting_lifecycle: GCD-tail queue (WotLK-style spell queue)', () => {
+  // The general arm of the queue: a press during the final CAST_QUEUE_WINDOW_SEC
+  // of a bare GCD (no cast in flight) loads the same single slot the cast-tail
+  // queue uses, and the updateCasting retry arm fires it the tick the GCD clears.
+
+  it('queues an instant pressed inside the GCD tail and fires it the moment the GCD clears', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'shadow_word_pain', p.id); // instant: arms the GCD, no cast in flight
+    expect(p.castingAbility).toBeNull();
+    expect(p.gcdRemaining).toBeGreaterThan(CAST_QUEUE_WINDOW_SEC);
+
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    castAbility(sim.ctx, 'shadow_word_pain', p.id); // pressed inside the GCD tail
+    expect(p.queuedCastAbility).toBe('shadow_word_pain');
+    expect(p.gcdRemaining).toBeGreaterThan(0); // held, not fired through the GCD
+
+    while (p.queuedCastAbility) sim.tick(); // retried every tick until the GCD clears
+    expect(p.queuedCastAbility).toBeNull();
+    // The held press fired as a fresh cast the tick the GCD cleared: a NEW full
+    // GCD is armed, which an unfired (dropped) press could never produce.
+    expect(p.gcdRemaining).toBeGreaterThan(CAST_QUEUE_WINDOW_SEC);
+  });
+
+  it('stays silent and unqueued on a press earlier than the queue window (classic spam)', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    expect(p.gcdRemaining).toBeGreaterThan(CAST_QUEUE_WINDOW_SEC); // well outside the tail
+
+    const events: Array<Record<string, any>> = [];
+    const orig = (sim as any).emit.bind(sim);
+    (sim as any).emit = (e: Record<string, any>) => {
+      events.push(e);
+      orig(e);
+    };
+    castAbility(sim.ctx, 'smite', p.id); // early press: dropped, silently
+    expect(p.queuedCastAbility).toBeNull();
+    expect(p.castingAbility).toBeNull();
+    expect(events.some((e) => e.type === 'error')).toBe(false);
+  });
+
+  it('a later press inside the GCD tail overwrites the earlier one (last-press-wins)', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    // Half hp: the queued heal is meaningful, and the priest survives the
+    // aggroed wolf chewing on them through the GCD-wait ticks below.
+    p.hp = Math.max(1, Math.floor(p.maxHp / 2));
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+
+    castAbility(sim.ctx, 'lesser_heal', p.id);
+    expect(p.queuedCastAbility).toBe('lesser_heal');
+    castAbility(sim.ctx, 'smite', p.id); // a distinct second press replaces the queued slot
+    expect(p.queuedCastAbility).toBe('smite'); // not 'lesser_heal': proves overwrite, not keep-first
+  });
+
+  it('re-runs the full gate set when the held press fires: a press whose mana is gone refuses', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    castAbility(sim.ctx, 'smite', p.id);
+    expect(p.queuedCastAbility).toBe('smite');
+
+    p.resource = 0; // the mana the press was made with is gone before the GCD clears
+    const events: Array<Record<string, any>> = [];
+    const orig = (sim as any).emit.bind(sim);
+    (sim as any).emit = (e: Record<string, any>) => {
+      events.push(e);
+      orig(e);
+    };
+    let n = 0;
+    while (p.queuedCastAbility && n++ < 100) sim.tick();
+    expect(p.queuedCastAbility).toBeNull(); // slot consumed by the refused fire, not stuck
+    expect(p.castingAbility).toBeNull(); // the cast never started
+    expect(events.some((e) => e.type === 'error' && e.text === 'Not enough mana!')).toBe(true);
+  });
+
+  it('an off-GCD ability pressed during the GCD fires immediately and never touches the queue', () => {
+    const { sim, p } = makeSim('warrior', 40);
+    spawnTarget(sim, p, 1, 2); // dz 2: inside melee range for the hamstring press
+    castAbility(sim.ctx, 'hamstring', p.id); // instant on-GCD press arms the GCD
+    expect(p.gcdRemaining).toBeGreaterThan(0);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    castAbility(sim.ctx, 'hamstring', p.id); // load the slot: a held press to protect
+    expect(p.queuedCastAbility).toBe('hamstring');
+
+    castAbility(sim.ctx, 'berserker_rage', p.id); // offGcd: bypasses the GCD outright
+    expect(p.cooldowns.has('berserker_rage')).toBe(true); // it fired now, not later
+    expect(p.queuedCastAbility).toBe('hamstring'); // and the held press is undisturbed
+  });
+
+  it('pins the exact window boundary: gcdRemaining at the window queues, just above drops', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    p.gcdRemaining = CAST_QUEUE_WINDOW_SEC + 0.01;
+    castAbility(sim.ctx, 'smite', p.id);
+    expect(p.queuedCastAbility).toBeNull(); // just above the window: classic silent drop
+    p.gcdRemaining = CAST_QUEUE_WINDOW_SEC;
+    castAbility(sim.ctx, 'smite', p.id);
+    expect(p.queuedCastAbility).toBe('smite'); // exactly the window edge queues
+  });
+
+  it('carries the queued aim point through the GCD arm to the fired ground-targeted cast', () => {
+    const { sim, p } = makeSim('mage', 20);
+    sim.setSpec('fire'); // Flamestrike is a DPS-spec ability (Chronomancy gating)
+    spawnTarget(sim, p);
+    // A bare GCD tail with no cast in flight (the GCD source is irrelevant here;
+    // what this pins is that the GCD arm stores and carries the aim point).
+    p.gcdRemaining = CAST_QUEUE_WINDOW_SEC;
+    expect(p.castingAbility).toBeNull();
+
+    const aim = { x: p.pos.x + 5, z: p.pos.z + 5 };
+    castAbility(sim.ctx, 'flamestrike', p.id, aim);
+    expect(p.queuedCastAbility).toBe('flamestrike');
+    expect(p.queuedCastAim).toEqual(aim);
+
+    while (p.queuedCastAbility) sim.tick();
+    expect(p.castingAbility).toBe('flamestrike'); // the held press fired as a fresh cast
+    expect(p.castAim?.x).toBe(aim.x);
+    expect(p.castAim?.z).toBe(aim.z);
+  });
+
+  it('a silence landing during the hold refuses the queued press at fire time', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    castAbility(sim.ctx, 'smite', p.id);
+    expect(p.queuedCastAbility).toBe('smite');
+
+    p.auras.push({
+      id: 'test_silence',
+      name: 'Test Silence',
+      kind: 'silence',
+      remaining: 10,
+      duration: 10,
+      value: 0,
+      sourceId: p.id,
+      school: 'shadow',
+    });
+    const events: Array<Record<string, any>> = [];
+    const orig = (sim as any).emit.bind(sim);
+    (sim as any).emit = (e: Record<string, any>) => {
+      events.push(e);
+      orig(e);
+    };
+    let n = 0;
+    while (p.queuedCastAbility && n++ < 100) sim.tick();
+    expect(p.queuedCastAbility).toBeNull(); // slot consumed by the refused fire, not stuck
+    expect(p.castingAbility).toBeNull(); // the silenced press never started
+    expect(events.some((e) => e.type === 'error' && e.text === 'You are silenced!')).toBe(true);
+  });
+
+  it('a fresh press landing in the one-tick gap after the GCD clears discards the stale held press', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    p.hp = Math.max(1, Math.floor(p.maxHp / 2));
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    castAbility(sim.ctx, 'smite', p.id);
+    expect(p.queuedCastAbility).toBe('smite');
+
+    // The gap: gcdRemaining zeroes in updateTimers AFTER the updateCasting retry
+    // arm ran that tick, so a fresh press can see a clear GCD while the slot is
+    // still loaded. The fresh press is the newest intent: it must win outright.
+    p.gcdRemaining = 0;
+    castAbility(sim.ctx, 'lesser_heal', p.id);
+    expect(p.castingAbility).toBe('lesser_heal'); // the fresh press started casting now
+    expect(p.queuedCastAbility).toBeNull(); // and the stale smite press was discarded
+
+    while (p.castingAbility) sim.tick();
+    expect(p.castingAbility).toBeNull(); // nothing fired behind the completed heal
+  });
+
+  it('a non-Sentence press inside the tail replaces a GCD-held Sentence (last-press-wins)', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    // A held Sentence, loaded by hand (only a warlock can press it for real).
+    // The preserve guard shields it from needle_of_fate/sentence presses only.
+    p.queuedCastAbility = 'sentence';
+    p.queuedCastAim = null;
+    castAbility(sim.ctx, 'smite', p.id);
+    expect(p.queuedCastAbility).toBe('smite');
+  });
+
+  it('a blink-through escape press never eats the queued follow-up', () => {
+    const { sim, p, meta } = makeSim('mage', 40);
+    spawnTarget(sim, p);
+    meta.talentMods.global.blinkCast = 1; // Flickerstep: blink slips through mid-cast
+    castAbility(sim.ctx, 'fireball', p.id);
+    while (p.castRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    castAbility(sim.ctx, 'fireball', p.id);
+    expect(p.queuedCastAbility).toBe('fireball');
+
+    // The escape weave: an on-GCD instant committing THROUGH the busy guard.
+    // It relocates the mage but must leave both the cast in progress and the
+    // follow-up queued behind that cast untouched.
+    castAbility(sim.ctx, 'blink', p.id);
+    expect(p.castingAbility).toBe('fireball');
+    expect(p.queuedCastAbility).toBe('fireball');
+  });
+
+  it('carries the mouseover target override through the queue to the fired cast', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p); // the SELECTED target stays hostile the whole time
+    const allyPid = sim.addPlayer('warrior', 'Mouseover');
+    const ally = sim.entities.get(allyPid) as AnyEntity;
+    ally.pos = { x: p.pos.x, y: p.pos.y, z: p.pos.z - 2 };
+    ally.prevPos = { ...ally.pos };
+    sim.rebucket(ally);
+    ally.hp = Math.max(1, Math.floor(ally.maxHp / 2)); // the heal has room to land
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+
+    // A Clique-style mouseover press: castTargetId overrides the selection.
+    castAbility(sim.ctx, 'lesser_heal', p.id, undefined, allyPid);
+    expect(p.queuedCastAbility).toBe('lesser_heal');
+    expect(p.queuedCastTargetId).toBe(allyPid);
+
+    while (p.queuedCastAbility) sim.tick();
+    expect(p.castingAbility).toBe('lesser_heal');
+    // The fired press kept the override: it resolves against the hovered ally,
+    // not the selected hostile or the self fallback (the wrong-unit heal this
+    // pins away).
+    expect(p.castTargetId).toBe(allyPid);
+  });
+
+  it('an on-cooldown press inside the tail queues, then surfaces the refusal when it fires', () => {
+    const { sim, p } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    p.cooldowns.set('smite', 5); // the pressed ability is on cooldown
+    castAbility(sim.ctx, 'smite', p.id);
+    expect(p.queuedCastAbility).toBe('smite'); // the tail press queues regardless
+
+    const events: Array<Record<string, any>> = [];
+    const orig = (sim as any).emit.bind(sim);
+    (sim as any).emit = (e: Record<string, any>) => {
+      events.push(e);
+      orig(e);
+    };
+    let n = 0;
+    while (p.queuedCastAbility && n++ < 100) sim.tick();
+    expect(p.castingAbility).toBeNull(); // the cooldown gate refused the fire
+    // Deliberate semantics: the refusal is accurate feedback through the
+    // existing matched string, not silence (gates re-run at fire time).
+    expect(
+      events.some((e) => e.type === 'error' && e.text === 'That ability is not ready yet.'),
+    ).toBe(true);
+  });
+
+  it('death clears a GCD-held slot so it never fires posthumously', () => {
+    const { sim, p, meta } = makeSim('priest', 40);
+    spawnTarget(sim, p);
+    castAbility(sim.ctx, 'shadow_word_pain', p.id);
+    while (p.gcdRemaining > CAST_QUEUE_WINDOW_SEC) sim.tick();
+    castAbility(sim.ctx, 'smite', p.id);
+    expect(p.queuedCastAbility).toBe('smite'); // held against a bare GCD, no cast in flight
+
+    handleDeath(sim.ctx, p, null);
+    expect(p.queuedCastAbility).toBeNull();
+    expect(p.queuedCastAim).toBeNull();
+    for (let i = 0; i < 20; i++) updateCasting(sim.ctx, p, meta);
+    expect(p.castingAbility).toBeNull(); // nothing fired after death
   });
 });
 

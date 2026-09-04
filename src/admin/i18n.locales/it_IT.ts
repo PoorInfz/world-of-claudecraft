@@ -1194,4 +1194,6 @@ export const it_IT: Record<string, string> = {
   'wealth.purse': 'Sui personaggi:',
   'wealth.total': 'Totale:',
   'wealth.updatedAt': 'aggiornato {when}',
+  'usage.metric.walletHandoffAuthorizationEvicted': 'Espulsioni handoff wallet desktop',
+  'usage.metric.walletHandoffCreateRejected': 'Rifiuti handoff wallet desktop',
 };

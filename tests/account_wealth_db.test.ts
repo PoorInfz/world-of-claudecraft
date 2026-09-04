@@ -38,6 +38,7 @@ import {
   applyEscrowTotals,
   LARGE_GOLD_MOVEMENTS_TIMEOUT_MS,
   largeGoldMovementsForAccount,
+  listEscrowStateRows,
   refreshAccountPurseTotals,
   topWealthHolders,
   withAccountWealthSweepLock,
@@ -103,6 +104,16 @@ describe('refreshAccountPurseTotals', () => {
   });
 });
 
+describe('listEscrowStateRows', () => {
+  it('reads only the realm-scoped mail/market blobs (never the legacy bare row)', async () => {
+    query.mockResolvedValueOnce(queryResult([{ key: 'mail:eastbrook', data: { mail: [] } }]));
+    const rows = await listEscrowStateRows();
+    expect(rows).toEqual([{ key: 'mail:eastbrook', data: { mail: [] } }]);
+    expect(query.mock.calls[0][0]).toMatch(/key LIKE 'mail:%' OR key LIKE 'market:%'/);
+    expect(query.mock.calls[0][0]).toMatch(/key LIKE 'mail_partition_done:%'/);
+  });
+});
+
 describe('aggregateEscrowTotals', () => {
   it('aggregates inside Postgres on the heavy allowance, never shipping a blob to Node', async () => {
     // First statement under the transaction is the work_mem raise.
@@ -155,12 +166,16 @@ describe('aggregateEscrowTotals', () => {
     // never the bare legacy 'market' rollback row.
     expect(sql).toMatch(/key LIKE 'mail:%'/);
     expect(sql).toMatch(/key LIKE 'market:%'/);
+    expect(sql).toMatch(/mail_partition_done:%/);
+    expect(sql).toMatch(/:r:/);
+    expect(sql).toMatch(/migrated_mail_realms/);
     // The single-detoast barrier: each blob's array datum is computed once
     // inside an OFFSET 0 subquery, then guarded; inlining the -> into both
     // the typeof and the value would detoast the 89 MB blob twice.
     expect(sql).toMatch(
-      /w\.data->'mail' AS arr\s+FROM world_state w WHERE w\.key LIKE 'mail:%' OFFSET 0/,
+      /SELECT substr\(w\.key, strpos\(w\.key, ':'\) \+ 1\) AS rest, w\.data\s+FROM world_state w WHERE w\.key LIKE 'mail:%' OFFSET 0/,
     );
+    expect(sql).toMatch(/data->'mail' AS arr/);
     expect(sql).toMatch(
       /w\.data->'collections' AS arr\s+FROM world_state w WHERE w\.key LIKE 'market:%' OFFSET 0/,
     );
@@ -372,11 +387,17 @@ describe('largeGoldMovementsForAccount', () => {
         },
       ]),
     );
-    const rows = await largeGoldMovementsForAccount(42, 100_000, 25);
-    expect(query.mock.calls[0][0]).toMatch(/abs\(l\.copper_delta\) >= \$2/);
-    expect(query.mock.calls[0][1]).toEqual([42, 100_000, 25]);
-    // The read depends on the CONCURRENTLY-built bank_ledger_account_recent
-    // index, which a realm can serve before it exists (server/db.ts, the
+    const rows = await largeGoldMovementsForAccount(42, 25);
+    const sql = query.mock.calls[0][0];
+    // The threshold is a production-fixed literal, not a bind parameter. That
+    // lets PostgreSQL prove the query implies the matching partial-index
+    // predicate even when the driver/server selects a generic prepared plan.
+    expect(sql).toMatch(/abs\(copper_delta\) >= 100000/);
+    expect(sql).not.toMatch(/abs\(copper_delta\) >= \$\d/);
+    expect(sql).toMatch(/LIMIT \$2/);
+    expect(query.mock.calls[0][1]).toEqual([42, 25]);
+    // The read depends on the CONCURRENTLY-built partial account index, which
+    // a realm can serve before it exists (server/db.ts, the
     // runConcurrentIndexMigrations rule): it carries its own bound, far below
     // the 15 s pool default, so a full ledger scan fails this one read instead
     // of pinning pooled clients.

@@ -1159,4 +1159,9 @@ export const cs_CZ: Record<string, string> = {
   'wealth.purse': 'Na postavách:',
   'wealth.total': 'Celkový:',
   'wealth.updatedAt': 'aktualizováno {when}',
+
+  // Release-tier autoFillable fill (cs_CZ), i18n-locale-fill skill.
+  'usage.metric.walletHandoffAuthorizationEvicted':
+    'Vyřazení autorizací počítačového předání peněženky',
+  'usage.metric.walletHandoffCreateRejected': 'Zamítnutí vytvoření počítačového předání peněženky',
 };

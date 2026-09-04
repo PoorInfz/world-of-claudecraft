@@ -29,7 +29,9 @@ import * as deedsMod from '../deeds';
 import { recalcPlayerStats } from '../entity';
 import { DAMAGE_IDLE_DESPAWN_MOB_IDS, DAMAGE_IDLE_DESPAWN_SECONDS } from '../entity_roster';
 import { weaponHand } from '../equipment_rules';
+import { emitIgnivarRaidNarrativeOnDeath } from '../ignivar_raid_lore';
 import { lockNormalDungeonResetOnBossKill, spawnBossExitPortal } from '../instances/dungeons';
+import { isImmuneInPlace } from '../instances/instance_combat_hold';
 import { spawnWidowHatchlingOnEggDeath } from '../mob/egg_hatchling';
 import { grantAbilityDevotion } from '../paladin_devotion';
 import { isBuddyMob } from '../pet/buddy_ai';
@@ -37,6 +39,7 @@ import { snapshotPetOnOwnerDeath } from '../pet/pet_owner_revive';
 import { pvpDamageMultiplier } from '../pvp';
 import { resolveRespawnSeconds } from '../respawn_policy';
 import { aurasSurvivingDeath } from '../resurrection';
+import { computeCharacterModifiers } from '../set_bonus_mods';
 import type { PlayerMeta } from '../sim';
 import type { DamageResolution, SimContext } from '../sim_context';
 import { addThreat, clearThreat, petCanSeeStealthedTarget } from '../threat';
@@ -108,6 +111,7 @@ import { stripPaladinDevotionsFromSource } from './paladin_support';
 import { masteredPaladinAuraValue } from './paladin_talents';
 import { isValkyrsCallingAirborne } from './paladin_valkyrs_calling_state';
 import { veilboundMarkDamageMultiplier } from './paladin_veilbound_march';
+import { benisonMendOnVigilTriggered } from './priest/benison';
 import { doctrineConvertDamage } from './priest/doctrine';
 import { cleanupPriestState } from './priest/lifecycle';
 import {
@@ -188,6 +192,7 @@ export function dealDamage(
   if (resolution) resolution.landedHpLoss = 0;
   if (resolvedHpLoss) alreadyFinal = true;
   if (target.dead) return 0;
+  if (target.damageImmune) return 0;
   // Quest-gated destructible (e.g. Broodmother eggs): only a player (or pet) whose
   // owner has the gating quest active/ready may harm it; other hits are a no-op.
   if (questGateBlocksDamage(ctx.players, source, target)) return 0;
@@ -237,8 +242,15 @@ export function dealDamage(
   // Direct attacks report an Evade result (FCT word + combat log line); DoT and
   // reflect ticks stay silent so a dotted evader does not spam a word per tick.
   // The early return keeps every downstream effect off: no threat, no combat
-  // entry, no stealth break, no tap.
-  if (target.kind === 'mob' && target.aiState === 'evade' && target.ownerId === null) {
+  // entry, no stealth break, no tap. A mob holding in place inside an instance
+  // (instances/instance_combat_hold.ts: stuck out of reach of its target, aggro
+  // intact) evades the same way while it is stuck, so a pinned mob cannot be
+  // chipped down; once it phases toward its target it can be hit on the way in.
+  if (
+    target.kind === 'mob' &&
+    (target.aiState === 'evade' || isImmuneInPlace(target)) &&
+    target.ownerId === null
+  ) {
     if (direct && source) {
       ctx.emit({
         type: 'damage',
@@ -641,6 +653,10 @@ export function dealDamage(
     amount = mitigateVicariousSuffering(ctx, source, target, amount, abilityId);
   }
 
+  if (target.damageFloorHp !== undefined) {
+    amount = Math.min(amount, Math.max(0, target.hp - target.damageFloorHp));
+  }
+
   // Sacred Bulwark (Guardian Ward): an enemy lethal hit spends the ward, clamps
   // overkill to the health actually lost, and restores the wearer from the aura's
   // data value. The damage still falls through the shared tail below so combat,
@@ -1000,6 +1016,9 @@ export function dealDamage(
         const healed = ctx.applyHeal(healer, target, aura.value, aura.name);
         if (aura.id === 'seraphic_vigil') {
           priestOnVigilTriggered(ctx, healer, target, healed);
+          // Benison Dawnweave 4pc rides the same trigger POINT (never that
+          // talent-gated function): the set arm is wearer-flag-gated inside.
+          benisonMendOnVigilTriggered(ctx, healer, target);
         }
         ctx.emit({
           type: 'spellfx',
@@ -1347,6 +1366,7 @@ export function handleDeath(
   e.castAim = null;
   e.queuedCastAbility = null;
   e.queuedCastAim = null;
+  e.queuedCastTargetId = null;
   clearRadiantResonanceReservation(e);
   // Hidden per-cast state: death ends any gather/fishing session, so
   // the fields must return to inert here too (the parity samplers rely on them
@@ -1376,6 +1396,7 @@ export function handleDeath(
   // idiom, admin sweeps) never detonates the clutch (mob/dragonkin_brood.ts).
   if (e.kind === 'mob' && MOBS[e.templateId]?.broodEgg) e.broodCracked = true;
   ctx.emit({ type: 'death', entityId: e.id, killerId: killer?.id ?? -1 });
+  if (e.kind === 'mob') emitIgnivarRaidNarrativeOnDeath(ctx, e);
 
   // The `kill` set-proc trigger, dispatched here because this is the one place
   // every death resolves. After the death emit so the event order players and
@@ -1446,6 +1467,7 @@ export function handleDeath(
     delete e.queuedOnSwingCostMultiplier;
     e.queuedCastAbility = null;
     e.queuedCastAim = null;
+    e.queuedCastTargetId = null;
     e.comboPoints = 0;
     e.eating = null;
     e.drinking = null;
@@ -1816,7 +1838,7 @@ export function grantXp(
     // Re-bake the flat talent mods at the new level BEFORE the stat pass: spec mastery
     // magnitudes scale with level (min(1, level/20) in accumulate), so a ding must
     // strengthen the mastery without waiting for a respec/spec-pick/relog re-bake.
-    meta.talentMods = computeTalentModifiers(meta.cls, meta.talents, p.level);
+    meta.talentMods = computeCharacterModifiers(meta.cls, meta.talents, p.level, meta.equipment);
     recalcPlayerStats(p, meta.cls, meta.equipment, ctx.playerMods(meta), meta.equipmentInstance);
     p.hp = p.maxHp;
     if (p.resourceType === 'mana') p.resource = p.maxResource;

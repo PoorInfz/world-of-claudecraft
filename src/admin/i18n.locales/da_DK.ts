@@ -295,6 +295,9 @@ export const da_DK: Record<string, string> = {
   'usage.cacheColEvictions': 'Udsmidninger',
   'usage.cacheEntriesOfMax': '{entries} / {max}',
   'usage.notAvailable': 'ikke tilgængelig',
+  'usage.metric.walletHandoffAuthorizationEvicted':
+    'Udsmidninger af skrivebords-wallet-overdragelser',
+  'usage.metric.walletHandoffCreateRejected': 'Afviste skrivebords-wallet-overdragelser',
   'usage.metric.wocBalanceApi': 'API-anmodninger om $WOC-saldo',
   'usage.metric.wocBalanceRateLimited': 'Strubede anmodninger om $WOC-saldo',
   'usage.metric.wocBalanceRpc': 'Solana RPC-saldolæsninger',

@@ -359,6 +359,8 @@ export const ru_RU: Record<string, string> = {
   'usage.metric.walletUnlinkFailure': 'Отказы при отвязке кошелька',
   'usage.metric.walletUnlinkSuccess': 'Завершённые отвязки кошелька',
   'usage.metric.walletLinkRateLimited': 'Ограниченные привязки кошелька',
+  'usage.metric.walletHandoffAuthorizationEvicted': 'Вытеснения настольной передачи кошелька',
+  'usage.metric.walletHandoffCreateRejected': 'Отказы настольной передачи кошелька',
   'usage.metric.cardPublishRequest': 'Запросы публикации карты игрока',
   'usage.metric.cardPublishRejected': 'Отклоненные публикации карты',
   'usage.metric.cardPublishRateLimited': 'Ограниченные публикации карты',

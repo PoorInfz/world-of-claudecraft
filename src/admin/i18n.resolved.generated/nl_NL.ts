@@ -178,6 +178,8 @@ export const nl_NL: AdminTranslations = {
   "usage.cacheColEvictions": "Uitzettingen",
   "usage.cacheEntriesOfMax": "{entries} / {max}",
   "usage.notAvailable": "n.v.t.",
+  "usage.metric.walletHandoffAuthorizationEvicted": "Verwijderde autorisaties voor desktop-portemonnee-overdracht",
+  "usage.metric.walletHandoffCreateRejected": "Geweigerde desktop-portemonnee-overdrachten",
   "usage.metric.wocBalanceApi": "$WOC-saldo-API-verzoeken",
   "usage.metric.wocBalanceRateLimited": "Beperkte $WOC-saldoverzoeken",
   "usage.metric.wocBalanceRpc": "Solana RPC-saldoreads",

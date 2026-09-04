@@ -32,6 +32,7 @@ import { BG_GRAVEYARDS } from './battleground_layout';
 import {
   battlegroundOrigin,
   DELVES,
+  delveAt,
   dungeonAt,
   isDelvePos,
   isRiftPos,
@@ -134,6 +135,15 @@ function ghostGraveyard(
     const door = DELVES[delve.delveId]?.doorPos;
     if (door) return nearestOverworldGraveyard(door.x, door.z, graveyards, fallback);
   }
+  const unclaimedDelve = isDelvePos(p.pos.x) ? delveAt(p.pos.x) : null;
+  if (unclaimedDelve) {
+    return nearestOverworldGraveyard(
+      unclaimedDelve.doorPos.x,
+      unclaimedDelve.doorPos.z,
+      graveyards,
+      fallback,
+    );
+  }
   // A rift death returns the spirit to the overworld graveyard nearest where the
   // player STEPPED THROUGH the portal (the instance's returnPos), not the far-off
   // rift band (which would resolve to whatever zone happens to be nearest in raw
@@ -171,11 +181,10 @@ export function releasePlayerSpirit(
   // a stale arenaMatches entry (jail/cross-queue leaks) once held this gate
   // shut for a whole bg match, so the guard must never outrank the bg arm.
   if (ctx.arenaMatches.has(p.id) && !ctx.bgMatches.has(p.id)) return;
-  if (isDelvePos(p.pos.x)) {
-    // Delves keep their own bounded respawn rules (see entity_roster), no ghost run.
-    releaseSpiritInDelve(ctx, meta.entityId);
-    return;
-  }
+  // Delves keep their own bounded respawn rules (see entity_roster), no ghost run.
+  // A delve corpse no run claims falls through to the graveyard instead of staying
+  // dead forever, which is the only escape left once a run cannot be resolved.
+  if (isDelvePos(p.pos.x) && releaseSpiritInDelve(ctx, meta.entityId)) return;
   releaseAtNearestGraveyard(ctx, meta, p, graveyards, fallback);
 }
 
@@ -226,6 +235,7 @@ export function moveToGraveyardForUnstuck(ctx: SimContext, pid?: number): void {
   delete p.queuedOnSwingCostMultiplier;
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
+  p.queuedCastTargetId = null;
   // Applied last: the sickness drains stamina, so recalcPlayerStats (via applyAura) rebuilds
   // the pools and carries the current hp/mana FRACTIONS into the reduced maxima. A player at
   // full health arrives at full health of a smaller bar rather than over the top of it.
@@ -295,6 +305,7 @@ function releaseAtNearestGraveyard(
   delete p.queuedOnSwingCostMultiplier;
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
+  p.queuedCastTargetId = null;
   p.combatTimer = 99;
   p.inCombat = false;
   // No event: the client transitions to the ghost UI from the snapshot's ghost flag.
@@ -425,6 +436,7 @@ function reviveAt(
   p.queuedOnSwing = null;
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
+  p.queuedCastTargetId = null;
   p.combatTimer = 99;
   p.inCombat = false;
   // Apply sickness last: applyAura -> recalcPlayerStats preserves the hp/resource

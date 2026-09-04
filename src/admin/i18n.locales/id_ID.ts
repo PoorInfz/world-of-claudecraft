@@ -1168,4 +1168,8 @@ export const id_ID: Record<string, string> = {
   'wealth.purse': 'Tentang karakter:',
   'wealth.total': 'Total:',
   'wealth.updatedAt': 'diperbarui {when}',
+
+  // Release-tier autoFillable fill (id_ID worklist).
+  'usage.metric.walletHandoffAuthorizationEvicted': 'Penggusuran serah terima dompet desktop',
+  'usage.metric.walletHandoffCreateRejected': 'Serah terima dompet desktop yang ditolak',
 };

@@ -178,6 +178,8 @@ export const zh_CN: AdminTranslations = {
   "usage.cacheColEvictions": "淘汰",
   "usage.cacheEntriesOfMax": "{entries} / {max}",
   "usage.notAvailable": "不可用",
+  "usage.metric.walletHandoffAuthorizationEvicted": "桌面版钱包交接逐出",
+  "usage.metric.walletHandoffCreateRejected": "桌面版钱包交接被拒",
   "usage.metric.wocBalanceApi": "$WOC 余额 API 请求",
   "usage.metric.wocBalanceRateLimited": "$WOC 余额限流请求",
   "usage.metric.wocBalanceRpc": "Solana RPC 余额读取",

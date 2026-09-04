@@ -8,6 +8,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { RAW_COOKING_CATCH_IDS } from '../src/sim/content/items';
+import { MECH_CHROMAS, mechChromaItemId } from '../src/sim/content/skins';
 import { ITEMS } from '../src/sim/data';
 import { MATERIAL_ITEM_IDS } from '../src/sim/material_taxonomy';
 import { baseMaterialFor } from '../src/sim/professions/material_grades';
@@ -66,6 +67,34 @@ describe('the tooltip kind line for material grades', () => {
     expect(itemKindLabel('junk', 'game_meat')).toBe('Material');
     expect(tooltipHtml('game_meat')).toContain('Material');
     expect(tooltipHtml('game_meat')).not.toMatch(/\bJunk\b/);
+  });
+
+  it('every mech chroma plate reads Skin, not Tool; the spinner token keeps Tool', () => {
+    for (const chroma of MECH_CHROMAS) {
+      const plateId = mechChromaItemId(chroma.id);
+      expect(plateId, chroma.id).toBeTruthy();
+      const def = ITEMS[plateId ?? ''];
+      expect(def?.kind, plateId ?? undefined).toBe('tool'); // internal kind untouched
+      expect(itemKindLabel('tool', plateId ?? undefined), plateId ?? undefined).toBe('Skin');
+    }
+    // Amber Crimson end to end: "Uncommon Skin", and the Tool word is gone.
+    const html = tooltipHtml('amber_crimson_armor_plate');
+    expect(html).toContain('Uncommon Skin');
+    expect(html).not.toMatch(/\bTool\b/);
+    // The Alien Armor Plate is the skin-select TOKEN, not a chroma plate:
+    // outside the split on purpose (scoped to the exchange's chroma taxonomy).
+    expect(itemKindLabel('tool', 'alien_armor_plate')).toBe('Tool');
+    // A plain tool with no id keeps Tool.
+    expect(itemKindLabel('tool')).toBe('Tool');
+  });
+
+  it('Core of the Last Flame reads Epic Material, not Epic Junk', () => {
+    expect(ITEMS.lastflame_core.kind).toBe('junk');
+    expect(MATERIAL_ITEM_IDS.has('lastflame_core')).toBe(true);
+    expect(itemKindLabel('junk', 'lastflame_core')).toBe('Material');
+    const html = tooltipHtml('lastflame_core');
+    expect(html).toContain('Epic Material');
+    expect(html).not.toContain('Epic Junk');
   });
 
   it('ordinary junk-kind items keep the Junk line when not honest materials', () => {

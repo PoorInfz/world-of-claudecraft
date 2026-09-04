@@ -178,6 +178,8 @@ export const tr_TR: AdminTranslations = {
   "usage.cacheColEvictions": "Tahliyeler",
   "usage.cacheEntriesOfMax": "{entries} / {max}",
   "usage.notAvailable": "yok",
+  "usage.metric.walletHandoffAuthorizationEvicted": "Masaüstü cüzdan devri tahliyeleri",
+  "usage.metric.walletHandoffCreateRejected": "Reddedilen masaüstü cüzdan devirleri",
   "usage.metric.wocBalanceApi": "$WOC bakiye API istekleri",
   "usage.metric.wocBalanceRateLimited": "Kısıtlanan $WOC bakiye istekleri",
   "usage.metric.wocBalanceRpc": "Solana RPC bakiye okumaları",

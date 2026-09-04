@@ -1190,4 +1190,7 @@ export const es: Record<string, string> = {
   'wealth.purse': 'Sobre personajes:',
   'wealth.total': 'Total:',
   'wealth.updatedAt': 'actualizado {when}',
+  'usage.metric.walletHandoffAuthorizationEvicted':
+    'Expulsiones de traspasos de cartera de escritorio',
+  'usage.metric.walletHandoffCreateRejected': 'Rechazos de traspasos de cartera de escritorio',
 };

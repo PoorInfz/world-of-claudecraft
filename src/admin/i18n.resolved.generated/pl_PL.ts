@@ -178,6 +178,8 @@ export const pl_PL: AdminTranslations = {
   "usage.cacheColEvictions": "Usunięcia",
   "usage.cacheEntriesOfMax": "{entries} / {max}",
   "usage.notAvailable": "nd.",
+  "usage.metric.walletHandoffAuthorizationEvicted": "Usunięcia autoryzacji przekazania portfela z komputera",
+  "usage.metric.walletHandoffCreateRejected": "Odrzucenia przekazania portfela z komputera",
   "usage.metric.wocBalanceApi": "Żądania API salda $WOC",
   "usage.metric.wocBalanceRateLimited": "Ograniczone żądania salda $WOC",
   "usage.metric.wocBalanceRpc": "Odczyty salda Solana RPC",

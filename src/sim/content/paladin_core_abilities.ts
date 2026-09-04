@@ -207,7 +207,11 @@ const common: AbilityDef[] = [
     learnLevel: 6,
     cost: 60,
     castTime: 8,
-    cooldown: 0,
+    // Five minutes, the shared resurrection cooldown (owner directive 2026-09-01):
+    // requiresOutOfCombat alone is not a throttle, because a caster who never
+    // draws aggro drops combat mid-fight once the linger passes, so a
+    // zero-cooldown rez could be chained repeatedly inside a single encounter.
+    cooldown: 300,
     range: 30,
     school: 'holy',
     requiresTarget: true,
@@ -706,7 +710,7 @@ const protection: AbilityDef[] = [
       },
     ],
     description:
-      'Instantly bind a distant enemy with a sacred chain. The enemy travels toward you at 18 m per second until it reaches 3 m, then is slowed by 50% for 4 sec. During Ascension it binds a second nearby enemy.',
+      'Instantly bind a distant enemy with a sacred chain. The enemy travels toward you at 18 m per second until it reaches 3 m, then is slowed by 50% for 4 sec. During Ascension it binds a second nearby enemy. Bosses cannot be pulled or slowed.',
   },
   {
     id: 'consecration',
@@ -798,7 +802,13 @@ const devotions: AbilityDef[] = [
     id: 'dawn_devotion',
     name: 'Dawn Devotion',
     class: 'paladin',
-    learnLevel: 5,
+    // Level 3, not 5: Hammer of Grace moving to 1 for the Proving Shore left
+    // level 3 as the one early paladin ding with nothing new to press, and
+    // the early-curve guard requires a core active on every ding from 2-6.
+    // This was one of two core actives stacked on 5 (the spec/talent ding);
+    // Solar Step stays there because the row-5 pick that upgrades it expects
+    // it learned by then.
+    learnLevel: 3,
     cost: 35,
     castTime: 0,
     cooldown: 0,
