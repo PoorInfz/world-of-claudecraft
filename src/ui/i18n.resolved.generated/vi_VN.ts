@@ -9766,11 +9766,8 @@ export const vi_VN: EnTranslations = {
       "elixir": "Tiên Dược",
       "bag": "Túi",
       "mount": "Thú Cưỡi",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Ngoại hình"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Giáp",
@@ -13304,7 +13301,6 @@ export const vi_VN: EnTranslations = {
       "ps_passing_stone": {
         "name": "Đá Từ Trần"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const vi_VN: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Lõi Ngọn Lửa Cuối Cùng"
       },
@@ -13943,7 +13939,6 @@ export const vi_VN: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Đũa Tia Lửa Đã Dập Tắt"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Nước Suối Được Tạo Phép"

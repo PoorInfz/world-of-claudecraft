@@ -9766,11 +9766,8 @@ export const en_CA: EnTranslations = {
       "elixir": "Elixir",
       "bag": "Bag",
       "mount": "Mount",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Skin"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Armour",
@@ -13304,7 +13301,6 @@ export const en_CA: EnTranslations = {
       "ps_passing_stone": {
         "name": "Passing Stone"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const en_CA: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Core of the Last Flame"
       },
@@ -13943,7 +13939,6 @@ export const en_CA: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Wand of Quenched Sparks"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Conjured Springwater"

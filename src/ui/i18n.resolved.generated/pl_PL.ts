@@ -9766,11 +9766,8 @@ export const pl_PL: EnTranslations = {
       "elixir": "Eliksir",
       "bag": "Torba",
       "mount": "Wierzchowiec",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Skórka"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Pancerz",
@@ -13304,7 +13301,6 @@ export const pl_PL: EnTranslations = {
       "ps_passing_stone": {
         "name": "Kamień Przejścia"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const pl_PL: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Rdzeń Ostatniego Płomienia"
       },
@@ -13943,7 +13939,6 @@ export const pl_PL: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Różdżka Wygaszonych Iskier"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Wyczarowana woda źródlana"

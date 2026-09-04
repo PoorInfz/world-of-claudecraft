@@ -58,11 +58,8 @@ import { isEscortNpcTemplate } from '../escort';
 import { unlockIgnivarRaidGate } from '../ignivar_raid_progression';
 import { isPinnedInPlace, releasePin } from '../instances/instance_combat_hold';
 import { PLAYER_BODY_RADIUS, PLAYER_SWIM_DEPTH } from '../pathfind';
-<<<<<<< HEAD
 import { isBuddyMob, updateBuddyMob } from '../pet/buddy_ai';
-=======
 import { holdPetCorpseForBgWave } from '../pet/pet_corpse_hold';
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
 import { noteMatchPetUnravelled } from '../pet/pet_match_return';
 import { notePetUnravelledOnOwnerDeath } from '../pet/pet_owner_revive';
 import { corpseHasDecayed } from '../respawn_policy';

@@ -9766,11 +9766,8 @@ export const fr_CA: EnTranslations = {
       "elixir": "Élixir",
       "bag": "Sac",
       "mount": "Monture",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Apparence"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Armure",
@@ -13304,7 +13301,6 @@ export const fr_CA: EnTranslations = {
       "ps_passing_stone": {
         "name": "Pierre de trépas"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const fr_CA: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Cœur de la Dernière Flamme"
       },
@@ -13943,7 +13939,6 @@ export const fr_CA: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Baguette des Étincelles éteintes"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Eau de source conjurée"

@@ -9766,11 +9766,8 @@ export const en_XA: EnTranslations = {
       "elixir": "[Éļíẋíŕ]",
       "bag": "[Ɓáĝ]",
       "mount": "[Ɱóúñţ]",
-<<<<<<< HEAD
-      "buddy": "[Ɓúððý]"
-=======
+      "buddy": "[Ɓúððý]",
       "skin": "[Šķíñ]"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "[Áŕɱóŕ]",
@@ -13304,7 +13301,6 @@ export const en_XA: EnTranslations = {
       "ps_passing_stone": {
         "name": "[Þáššíñĝ Šţóñé]"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "[Éɱƀéŕ Ƒóẋ Ŵĥíšţļé]"
       },
@@ -13337,7 +13333,7 @@ export const en_XA: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "[Ðŕáĝóñ Ŵĥíšţļé]"
-=======
+      },
       "lastflame_core": {
         "name": "[Çóŕé óƒ ţĥé Ļášţ Ƒļáɱé]"
       },
@@ -13943,7 +13939,6 @@ export const en_XA: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "[Ŵáñð óƒ Ɋúéñçĥéð Šþáŕķš]"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "[Çóñĵúŕéð Šþŕíñĝŵáţéŕ]"

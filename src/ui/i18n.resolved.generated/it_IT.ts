@@ -9766,11 +9766,8 @@ export const it_IT: EnTranslations = {
       "elixir": "Elisir",
       "bag": "Borsa",
       "mount": "Cavalcatura",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Aspetto"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Armatura",
@@ -13304,7 +13301,6 @@ export const it_IT: EnTranslations = {
       "ps_passing_stone": {
         "name": "Pietra del trapasso"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const it_IT: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Nucleo dell’Ultima Fiamma"
       },
@@ -13943,7 +13939,6 @@ export const it_IT: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Bacchetta delle Scintille Estinte"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Acqua sorgiva evocata"

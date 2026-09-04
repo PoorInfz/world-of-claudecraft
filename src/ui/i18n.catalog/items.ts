@@ -2460,7 +2460,6 @@ const ITEM_ENTITY_IDS = [
   'ps_lustrous_pearl',
   'mother_of_pearl',
   'ps_passing_stone',
-<<<<<<< HEAD
   'whistle_ember_fox',
   'whistle_moss_hare',
   'whistle_frog',
@@ -2472,7 +2471,6 @@ const ITEM_ENTITY_IDS = [
   'whistle_tiger',
   'whistle_cate_coin',
   'whistle_dragon',
-=======
   // Crucible raid professions (docs/prd/ignivar-raid-professions.md).
   'lastflame_core',
   // Ignivar raid loot (Crucible of the Last Spring), src/sim/content/ignivar_loot.ts.
@@ -2677,7 +2675,6 @@ const ITEM_ENTITY_IDS = [
   'forgefire_spire',
   'springtouched_crozier',
   'wand_of_quenched_sparks',
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
 ] as const;
 
 type ItemEntityId = (typeof ITEM_ENTITY_IDS)[number];
@@ -2825,7 +2822,6 @@ const APPENDED_ITEM_NAMES: Partial<Record<ItemEntityId, string>> = {
   ps_lustrous_pearl: 'Lustrous Pearl',
   mother_of_pearl: 'Mother of Pearl',
   ps_passing_stone: 'Passing Stone',
-<<<<<<< HEAD
   // Buddies (cosmetic followers), same English-appended treatment until the
   // release fill folds them into the per-locale arrays.
   whistle_ember_fox: 'Ember Fox Whistle',
@@ -2839,7 +2835,6 @@ const APPENDED_ITEM_NAMES: Partial<Record<ItemEntityId, string>> = {
   whistle_tiger: 'Tiger Whistle',
   whistle_cate_coin: 'Cate Coin Whistle',
   whistle_dragon: 'Dragon Whistle',
-=======
   // Crucible raid professions, English-appended like the waves above (the
   // maintainer fills every locale at release).
   lastflame_core: 'Core of the Last Flame',
@@ -3047,7 +3042,6 @@ const APPENDED_ITEM_NAMES: Partial<Record<ItemEntityId, string>> = {
   forgefire_spire: 'Forgefire Spire',
   springtouched_crozier: 'Springtouched Crozier',
   wand_of_quenched_sparks: 'Wand of Quenched Sparks',
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
 };
 
 function itemTranslations(names: readonly string[]): ItemEntityTranslations {

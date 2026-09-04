@@ -4843,11 +4843,8 @@ const ALL_DELTA_KEYS = [
   'bank',
   'bg',
   'blk',
-<<<<<<< HEAD
-  'budOwn',
-=======
   'bpsl',
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+  'budOwn',
   'buyback',
   'bval',
   'cardDuel',
@@ -5919,11 +5916,7 @@ describe('gather node cooldown wire round trip (ncd)', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-<<<<<<< HEAD
-  it('ALL_DELTA_KEYS contains exactly 84 unique keys in sorted order', () => {
-=======
-  it('ALL_DELTA_KEYS contains exactly 90 unique keys in sorted order', () => {
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+  it('ALL_DELTA_KEYS contains exactly 91 unique keys in sorted order', () => {
     // +1: guildBank (Guild Bank Phase 2), +1: the battleground bg key, +1: the
     // commission order board's corder key (issue #1298), +1: the character
     // sheet's lifetime played-time key ptime, for 67, then +16: the static
@@ -5938,11 +5931,6 @@ describe('delta-key contract pins (anti-drift)', () => {
     // for 86. Every v0.36.0 sync conflicts here because each side pins its own
     // additions alone; the merged tree carries all of them, and this number
     // came from a run on the merged tree. The New Eastbrook program's Vale Cup
-<<<<<<< HEAD
-    // retirement then removes sport/vcup/vcupb, for 83.
-    expect(ALL_DELTA_KEYS).toHaveLength(84);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(84);
-=======
     // retirement then removes sport/vcup/vcupb, for 83, and the healPower
     // seam adds the derived Healing Power scalar hpw for 84. Bank Storage
     // Phase 2 then adds the purchased-slots key bpsl, the Materials Vault
@@ -5954,9 +5942,10 @@ describe('delta-key contract pins (anti-drift)', () => {
     // adds offhandWeapon (delta-guarded like weapon/stats: a gear swap, not a
     // per-tick change; dualWielding rides no key of its own, it is always
     // exactly offhandWeapon !== null, so the client derives it), for 90.
-    expect(ALL_DELTA_KEYS).toHaveLength(90);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(90);
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+    // 90 upstream keys plus our own budOwn, measured on the merged tree when
+    // the 47c1aacaae conflict markers were resolved.
+    expect(ALL_DELTA_KEYS).toHaveLength(91);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(91);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -6041,17 +6030,12 @@ describe('delta-key contract pins (anti-drift)', () => {
     // for 83, then reliq (Reliquary Phase 3 sparse blob) for 84, the nameplate
     // border echo aborder for 85, and the authored modular look `app` for 86.
     // The Vale Cup retirement then removes sport/vcup/vcupb, for 83, and the
-<<<<<<< HEAD
-    // new Buddies facet's owned-collection key budOwn adds one back, for 84.
-    expect(scraped.size).toBe(84);
-=======
     // healPower seam adds the derived Healing Power scalar hpw for 84. Bank
     // Storage Phase 2 then adds bpsl, vault, and cvault, for 87. The
     // maybeSerialized arm of the scrape then surfaces the two capability-gated
     // direct emits, auras and de, for 89. The off-hand bar adds offhandWeapon,
     // for 90.
-    expect(scraped.size).toBe(90);
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+    expect(scraped.size).toBe(91);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

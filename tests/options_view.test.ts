@@ -557,12 +557,9 @@ const GENERAL_KEYS = [
   'showReliquaryTracker',
   'showOwnNameplate',
   'showPlayerNameplates',
-<<<<<<< HEAD
   'showPetNames',
-=======
   'confirmVendorSell',
   'note:hudChrome.options.confirmVendorSellNote',
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
 ];
 const FRAMES_KEYS = [
   'partyFrameStyle',

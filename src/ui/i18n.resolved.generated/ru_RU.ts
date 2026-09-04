@@ -9766,11 +9766,8 @@ export const ru_RU: EnTranslations = {
       "elixir": "Эликсир",
       "bag": "Сумка",
       "mount": "Транспорт",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Облик"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Броня",
@@ -13304,7 +13301,6 @@ export const ru_RU: EnTranslations = {
       "ps_passing_stone": {
         "name": "Камень Ухода"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const ru_RU: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Ядро Последнего Пламени"
       },
@@ -13943,7 +13939,6 @@ export const ru_RU: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Жезл угасших искр"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Сотворённая родниковая вода"

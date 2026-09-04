@@ -9766,11 +9766,8 @@ export const ja_JP: EnTranslations = {
       "elixir": "エリクサー",
       "bag": "バッグ",
       "mount": "マウント",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "スキン"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "防御力",
@@ -13304,7 +13301,6 @@ export const ja_JP: EnTranslations = {
       "ps_passing_stone": {
         "name": "たましいの石"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const ja_JP: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "最後の炎の核"
       },
@@ -13943,7 +13939,6 @@ export const ja_JP: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "消えた火花のワンド"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "魔法の湧き水"

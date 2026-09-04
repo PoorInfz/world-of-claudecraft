@@ -9766,11 +9766,8 @@ export const id_ID: EnTranslations = {
       "elixir": "Eliksir",
       "bag": "Tas",
       "mount": "Tunggangan",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Tampilan"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Zirah",
@@ -13304,7 +13301,6 @@ export const id_ID: EnTranslations = {
       "ps_passing_stone": {
         "name": "Batu Pelepasan"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const id_ID: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Inti Api Terakhir"
       },
@@ -13943,7 +13939,6 @@ export const id_ID: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Tongkat Percik Padam"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Air Mata Air Sihir"

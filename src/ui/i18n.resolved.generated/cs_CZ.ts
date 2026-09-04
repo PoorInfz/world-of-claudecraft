@@ -9766,11 +9766,8 @@ export const cs_CZ: EnTranslations = {
       "elixir": "Elixír",
       "bag": "Batoh",
       "mount": "Jízdní zvíře",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Vzhled"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Brnění",
@@ -13304,7 +13301,6 @@ export const cs_CZ: EnTranslations = {
       "ps_passing_stone": {
         "name": "Kámen přechodu"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const cs_CZ: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Jádro Posledního plamene"
       },
@@ -13943,7 +13939,6 @@ export const cs_CZ: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Hůlka Uhašených jisker"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Vyčarovaná pramenitá voda"

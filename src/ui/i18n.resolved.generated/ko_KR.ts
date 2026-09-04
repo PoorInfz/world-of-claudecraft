@@ -9766,11 +9766,8 @@ export const ko_KR: EnTranslations = {
       "elixir": "비약",
       "bag": "가방",
       "mount": "탈것",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "스킨"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "방어도",
@@ -13304,7 +13301,6 @@ export const ko_KR: EnTranslations = {
       "ps_passing_stone": {
         "name": "안식의 돌"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const ko_KR: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "마지막 불꽃의 핵"
       },
@@ -13943,7 +13939,6 @@ export const ko_KR: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "꺼진 불꽃의 마법봉"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "창조된 샘물"

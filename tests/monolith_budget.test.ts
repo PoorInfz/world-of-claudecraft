@@ -331,15 +331,6 @@ const MONOLITHS: MonolithRow[] = [
     // ceiling is the exact merged count.
     // Re-pinned to the integration merge of the latest v0.40.0 (the touch UI
     // rework); exact merged count.
-<<<<<<< HEAD
-    // 2026-08-27: the Buddies feature's bespoke render module (buddy_render.ts,
-    // buddy_follow.ts) is gone — a buddy is now a real owned mob entity
-    // rendered through the ordinary per-mob view path, so renderer.ts lost the
-    // namespace import, the EntityView extends clause, and the three
-    // create/dispose/per-frame call sites it used to need. Ceiling lowered to
-    // the new exact count, zero slack.
-    ceiling: 13331,
-=======
     // +1 for the entry horizon's scenery cull far at the live frame (one local
     // the four reveal-gated painters share); the prewarm frame inlines it.
     // Re-pinned at the v0.41.0 sync merge: the release arm's battleground
@@ -362,8 +353,10 @@ const MONOLITHS: MonolithRow[] = [
     // Re-pinned at the PR 3685 base sync (release v0.41.0 through the raid
     // branch): both arms edited the renderer and the union lands at the count
     // below. Measured on the merged tree. Exact merged count, zero headroom.
-    ceiling: 13249,
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+    // Re-measured when the 47c1aacaae merge was finally resolved: that commit
+    // landed with conflict markers still in the tree, so neither arm's number
+    // described the merged file. Measured, not reconciled by arithmetic.
+    ceiling: 13259,
     seam: 'a new src/render/<thing>.ts module the renderer calls (src/render/CLAUDE.md)',
   },
   {
@@ -447,16 +440,6 @@ const MONOLITHS: MonolithRow[] = [
     // shape as its craftVaultStockFor neighbor. The raise is this PR's
     // REQUEST, not a settled ruling: merging is what ratifies it. Exact
     // count, zero slack.
-<<<<<<< HEAD
-    // Plus 7 at the v0.39.3 main back-merge: the Double Honor port grew the
-    // sim arm on main while the release pin sat at zero slack (the known
-    // both-arms compound). Exact merged count, zero slack.
-    // Plus 23 for the Buddies feature: the sanctioned thin-delegate seam
-    // (ownedBuddiesFor/toggleBuddyFor + the two IWorldBuddies facade methods),
-    // mirroring the existing mount delegates exactly; the actual mechanic
-    // lives in src/sim/buddies.ts. Exact count, zero slack.
-    ceiling: 12561,
-=======
     // Plus 4 for the groundAimPlacementPreview IWorld member (the placement
     // reticle's true-landing preview; the sanctioned both-worlds seam, a
     // one-line delegate into combat/heroic_leap.ts). Exact count, zero slack.
@@ -486,8 +469,10 @@ const MONOLITHS: MonolithRow[] = [
     // SimContext host binding (the cached engaged-pass set the /combat readout
     // reads through the seam). The old row had been carrying slack; re-pinned
     // to the measured count. Exact count, zero slack.
-    ceiling: 12332,
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+    // Re-measured when the 47c1aacaae merge was finally resolved: that commit
+    // landed with conflict markers still in the tree, so neither arm's number
+    // described the merged file. Measured, not reconciled by arithmetic.
+    ceiling: 12347,
     seam: 'a sim system module behind SimContext (src/sim/CLAUDE.md)',
   },
   {
@@ -552,36 +537,6 @@ const MONOLITHS: MonolithRow[] = [
     // in the self-snapshot build plus its wireParkedMana import); the
     // branch's own surface is unchanged (exact merged count, zero headroom).
     file: 'server/game.ts',
-<<<<<<< HEAD
-    // Re-pinned 10900 -> 10909 for the Proving Shore branch: the +9 is the
-    // tutorial_start dispatch case (a thin delegate onto sim.startTutorial,
-    // where the real gates live) and the firstCharacter field on the join
-    // meta plumb; the island's ferry and greeting logic itself lives in sim
-    // modules. Exact merged count.
-    // Re-pinned to the eastbrook-plus-tutorial integration merge output: the
-    // combined tree lands below the branch ceilings, so keep the exact merged
-    // count.
-    // Re-pinned +43 for the guild pledge board: four dispatch cases (thin
-    // validated delegates onto SocialService), the applyPledge transport arm,
-    // and the join-time pledge stamp in sendSocialSnapshot; the service logic
-    // itself lives in server/social.ts. Exact count.
-    // Re-pinned to the exact merged count of the v0.40.0 sync merge (the
-    // OSSBrain v0.40 batch on the release arm). Exact count, zero slack.
-    // Raised +11 for the guild-signpost fill: the noticeboardGuilds provider
-    // field and the one routeEvents call into server/noticeboard_guilds.ts
-    // (thin-consumer wiring; the mapping and fill logic live in that
-    // module). Exact count, zero slack. Plus 4 for the board-note hard-tier
-    // screen: the SocialService construction wires ChatFilter.findHardHit
-    // (the screening logic lives in chat_filter.ts and social.ts). Then
-    // LOWERED to the exact count again when the signpost fill moved out of
-    // routeEvents into the guild board window's live REST read (the
-    // noticeboard_guilds event transform is deleted). Exact count, zero
-    // slack.
-    // Plus 13 for the Buddies feature: the identityFields bud mirror, the
-    // budOwn self field, and the buddy_toggle dispatch case (thin wiring;
-    // the mechanic lives in src/sim/buddies.ts). Exact count, zero slack.
-    ceiling: 10658,
-=======
     // Lowered from 10900 with the vault-wire extraction (server/vault_wire.ts
     // took the vault dispatch bodies, the cvault cadence rule, and the
     // craft-consume batch); bank-storage phase 06+ server code lands THERE,
@@ -644,36 +599,14 @@ const MONOLITHS: MonolithRow[] = [
     // pass-through and the two port entries with room to spare; the review
     // hardening added the per-guild holder index hooks (touch, resync,
     // dropGuild, dropSession) and the coalesced flush fields. Zero margin.
-    ceiling: 10586,
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+    // Re-measured when the 47c1aacaae merge was finally resolved: that commit
+    // landed with conflict markers still in the tree, so neither arm's number
+    // described the merged file. Measured, not reconciled by arithmetic.
+    ceiling: 10601,
     seam: 'a sibling server module; see the hot-path seams in server/CLAUDE.md',
   },
   {
     file: 'src/net/online.ts',
-<<<<<<< HEAD
-    // Re-pinned to the eastbrook-plus-tutorial integration merge output:
-    // both parents' additions combine, so keep the exact merged count.
-    // Re-pinned +29 for the guild pledge board: the four one-line command
-    // senders, the entity pg/gt decode, and the social-frame pledge-field
-    // normalization (wire mirror code that must live on ClientWorld). Exact
-    // count.
-    // Re-pinned to the exact merged count of the v0.40.0 sync merge: both
-    // arms added wire-mirror code, so the merged file lands above either
-    // parent pin. Exact count, zero slack.
-    // Plus 18 for the guildRoster REST mirror (the signpost guild board's
-    // roster drill-in; the cached read lives in server/guild_roster.ts),
-    // then re-pinned when the mirror gained the trust-boundary row
-    // validation and the 404-vs-transport-failure split, plus the roster
-    // class field. Exact count, zero slack.
-    // Lowered to the exact size after the ApiError family moved into
-    // src/net/api_error.ts; the freed lines paid for the R11 wallet
-    // re-auth params on linkWallet/unlinkWallet.
-    // Plus 23 for the Buddies feature: the entity default + identity mirror
-    // decode, the selfOwnedBuddies field + budOwn self-decode, and the two
-    // IWorldBuddies facade methods (thin wire-mirror wiring, the same shape
-    // as the existing IWorldMounts arm). Exact count, zero slack.
-    ceiling: 5863,
-=======
     // Re-pinned at the SIXTH release/v0.40.0 sync (release tip 9a89e3483e).
     // Neither arm crossed 5950 on its own (branch 5942, release 5877 over a
     // base of 5858); only the merge does, because both arms' growth stacks.
@@ -736,8 +669,10 @@ const MONOLITHS: MonolithRow[] = [
     // is extraction, so the whole blankEntity placeholder literal moved to
     // src/net/blank_entity.ts (pure data, no ClientWorld state). Exact count,
     // zero slack.
-    ceiling: 5684,
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+    // Re-measured when the 47c1aacaae merge was finally resolved: that commit
+    // landed with conflict markers still in the tree, so neither arm's number
+    // described the merged file. Measured, not reconciled by arithmetic.
+    ceiling: 5706,
     seam: 'a src/net sibling module (the refactor/net-online split is the template)',
   },
   {

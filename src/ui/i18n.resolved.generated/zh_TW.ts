@@ -9766,11 +9766,8 @@ export const zh_TW: EnTranslations = {
       "elixir": "藥劑",
       "bag": "背包",
       "mount": "坐騎",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "外觀"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "護甲",
@@ -13304,7 +13301,6 @@ export const zh_TW: EnTranslations = {
       "ps_passing_stone": {
         "name": "往生石"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const zh_TW: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "末焰之核"
       },
@@ -13943,7 +13939,6 @@ export const zh_TW: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "熄火花魔杖"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "魔法泉水"

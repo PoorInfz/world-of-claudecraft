@@ -9766,11 +9766,8 @@ export const tr_TR: EnTranslations = {
       "elixir": "İksir",
       "bag": "Çanta",
       "mount": "Binek",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Görünüm"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Zırh",
@@ -13304,7 +13301,6 @@ export const tr_TR: EnTranslations = {
       "ps_passing_stone": {
         "name": "Geçiş Taşı"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const tr_TR: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Son Alevin Özü"
       },
@@ -13943,7 +13939,6 @@ export const tr_TR: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Sönmüş Kıvılcımların Asası"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Sihirle Yaratılmış Kaynak Suyu"

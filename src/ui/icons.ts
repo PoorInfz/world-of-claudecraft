@@ -5351,12 +5351,19 @@ export const UI_ITEM_IMAGE_IDS = new Set<string>(['backpack']);
 // bell icons are rendered from their own world models
 // (scripts/render_island_item_icons.mjs), so they ship with committed art like
 // every other item.
-<<<<<<< HEAD
 // The buddy whistle set lands here: real painted art per docs/design/
 // item-icon-art-style.md still needs to be commissioned for every one of
 // them (the committed GLBs under public/models/buddies/ are the 3D world
 // models the buddy itself renders as, not the 2D bag/tooltip icon).
+//
+// The Ignivar raid loot table (content/ignivar_loot.ts) currently carries the
+// whole debt: 192 non-weapon items behind the development-only Crucible raid,
+// enumerated here until their painted wave lands (the raid itself ships with a
+// dev-only entrance, so no player-facing surface shows a procedural icon yet).
+// The 10 raid weapons are excluded: weapons never enter this set (guard A2);
+// they ship painted art through WEAPON_IMAGE_IDS like every other weapon.
 export const ITEM_ART_PENDING = new Set<string>([
+  ...IGNIVAR_ART_PENDING_ITEM_IDS,
   'whistle_ember_fox',
   'whistle_moss_hare',
   'whistle_frog',
@@ -5369,16 +5376,6 @@ export const ITEM_ART_PENDING = new Set<string>([
   'whistle_cate_coin',
   'whistle_dragon',
 ]);
-=======
-//
-// The Ignivar raid loot table (content/ignivar_loot.ts) currently carries the
-// whole debt: 192 non-weapon items behind the development-only Crucible raid,
-// enumerated here until their painted wave lands (the raid itself ships with a
-// dev-only entrance, so no player-facing surface shows a procedural icon yet).
-// The 10 raid weapons are excluded: weapons never enter this set (guard A2);
-// they ship painted art through WEAPON_IMAGE_IDS like every other weapon.
-export const ITEM_ART_PENDING = new Set<string>(IGNIVAR_ART_PENDING_ITEM_IDS);
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
 
 /** Static URL of an item's (or a UI pseudo-item's) image icon, or null if it uses a recipe. */
 export function itemImageUrl(id: string): string | null {

@@ -75,13 +75,10 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // six vcup_* send + dispatch pairs (docs/design/eastbrook-revamp/master-plan.md);
 // the Proving Shore tutorial adds its one start_tutorial pair back on top, and
 // the v0.40.0 sync merge brings the release side's one new pair with it.
-<<<<<<< HEAD
-const EXPECTED_SEND_COUNT = 200;
-const EXPECTED_DISPATCH_COUNT = 213;
-=======
-const EXPECTED_SEND_COUNT = 207;
-const EXPECTED_DISPATCH_COUNT = 220;
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+// Both arms added a command (ours buddy_toggle, upstream its raid set), so
+// these were re-measured on the merged tree at the 47c1aacaae resolution.
+const EXPECTED_SEND_COUNT = 208;
+const EXPECTED_DISPATCH_COUNT = 221;
 const EXPECTED_DISPATCH_ONLY_COUNT = 13;
 
 // The chat sub-channel routing switch (server/game.ts `switch

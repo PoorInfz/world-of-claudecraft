@@ -665,15 +665,9 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     // even when the total agrees. Only running the suite says what these
     // numbers really are; never reconcile them by arithmetic in the diff (the
     // numbers below were set from a suite run, not from this narrative).
-<<<<<<< HEAD
-    expect(IWORLD_MEMBERS.length).toBe(325);
-    expect(DATA_MEMBERS.length).toBe(85);
-    expect(METHOD_MEMBERS.length).toBe(240);
-=======
-    expect(IWORLD_MEMBERS.length).toBe(343);
+    expect(IWORLD_MEMBERS.length).toBe(345);
     expect(DATA_MEMBERS.length).toBe(95);
-    expect(METHOD_MEMBERS.length).toBe(248);
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+    expect(METHOD_MEMBERS.length).toBe(250);
   });
   it('has no duplicate member names', () => {
     const names = IWORLD_MEMBERS.map((m) => m.name);
@@ -2041,13 +2035,8 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the facet
 
   it('the facet union equals the pinned IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-<<<<<<< HEAD
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(325);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(325);
-=======
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(343);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(343);
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(345);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(345);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

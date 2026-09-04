@@ -9766,11 +9766,8 @@ export const de_DE: EnTranslations = {
       "elixir": "Elixier",
       "bag": "Tasche",
       "mount": "Reittier",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Skin"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Rüstung",
@@ -13304,7 +13301,6 @@ export const de_DE: EnTranslations = {
       "ps_passing_stone": {
         "name": "Übergangsstein"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const de_DE: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Kern der Letzten Flamme"
       },
@@ -13943,7 +13939,6 @@ export const de_DE: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "Stab der erloschenen Funken"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Herbeigezaubertes Quellwasser"

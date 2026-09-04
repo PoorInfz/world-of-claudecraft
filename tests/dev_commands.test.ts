@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest';
-<<<<<<< HEAD
 import { BUDDY_KEYS } from '../src/sim/content/buddies';
-=======
 import { parseBisGearFor } from '../src/sim/dev/parse_bis_loadouts';
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
 import { Sim } from '../src/sim/sim';
 import { MAX_LEVEL } from '../src/sim/types';
 import { EMPTY_TEST_WORLD } from './sim_shared';

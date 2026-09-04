@@ -687,12 +687,9 @@ export function buildInterfaceControls(
     boolToggle(s, 'showReliquaryTracker', 'hudChrome.options.showReliquaryTracker'),
     boolToggle(s, 'showOwnNameplate', 'hudChrome.options.showOwnNameplate'),
     boolToggle(s, 'showPlayerNameplates', 'hudChrome.options.showPlayerNameplates'),
-<<<<<<< HEAD
     boolToggle(s, 'showPetNames', 'hudChrome.options.showPetNames'),
-=======
     boolToggle(s, 'confirmVendorSell', 'hudChrome.options.confirmVendorSell'),
     note('hudChrome.options.confirmVendorSellNote'),
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
   ];
   // The desktop shell's GPU preference, last in the tab so the web arm's row
   // order is untouched. Gated on the bridge CAPABILITY, so it renders only in a

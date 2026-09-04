@@ -9766,11 +9766,8 @@ export const sv_SE: EnTranslations = {
       "elixir": "Elixir",
       "bag": "Väska",
       "mount": "Riddjur",
-<<<<<<< HEAD
-      "buddy": "Buddy"
-=======
+      "buddy": "Buddy",
       "skin": "Skin"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     "stats": {
       "armor": "Rustning",
@@ -13304,7 +13301,6 @@ export const sv_SE: EnTranslations = {
       "ps_passing_stone": {
         "name": "Övergångssten"
       },
-<<<<<<< HEAD
       "whistle_ember_fox": {
         "name": "Ember Fox Whistle"
       },
@@ -13337,7 +13333,7 @@ export const sv_SE: EnTranslations = {
       },
       "whistle_dragon": {
         "name": "Dragon Whistle"
-=======
+      },
       "lastflame_core": {
         "name": "Den sista lågans kärna"
       },
@@ -13943,7 +13939,6 @@ export const sv_SE: EnTranslations = {
       },
       "wand_of_quenched_sparks": {
         "name": "De slocknade gnistornas stav"
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
       },
       "conjured_water4": {
         "name": "Frambesvärjt källvatten"

@@ -414,7 +414,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     noDiscard: true,
     sellValue: 0,
   },
-<<<<<<< HEAD
   // Cosmetic buddy whistle. Owning the item IS owning the buddy (src/sim/
   // buddies.ts buddyOwned); it stays valid from the bank too, and it
   // transfers like any other unbound item, exactly like mount reins but with
@@ -543,7 +542,9 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     buddy: 'dragon',
     quality: 'epic',
     noVendorSell: true,
-=======
+    noDiscard: true,
+    sellValue: 0,
+  },
   // Developer-only, same treatment as the tank above: no acquisition path, so
   // it stays soulbound rather than tradable. Use /dev give reins_rickshaw_mount
   // while the feature remains under development.
@@ -554,7 +555,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     mount: 'rickshaw_mount',
     quality: 'epic',
     soulbound: true,
->>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     noDiscard: true,
     sellValue: 0,
   },
