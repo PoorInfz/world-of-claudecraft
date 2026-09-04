@@ -51,10 +51,22 @@ export type BuddyKey =
   | 'skeleton'
   | 'crystal_lich';
 
+/** How the Hunting window groups a companion. Mostly the follower's own mob
+ *  family says it (a wolf is a beast), but two groups are editorial and no
+ *  creature type carries them: 'elemental' for the rigs that are made of a
+ *  substance rather than of flesh, and 'celebrity' for the guest characters,
+ *  who are beasts to the sim and something else entirely to a collector.
+ *  Authored here rather than forced into MobFamily: bending a sim type to
+ *  carry a display label would corrupt it for everything else that reads it. */
+export type BuddyKind = 'beast' | 'elemental' | 'humanoid' | 'undead' | 'celebrity';
+
 export interface BuddyDef {
   key: BuddyKey;
   /** Canonical English display name (the HUD localizes via entities.mobs.buddy_<key>.name, src/ui/world_entity_i18n.ts). */
   name: string;
+  /** Overrides the family-derived grouping. Absent for every companion the
+   *  family already places correctly, which is most of them. */
+  kind?: BuddyKind;
 }
 
 export const BUDDIES: Record<BuddyKey, BuddyDef> = {
@@ -109,20 +121,24 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
   trollface: {
     key: 'trollface',
     name: 'Trollface',
+    kind: 'celebrity',
   },
   // epic
   ansem: {
     key: 'ansem',
     name: 'Ansem',
+    kind: 'celebrity',
   },
   triple_t: {
     key: 'triple_t',
     name: 'Triple T',
+    kind: 'celebrity',
   },
   // rare
   kekius: {
     key: 'kekius',
     name: 'Kekius',
+    kind: 'celebrity',
   },
   solbot: {
     key: 'solbot',
@@ -132,10 +148,12 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
   frostfire: {
     key: 'frostfire',
     name: 'Frostfire',
+    kind: 'elemental',
   },
   rocky: {
     key: 'rocky',
     name: 'Rocky',
+    kind: 'elemental',
   },
   // rare, currency vendors only: these three are the first buddies with a
   // named acquisition source that is NOT the global whistle drop (see

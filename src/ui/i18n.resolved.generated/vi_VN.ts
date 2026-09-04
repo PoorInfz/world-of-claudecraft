@@ -3484,8 +3484,10 @@ export const vi_VN: EnTranslations = {
       },
       "petKind": {
         "beast": "Beasts",
+        "elemental": "Elementals",
         "humanoid": "Humanoids",
-        "undead": "Undead"
+        "undead": "Undead",
+        "celebrity": "Celebrities"
       },
       "armor": {
         "cloth": "Cloth",

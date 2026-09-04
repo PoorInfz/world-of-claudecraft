@@ -4,10 +4,11 @@
 // COMPLETENESS and grouping, not about any one row's copy.
 
 import { describe, expect, it } from 'vitest';
-import { BUDDY_KEYS } from '../src/sim/content/buddies';
+import { BUDDIES, BUDDY_KEYS } from '../src/sim/content/buddies';
 import { MOUNTS } from '../src/sim/content/mounts';
 import { ITEMS } from '../src/sim/data';
 import {
+  buddyKindOf,
   buildCollectionsView,
   COLLECTION_ARMOR_TYPES,
   COLLECTION_PET_KINDS,
@@ -118,6 +119,31 @@ describe('collections view model', () => {
     expect(petKindOf('spider')).toBe('beast');
     expect(petKindOf('reptile')).toBe('beast');
     expect(petKindOf('beast')).toBe('beast');
+  });
+
+  it('puts the guest characters and the elementals in their authored groups', () => {
+    // Neither group is a creature type, so neither can come from a mob family:
+    // the catalog authors them and this pins the roster the owner named.
+    expect(buddyKindOf('trollface')).toBe('celebrity');
+    expect(buddyKindOf('ansem')).toBe('celebrity');
+    expect(buddyKindOf('triple_t')).toBe('celebrity');
+    expect(buddyKindOf('kekius')).toBe('celebrity');
+    expect(buddyKindOf('rocky')).toBe('elemental');
+    expect(buddyKindOf('frostfire')).toBe('elemental');
+    // And nothing else drifted into them: every other companion still groups
+    // by its family, so a new buddy lands in a creature group by default.
+    const authored = BUDDY_KEYS.filter((key) => BUDDIES[key].kind !== undefined);
+    expect(authored.sort()).toEqual(
+      ['ansem', 'frostfire', 'kekius', 'rocky', 'triple_t', 'trollface'].sort(),
+    );
+  });
+
+  it('never infers an editorial group from a family', () => {
+    // petKindOf answers creature facts only: the two editorial groups have to be
+    // authored, so a family can never produce one by accident.
+    for (const family of ['beast', 'humanoid', 'undead', 'spider', 'reptile', 'elemental']) {
+      expect(['beast', 'humanoid', 'undead']).toContain(petKindOf(family));
+    }
   });
 
   it('ranks an unnamed quality with white, so no grey rung can appear', () => {

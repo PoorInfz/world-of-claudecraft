@@ -8777,6 +8777,8 @@ export type TranslationKeyFlat =
   | 'hudChrome.collections.keybindLabel'
   | 'hudChrome.collections.launcherTitle'
   | 'hudChrome.collections.petKind.beast'
+  | 'hudChrome.collections.petKind.celebrity'
+  | 'hudChrome.collections.petKind.elemental'
   | 'hudChrome.collections.petKind.humanoid'
   | 'hudChrome.collections.petKind.undead'
   | 'hudChrome.collections.set.bonusLabel'

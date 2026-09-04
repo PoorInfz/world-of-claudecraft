@@ -130,8 +130,10 @@ const BUDDY_LORE: Readonly<Record<string, TranslationKey>> = {
 
 const PET_KIND_LABEL: Record<CollectionPetKind, TranslationKey> = {
   beast: 'hudChrome.collections.petKind.beast',
+  elemental: 'hudChrome.collections.petKind.elemental',
   humanoid: 'hudChrome.collections.petKind.humanoid',
   undead: 'hudChrome.collections.petKind.undead',
+  celebrity: 'hudChrome.collections.petKind.celebrity',
 };
 
 /** The authored text of one set bonus tier, through the same entity key the

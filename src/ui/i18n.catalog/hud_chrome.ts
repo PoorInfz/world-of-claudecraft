@@ -4733,8 +4733,12 @@ export const hudChromeStrings = {
     // The buddy tab groups by what a companion IS before it sorts by rarity.
     petKind: {
       beast: 'Beasts',
+      elemental: 'Elementals',
       humanoid: 'Humanoids',
       undead: 'Undead',
+      // The guest characters: a group the sim has no creature type for, so
+      // the catalog authors it per companion (content/buddies.ts BuddyKind).
+      celebrity: 'Celebrities',
     },
     armor: {
       cloth: 'Cloth',

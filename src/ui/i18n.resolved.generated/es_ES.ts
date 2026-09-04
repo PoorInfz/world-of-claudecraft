@@ -3484,8 +3484,10 @@ export const es_ES: EnTranslations = {
       },
       "petKind": {
         "beast": "Beasts",
+        "elemental": "Elementals",
         "humanoid": "Humanoids",
-        "undead": "Undead"
+        "undead": "Undead",
+        "celebrity": "Celebrities"
       },
       "armor": {
         "cloth": "Cloth",

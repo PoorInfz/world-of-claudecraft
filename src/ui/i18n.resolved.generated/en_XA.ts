@@ -3484,8 +3484,10 @@ export const en_XA: EnTranslations = {
       },
       "petKind": {
         "beast": "[Ɓéášţš]",
+        "elemental": "[Éļéɱéñţáļš]",
         "humanoid": "[Ĥúɱáñóíðš]",
-        "undead": "[Úñðéáð]"
+        "undead": "[Úñðéáð]",
+        "celebrity": "[Çéļéƀŕíţíéš]"
       },
       "armor": {
         "cloth": "[Çļóţĥ]",

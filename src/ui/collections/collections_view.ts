@@ -7,7 +7,7 @@
 // tables plus the caller's owned-key sets, so it is safe to rebuild whenever the
 // window opens and cheap enough to rebuild on a tab switch.
 
-import { BUDDIES, BUDDY_KEYS, type BuddyKey } from '../../sim/content/buddies';
+import { BUDDIES, BUDDY_KEYS, type BuddyKey, type BuddyKind } from '../../sim/content/buddies';
 import { BUDDY_MOBS, buddyTemplateId } from '../../sim/content/buddy_mobs';
 import { MOUNTS, type MountKey } from '../../sim/content/mounts';
 import { ITEM_SETS, ITEMS } from '../../sim/data';
@@ -19,14 +19,21 @@ export type CollectionsTabId = 'buddies' | 'mounts' | 'sets';
 
 export const COLLECTIONS_TABS: readonly CollectionsTabId[] = ['buddies', 'mounts', 'sets'];
 
-/** What a companion IS, the buddy tab's outer grouping. Derived from the
- *  follower's own mob family (content/buddy_mobs.ts), collapsed to the three
- *  buckets a collector actually sorts by: everything that is not a walking
- *  corpse or a person is a beast, spiders and raptors included. */
-export type CollectionPetKind = 'beast' | 'humanoid' | 'undead';
+/** What a companion IS, the buddy tab's outer grouping: the catalog's own
+ *  authored kind when it carries one, else derived from the follower's mob
+ *  family (content/buddy_mobs.ts). Everything that is not a walking corpse or
+ *  a person derives as a beast, spiders and raptors included. */
+export type CollectionPetKind = BuddyKind;
 
-/** Pet kinds in the order the tab lists them. */
-export const COLLECTION_PET_KINDS: readonly CollectionPetKind[] = ['beast', 'humanoid', 'undead'];
+/** Pet kinds in the order the tab lists them: the creature groups first, by
+ *  how ordinary they are, and the guest characters last. */
+export const COLLECTION_PET_KINDS: readonly CollectionPetKind[] = [
+  'beast',
+  'elemental',
+  'humanoid',
+  'undead',
+  'celebrity',
+];
 
 /** Rarity order INSIDE a kind: purple first, then blue, green, white. The
  *  catalog has no grey (poor) whistle and must not grow one: greys were folded
@@ -34,10 +41,21 @@ export const COLLECTION_PET_KINDS: readonly CollectionPetKind[] = ['beast', 'hum
  *  unranked sorts as common rather than inventing a fifth rung. */
 export const COLLECTION_RARITY_ORDER: readonly string[] = ['epic', 'rare', 'uncommon', 'common'];
 
+/** The grouping a mob FAMILY implies, the fallback when the catalog authors
+ *  none. It can never return an editorial group: no family means celebrity,
+ *  and elemental buddies are authored rather than inferred, because the two
+ *  elemental rigs are a beast and a critter body to the sim. */
 export function petKindOf(family: string): CollectionPetKind {
   if (family === 'undead') return 'undead';
   if (family === 'humanoid') return 'humanoid';
   return 'beast';
+}
+
+/** The group a companion sits in: authored first, family second. */
+export function buddyKindOf(key: BuddyKey): CollectionPetKind {
+  const authored = BUDDIES[key]?.kind;
+  if (authored) return authored;
+  return petKindOf(BUDDY_MOBS[buddyTemplateId(key)]?.family ?? 'beast');
 }
 
 /** Sort rank of a quality on the tab: lower sorts first. A quality the ladder
@@ -245,7 +263,7 @@ export function buildCollectionsView(input: CollectionsViewInput): CollectionsVi
       // share an animal rig rather than shipping one of their own).
       input.buddyVisualKeys[key] ?? null,
       input.ownedBuddyKeys,
-      petKindOf(BUDDY_MOBS[buddyTemplateId(key)]?.family ?? 'beast'),
+      buddyKindOf(key),
       BUDDY_MOBS[buddyTemplateId(key)]?.color ?? 0xffffff,
     ),
   );
