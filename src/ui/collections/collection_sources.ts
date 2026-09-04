@@ -45,6 +45,10 @@ export interface CollectionDropSource {
   location: string;
   /** 0..1 per-kill chance as authored on the loot entry. */
   chance: number;
+  /** The rate the same row drops at under a heroic claim, when it authors one
+   *  (LootEntry.heroicChance). Null when the row drops at one rate on both
+   *  difficulties, which is every other row in the game today. */
+  heroicChance: number | null;
   /** True for a table that only rolls inside a heroic instance claim. */
   heroicOnly: boolean;
 }
@@ -139,6 +143,7 @@ function dropsFor(itemId: string): CollectionDropSource[] {
         mobName: mob.name,
         location: dungeonOf(mob.id) ?? '',
         chance: entry.chance,
+        heroicChance: entry.heroicChance ?? null,
         heroicOnly: false,
       });
     }
@@ -151,6 +156,7 @@ function dropsFor(itemId: string): CollectionDropSource[] {
         mobName: MOBS[bossId]?.name ?? bossId,
         location: dungeonOf(bossId) ?? '',
         chance: entry.chance,
+        heroicChance: null,
         heroicOnly: true,
       });
     }

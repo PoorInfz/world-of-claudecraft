@@ -37,9 +37,10 @@ describe('collection source derivation', () => {
     expect(vendor?.price).toBe(ITEMS.whistle_proud_grunt.priceHonor);
     // Zone comes from the NPC's own authored position, not a second table.
     expect(vendor?.zoneName.length).toBeGreaterThan(0);
-    // Honor-bought, so it never reaches the market.
-    expect(facts?.tradeable).toBe(false);
-    expect(facts?.sellValue).toBeNull();
+    // Tradeable like every other whistle (nothing in the roster binds any
+    // more), and it sells to a vendor for the flat 5g.
+    expect(facts?.tradeable).toBe(true);
+    expect(facts?.sellValue).toBe(50_000);
   });
 
   it('derives the marks price for the Loot Goblin whistle from the quartermaster stock', () => {
@@ -48,7 +49,7 @@ describe('collection source derivation', () => {
     const offer = HEROIC_VENDOR_STOCK.find((o) => o.itemId === 'whistle_loot_goblin');
     expect(vendor?.price).toBe(offer?.marks);
     expect(NPCS[vendor?.npcId ?? ''].heroicVendor).toBe(true);
-    expect(facts?.tradeable).toBe(false);
+    expect(facts?.tradeable).toBe(true);
   });
 
   it('derives the gold price for the Penny Goldspark whistle, and keeps it tradeable', () => {

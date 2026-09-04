@@ -1402,24 +1402,11 @@ export const ZONE3_NPCS: Record<string, NpcDef> = {
     // Marla sells Riding Training (the 80g skill purchase, a service entry that
     // delegates to learnRiding) and the Valorsteed reins for riders who have
     // learned. The riding-skill gate (ridingTrained) is enforced in buyItem
-    // (items.ts). The buddy whistles are cosmetic-only (no riding-skill gate)
-    // but fit her stable-adjacent theme; only the common-tier whistles are
-    // vendor-buyable. The rare and epic tiers are acquired elsewhere: the three
-    // vendor companions from the Highwatch currency vendors, and the rest from
-    // no live source yet (global_drops.ts holds both tiers at chance 0).
-    vendorItems: [
-      'riding_training',
-      'reins_valorsteed',
-      'whistle_ember_fox',
-      'whistle_moss_hare',
-      'whistle_frog',
-      'whistle_crimson_claw_crab',
-      'whistle_golden_sentinel',
-      'whistle_nightfang',
-      'whistle_tuskhorn_boar',
-      'whistle_emerald_wolf',
-      'whistle_tiger',
-    ],
+    // (items.ts). She sells NO buddy whistle (2026-09-04 owner call): the
+    // stables are a mount counter, and every common companion is a drop now
+    // (loot/global_drops.ts rolls the whole common tier at 1.5% a kill). The
+    // three currency companions still have their own vendors in Highwatch.
+    vendorItems: ['riding_training', 'reins_valorsteed'],
     greeting:
       'Every rider walks in on two legs, $C. I will not hand you the reins until you can sit the Valorsteed without kissing the dirt, and the Galecrest wind shows no mercy to a bad seat.',
   },

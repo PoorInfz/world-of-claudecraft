@@ -122,6 +122,24 @@ export const BUDDY_MOBS: Record<string, MobTemplate> = {
     'humanoid',
     0xffffff,
   ),
+  // The beast tier drawn from the shipped creature rigs. Those rigs carry
+  // `tint: 'entity'` in the visual manifest, so the color below is the real
+  // per-buddy dye (the ember_fox/moss_hare model): a pet stag is not the same
+  // brown as the mob its rig came from.
+  [buddyTemplateId('stag')]: buddyTemplate('stag', 'Stag', 'beast', 0xb98a4e),
+  [buddyTemplateId('alpaca')]: buddyTemplate('alpaca', 'Alpaca', 'beast', 0xe8dcc6),
+  [buddyTemplateId('bull')]: buddyTemplate('bull', 'Bull', 'beast', 0x6b4a37),
+  [buddyTemplateId('spider')]: buddyTemplate('spider', 'Spider', 'spider', 0x4a3d63),
+  [buddyTemplateId('raptor')]: buddyTemplate('raptor', 'Raptor', 'reptile', 0x5f8a4a),
+  [buddyTemplateId('skeleton')]: buddyTemplate('skeleton', 'Skeleton', 'undead', 0xd8d3c4),
+  // The epic raid drop. Its own GLB with baked crystal textures and no tint,
+  // so the color is inert here like every other dedicated-rig buddy.
+  [buddyTemplateId('crystal_lich')]: buddyTemplate(
+    'crystal_lich',
+    'Crystal Lich',
+    'undead',
+    0xffffff,
+  ),
 };
 
 /** Every valid buddy templateId, for the cheap `isBuddyMob` membership check

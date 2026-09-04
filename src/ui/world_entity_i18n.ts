@@ -264,6 +264,13 @@ const MOB_IDS = [
   'buddy_proud_grunt',
   'buddy_loot_goblin',
   'buddy_penny_goldspark',
+  'buddy_stag',
+  'buddy_alpaca',
+  'buddy_bull',
+  'buddy_spider',
+  'buddy_raptor',
+  'buddy_skeleton',
+  'buddy_crystal_lich',
 ] as const;
 
 const NPC_IDS = [

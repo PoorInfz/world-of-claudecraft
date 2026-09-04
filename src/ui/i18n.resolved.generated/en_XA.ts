@@ -3132,6 +3132,7 @@ export const en_XA: EnTranslations = {
         "setLabel": "[Çóļļéçţéð]",
         "drop": "[{mob} ({location}), {chance}% þéŕ ķíļļ]",
         "heroicDrop": "[{mob} ({location}), Ĥéŕóíç óñļý, {chance}% þéŕ ķíļļ]",
+        "dropWithHeroic": "[{mob} ({location}), {chance}% þéŕ ķíļļ, {heroicChance}% óñ Ĥéŕóíç]",
         "globalDrop": "[Áñý éñéɱý, {chance}% þéŕ ķíļļ, óñé óƒ {count} áţ ţĥíš ŕáŕíţý]",
         "vendor": "[{npc} ({location}) ƒóŕ {price}]",
         "honorPrice": "[{amount} Ĥóñóŕ]",
@@ -13005,6 +13006,27 @@ export const en_XA: EnTranslations = {
       "whistle_penny_goldspark": {
         "name": "[Þéññý Ĝóļðšþáŕķ Ŵĥíšţļé]"
       },
+      "whistle_stag": {
+        "name": "[Šţáĝ Ŵĥíšţļé]"
+      },
+      "whistle_alpaca": {
+        "name": "[Áļþáçá Ŵĥíšţļé]"
+      },
+      "whistle_bull": {
+        "name": "[Ɓúļļ Ŵĥíšţļé]"
+      },
+      "whistle_spider": {
+        "name": "[Šþíðéŕ Ŵĥíšţļé]"
+      },
+      "whistle_raptor": {
+        "name": "[Ŕáþţóŕ Ŵĥíšţļé]"
+      },
+      "whistle_skeleton": {
+        "name": "[Šķéļéţóñ Ŵĥíšţļé]"
+      },
+      "whistle_crystal_lich": {
+        "name": "[Çŕýšţáļ Ļíçĥ Ŵĥíšţļé]"
+      },
       "conjured_water4": {
         "name": "[Çóñĵúŕéð Šþŕíñĝŵáţéŕ]"
       },
@@ -14440,6 +14462,27 @@ export const en_XA: EnTranslations = {
       },
       "buddy_penny_goldspark": {
         "name": "[Þéññý Ĝóļðšþáŕķ]"
+      },
+      "buddy_stag": {
+        "name": "[Šţáĝ]"
+      },
+      "buddy_alpaca": {
+        "name": "[Áļþáçá]"
+      },
+      "buddy_bull": {
+        "name": "[Ɓúļļ]"
+      },
+      "buddy_spider": {
+        "name": "[Šþíðéŕ]"
+      },
+      "buddy_raptor": {
+        "name": "[Ŕáþţóŕ]"
+      },
+      "buddy_skeleton": {
+        "name": "[Šķéļéţóñ]"
+      },
+      "buddy_crystal_lich": {
+        "name": "[Çŕýšţáļ Ļíçĥ]"
       },
       "ironvein_foreman": {
         "name": "[Íŕóñʋéíñ Ƒóŕéɱáñ]"

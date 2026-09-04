@@ -42,7 +42,14 @@ export type BuddyKey =
   | 'rocky'
   | 'proud_grunt'
   | 'loot_goblin'
-  | 'penny_goldspark';
+  | 'penny_goldspark'
+  | 'stag'
+  | 'alpaca'
+  | 'bull'
+  | 'spider'
+  | 'raptor'
+  | 'skeleton'
+  | 'crystal_lich';
 
 export interface BuddyDef {
   key: BuddyKey;
@@ -148,6 +155,42 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
   penny_goldspark: {
     key: 'penny_goldspark',
     name: 'Penny Goldspark',
+  },
+  // common, the shipped beast rigs the roster had not drawn on yet (one buddy
+  // per distinct species, so nothing here repeats a body the catalog already
+  // has: the fox, hare, frog, crab, boar, wolf and tiger are taken above).
+  // Each gets its own buddy-sized VISUALS entry rather than reusing the
+  // full-grown mob rig, so a pet stag is a pet, not a mob following you.
+  stag: {
+    key: 'stag',
+    name: 'Stag',
+  },
+  alpaca: {
+    key: 'alpaca',
+    name: 'Alpaca',
+  },
+  bull: {
+    key: 'bull',
+    name: 'Bull',
+  },
+  spider: {
+    key: 'spider',
+    name: 'Spider',
+  },
+  raptor: {
+    key: 'raptor',
+    name: 'Raptor',
+  },
+  // The one undead in the common tier: the KayKit skeleton rig, unarmed.
+  skeleton: {
+    key: 'skeleton',
+    name: 'Skeleton',
+  },
+  // epic, and the only buddy with a raid source: Nythraxis drops it on both
+  // difficulties (src/sim/content/dungeons.ts and content/heroic_loot.ts).
+  crystal_lich: {
+    key: 'crystal_lich',
+    name: 'Crystal Lich',
   },
 };
 

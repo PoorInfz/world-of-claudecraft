@@ -2473,6 +2473,13 @@ const ITEM_ENTITY_IDS = [
   'whistle_proud_grunt',
   'whistle_loot_goblin',
   'whistle_penny_goldspark',
+  'whistle_stag',
+  'whistle_alpaca',
+  'whistle_bull',
+  'whistle_spider',
+  'whistle_raptor',
+  'whistle_skeleton',
+  'whistle_crystal_lich',
 ] as const;
 
 type ItemEntityId = (typeof ITEM_ENTITY_IDS)[number];
@@ -2633,6 +2640,13 @@ const APPENDED_ITEM_NAMES: Partial<Record<ItemEntityId, string>> = {
   whistle_proud_grunt: 'Proud Grunt Whistle',
   whistle_loot_goblin: 'Loot Goblin Whistle',
   whistle_penny_goldspark: 'Penny Goldspark Whistle',
+  whistle_stag: 'Stag Whistle',
+  whistle_alpaca: 'Alpaca Whistle',
+  whistle_bull: 'Bull Whistle',
+  whistle_spider: 'Spider Whistle',
+  whistle_raptor: 'Raptor Whistle',
+  whistle_skeleton: 'Skeleton Whistle',
+  whistle_crystal_lich: 'Crystal Lich Whistle',
 };
 
 function itemTranslations(names: readonly string[]): ItemEntityTranslations {

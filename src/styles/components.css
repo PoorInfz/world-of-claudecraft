@@ -11276,6 +11276,23 @@
     color: var(--gold);
     background: linear-gradient(#4a3c1c, #302713);
   }
+  /* Readability pass (owner request): every word in this window is white and
+     bold. The item-quality tints the rows carry (q-common through q-epic) read
+     too dark against the panel to scan a long catalog by, so inside this window
+     the quality classes lose the color argument and the text wins it. Scoped to
+     #collections-window, so the same q-* classes keep their tints everywhere
+     else in the HUD. */
+  #collections-window,
+  #collections-window .col-row-name,
+  #collections-window .col-row-state,
+  #collections-window .col-detail-name,
+  #collections-window .col-line-label,
+  #collections-window .col-line-value,
+  #collections-window .col-note,
+  #collections-window .col-tab {
+    color: #fff;
+    font-weight: 700;
+  }
   /* Two panes: the catalog list scrolls, the detail pane holds the preview. */
   .col-body {
     display: flex;
@@ -11284,7 +11301,7 @@
   }
   .col-list {
     flex: 1 1 46%;
-    max-height: 420px;
+    max-height: 620px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -11292,7 +11309,7 @@
   }
   .col-detail {
     flex: 1 1 54%;
-    max-height: 420px;
+    max-height: 620px;
     overflow-y: auto;
   }
   .col-row {
@@ -11335,10 +11352,13 @@
     padding-bottom: 2px;
   }
   /* The shared turntable's canvas is appended here by Hud.mountSharedPreview. */
+  /* The idle turntable, at double the height it shipped at (owner request):
+     a buddy rig is small in frame, and the pane is the only place a player
+     ever sees one up close. */
   .col-preview {
     position: relative;
     width: 100%;
-    height: 190px;
+    height: 380px;
     margin-bottom: 6px;
     border: 1px solid var(--color-border-showcase);
     border-radius: 3px;

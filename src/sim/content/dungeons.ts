@@ -746,6 +746,12 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
       // independent draw so the four guaranteed groups above keep their exact
       // 1.00 partitions (a 25% bonus shot, never displacing a set piece).
       { itemId: 'maul_of_the_scourged_wilds', chance: 0.25, rollGroup: 'nythraxis_drop_5' },
+      // The Crystal Lich buddy (content/buddies.ts): 0.5% on normal, 1% on a
+      // heroic claim through the row's own heroicChance, so one row covers
+      // both difficulties and the heroic table never doubles the award.
+      // Ungrouped on purpose: an independent draw, so the cosmetic never
+      // displaces a set piece from one of the exact-1.00 partitions above.
+      { itemId: 'whistle_crystal_lich', chance: 0.005, heroicChance: 0.01 },
     ],
     scale: 3.1,
     color: 0x221b2d,

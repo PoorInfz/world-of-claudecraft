@@ -3132,6 +3132,7 @@ export const ko_KR: EnTranslations = {
         "setLabel": "Collected",
         "drop": "{mob} ({location}), {chance}% per kill",
         "heroicDrop": "{mob} ({location}), Heroic only, {chance}% per kill",
+        "dropWithHeroic": "{mob} ({location}), {chance}% per kill, {heroicChance}% on Heroic",
         "globalDrop": "Any enemy, {chance}% per kill, one of {count} at this rarity",
         "vendor": "{npc} ({location}) for {price}",
         "honorPrice": "{amount} Honor",
@@ -13005,6 +13006,27 @@ export const ko_KR: EnTranslations = {
       "whistle_penny_goldspark": {
         "name": "Penny Goldspark Whistle"
       },
+      "whistle_stag": {
+        "name": "Stag Whistle"
+      },
+      "whistle_alpaca": {
+        "name": "Alpaca Whistle"
+      },
+      "whistle_bull": {
+        "name": "Bull Whistle"
+      },
+      "whistle_spider": {
+        "name": "Spider Whistle"
+      },
+      "whistle_raptor": {
+        "name": "Raptor Whistle"
+      },
+      "whistle_skeleton": {
+        "name": "Skeleton Whistle"
+      },
+      "whistle_crystal_lich": {
+        "name": "Crystal Lich Whistle"
+      },
       "conjured_water4": {
         "name": "창조된 샘물"
       },
@@ -14440,6 +14462,27 @@ export const ko_KR: EnTranslations = {
       },
       "buddy_penny_goldspark": {
         "name": "Penny Goldspark"
+      },
+      "buddy_stag": {
+        "name": "Stag"
+      },
+      "buddy_alpaca": {
+        "name": "Alpaca"
+      },
+      "buddy_bull": {
+        "name": "Bull"
+      },
+      "buddy_spider": {
+        "name": "Spider"
+      },
+      "buddy_raptor": {
+        "name": "Raptor"
+      },
+      "buddy_skeleton": {
+        "name": "Skeleton"
+      },
+      "buddy_crystal_lich": {
+        "name": "Crystal Lich"
       },
       "ironvein_foreman": {
         "name": "철맥 감독관"

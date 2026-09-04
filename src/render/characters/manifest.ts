@@ -1940,6 +1940,77 @@ export const VISUALS: Record<string, VisualDef> = {
     height: 0.7,
     clips: BUDDY_CLIPS,
   },
+  // common, the beast tier drawn from the shipped creature rigs. Own entries
+  // rather than a MOB_KEYS alias onto mob_stag/mob_bull/...: a buddy has to be
+  // pet-sized (the mob rigs stand 1.4 to 2.1), and the shared BUDDY_SCALE
+  // (content/buddy_mobs.ts) multiplies whatever height is declared here. Same
+  // GLB, same clip vocabulary, `tint: 'entity'` kept so each buddy takes its
+  // own dye like the fox/hare pair above; only idle and walk are ever played,
+  // so the maps are trimmed to what a buddy uses.
+  buddy_stag: {
+    url: `${CREATURES}/stag.glb`,
+    height: 0.75,
+    clips: { idle: 'Idle', walk: 'Walk', run: 'Walk', attack: [], death: 'Idle' },
+    tint: 'entity',
+    tintStrength: 0.35,
+  },
+  buddy_alpaca: {
+    url: `${CREATURES}/alpaca.glb`,
+    height: 0.7,
+    clips: { idle: 'Idle', walk: 'Walk', run: 'Walk', attack: [], death: 'Idle' },
+    tint: 'entity',
+    tintStrength: 0.3,
+  },
+  buddy_bull: {
+    url: `${CREATURES}/bull.glb`,
+    // the bull rig ships no plain Idle: grazing IS its idle (see mob_bull).
+    height: 0.75,
+    clips: { idle: 'Eating', walk: 'Walk', run: 'Walk', attack: [], death: 'Eating' },
+    tint: 'entity',
+    tintStrength: 0.3,
+  },
+  buddy_spider: {
+    url: `${CREATURES}/spider.glb`,
+    height: 0.6,
+    clips: {
+      idle: SPIDER.idle,
+      walk: SPIDER.walk,
+      run: SPIDER.walk,
+      attack: [],
+      death: SPIDER.idle,
+    },
+    tint: 'entity',
+    tintStrength: 0.35,
+  },
+  buddy_raptor: {
+    url: `${CREATURES}/velociraptor.glb`,
+    height: 0.7,
+    clips: {
+      idle: RAPTOR.idle,
+      walk: RAPTOR.walk,
+      run: RAPTOR.walk,
+      attack: [],
+      death: RAPTOR.idle,
+    },
+    tint: 'entity',
+    tintStrength: 0.35,
+  },
+  // common, the one undead: the KayKit skeleton rig at pet scale, unarmed (no
+  // `attach`, unlike the skel_* mobs, since a buddy never swings anything).
+  buddy_skeleton: {
+    url: `${ENEMIES}/skeleton_minion.glb`,
+    height: 0.85,
+    clips: { idle: 'Idle', walk: 'Walking_A', run: 'Walking_A', attack: [], death: 'Idle' },
+    tint: 'entity',
+    tintStrength: 0.25,
+  },
+  // epic, the Nythraxis raid drop. Its own GLB with baked crystal textures, so
+  // no tint, and the shipped Idle/Walk pair is already on the buddy convention.
+  buddy_crystal_lich: {
+    url: `${BUDDIES_DIR}/crystal_lich.glb`,
+    height: 0.9,
+    clips: BUDDY_CLIPS,
+  },
   // Yumi, the Protect Yumi objective cat familiar (Meshy rig, scale baked by
   // scripts/_bake_meshy_scale.mjs, meshopt + 1024 webp). The GLB ships ONE
   // clip, the block: mapped as the HIT reaction so she blocks when struck
@@ -3159,6 +3230,13 @@ const MOB_KEYS: Record<string, string> = {
   buddy_proud_grunt: 'buddy_proud_grunt',
   buddy_loot_goblin: 'buddy_loot_goblin',
   buddy_penny_goldspark: 'buddy_penny_goldspark',
+  buddy_stag: 'buddy_stag',
+  buddy_alpaca: 'buddy_alpaca',
+  buddy_bull: 'buddy_bull',
+  buddy_spider: 'buddy_spider',
+  buddy_raptor: 'buddy_raptor',
+  buddy_skeleton: 'buddy_skeleton',
+  buddy_crystal_lich: 'buddy_crystal_lich',
   // Packlord Stampede guardians are transient local templates, not MOBS rows.
   // Give the three summoned beasts distinct existing bodies instead of the
   // generic humanoid bandit fallback.

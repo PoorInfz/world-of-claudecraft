@@ -5,8 +5,8 @@
     "baselineCommit": "aee195551b5aef628eb7a72192117d7e3079818e",
     "branch": "feature/placeholder-art-completion-v036",
     "shippingDirectory": "public/ui/items",
-    "itemArtFilesReviewed": 850,
-    "liveItemDefinitions": 865,
+    "itemArtFilesReviewed": 857,
+    "liveItemDefinitions": 872,
     "generatedHeroicDefinitions": 64,
     "heroicDefinitionsWithOwnWebp": 48,
     "heroicWeaponArtAliases": 16,
@@ -299,7 +299,7 @@
       "armor-shoulder": 49,
       "armor-waist": 27,
       "bag": 6,
-      "buddy": 21,
+      "buddy": 28,
       "drink": 9,
       "elixir": 4,
       "food": 21,
@@ -385,7 +385,7 @@
   },
   "visualVerdict": {
     "status": "pass",
-    "passCount": 850,
+    "passCount": 857,
     "passIds": [
       "abyssal_loop",
       "abysswrought_band",
@@ -1179,9 +1179,12 @@
       "webwood_silk",
       "whetted_iron_dirk",
       "whistle_alon",
+      "whistle_alpaca",
       "whistle_ansem",
+      "whistle_bull",
       "whistle_cate_coin",
       "whistle_crimson_claw_crab",
+      "whistle_crystal_lich",
       "whistle_ember_fox",
       "whistle_emerald_wolf",
       "whistle_frog",
@@ -1193,8 +1196,12 @@
       "whistle_nightfang",
       "whistle_penny_goldspark",
       "whistle_proud_grunt",
+      "whistle_raptor",
       "whistle_rocky",
+      "whistle_skeleton",
       "whistle_solbot",
+      "whistle_spider",
+      "whistle_stag",
       "whistle_tiger",
       "whistle_triple_t",
       "whistle_trollface",
@@ -1242,7 +1249,7 @@
     "watch": [],
     "rejectCount": 0,
     "reject": [],
-    "summary": "All 850 shipping item-art files pass the visual contract: 817 reviewed in the 2026-08-09 campaign (documented retries included), plus the five class-overhaul integration additions owner-reviewed and passed on 2026-08-10, plus the Dawnhold posy addition (project-authored vector illustration) owner-reviewed and passed on 2026-08-12, plus the two Proving Shore prop renders (rendered from their own shipped world models) owner-reviewed and passed on 2026-08-17, plus the three pearl-detour icons (generated via the OpenAI proving-shore-mother-of-pearl-2026-08-20 batch) owner-reviewed and passed on 2026-08-20, plus the Proving Shore Passing Stone render (rendered from its own shipped world model by the same deterministic pipeline as the 2026-08-17 pair) added on 2026-08-22, machine-checked and awaiting owner visual review, plus the nineteen buddy-whistle icons (rendered from their own shipped buddy GLB models by scripts/assets/render_buddy_item_icons.mjs) added on 2026-08-28, machine-checked and awaiting owner visual review, plus the three vendor-companion whistle icons (rendered from their own shipped buddy GLB models by scripts/assets/render_buddy_item_icons.mjs) added on 2026-09-03, machine-checked and awaiting owner visual review. The Dragon buddy whistle was removed from the game on 2026-09-04; its icon left the catalog with it."
+    "summary": "All 857 shipping item-art files pass the visual contract: 817 reviewed in the 2026-08-09 campaign (documented retries included), plus the five class-overhaul integration additions owner-reviewed and passed on 2026-08-10, plus the Dawnhold posy addition (project-authored vector illustration) owner-reviewed and passed on 2026-08-12, plus the two Proving Shore prop renders (rendered from their own shipped world models) owner-reviewed and passed on 2026-08-17, plus the three pearl-detour icons (generated via the OpenAI proving-shore-mother-of-pearl-2026-08-20 batch) owner-reviewed and passed on 2026-08-20, plus the Proving Shore Passing Stone render (rendered from its own shipped world model by the same deterministic pipeline as the 2026-08-17 pair) added on 2026-08-22, machine-checked and awaiting owner visual review, plus the nineteen buddy-whistle icons (rendered from their own shipped buddy GLB models by scripts/assets/render_buddy_item_icons.mjs) added on 2026-08-28, machine-checked and awaiting owner visual review, plus the three vendor-companion whistle icons (rendered from their own shipped buddy GLB models by scripts/assets/render_buddy_item_icons.mjs) added on 2026-09-03, machine-checked and awaiting owner visual review. The Dragon buddy whistle was removed from the game on 2026-09-04; its icon left the catalog with it. Seven more buddy icons (the six common beast and undead companions plus the epic Crystal Lich) were rendered from their own shipped rigs by scripts/assets/render_buddy_item_icons.mjs and added on 2026-09-04, machine-checked and awaiting owner visual review."
   },
   "nonVisualContentWatch": [
     {
@@ -3145,6 +3152,6 @@
         "format": "png"
       }
     ],
-    "shippingCatalogSha256": "ad20af80498494ea4473a5585518740ba148822f4b0b1328ab57ea18119009b7"
+    "shippingCatalogSha256": "cba009e6d1f7605acc8ef16a0bb7c752bceef5b37c2e61f5dd2c5b23781e99ff"
   }
 }

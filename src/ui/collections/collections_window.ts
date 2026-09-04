@@ -29,7 +29,7 @@ import { esc } from '../esc';
 import { formatMoney, formatNumber, type TranslationKey, t } from '../i18n';
 import { svgIcon } from '../ui_icons';
 import { itemIconImgHtml } from '../unknown_item_icon';
-import type { CollectionItemFacts } from './collection_sources';
+import type { CollectionDropSource, CollectionItemFacts } from './collection_sources';
 import {
   buildCollectionsView,
   COLLECTIONS_TABS,
@@ -101,6 +101,16 @@ function usd(cents: number): string {
     currency: 'USD',
     maximumFractionDigits: 2,
   });
+}
+
+/** Which drop sentence a row takes: heroic-only tables, rows that drop at a
+ *  second rate under a heroic claim (LootEntry.heroicChance), and the ordinary
+ *  one-rate row. A player planning a farm needs to see BOTH rates when the row
+ *  carries two, or the harder kill looks like the same odds. */
+function dropKey(drop: CollectionDropSource): TranslationKey {
+  if (drop.heroicOnly) return 'hudChrome.collections.detail.heroicDrop';
+  if (drop.heroicChance !== null) return 'hudChrome.collections.detail.dropWithHeroic';
+  return 'hudChrome.collections.detail.drop';
 }
 
 function iconHtml(itemId: string | null, quality: string): string {
@@ -304,12 +314,12 @@ export class CollectionsWindow {
       lines.push(
         this.line(
           'hudChrome.collections.detail.dropLabel',
-          t(
-            drop.heroicOnly
-              ? 'hudChrome.collections.detail.heroicDrop'
-              : 'hudChrome.collections.detail.drop',
-            { mob: drop.mobName, location: drop.location, chance: pct(drop.chance) },
-          ),
+          t(dropKey(drop), {
+            mob: drop.mobName,
+            location: drop.location,
+            chance: pct(drop.chance),
+            heroicChance: drop.heroicChance === null ? '' : pct(drop.heroicChance),
+          }),
         ),
       );
     }

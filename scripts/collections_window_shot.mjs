@@ -83,13 +83,13 @@ await shotTab(null, 'collections_buddies');
 await shotTab('mounts', 'collections_mounts');
 await shotTab('sets', 'collections_sets');
 
-// The three vendor companions: back to the buddy tab and select Proud Grunt, so
-// the shot carries the new rig, its idle clip and its honor-vendor source line.
+// Back to the buddy tab and select the Crystal Lich, so
+// the shot carries the epic rig, its idle clip and its raid source lines.
 await jsClick('#collections-window [data-tab="buddies"]');
 await sleep(600);
-await jsClick('#collections-window [data-key="proud_grunt"]');
+await jsClick('#collections-window [data-key="crystal_lich"]');
 await sleep(1500);
-await shotTab(null, 'collections_proud_grunt');
+await shotTab(null, 'collections_crystal_lich');
 await page.screenshot({ path: 'tmp/collections_full.png' });
 
 console.log(errors.length ? 'ERRORS:\n' + errors.join('\n') : 'no console/page errors');

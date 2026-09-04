@@ -119,6 +119,13 @@ function isMountReinsId(itemId: string): boolean {
   return itemId.startsWith('reins_');
 }
 
+/** Buddy whistles are cosmetics, not relics: like mount reins they name a
+ *  collectible the Collections window tracks and no Reliquary page ever
+ *  catalogs, so a boss table that drops one owes the museum nothing for it. */
+function isBuddyWhistleId(itemId: string): boolean {
+  return ITEMS[itemId]?.kind === 'buddy';
+}
+
 /** `heroic_<base>` ids are auto-generated stat copies (heroic_variants.ts), not the heroic
  *  UNIQUES the Reliquary catalogs (docs/design/reliquary.md, "Adding a page"): the base id
  *  already holds the slot, so listing the variant would double-count one weapon. The catalog
@@ -191,7 +198,9 @@ function dungeonRarePlusLootIds(dungeonId: string): string[] {
   const ids = new Set<string>();
   for (const mobId of dungeonMobIds(dungeonId)) {
     for (const entry of MOBS[mobId]?.loot ?? []) {
-      if (entry.itemId !== undefined && isRarePlus(entry.itemId)) ids.add(entry.itemId);
+      if (entry.itemId === undefined || !isRarePlus(entry.itemId)) continue;
+      if (isBuddyWhistleId(entry.itemId)) continue; // a cosmetic, never a relic
+      ids.add(entry.itemId);
     }
   }
   for (const itemId of dungeonObjectItemIds(dungeonId)) {
@@ -1038,7 +1047,9 @@ describe('Reliquary Rares of the Realm pages pin against the live rare tables', 
   function rarePlusLootIds(templateId: string): string[] {
     const out: string[] = [];
     for (const row of MOBS[templateId]?.loot ?? []) {
-      if (typeof row.itemId === 'string' && isRarePlus(row.itemId)) out.push(row.itemId);
+      if (typeof row.itemId !== 'string' || !isRarePlus(row.itemId)) continue;
+      if (isBuddyWhistleId(row.itemId)) continue; // a cosmetic, never a relic
+      out.push(row.itemId);
     }
     return out;
   }

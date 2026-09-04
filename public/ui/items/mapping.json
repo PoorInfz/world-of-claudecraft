@@ -6065,7 +6065,7 @@
     },
     {
       "batchId": "buddy-whistle-icons-2026-08-28",
-      "source": "In-engine render of the committed buddy GLB models (scripts/assets/render_buddy_item_icons.mjs: public/models/buddies/*.glb, plus the shared Quaternius fox.glb tinted per species for the ember_fox/moss_hare pair, through the asset-pipeline's shared hero-view preview renderer). Not composited onto the painted-icon radial vignette the rest of the catalog uses; the renderer's own dark-neutral clear color stands in for it.",
+      "source": "In-engine render of the committed buddy GLB models (scripts/assets/render_buddy_item_icons.mjs: public/models/buddies/*.glb, plus the shipped creature and skeleton rigs the beast and undead buddies reuse, tinted per species, through the asset-pipeline's shared hero-view preview renderer). Not composited onto the painted-icon radial vignette the rest of the catalog uses; the renderer's own dark-neutral clear color stands in for it.",
       "owner": "World of ClaudeCraft",
       "license": "World of ClaudeCraft project-generated art, project asset, rights reserved",
       "styleReference": "the buddy's own shipped in-game model, not the existing painted WebP catalog",
@@ -6091,7 +6091,14 @@
         "whistle_rocky",
         "whistle_proud_grunt",
         "whistle_loot_goblin",
-        "whistle_penny_goldspark"
+        "whistle_penny_goldspark",
+        "whistle_stag",
+        "whistle_alpaca",
+        "whistle_bull",
+        "whistle_spider",
+        "whistle_raptor",
+        "whistle_skeleton",
+        "whistle_crystal_lich"
       ],
       "commonPrompt": "Not a text-to-image prompt: deterministic in-engine still of the committed GLB model (hero three-quarter turntable view, auto-framed to the model's bounding sphere) resized to 128px; ember_fox/moss_hare apply a post-render tint recoloring the shared fox rig."
     }

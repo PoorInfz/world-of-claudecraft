@@ -4081,6 +4081,9 @@ export const hudChromeStrings = {
       setLabel: 'Collected',
       drop: '{mob} ({location}), {chance}% per kill',
       heroicDrop: '{mob} ({location}), Heroic only, {chance}% per kill',
+      // A row that drops at two rates: the same boss, the harder kill, better
+      // odds. Both figures belong on the line or the Heroic run looks equal.
+      dropWithHeroic: '{mob} ({location}), {chance}% per kill, {heroicChance}% on Heroic',
       // The buddy whistles ride one shared per-kill roll for their whole rarity
       // tier, so the odds belong to the tier and the winner is drawn from it.
       globalDrop: 'Any enemy, {chance}% per kill, one of {count} at this rarity',

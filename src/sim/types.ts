@@ -1185,8 +1185,11 @@ export interface MountItemDef extends BaseItemDef {
 // A collectible buddy summon-whistle. Owning the item IS owning the buddy:
 // while it sits in the player's bags or bank, the catalog buddy it names is
 // summonable (src/sim/buddies.ts buddyOwned), exactly like a mount's reins
-// but with no riding-skill gate and no stat effect. Not soulbound: ownership
-// transfers with the item (trade, mail, market, guild bank).
+// but with no riding-skill gate and no stat effect. Not soulbound by default:
+// ownership transfers with the item (trade, mail, market, guild bank), and the
+// two currency-bought companions are the only ones that set the flag. Every
+// whistle is discardable and vendor-sellable, so parting with one (either way)
+// gives the buddy up.
 export interface BuddyItemDef extends BaseItemDef {
   kind: 'buddy';
   buddy: BuddyKey;
@@ -1446,6 +1449,14 @@ export interface LootEntry {
   // always rides a truthy `copper` (the roller's money arm gates on copper).
   heroicCopper?: number;
   chance: number; // 0..1
+  // Heroic-claim drop rate for THIS row, substituted for `chance` exactly the
+  // way heroicCopper substitutes for `copper`: a value swap on the same single
+  // draw, never an extra one, so the per-kill draw count (and every parity
+  // golden riding it) is identical on both difficulties. Authored where one
+  // item is meant to drop from the same boss at two rates rather than living
+  // on two tables (the Crystal Lich whistle: 0.5% normal, 1% heroic). Ignored
+  // on a rollGroup row, where the group's partition owns the odds.
+  heroicChance?: number;
   questId?: string; // only drops while this quest is active and not complete
   // Entries sharing a rollGroup are exclusive: one rng draw is partitioned by
   // their chances, so at most one matching entry drops.

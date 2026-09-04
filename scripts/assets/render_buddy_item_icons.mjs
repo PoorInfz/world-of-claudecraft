@@ -12,7 +12,7 @@
 //
 // Usage: node scripts/assets/render_buddy_item_icons.mjs
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, rmSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -46,10 +46,38 @@ export const BUDDY_ICON_BATCH = [
   { itemId: 'whistle_proud_grunt', glb: 'public/models/buddies/proud_grunt.glb' },
   { itemId: 'whistle_loot_goblin', glb: 'public/models/buddies/loot_goblin.glb' },
   { itemId: 'whistle_penny_goldspark', glb: 'public/models/buddies/penny_goldspark.glb' },
+  // The beast tier and the undead, rendered from the shipped creature rigs
+  // the buddy visuals reuse, tinted to each buddy dye (content/buddy_mobs.ts).
+  { itemId: 'whistle_stag', glb: 'public/models/creatures/stag.glb', tint: [0xb9, 0x8a, 0x4e] },
+  { itemId: 'whistle_alpaca', glb: 'public/models/creatures/alpaca.glb', tint: [0xe8, 0xdc, 0xc6] },
+  { itemId: 'whistle_bull', glb: 'public/models/creatures/bull.glb', tint: [0x6b, 0x4a, 0x37] },
+  { itemId: 'whistle_spider', glb: 'public/models/creatures/spider.glb', tint: [0x4a, 0x3d, 0x63] },
+  {
+    itemId: 'whistle_raptor',
+    glb: 'public/models/creatures/velociraptor.glb',
+    tint: [0x5f, 0x8a, 0x4a],
+  },
+  { itemId: 'whistle_skeleton', glb: 'public/models/chars/enemies/skeleton_minion.glb' },
+  // The epic Nythraxis drop, from its own GLB.
+  { itemId: 'whistle_crystal_lich', glb: 'public/models/buddies/crystal_lich.glb' },
 ];
 
+/** True when a GLB declares the KTX2 texture extension, which the preview
+ *  renderer's GLTFLoader has no loader wired for.
+ */
+function usesKtx2(file) {
+  const buf = readFileSync(file);
+  const jsonLength = buf.readUInt32LE(12);
+  const json = buf.toString('utf8', 20, 20 + jsonLength);
+  return json.includes('KHR_texture_basisu');
+}
+
 async function renderOne({ itemId, glb, tint }) {
-  const needsKtxDecode = glb.includes('/buddies/'); // fox.glb ships uncompressed
+  // Read the need for a decode off the FILE, not off its directory: the roster
+  // now pulls rigs from creatures/ and chars/enemies/ too, and KTX2 is a
+  // per-asset choice there (the old path heuristic silently skipped them and
+  // the loader threw setKTX2Loader mid-render).
+  const needsKtxDecode = usesKtx2(path.join(ROOT, glb));
   const sourceGlb = path.join(ROOT, glb);
   let renderSource = sourceGlb;
   if (needsKtxDecode) {
