@@ -333,8 +333,8 @@ describe('item-art consistency accepted-art provenance', () => {
       },
       {
         path: `${evidenceDir}/final-item-art-audit-verdict.json`,
-        acceptedSha256: '085711fffa990b5958e59ff1e51ed9f7167a35a2167a0fc011cc4832fe6d80b7',
-        acceptedBytes: 112_469,
+        acceptedSha256: '75310a4ee26dd7c2ed55f9daebe1d5e4aa971970f208b09b5075d48e1dc0c166',
+        acceptedBytes: 112_851,
       },
     ]);
     for (const evidence of [...value.sourceEvidence, ...value.generationReports]) {
@@ -449,9 +449,9 @@ describe('item-art consistency accepted-art provenance', () => {
     expect(readme).toContain('node scripts/item_art_audit.mjs\n');
     expect(readme).toContain('node scripts/item_art_audit.mjs --refresh-verdict');
     const verdictBytes = readFileSync(path.join(repoRoot, verdictPath));
-    expect(verdictBytes.length).toBe(112_469);
+    expect(verdictBytes.length).toBe(112_851);
     expect(sha256(verdictBytes)).toBe(
-      '085711fffa990b5958e59ff1e51ed9f7167a35a2167a0fc011cc4832fe6d80b7',
+      '75310a4ee26dd7c2ed55f9daebe1d5e4aa971970f208b09b5075d48e1dc0c166',
     );
     const verdict = JSON.parse(verdictBytes.toString('utf8')) as FinalAuditVerdict;
 
@@ -460,8 +460,8 @@ describe('item-art consistency accepted-art provenance', () => {
       baselineCommit: 'aee195551b5aef628eb7a72192117d7e3079818e',
       branch: 'feature/placeholder-art-completion-v036',
       shippingDirectory: 'public/ui/items',
-      itemArtFilesReviewed: 848,
-      liveItemDefinitions: 863,
+      itemArtFilesReviewed: 850,
+      liveItemDefinitions: 865,
       generatedHeroicDefinitions: 64,
       heroicDefinitionsWithOwnWebp: 48,
       heroicWeaponArtAliases: 16,
@@ -471,7 +471,7 @@ describe('item-art consistency accepted-art provenance', () => {
       manifest().targetSets.items.map((id) => `public/ui/items/${id}.webp`),
     );
     expect(Object.values(verdict.auditScope.groups).reduce((sum, count) => sum + count, 0)).toBe(
-      848,
+      850,
     );
     expect(Object.keys(verdict.auditScope.groups)).toHaveLength(23);
     const shippingIds = new Set(
@@ -516,13 +516,13 @@ describe('item-art consistency accepted-art provenance', () => {
     ]);
     expect(verdict.visualVerdict).toMatchObject({
       status: 'pass',
-      passCount: 848,
+      passCount: 850,
       watchCount: 0,
       watch: [],
       rejectCount: 0,
       reject: [],
       summary:
-        'All 848 shipping item-art files pass the visual contract: 817 reviewed in the 2026-08-09 campaign (documented retries included), plus the five class-overhaul integration additions owner-reviewed and passed on 2026-08-10, plus the Dawnhold posy addition (project-authored vector illustration) owner-reviewed and passed on 2026-08-12, plus the two Proving Shore prop renders (rendered from their own shipped world models) owner-reviewed and passed on 2026-08-17, plus the three pearl-detour icons (generated via the OpenAI proving-shore-mother-of-pearl-2026-08-20 batch) owner-reviewed and passed on 2026-08-20, plus the Proving Shore Passing Stone render (rendered from its own shipped world model by the same deterministic pipeline as the 2026-08-17 pair) added on 2026-08-22, machine-checked and awaiting owner visual review, plus the nineteen buddy-whistle icons (rendered from their own shipped buddy GLB models by scripts/assets/render_buddy_item_icons.mjs) added on 2026-08-28, machine-checked and awaiting owner visual review.',
+        'All 850 shipping item-art files pass the visual contract: 817 reviewed in the 2026-08-09 campaign (documented retries included), plus the five class-overhaul integration additions owner-reviewed and passed on 2026-08-10, plus the Dawnhold posy addition (project-authored vector illustration) owner-reviewed and passed on 2026-08-12, plus the two Proving Shore prop renders (rendered from their own shipped world models) owner-reviewed and passed on 2026-08-17, plus the three pearl-detour icons (generated via the OpenAI proving-shore-mother-of-pearl-2026-08-20 batch) owner-reviewed and passed on 2026-08-20, plus the Proving Shore Passing Stone render (rendered from its own shipped world model by the same deterministic pipeline as the 2026-08-17 pair) added on 2026-08-22, machine-checked and awaiting owner visual review, plus the nineteen buddy-whistle icons (rendered from their own shipped buddy GLB models by scripts/assets/render_buddy_item_icons.mjs) added on 2026-08-28, machine-checked and awaiting owner visual review, plus the three vendor-companion whistle icons (rendered from their own shipped buddy GLB models by scripts/assets/render_buddy_item_icons.mjs) added on 2026-09-03, machine-checked and awaiting owner visual review. The Dragon buddy whistle was removed from the game on 2026-09-04; its icon left the catalog with it.',
     });
     expect(verdict.visualVerdict.passIds).toEqual(currentIds);
     expect(verdict.nonVisualContentWatch).toEqual([
@@ -755,13 +755,13 @@ describe('item-art consistency accepted-art provenance', () => {
     const oldGeneratedIds = mapping.generatedBatches
       .filter(({ batchId }) => batchId !== BATCH_ID)
       .flatMap(({ itemIds }) => itemIds);
-    expect(oldGeneratedIds).toHaveLength(534);
+    expect(oldGeneratedIds).toHaveLength(536);
     const allCurrentOwnerIds = [
       ...mapping.entries.map(({ itemId }) => itemId),
       ...mapping.generatedBatches.flatMap(({ itemIds }) => itemIds),
     ];
-    expect(allCurrentOwnerIds).toHaveLength(848);
-    expect(new Set(allCurrentOwnerIds).size).toBe(848);
+    expect(allCurrentOwnerIds).toHaveLength(850);
+    expect(new Set(allCurrentOwnerIds).size).toBe(850);
     expect(batch?.provenanceRecords).toEqual([
       `${evidenceDir}/accepted-art.json`,
       `${evidenceDir}/supersession-audit.json`,
@@ -897,8 +897,8 @@ describe('item-art consistency accepted-art provenance', () => {
     for (const id of ownerIds) ownerCountById.set(id, (ownerCountById.get(id) ?? 0) + 1);
 
     const violations: string[] = [];
-    if (ownerIds.length !== 848) violations.push(`mapping owner count: ${ownerIds.length} != 848`);
-    if (fileIds.length !== 848) violations.push(`shipping WebP count: ${fileIds.length} != 848`);
+    if (ownerIds.length !== 850) violations.push(`mapping owner count: ${ownerIds.length} != 850`);
+    if (fileIds.length !== 850) violations.push(`shipping WebP count: ${fileIds.length} != 850`);
     for (const id of ids) {
       const ownerCount = ownerCountById.get(id) ?? 0;
       if (ownerCount !== 1) violations.push(`${id}: current owner count ${ownerCount} != 1`);

@@ -6081,7 +6081,6 @@
         "whistle_emerald_wolf",
         "whistle_tiger",
         "whistle_cate_coin",
-        "whistle_dragon",
         "whistle_alon",
         "whistle_trollface",
         "whistle_ansem",
@@ -6089,7 +6088,10 @@
         "whistle_kekius",
         "whistle_solbot",
         "whistle_frostfire",
-        "whistle_rocky"
+        "whistle_rocky",
+        "whistle_proud_grunt",
+        "whistle_loot_goblin",
+        "whistle_penny_goldspark"
       ],
       "commonPrompt": "Not a text-to-image prompt: deterministic in-engine still of the committed GLB model (hero three-quarter turntable view, auto-framed to the model's bounding sphere) resized to 128px; ember_fox/moss_hare apply a post-render tint recoloring the shared fox rig."
     }

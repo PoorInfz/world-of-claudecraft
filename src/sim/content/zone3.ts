@@ -1280,6 +1280,11 @@ export const ZONE3_NPCS: Record<string, NpcDef> = {
       'highwatch_wallshield',
       'craghorn_staff',
       'icevein_dirk',
+      // Penny Goldspark, the 1000g companion: the one buddy whistle sold for
+      // plain gold at the top of the level range, so gold has a cosmetic sink
+      // that is not gear. Hode keeps her because the forge row is where a
+      // player with that much gold already stands.
+      'whistle_penny_goldspark',
     ],
     greeting: 'Forge is hot and the grindstone is turning. If it cuts, I sell it.',
   },
@@ -1333,7 +1338,12 @@ export const ZONE3_NPCS: Record<string, NpcDef> = {
     facing: 2.26, // atan2(dx, dz) toward the square at (0, 660)
     color: 0x7d2f3f, // deep war-crimson steel, off every tint the visual manifest reserves
     questIds: [],
-    vendorItems: [...FURY_STOCK],
+    // The canonical WARFARE stock plus the one companion honor buys. Draven
+    // carries it and FURY does not: the whistle is a Highwatch-row prestige
+    // purchase, not part of the mirrored gear list the two must present
+    // identically (the shop window sections it under Companions, see
+    // src/ui/hud/vendor/warfare_vendor_view.ts).
+    vendorItems: [...FURY_STOCK, 'whistle_proud_grunt'],
     dynamic: true,
     warfareVendor: true,
     greeting:
@@ -1394,8 +1404,9 @@ export const ZONE3_NPCS: Record<string, NpcDef> = {
     // learned. The riding-skill gate (ridingTrained) is enforced in buyItem
     // (items.ts). The buddy whistles are cosmetic-only (no riding-skill gate)
     // but fit her stable-adjacent theme; only the common-tier whistles are
-    // vendor-buyable (the rare/epic pair has no acquisition source yet, see
-    // the comment on whistle_cate_coin/whistle_dragon in content/items.ts).
+    // vendor-buyable. The rare and epic tiers are acquired elsewhere: the three
+    // vendor companions from the Highwatch currency vendors, and the rest from
+    // no live source yet (global_drops.ts holds both tiers at chance 0).
     vendorItems: [
       'riding_training',
       'reins_valorsteed',

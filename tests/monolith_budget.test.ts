@@ -133,7 +133,15 @@ const MONOLITHS: MonolithRow[] = [
     // Plus 1 for the Exchange's Solana wallet card: the ONE line is the
     // onWalletUiChange fan-out onto wocMarketWindow.onWalletChanged(), the
     // Claudium panel's existing arm. Exact count.
-    ceiling: 18489,
+    // Raised 18489 -> 18519 (+30) for the Collections window: the window, its
+    // view core, its source derivation and its whole deps bag live in
+    // src/ui/collections/ (collections_host.ts builds the bag and the preview
+    // options), so what lands here is only coordinator wiring with no
+    // branch-owned extraction left: the field, the toggle, the Escape arm, the
+    // micro-menu click, the keybind-label row, the relocalize fan-out and the
+    // repaint-band line. Maintainer decision, exact count: any further growth
+    // reds again.
+    ceiling: 18519,
     seam: 'pure view core + thin painter on PainterHost (src/ui/CLAUDE.md)',
   },
   {
@@ -287,7 +295,11 @@ const MONOLITHS: MonolithRow[] = [
     // renderer.showPetNames read at boot, the settings-panel dispatch arm,
     // and the reload-time re-sync (src/main.ts:1530, 2691-2694, 2876). Exact
     // count, zero slack.
-    ceiling: 11532,
+    // Plus 6 for the Collections keybind: the two UI-key dispatch arms (the
+    // in-game switch and the entry-screen one) that route Shift+C to
+    // hud.toggleCollections. Pure dispatch, nothing extractable: main.ts owns
+    // the keybind fan-out. Exact count, zero slack.
+    ceiling: 11538,
     seam: 'a src/game/ or src/ui/ sibling module; main.ts is a firewall, not a home',
   },
   {

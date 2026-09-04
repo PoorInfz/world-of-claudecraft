@@ -1947,6 +1947,7 @@ export const en_XA: EnTranslations = {
       "gossipOptionAria": "[Ɓŕóŵšé ţĥé Ŵáŕƒáŕé šéţ šĥóþ óƒƒéŕéð ƀý {name}]",
       "jewelry": "[Ĵéŵéļŕý]",
       "weapons": "[Ŵéáþóñš]",
+      "companions": "[Çóɱþáñíóñš]",
       "owned": "[Óŵñéð]",
       "buyAria": "[Ɓúý {item} ƒóŕ {honor}]",
       "buyOwnedAria": "[Ɓúý {item} ƒóŕ {honor}, áļŕéáðý óŵñéð]",
@@ -3091,6 +3092,61 @@ export const en_XA: EnTranslations = {
       "logOpenBank": "[{actor} óþéñéð ţĥé ĝúíļð ƀáñķ ƒóŕ {amount}]",
       "logCharterFee": "[{actor} þáíð ţĥé ĝúíļð çĥáŕţéŕ ƒéé óƒ {amount}]",
       "logAdminPurge": "[Áñ áðɱíñíšţŕáţóŕ ŕéɱóʋéð {count} {item}]"
+    },
+    "collections": {
+      "title": "[Çóļļéçţíóñš]",
+      "close": "[Çļóšé çóļļéçţíóñš]",
+      "keybindLabel": "[Çóļļéçţíóñš]",
+      "launcherTitle": "[Çóļļéçţíóñš: ƀúððíéš, ɱóúñţš áñð íţéɱ šéţš]",
+      "tabs": {
+        "buddies": "[Ɓúððíéš]",
+        "mounts": "[Ɱóúñţš]",
+        "sets": "[Íţéɱ Šéţš]"
+      },
+      "state": {
+        "owned": "[Çóļļéçţéð]",
+        "notOwned": "[Ñóţ çóļļéçţéð]",
+        "unavailable": "[Ñóţ óƀţáíñáƀļé ýéţ]"
+      },
+      "armor": {
+        "cloth": "[Çļóţĥ]",
+        "mail": "[Ɱáíļ]",
+        "leather": "[Ļéáţĥéŕ]"
+      },
+      "stat": {
+        "intellect": "[Íñţéļļéçţ]",
+        "agility": "[Áĝíļíţý]",
+        "strength": "[Šţŕéñĝţĥ]",
+        "mixed": "[Ĥýƀŕíð]"
+      },
+      "set": {
+        "owned": "[{owned} óƒ {total} þíéçéš]"
+      },
+      "detail": {
+        "dropLabel": "[Ðŕóþš ƒŕóɱ]",
+        "vendorLabel": "[Šóļð ƀý]",
+        "bindLabel": "[Ɓíñðíñĝ]",
+        "sellLabel": "[Ʋéñðóŕ þáýš]",
+        "marketLabel": "[Ŵóŕļð Ɱáŕķéţ]",
+        "exchangeLabel": "[$ŴÓÇ Éẋçĥáñĝé]",
+        "setLabel": "[Çóļļéçţéð]",
+        "drop": "[{mob} ({location}), {chance}% þéŕ ķíļļ]",
+        "heroicDrop": "[{mob} ({location}), Ĥéŕóíç óñļý, {chance}% þéŕ ķíļļ]",
+        "globalDrop": "[Áñý éñéɱý, {chance}% þéŕ ķíļļ, óñé óƒ {count} áţ ţĥíš ŕáŕíţý]",
+        "vendor": "[{npc} ({location}) ƒóŕ {price}]",
+        "honorPrice": "[{amount} Ĥóñóŕ]",
+        "marksPrice": "[{amount} Ĥéŕóíç Ɱáŕķš]",
+        "noSource": "[Ñó šóúŕçé íñ ţĥé ĝáɱé ýéţ]",
+        "noItem": "[Ñó íţéɱ ĝŕáñţš ţĥíš ýéţ]",
+        "tradeable": "[Ţŕáðéáƀļé]",
+        "soulbound": "[Šóúļƀóúñð]",
+        "noSell": "[Çáññóţ ƀé šóļð]",
+        "marketAtMerchant": "[Šĥóŵñ áţ ţĥé Ɱéŕçĥáñţ]",
+        "marketChecking": "[Çĥéçķíñĝ...]",
+        "marketNone": "[Ñó ļíšţíñĝš]",
+        "exchangeNone": "[Ñó ļíšţíñĝš]",
+        "exchangeUnavailable": "[Ñóţ áʋáíļáƀļé óñ ţĥíš çļíéñţ]"
+      }
     },
     "calendar": {
       "title": "[Éʋéñţ Çáļéñðáŕ]",
@@ -12916,9 +12972,6 @@ export const en_XA: EnTranslations = {
       "whistle_cate_coin": {
         "name": "[Çáţé Çóíñ Ŵĥíšţļé]"
       },
-      "whistle_dragon": {
-        "name": "[Ðŕáĝóñ Ŵĥíšţļé]"
-      },
       "whistle_alon": {
         "name": "[Áļóñ Ŵĥíšţļé]"
       },
@@ -12942,6 +12995,15 @@ export const en_XA: EnTranslations = {
       },
       "whistle_rocky": {
         "name": "[Ŕóçķý Ŵĥíšţļé]"
+      },
+      "whistle_proud_grunt": {
+        "name": "[Þŕóúð Ĝŕúñţ Ŵĥíšţļé]"
+      },
+      "whistle_loot_goblin": {
+        "name": "[Ļóóţ Ĝóƀļíñ Ŵĥíšţļé]"
+      },
+      "whistle_penny_goldspark": {
+        "name": "[Þéññý Ĝóļðšþáŕķ Ŵĥíšţļé]"
       },
       "conjured_water4": {
         "name": "[Çóñĵúŕéð Šþŕíñĝŵáţéŕ]"
@@ -14346,9 +14408,6 @@ export const en_XA: EnTranslations = {
       "buddy_cate_coin": {
         "name": "[Çáţé Çóíñ]"
       },
-      "buddy_dragon": {
-        "name": "[Ðŕáĝóñ]"
-      },
       "buddy_alon": {
         "name": "[Áļóñ]"
       },
@@ -14372,6 +14431,15 @@ export const en_XA: EnTranslations = {
       },
       "buddy_rocky": {
         "name": "[Ŕóçķý]"
+      },
+      "buddy_proud_grunt": {
+        "name": "[Þŕóúð Ĝŕúñţ]"
+      },
+      "buddy_loot_goblin": {
+        "name": "[Ļóóţ Ĝóƀļíñ]"
+      },
+      "buddy_penny_goldspark": {
+        "name": "[Þéññý Ĝóļðšþáŕķ]"
       },
       "ironvein_foreman": {
         "name": "[Íŕóñʋéíñ Ƒóŕéɱáñ]"

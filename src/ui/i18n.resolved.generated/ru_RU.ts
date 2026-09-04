@@ -1947,6 +1947,7 @@ export const ru_RU: EnTranslations = {
       "gossipOptionAria": "Просмотреть магазин комплектов Боевой мощи у {name}",
       "jewelry": "Украшения",
       "weapons": "Оружие",
+      "companions": "Companions",
       "owned": "Получено",
       "buyAria": "Купить {item} за {honor}",
       "buyOwnedAria": "Купить {item} за {honor}, уже получено",
@@ -3091,6 +3092,61 @@ export const ru_RU: EnTranslations = {
       "logOpenBank": "{actor} открыл(а) банк гильдии за {amount}",
       "logCharterFee": "{actor} оплатил(а) устав гильдии: {amount}",
       "logAdminPurge": "Администратор удалил {count} шт. {item}"
+    },
+    "collections": {
+      "title": "Collections",
+      "close": "Close collections",
+      "keybindLabel": "Collections",
+      "launcherTitle": "Collections: buddies, mounts and item sets",
+      "tabs": {
+        "buddies": "Buddies",
+        "mounts": "Mounts",
+        "sets": "Item Sets"
+      },
+      "state": {
+        "owned": "Collected",
+        "notOwned": "Not collected",
+        "unavailable": "Not obtainable yet"
+      },
+      "armor": {
+        "cloth": "Cloth",
+        "mail": "Mail",
+        "leather": "Leather"
+      },
+      "stat": {
+        "intellect": "Intellect",
+        "agility": "Agility",
+        "strength": "Strength",
+        "mixed": "Hybrid"
+      },
+      "set": {
+        "owned": "{owned} of {total} pieces"
+      },
+      "detail": {
+        "dropLabel": "Drops from",
+        "vendorLabel": "Sold by",
+        "bindLabel": "Binding",
+        "sellLabel": "Vendor pays",
+        "marketLabel": "World Market",
+        "exchangeLabel": "$WOC Exchange",
+        "setLabel": "Collected",
+        "drop": "{mob} ({location}), {chance}% per kill",
+        "heroicDrop": "{mob} ({location}), Heroic only, {chance}% per kill",
+        "globalDrop": "Any enemy, {chance}% per kill, one of {count} at this rarity",
+        "vendor": "{npc} ({location}) for {price}",
+        "honorPrice": "{amount} Honor",
+        "marksPrice": "{amount} Heroic Marks",
+        "noSource": "No source in the game yet",
+        "noItem": "No item grants this yet",
+        "tradeable": "Tradeable",
+        "soulbound": "Soulbound",
+        "noSell": "Cannot be sold",
+        "marketAtMerchant": "Shown at the Merchant",
+        "marketChecking": "Checking...",
+        "marketNone": "No listings",
+        "exchangeNone": "No listings",
+        "exchangeUnavailable": "Not available on this client"
+      }
     },
     "calendar": {
       "title": "Календарь событий",
@@ -12916,9 +12972,6 @@ export const ru_RU: EnTranslations = {
       "whistle_cate_coin": {
         "name": "Свисток «Кейт-монета»"
       },
-      "whistle_dragon": {
-        "name": "Свисток «Дракон»"
-      },
       "whistle_alon": {
         "name": "Свисток «Алон»"
       },
@@ -12942,6 +12995,15 @@ export const ru_RU: EnTranslations = {
       },
       "whistle_rocky": {
         "name": "Свисток «Роки»"
+      },
+      "whistle_proud_grunt": {
+        "name": "Proud Grunt Whistle"
+      },
+      "whistle_loot_goblin": {
+        "name": "Loot Goblin Whistle"
+      },
+      "whistle_penny_goldspark": {
+        "name": "Penny Goldspark Whistle"
       },
       "conjured_water4": {
         "name": "Сотворённая родниковая вода"
@@ -14346,9 +14408,6 @@ export const ru_RU: EnTranslations = {
       "buddy_cate_coin": {
         "name": "Кейт-монета"
       },
-      "buddy_dragon": {
-        "name": "Дракон"
-      },
       "buddy_alon": {
         "name": "Алон"
       },
@@ -14372,6 +14431,15 @@ export const ru_RU: EnTranslations = {
       },
       "buddy_rocky": {
         "name": "Роки"
+      },
+      "buddy_proud_grunt": {
+        "name": "Proud Grunt"
+      },
+      "buddy_loot_goblin": {
+        "name": "Loot Goblin"
+      },
+      "buddy_penny_goldspark": {
+        "name": "Penny Goldspark"
       },
       "ironvein_foreman": {
         "name": "Прораб Железной жилы"

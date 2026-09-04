@@ -198,6 +198,7 @@ import { ClaudiumLauncherBalance } from './claudium_launcher_balance_core';
 import type { ClaudiumRail, ClaudiumSnapshot } from './claudium_window';
 import { ClaudiumWindow } from './claudium_window';
 import { formatClockTime } from './clock';
+import { buildCollectionsWindow, collectionsPreviewOptions } from './collections/collections_host';
 import { CombatAnnouncer } from './combat_announcer';
 import {
   auraApplyCue,
@@ -2945,6 +2946,7 @@ export class Hud {
     $('#mm-options')?.addEventListener('click', () => this.toggleOptionsMenu());
     $('#mm-wiki')?.addEventListener('click', () => this.openWiki());
     $('#mm-arena').addEventListener('click', () => this.toggleArena());
+    $('#mm-collections').addEventListener('click', () => this.toggleCollections());
     $('#mm-dfinder').addEventListener('click', () => this.toggleDungeonFinder());
     $('#mm-cardduel').addEventListener('click', () => this.toggleCardDuel());
     $('#mm-leaderboard').addEventListener('click', () => this.toggleLeaderboard());
@@ -3460,6 +3462,10 @@ export class Hud {
         // Route through the painter so focus returns to the opener (WCAG 2.2 AA),
         // consistent with the toggle / X close path.
         this.arenaWindow.close();
+        break;
+      case 'collections-window':
+        // Route through the painter so focus returns to the opener (WCAG 2.2 AA).
+        this.collectionsWindow.close();
         break;
       case 'dungeon-finder-window':
         // Route through the painter so focus returns to the opener (WCAG 2.2 AA).
@@ -4902,6 +4908,23 @@ export class Hud {
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#arena-window'),
     ...this.windowFocus('#arena-window'),
+  });
+
+  // Collections (cold window): the buddy, mount and epic-set catalogs with each
+  // one's source, derived in src/ui/collections/. Its whole deps bag is built
+  // there (collections_host.ts); the idle preview rides the SHARED turntable, so
+  // the window adds no second WebGL context.
+  private readonly collectionsWindow = buildCollectionsWindow({
+    root: () => $('#collections-window'),
+    world: () => this.sim,
+    closeOthers: () => this.closeOtherWindows('#collections-window'),
+    ...this.windowFocus('#collections-window'),
+    mountPreview: (container, previewKey, kind) =>
+      this.mountSharedPreview(
+        container,
+        collectionsPreviewOptions(previewKey, this.sim.cfg.playerClass, kind),
+      ),
+    exchangeClient: () => this.wocMarketHooks?.client ?? null,
   });
 
   // Dungeon Finder (cold window; docs/prd/dungeon-finder.md). Composes the
@@ -6465,6 +6488,7 @@ export class Hud {
     // JSON of ids/numbers), so a language switch alone never moves it; relocalize() forces
     // one rebuild with fresh t() (self-gated on isOpen).
     this.arenaWindow.relocalize();
+    this.collectionsWindow.relocalize();
     this.bgScoreboard.relocalize();
     this.dungeonFinderWindow.relocalize();
     this.dungeonFinderProposalPopup.relocalize();
@@ -7632,6 +7656,7 @@ export class Hud {
       ['#mm-bag', 'bags', 'itemUi.bags.title'],
       ['#mm-crafting', 'crafting', 'hudChrome.crafting.title'],
       ['#mm-arena', 'arena', 'hudChrome.pvp.launcherTitle'],
+      ['#mm-collections', 'collections', 'hudChrome.collections.launcherTitle'],
       ['#mm-dfinder', 'dungeonFinder', 'hudChrome.finder.title'],
       ['#mm-leaderboard', 'leaderboard', 'game.leaderboard.title'],
       ['#mm-emote', 'emoteWheel', 'hudChrome.emoteWheel.label'],
@@ -9133,6 +9158,7 @@ export class Hud {
       this.yumiPainter.update(this.sim.arenaInfo);
       if ($('#map-window').style.display === 'block') this.updateMapWindow();
       if ($('#arena-window').style.display === 'block') this.arenaWindow.render();
+      if ($('#collections-window').style.display === 'block') this.collectionsWindow.render();
       if ($('#dungeon-finder-window').style.display === 'flex') this.dungeonFinderWindow.render();
       if (this.dungeonFinderProposalPopup.isOpen) this.dungeonFinderProposalPopup.render();
       if (this.bgProposalPopup.isOpen) this.bgProposalPopup.render();
@@ -10206,6 +10232,10 @@ export class Hud {
   // band while open. The in-match auto-close + the pinned banner stay here.
   toggleArena(): void {
     this.arenaWindow.toggle();
+  }
+
+  toggleCollections(): void {
+    this.collectionsWindow.toggle();
   }
 
   toggleBattleground(): void {

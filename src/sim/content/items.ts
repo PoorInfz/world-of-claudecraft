@@ -534,16 +534,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     noDiscard: true,
     sellValue: 0,
   },
-  whistle_dragon: {
-    id: 'whistle_dragon',
-    name: 'Dragon Whistle',
-    kind: 'buddy',
-    buddy: 'dragon',
-    quality: 'epic',
-    noVendorSell: true,
-    noDiscard: true,
-    sellValue: 0,
-  },
   whistle_alon: {
     id: 'whistle_alon',
     name: 'Alon Whistle',
@@ -625,6 +615,50 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     noDiscard: true,
     sellValue: 0,
     buyValue: 50_000,
+  },
+  // The three currency-vendor rares. Unlike every whistle above, these have a
+  // NAMED source rather than the global rare drop (global_drops.ts holds rare
+  // and epic at chance 0), so each one is priced in the currency of the vendor
+  // that carries it: honor at the Warfare stores, Heroic Marks at the
+  // Quartermaster (the marks price lives with the rest of that stock in
+  // content/heroic_vendor.ts), and gold at Armorer Hode.
+  //
+  // The two currency-earned ones are soulbound so a prestige currency cannot be
+  // laundered into gold through the World Market; the gold one is freely
+  // tradeable, which is what a gold purchase already implies.
+  whistle_proud_grunt: {
+    id: 'whistle_proud_grunt',
+    name: 'Proud Grunt Whistle',
+    kind: 'buddy',
+    buddy: 'proud_grunt',
+    quality: 'rare',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    priceHonor: 20_000,
+    soulbound: true,
+  },
+  whistle_loot_goblin: {
+    id: 'whistle_loot_goblin',
+    name: 'Loot Goblin Whistle',
+    kind: 'buddy',
+    buddy: 'loot_goblin',
+    quality: 'rare',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    soulbound: true,
+  },
+  whistle_penny_goldspark: {
+    id: 'whistle_penny_goldspark',
+    name: 'Penny Goldspark Whistle',
+    kind: 'buddy',
+    buddy: 'penny_goldspark',
+    quality: 'rare',
+    noVendorSell: true,
+    noDiscard: true,
+    sellValue: 0,
+    buyValue: 10_000_000, // 1000g
   },
   mistveil_cord: {
     id: 'mistveil_cord',

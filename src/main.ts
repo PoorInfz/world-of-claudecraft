@@ -1974,6 +1974,9 @@ async function startGame(
           case 'arena':
             hud.toggleArena();
             break;
+          case 'collections':
+            hud.toggleCollections();
+            break;
           case 'dungeonFinder':
             hud.toggleDungeonFinder();
             break;
@@ -2314,6 +2317,9 @@ async function startGame(
         break;
       case 'arena':
         hud.toggleArena();
+        break;
+      case 'collections':
+        hud.toggleCollections();
         break;
       case 'bgFlag':
         bgFlagKey();

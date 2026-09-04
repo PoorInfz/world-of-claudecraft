@@ -2373,6 +2373,9 @@ export const hudChromeStrings = {
     gossipOptionAria: 'Browse the Warfare set shop offered by {name}',
     jewelry: 'Jewelry',
     weapons: 'Weapons',
+    // Cosmetic buddy whistles (the Proud Grunt companion). Its own heading so a
+    // companion never reads as a set piece the collection count is waiting on.
+    companions: 'Companions',
     // Marks a piece the viewer already wears or carries. The tile still sells.
     owned: 'Owned',
     // The buy tile's accessible name, as ONE key per arm rather than a base name
@@ -4030,6 +4033,76 @@ export const hudChromeStrings = {
     // gap, and it names NOBODY: the underlying row's character is the escrow
     // carrier, a bystander who did not order it.
     logAdminPurge: 'An administrator removed {count} {item}',
+  },
+  // The Collections window (src/ui/collections/): every buddy, mount and
+  // epic-or-better armour set in the game, with where each one comes from.
+  // Sources are derived from the live content tables, so these strings are
+  // frames around derived values, never a second copy of the content itself.
+  collections: {
+    title: 'Collections',
+    close: 'Close collections',
+    keybindLabel: 'Collections',
+    launcherTitle: 'Collections: buddies, mounts and item sets',
+    tabs: {
+      buddies: 'Buddies',
+      mounts: 'Mounts',
+      sets: 'Item Sets',
+    },
+    state: {
+      owned: 'Collected',
+      notOwned: 'Not collected',
+      // The catalog carries entries with no source assigned yet. The row still
+      // renders: "not in the game yet" is the answer a collector needs.
+      unavailable: 'Not obtainable yet',
+    },
+    armor: {
+      cloth: 'Cloth',
+      mail: 'Mail',
+      leather: 'Leather',
+    },
+    stat: {
+      intellect: 'Intellect',
+      agility: 'Agility',
+      strength: 'Strength',
+      // A family whose pieces carry two primary stats evenly. A real identity,
+      // not a missing value.
+      mixed: 'Hybrid',
+    },
+    set: {
+      owned: '{owned} of {total} pieces',
+    },
+    detail: {
+      dropLabel: 'Drops from',
+      vendorLabel: 'Sold by',
+      bindLabel: 'Binding',
+      sellLabel: 'Vendor pays',
+      marketLabel: 'World Market',
+      exchangeLabel: '$WOC Exchange',
+      setLabel: 'Collected',
+      drop: '{mob} ({location}), {chance}% per kill',
+      heroicDrop: '{mob} ({location}), Heroic only, {chance}% per kill',
+      // The buddy whistles ride one shared per-kill roll for their whole rarity
+      // tier, so the odds belong to the tier and the winner is drawn from it.
+      globalDrop: 'Any enemy, {chance}% per kill, one of {count} at this rarity',
+      vendor: '{npc} ({location}) for {price}',
+      honorPrice: '{amount} Honor',
+      marksPrice: '{amount} Heroic Marks',
+      noSource: 'No source in the game yet',
+      noItem: 'No item grants this yet',
+      tradeable: 'Tradeable',
+      soulbound: 'Soulbound',
+      noSell: 'Cannot be sold',
+      // The market figure is a live server read the client only receives while
+      // the player has the item staged at the Merchant, so the pane says where
+      // the number comes from rather than showing a stale one.
+      marketAtMerchant: 'Shown at the Merchant',
+      marketChecking: 'Checking...',
+      marketNone: 'No listings',
+      exchangeNone: 'No listings',
+      // Browser web only (docs/prd/woc/marketplace.md): every wrapped shell
+      // stays fail-closed, so the row says so instead of showing a blank price.
+      exchangeUnavailable: 'Not available on this client',
+    },
   },
   // The event calendar window: recurring system events plus the guild lane
   // (booked by officers and the Guild Master, mirrored via socialInfo).

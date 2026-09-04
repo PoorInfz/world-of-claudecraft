@@ -34,7 +34,6 @@ export const BUDDY_ICON_BATCH = [
   { itemId: 'whistle_emerald_wolf', glb: 'public/models/buddies/emerald_wolf.glb' },
   { itemId: 'whistle_tiger', glb: 'public/models/buddies/tiger.glb' },
   { itemId: 'whistle_cate_coin', glb: 'public/models/buddies/cate_coin.glb' },
-  { itemId: 'whistle_dragon', glb: 'public/models/buddies/dragon.glb' },
   { itemId: 'whistle_alon', glb: 'public/models/buddies/alon.glb' },
   { itemId: 'whistle_trollface', glb: 'public/models/buddies/trollface.glb' },
   { itemId: 'whistle_ansem', glb: 'public/models/buddies/ansem.glb' },
@@ -43,6 +42,10 @@ export const BUDDY_ICON_BATCH = [
   { itemId: 'whistle_solbot', glb: 'public/models/buddies/solbot.glb' },
   { itemId: 'whistle_frostfire', glb: 'public/models/buddies/frostfire.glb' },
   { itemId: 'whistle_rocky', glb: 'public/models/buddies/rocky.glb' },
+  // The three vendor companions (content/buddies.ts): same lane, humanoid rigs.
+  { itemId: 'whistle_proud_grunt', glb: 'public/models/buddies/proud_grunt.glb' },
+  { itemId: 'whistle_loot_goblin', glb: 'public/models/buddies/loot_goblin.glb' },
+  { itemId: 'whistle_penny_goldspark', glb: 'public/models/buddies/penny_goldspark.glb' },
 ];
 
 async function renderOne({ itemId, glb, tint }) {

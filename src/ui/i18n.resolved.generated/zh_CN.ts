@@ -1947,6 +1947,7 @@ export const zh_CN: EnTranslations = {
       "gossipOptionAria": "浏览 {name} 提供的战争套装商店",
       "jewelry": "饰品",
       "weapons": "武器",
+      "companions": "Companions",
       "owned": "已拥有",
       "buyAria": "以 {honor} 购买 {item}",
       "buyOwnedAria": "以 {honor} 购买 {item}，已拥有",
@@ -3091,6 +3092,61 @@ export const zh_CN: EnTranslations = {
       "logOpenBank": "{actor} 花费 {amount} 开启了公会银行",
       "logCharterFee": "{actor} 支付了 {amount} 的公会创建费用",
       "logAdminPurge": "管理员移除了 {count} 个 {item}"
+    },
+    "collections": {
+      "title": "Collections",
+      "close": "Close collections",
+      "keybindLabel": "Collections",
+      "launcherTitle": "Collections: buddies, mounts and item sets",
+      "tabs": {
+        "buddies": "Buddies",
+        "mounts": "Mounts",
+        "sets": "Item Sets"
+      },
+      "state": {
+        "owned": "Collected",
+        "notOwned": "Not collected",
+        "unavailable": "Not obtainable yet"
+      },
+      "armor": {
+        "cloth": "Cloth",
+        "mail": "Mail",
+        "leather": "Leather"
+      },
+      "stat": {
+        "intellect": "Intellect",
+        "agility": "Agility",
+        "strength": "Strength",
+        "mixed": "Hybrid"
+      },
+      "set": {
+        "owned": "{owned} of {total} pieces"
+      },
+      "detail": {
+        "dropLabel": "Drops from",
+        "vendorLabel": "Sold by",
+        "bindLabel": "Binding",
+        "sellLabel": "Vendor pays",
+        "marketLabel": "World Market",
+        "exchangeLabel": "$WOC Exchange",
+        "setLabel": "Collected",
+        "drop": "{mob} ({location}), {chance}% per kill",
+        "heroicDrop": "{mob} ({location}), Heroic only, {chance}% per kill",
+        "globalDrop": "Any enemy, {chance}% per kill, one of {count} at this rarity",
+        "vendor": "{npc} ({location}) for {price}",
+        "honorPrice": "{amount} Honor",
+        "marksPrice": "{amount} Heroic Marks",
+        "noSource": "No source in the game yet",
+        "noItem": "No item grants this yet",
+        "tradeable": "Tradeable",
+        "soulbound": "Soulbound",
+        "noSell": "Cannot be sold",
+        "marketAtMerchant": "Shown at the Merchant",
+        "marketChecking": "Checking...",
+        "marketNone": "No listings",
+        "exchangeNone": "No listings",
+        "exchangeUnavailable": "Not available on this client"
+      }
     },
     "calendar": {
       "title": "活动日历",
@@ -12916,9 +12972,6 @@ export const zh_CN: EnTranslations = {
       "whistle_cate_coin": {
         "name": "凯特金币哨子"
       },
-      "whistle_dragon": {
-        "name": "巨龙哨子"
-      },
       "whistle_alon": {
         "name": "阿隆哨子"
       },
@@ -12942,6 +12995,15 @@ export const zh_CN: EnTranslations = {
       },
       "whistle_rocky": {
         "name": "洛奇哨子"
+      },
+      "whistle_proud_grunt": {
+        "name": "Proud Grunt Whistle"
+      },
+      "whistle_loot_goblin": {
+        "name": "Loot Goblin Whistle"
+      },
+      "whistle_penny_goldspark": {
+        "name": "Penny Goldspark Whistle"
       },
       "conjured_water4": {
         "name": "魔法泉水"
@@ -14346,9 +14408,6 @@ export const zh_CN: EnTranslations = {
       "buddy_cate_coin": {
         "name": "凯特金币"
       },
-      "buddy_dragon": {
-        "name": "巨龙"
-      },
       "buddy_alon": {
         "name": "阿隆"
       },
@@ -14372,6 +14431,15 @@ export const zh_CN: EnTranslations = {
       },
       "buddy_rocky": {
         "name": "洛奇"
+      },
+      "buddy_proud_grunt": {
+        "name": "Proud Grunt"
+      },
+      "buddy_loot_goblin": {
+        "name": "Loot Goblin"
+      },
+      "buddy_penny_goldspark": {
+        "name": "Penny Goldspark"
       },
       "ironvein_foreman": {
         "name": "铁脉工头"

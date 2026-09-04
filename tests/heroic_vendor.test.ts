@@ -43,9 +43,12 @@ function errorTexts(sim: AnySim): string[] {
 }
 
 describe('heroic vendor stock: item-level and budget pins', () => {
-  it('every offer is a real epic level-20 jewelry item at item level 26', () => {
-    expect(HEROIC_VENDOR_STOCK.length).toBe(10);
-    for (const offer of HEROIC_VENDOR_STOCK) {
+  it('every jewelry offer is a real epic level-20 piece at item level 26', () => {
+    // Ten jewelry rows plus the one cosmetic companion row below.
+    expect(HEROIC_VENDOR_STOCK.length).toBe(11);
+    const jewelry = HEROIC_VENDOR_STOCK.filter((offer) => ITEMS[offer.itemId]?.kind === 'armor');
+    expect(jewelry.length).toBe(10);
+    for (const offer of jewelry) {
       const item = ITEMS[offer.itemId];
       expect(item, offer.itemId).toBeTruthy();
       expect(item.quality, offer.itemId).toBe('epic');
@@ -54,6 +57,19 @@ describe('heroic vendor stock: item-level and budget pins', () => {
       expect(offer.marks).toBeGreaterThan(0);
       expect(itemLevel(item), offer.itemId).toBe(26);
     }
+  });
+
+  it('sells the Loot Goblin companion for marks, with no item level and no stats', () => {
+    // The stock's one non-gear row (content/items.ts whistle_loot_goblin). It
+    // carries no slot, so the item-level index skips it: a cosmetic can never
+    // enter the budget arithmetic the jewelry above is pinned against.
+    const offer = HEROIC_VENDOR_STOCK.find((o) => o.itemId === 'whistle_loot_goblin');
+    expect(offer?.marks).toBe(100);
+    const item = ITEMS.whistle_loot_goblin;
+    expect(item.kind).toBe('buddy');
+    expect(item.quality).toBe('rare');
+    expect(item.slot).toBeUndefined();
+    expect(itemLevel(item)).toBeUndefined();
   });
 
   it('pins the ring and neck stat budgets (11 and 12) and every stat sum matches', () => {

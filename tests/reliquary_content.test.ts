@@ -1206,7 +1206,12 @@ describe('Reliquary Warfare pages pin against the live honor stock', () => {
     // order.
     expect(FURY_NPC_ID).toBe('fury');
     for (const npcId of ['fury', 'warmarshal_draven_kole']) {
-      const stock = new Set(NPCS[npcId]?.vendorItems ?? []);
+      // Gear rows only: the Warmarshal additionally carries one cosmetic
+      // companion whistle (kind 'buddy', content/items.ts), which no relic
+      // page counts and which must never widen the honor GEAR stock.
+      const stock = new Set(
+        (NPCS[npcId]?.vendorItems ?? []).filter((id) => ITEMS[id]?.kind !== 'buddy'),
+      );
       expect(stock.size, npcId).toBe(FURY_STOCK.length);
       for (const id of FURY_STOCK) expect(stock.has(id), `${npcId} sells ${id}`).toBe(true);
     }

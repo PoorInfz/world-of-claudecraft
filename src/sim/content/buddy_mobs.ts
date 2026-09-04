@@ -17,13 +17,18 @@ export function buddyTemplateId(key: BuddyKey): string {
   return `${BUDDY_TEMPLATE_PREFIX}${key}`;
 }
 
-// One shared scale for the whole roster, pinned to cate_coin's own size
-// (2026-08-28 owner request: "make every buddy the same size as cate_coin").
-// History, for anyone tracing why this is 2.7: hunter-pet proportion (1x the
-// rig's authored height) run through -70%, then +50% off that, then +100%
-// off THAT (1 * 0.3 * 1.5 * 2 = 0.9), which is where cate_coin itself then
-// took its own +200% bump (0.9 * 3 = 2.7) before this pass made it universal.
-const BUDDY_SCALE = 2.7;
+// One shared scale for the whole roster (2026-08-30 owner request: use the
+// dragon's own scale for every buddy, present and future). History, for
+// anyone tracing why this is 1.89: hunter-pet proportion (1x the rig's
+// authored height) run through -70%, then +50% off that, then +100% off
+// THAT (1 * 0.3 * 1.5 * 2 = 0.9), then cate_coin's own +200% bump made
+// universal (0.9 * 3 = 2.7), then the dragon's own -30% (2.7 * 0.7 = 1.89)
+// made universal in turn. (That dragon buddy has since been removed from the
+// game; the number it set stayed, which is why the trail names a key the
+// catalog no longer has.) No per-buddy override any more: buddyTemplate
+// below takes no scale argument on purpose, so a new buddy can never be
+// added at an inconsistent size.
+const BUDDY_SCALE = 1.89;
 
 function buddyTemplate(
   key: BuddyKey,
@@ -88,7 +93,6 @@ export const BUDDY_MOBS: Record<string, MobTemplate> = {
   ),
   [buddyTemplateId('tiger')]: buddyTemplate('tiger', 'Tiger', 'beast', 0xffffff),
   [buddyTemplateId('cate_coin')]: buddyTemplate('cate_coin', 'Cate Coin', 'beast', 0xffffff),
-  [buddyTemplateId('dragon')]: buddyTemplate('dragon', 'Dragon', 'dragonkin', 0xffffff),
   [buddyTemplateId('alon')]: buddyTemplate('alon', 'Alon', 'beast', 0xffffff),
   [buddyTemplateId('trollface')]: buddyTemplate('trollface', 'Trollface', 'beast', 0xffffff),
   [buddyTemplateId('ansem')]: buddyTemplate('ansem', 'Ansem', 'beast', 0xffffff),
@@ -97,6 +101,27 @@ export const BUDDY_MOBS: Record<string, MobTemplate> = {
   [buddyTemplateId('solbot')]: buddyTemplate('solbot', 'Solbot', 'beast', 0xffffff),
   [buddyTemplateId('frostfire')]: buddyTemplate('frostfire', 'Frostfire', 'beast', 0xffffff),
   [buddyTemplateId('rocky')]: buddyTemplate('rocky', 'Rocky', 'beast', 0xffffff),
+  // The three vendor-only rares. Humanoid rigs (orc grunt, goblin, gnome),
+  // family 'humanoid' so nothing in the pet/beast paths ever mistakes one for
+  // a tameable; they still never fight, exactly like every other buddy.
+  [buddyTemplateId('proud_grunt')]: buddyTemplate(
+    'proud_grunt',
+    'Proud Grunt',
+    'humanoid',
+    0xffffff,
+  ),
+  [buddyTemplateId('loot_goblin')]: buddyTemplate(
+    'loot_goblin',
+    'Loot Goblin',
+    'humanoid',
+    0xffffff,
+  ),
+  [buddyTemplateId('penny_goldspark')]: buddyTemplate(
+    'penny_goldspark',
+    'Penny Goldspark',
+    'humanoid',
+    0xffffff,
+  ),
 };
 
 /** Every valid buddy templateId, for the cheap `isBuddyMob` membership check

@@ -11251,6 +11251,144 @@
     gap: 6px;
   }
 
+  /* ---------- Collections (buddies, mounts, item sets) ---------- */
+  #collections-window {
+    width: 620px;
+    --window-pad: 14px;
+  }
+  .col-tabs {
+    display: flex;
+    gap: 4px;
+    margin: 8px 0 10px;
+  }
+  .col-tab {
+    flex: 1;
+    font-family: var(--title-font);
+    font-size: 12px;
+    padding: 5px 4px;
+    color: var(--color-text-muted);
+    background: linear-gradient(#2a2418, #1d1811);
+    border: 1px solid var(--color-border-showcase);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .col-tab.active {
+    color: var(--gold);
+    background: linear-gradient(#4a3c1c, #302713);
+  }
+  /* Two panes: the catalog list scrolls, the detail pane holds the preview. */
+  .col-body {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .col-list {
+    flex: 1 1 46%;
+    max-height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .col-detail {
+    flex: 1 1 54%;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+  .col-row {
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 3px 5px;
+    text-align: left;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .col-row.active {
+    border-color: var(--color-border-showcase);
+    background: #ffffff0f;
+  }
+  /* An entry nothing in the game grants yet: still listed, visibly dimmed. */
+  .col-row.col-locked {
+    opacity: 0.55;
+  }
+  .col-row-name {
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.25;
+  }
+  .col-row-state {
+    flex: 0 0 auto;
+    font-size: 10px;
+    color: var(--color-text-muted);
+  }
+  .col-group-head {
+    font-family: var(--title-font);
+    color: var(--gold);
+    font-size: 11px;
+    margin: 10px 0 3px;
+    border-bottom: 1px solid var(--color-border-showcase);
+    padding-bottom: 2px;
+  }
+  /* The shared turntable's canvas is appended here by Hud.mountSharedPreview. */
+  .col-preview {
+    position: relative;
+    width: 100%;
+    height: 190px;
+    margin-bottom: 6px;
+    border: 1px solid var(--color-border-showcase);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .col-detail-name {
+    font-family: var(--title-font);
+    font-size: 14px;
+    margin: 0 0 6px;
+  }
+  .col-line {
+    display: flex;
+    gap: 8px;
+    margin: 2px 0;
+    font-size: 11px;
+  }
+  .col-line-label {
+    flex: 0 0 96px;
+    color: var(--color-text-muted);
+  }
+  .col-line-value {
+    flex: 1;
+  }
+  .col-note {
+    font-size: 11px;
+    color: var(--color-text-muted);
+  }
+  .col-pieces {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+  }
+  .col-piece {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2px 8px;
+    padding: 6px 0;
+    border-top: 1px solid var(--color-border-showcase);
+  }
+  .col-piece .col-line,
+  .col-piece .col-note {
+    grid-column: 2;
+  }
+  /* An entry with no committed item art: an empty cell at icon size, never a
+     broken image. */
+  .col-noart {
+    display: inline-block;
+    background: #ffffff0a;
+  }
+
   /* ---------- Ashen Coliseum (arena) ---------- */
   #arena-window {
     width: 360px;

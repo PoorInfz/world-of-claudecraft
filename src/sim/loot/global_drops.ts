@@ -17,15 +17,26 @@ export interface GlobalBuddyDropTier {
   chance: number;
 }
 
-// 2026-08-28 owner request: 2% common, 1% uncommon, 0.5% rare, 0.25% epic,
-// from every enemy killed. Order fixed here IS the rng draw order (loot_roll.ts
-// iterates this array in place), so re-ordering these tiers reshapes the
-// parity goldens exactly like adding or removing one would.
+// 2026-09-03 owner request: 1.5% common and 1% uncommon from every enemy
+// killed (normal, elite, dungeon boss and raid boss alike, since rollLoot runs
+// this list on every kill), with rare and epic held OUT of the drop table for
+// now. Superseded the 2026-08-28 tuning (2% / 1% / 0.5% / 0.25%).
+//
+// The two withheld tiers stay listed at chance 0 rather than being deleted:
+// every tier draws its ctx.rng.chance() unconditionally (loot_roll.ts), so the
+// per-kill draw COUNT is what the parity goldens are pinned to, and keeping
+// four rows means this retuning changes only which draws can win, never the
+// draw order. Re-enabling a tier is then a one-number edit that also cannot
+// reshape a golden. chance 0 can never win: Rng.chance is a strict `< p`.
+//
+// Rare stays reachable, just not here: the three vendor rares (Proud Grunt,
+// Loot Goblin, Penny Goldspark, see content/buddies.ts) are bought with honor,
+// Heroic Marks and gold respectively.
 export const GLOBAL_BUDDY_DROP_TIERS: readonly GlobalBuddyDropTier[] = [
-  { quality: 'common', chance: 0.02 },
+  { quality: 'common', chance: 0.015 },
   { quality: 'uncommon', chance: 0.01 },
-  { quality: 'rare', chance: 0.005 },
-  { quality: 'epic', chance: 0.0025 },
+  { quality: 'rare', chance: 0 },
+  { quality: 'epic', chance: 0 },
 ];
 
 // Built once at module load from the merged ITEMS catalog (not just

@@ -1947,6 +1947,7 @@ export const ko_KR: EnTranslations = {
       "gossipOptionAria": "{name}이(가) 운영하는 워페어 세트 상점 둘러보기",
       "jewelry": "장신구",
       "weapons": "무기",
+      "companions": "Companions",
       "owned": "보유 중",
       "buyAria": "{honor}에 {item} 구매",
       "buyOwnedAria": "{honor}에 {item} 구매, 이미 보유 중",
@@ -3091,6 +3092,61 @@ export const ko_KR: EnTranslations = {
       "logOpenBank": "{actor}님이 {amount}을(를) 들여 길드 은행을 열었습니다",
       "logCharterFee": "{actor}님이 길드 창설 비용 {amount}을(를) 지불했습니다",
       "logAdminPurge": "관리자가 {item} {count}개를 삭제했습니다"
+    },
+    "collections": {
+      "title": "Collections",
+      "close": "Close collections",
+      "keybindLabel": "Collections",
+      "launcherTitle": "Collections: buddies, mounts and item sets",
+      "tabs": {
+        "buddies": "Buddies",
+        "mounts": "Mounts",
+        "sets": "Item Sets"
+      },
+      "state": {
+        "owned": "Collected",
+        "notOwned": "Not collected",
+        "unavailable": "Not obtainable yet"
+      },
+      "armor": {
+        "cloth": "Cloth",
+        "mail": "Mail",
+        "leather": "Leather"
+      },
+      "stat": {
+        "intellect": "Intellect",
+        "agility": "Agility",
+        "strength": "Strength",
+        "mixed": "Hybrid"
+      },
+      "set": {
+        "owned": "{owned} of {total} pieces"
+      },
+      "detail": {
+        "dropLabel": "Drops from",
+        "vendorLabel": "Sold by",
+        "bindLabel": "Binding",
+        "sellLabel": "Vendor pays",
+        "marketLabel": "World Market",
+        "exchangeLabel": "$WOC Exchange",
+        "setLabel": "Collected",
+        "drop": "{mob} ({location}), {chance}% per kill",
+        "heroicDrop": "{mob} ({location}), Heroic only, {chance}% per kill",
+        "globalDrop": "Any enemy, {chance}% per kill, one of {count} at this rarity",
+        "vendor": "{npc} ({location}) for {price}",
+        "honorPrice": "{amount} Honor",
+        "marksPrice": "{amount} Heroic Marks",
+        "noSource": "No source in the game yet",
+        "noItem": "No item grants this yet",
+        "tradeable": "Tradeable",
+        "soulbound": "Soulbound",
+        "noSell": "Cannot be sold",
+        "marketAtMerchant": "Shown at the Merchant",
+        "marketChecking": "Checking...",
+        "marketNone": "No listings",
+        "exchangeNone": "No listings",
+        "exchangeUnavailable": "Not available on this client"
+      }
     },
     "calendar": {
       "title": "이벤트 달력",
@@ -12916,9 +12972,6 @@ export const ko_KR: EnTranslations = {
       "whistle_cate_coin": {
         "name": "케이트 코인 호루라기"
       },
-      "whistle_dragon": {
-        "name": "드래곤 호루라기"
-      },
       "whistle_alon": {
         "name": "알론 호루라기"
       },
@@ -12942,6 +12995,15 @@ export const ko_KR: EnTranslations = {
       },
       "whistle_rocky": {
         "name": "록키 호루라기"
+      },
+      "whistle_proud_grunt": {
+        "name": "Proud Grunt Whistle"
+      },
+      "whistle_loot_goblin": {
+        "name": "Loot Goblin Whistle"
+      },
+      "whistle_penny_goldspark": {
+        "name": "Penny Goldspark Whistle"
       },
       "conjured_water4": {
         "name": "창조된 샘물"
@@ -14346,9 +14408,6 @@ export const ko_KR: EnTranslations = {
       "buddy_cate_coin": {
         "name": "케이트 코인"
       },
-      "buddy_dragon": {
-        "name": "드래곤"
-      },
       "buddy_alon": {
         "name": "알론"
       },
@@ -14372,6 +14431,15 @@ export const ko_KR: EnTranslations = {
       },
       "buddy_rocky": {
         "name": "록키"
+      },
+      "buddy_proud_grunt": {
+        "name": "Proud Grunt"
+      },
+      "buddy_loot_goblin": {
+        "name": "Loot Goblin"
+      },
+      "buddy_penny_goldspark": {
+        "name": "Penny Goldspark"
       },
       "ironvein_foreman": {
         "name": "철맥 감독관"

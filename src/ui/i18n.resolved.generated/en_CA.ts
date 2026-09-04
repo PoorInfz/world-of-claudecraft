@@ -1947,6 +1947,7 @@ export const en_CA: EnTranslations = {
       "gossipOptionAria": "Browse the Warfare set shop offered by {name}",
       "jewelry": "Jewelry",
       "weapons": "Weapons",
+      "companions": "Companions",
       "owned": "Owned",
       "buyAria": "Buy {item} for {honor}",
       "buyOwnedAria": "Buy {item} for {honor}, already owned",
@@ -3091,6 +3092,61 @@ export const en_CA: EnTranslations = {
       "logOpenBank": "{actor} opened the guild bank for {amount}",
       "logCharterFee": "{actor} paid the guild charter fee of {amount}",
       "logAdminPurge": "An administrator removed {count} {item}"
+    },
+    "collections": {
+      "title": "Collections",
+      "close": "Close collections",
+      "keybindLabel": "Collections",
+      "launcherTitle": "Collections: buddies, mounts and item sets",
+      "tabs": {
+        "buddies": "Buddies",
+        "mounts": "Mounts",
+        "sets": "Item Sets"
+      },
+      "state": {
+        "owned": "Collected",
+        "notOwned": "Not collected",
+        "unavailable": "Not obtainable yet"
+      },
+      "armor": {
+        "cloth": "Cloth",
+        "mail": "Mail",
+        "leather": "Leather"
+      },
+      "stat": {
+        "intellect": "Intellect",
+        "agility": "Agility",
+        "strength": "Strength",
+        "mixed": "Hybrid"
+      },
+      "set": {
+        "owned": "{owned} of {total} pieces"
+      },
+      "detail": {
+        "dropLabel": "Drops from",
+        "vendorLabel": "Sold by",
+        "bindLabel": "Binding",
+        "sellLabel": "Vendor pays",
+        "marketLabel": "World Market",
+        "exchangeLabel": "$WOC Exchange",
+        "setLabel": "Collected",
+        "drop": "{mob} ({location}), {chance}% per kill",
+        "heroicDrop": "{mob} ({location}), Heroic only, {chance}% per kill",
+        "globalDrop": "Any enemy, {chance}% per kill, one of {count} at this rarity",
+        "vendor": "{npc} ({location}) for {price}",
+        "honorPrice": "{amount} Honor",
+        "marksPrice": "{amount} Heroic Marks",
+        "noSource": "No source in the game yet",
+        "noItem": "No item grants this yet",
+        "tradeable": "Tradeable",
+        "soulbound": "Soulbound",
+        "noSell": "Cannot be sold",
+        "marketAtMerchant": "Shown at the Merchant",
+        "marketChecking": "Checking...",
+        "marketNone": "No listings",
+        "exchangeNone": "No listings",
+        "exchangeUnavailable": "Not available on this client"
+      }
     },
     "calendar": {
       "title": "Event Calendar",
@@ -12916,9 +12972,6 @@ export const en_CA: EnTranslations = {
       "whistle_cate_coin": {
         "name": "Cate Coin Whistle"
       },
-      "whistle_dragon": {
-        "name": "Dragon Whistle"
-      },
       "whistle_alon": {
         "name": "Alon Whistle"
       },
@@ -12942,6 +12995,15 @@ export const en_CA: EnTranslations = {
       },
       "whistle_rocky": {
         "name": "Rocky Whistle"
+      },
+      "whistle_proud_grunt": {
+        "name": "Proud Grunt Whistle"
+      },
+      "whistle_loot_goblin": {
+        "name": "Loot Goblin Whistle"
+      },
+      "whistle_penny_goldspark": {
+        "name": "Penny Goldspark Whistle"
       },
       "conjured_water4": {
         "name": "Conjured Springwater"
@@ -14346,9 +14408,6 @@ export const en_CA: EnTranslations = {
       "buddy_cate_coin": {
         "name": "Cate Coin"
       },
-      "buddy_dragon": {
-        "name": "Dragon"
-      },
       "buddy_alon": {
         "name": "Alon"
       },
@@ -14372,6 +14431,15 @@ export const en_CA: EnTranslations = {
       },
       "buddy_rocky": {
         "name": "Rocky"
+      },
+      "buddy_proud_grunt": {
+        "name": "Proud Grunt"
+      },
+      "buddy_loot_goblin": {
+        "name": "Loot Goblin"
+      },
+      "buddy_penny_goldspark": {
+        "name": "Penny Goldspark"
       },
       "ironvein_foreman": {
         "name": "Ironvein Foreman"

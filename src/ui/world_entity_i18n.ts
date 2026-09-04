@@ -253,7 +253,6 @@ const MOB_IDS = [
   'buddy_emerald_wolf',
   'buddy_tiger',
   'buddy_cate_coin',
-  'buddy_dragon',
   'buddy_alon',
   'buddy_trollface',
   'buddy_ansem',
@@ -262,6 +261,9 @@ const MOB_IDS = [
   'buddy_solbot',
   'buddy_frostfire',
   'buddy_rocky',
+  'buddy_proud_grunt',
+  'buddy_loot_goblin',
+  'buddy_penny_goldspark',
 ] as const;
 
 const NPC_IDS = [

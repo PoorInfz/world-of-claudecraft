@@ -1876,12 +1876,6 @@ export const VISUALS: Record<string, VisualDef> = {
     height: 0.4,
     clips: BUDDY_CLIPS,
   },
-  // epic
-  buddy_dragon: {
-    url: `${BUDDIES_DIR}/dragon.glb`,
-    height: 0.9,
-    clips: BUDDY_CLIPS,
-  },
   // rare
   buddy_alon: {
     url: `${BUDDIES_DIR}/alon.glb`,
@@ -1924,6 +1918,26 @@ export const VISUALS: Record<string, VisualDef> = {
   buddy_rocky: {
     url: `${BUDDIES_DIR}/rocky.glb`,
     height: 0.6,
+    clips: BUDDY_CLIPS,
+  },
+  // rare, the three currency-vendor companions. Humanoid rigs, so they stand
+  // taller than the animal roster above; their source clips shipped as
+  // IDLE/WALK and were renamed in-place by
+  // scripts/assets/normalize_buddy_clips.mjs, which is why they read
+  // BUDDY_CLIPS like every other buddy instead of a bespoke map.
+  buddy_proud_grunt: {
+    url: `${BUDDIES_DIR}/proud_grunt.glb`,
+    height: 0.8,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_loot_goblin: {
+    url: `${BUDDIES_DIR}/loot_goblin.glb`,
+    height: 0.7,
+    clips: BUDDY_CLIPS,
+  },
+  buddy_penny_goldspark: {
+    url: `${BUDDIES_DIR}/penny_goldspark.glb`,
+    height: 0.7,
     clips: BUDDY_CLIPS,
   },
   // Yumi, the Protect Yumi objective cat familiar (Meshy rig, scale baked by
@@ -3134,7 +3148,6 @@ const MOB_KEYS: Record<string, string> = {
   buddy_emerald_wolf: 'buddy_emerald_wolf',
   buddy_tiger: 'buddy_tiger',
   buddy_cate_coin: 'buddy_cate_coin',
-  buddy_dragon: 'buddy_dragon',
   buddy_alon: 'buddy_alon',
   buddy_trollface: 'buddy_trollface',
   buddy_ansem: 'buddy_ansem',
@@ -3143,6 +3156,9 @@ const MOB_KEYS: Record<string, string> = {
   buddy_solbot: 'buddy_solbot',
   buddy_frostfire: 'buddy_frostfire',
   buddy_rocky: 'buddy_rocky',
+  buddy_proud_grunt: 'buddy_proud_grunt',
+  buddy_loot_goblin: 'buddy_loot_goblin',
+  buddy_penny_goldspark: 'buddy_penny_goldspark',
   // Packlord Stampede guardians are transient local templates, not MOBS rows.
   // Give the three summoned beasts distinct existing bodies instead of the
   // generic humanoid bandit fallback.
@@ -3365,17 +3381,24 @@ const NPC_KEYS: Record<string, string> = {
   huntsman_deral: 'npc_scout',
 };
 
+/** The rig a mob TEMPLATE renders through: its per-template override, else its
+ *  family's shared body, else the humanoid fallback. Split out of visualKeyFor
+ *  so a caller holding a template id but no live entity (the Collections
+ *  window's idle preview) resolves the same key the world draws, instead of
+ *  guessing at VISUALS directly and missing every family-keyed mob. */
+export function mobVisualKey(templateId: string): string {
+  const override = MOB_KEYS[templateId];
+  if (override) return override;
+  const family = MOBS[templateId]?.family;
+  return (family && FAMILY_KEYS[family]) || 'mob_bandit';
+}
+
 export function visualKeyFor(e: Entity): string {
   if (e.kind === 'player') {
     if (isMechWearer(e)) return 'player_mech';
     return VISUALS[`player_${e.templateId}`] ? `player_${e.templateId}` : 'player_warrior';
   }
-  if (e.kind === 'mob') {
-    const override = MOB_KEYS[e.templateId];
-    if (override) return override;
-    const family = MOBS[e.templateId]?.family;
-    return (family && FAMILY_KEYS[family]) || 'mob_bandit';
-  }
+  if (e.kind === 'mob') return mobVisualKey(e.templateId);
   // npcs — Brother Aldric recurs in every hub under suffixed ids
   if (e.templateId.startsWith('brother_aldric')) return 'npc_aldric';
   return NPC_KEYS[e.templateId] ?? 'npc_villager';

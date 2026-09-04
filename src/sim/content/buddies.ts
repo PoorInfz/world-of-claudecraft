@@ -32,7 +32,6 @@ export type BuddyKey =
   | 'emerald_wolf'
   | 'tiger'
   | 'cate_coin'
-  | 'dragon'
   | 'alon'
   | 'trollface'
   | 'ansem'
@@ -40,7 +39,10 @@ export type BuddyKey =
   | 'kekius'
   | 'solbot'
   | 'frostfire'
-  | 'rocky';
+  | 'rocky'
+  | 'proud_grunt'
+  | 'loot_goblin'
+  | 'penny_goldspark';
 
 export interface BuddyDef {
   key: BuddyKey;
@@ -92,11 +94,6 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
     key: 'cate_coin',
     name: 'Cate Coin',
   },
-  // epic
-  dragon: {
-    key: 'dragon',
-    name: 'Dragon',
-  },
   // rare
   alon: {
     key: 'alon',
@@ -132,6 +129,25 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
   rocky: {
     key: 'rocky',
     name: 'Rocky',
+  },
+  // rare, currency vendors only: these three are the first buddies with a
+  // named acquisition source that is NOT the global whistle drop (see
+  // src/sim/loot/global_drops.ts, where rare and epic sit at chance 0). Proud
+  // Grunt comes from the Warfare stores for honor, Loot Goblin from the
+  // Heroic Quartermaster for marks, Penny Goldspark from Armorer Hode for
+  // gold; all three placements are the Highwatch vendor row in
+  // src/sim/content/zone3.ts.
+  proud_grunt: {
+    key: 'proud_grunt',
+    name: 'Proud Grunt',
+  },
+  loot_goblin: {
+    key: 'loot_goblin',
+    name: 'Loot Goblin',
+  },
+  penny_goldspark: {
+    key: 'penny_goldspark',
+    name: 'Penny Goldspark',
   },
 };
 
