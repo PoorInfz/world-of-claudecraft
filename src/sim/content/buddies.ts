@@ -117,6 +117,7 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
   alon: {
     key: 'alon',
     name: 'Alon',
+    kind: 'humanoid',
   },
   trollface: {
     key: 'trollface',
@@ -143,6 +144,7 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
   solbot: {
     key: 'solbot',
     name: 'Solbot',
+    kind: 'humanoid',
   },
   // uncommon
   frostfire: {

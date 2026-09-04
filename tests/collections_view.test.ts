@@ -129,12 +129,14 @@ describe('collections view model', () => {
     expect(buddyKindOf('triple_t')).toBe('celebrity');
     expect(buddyKindOf('kekius')).toBe('celebrity');
     expect(buddyKindOf('rocky')).toBe('elemental');
+    expect(buddyKindOf('alon')).toBe('humanoid');
+    expect(buddyKindOf('solbot')).toBe('humanoid');
     expect(buddyKindOf('frostfire')).toBe('elemental');
     // And nothing else drifted into them: every other companion still groups
     // by its family, so a new buddy lands in a creature group by default.
     const authored = BUDDY_KEYS.filter((key) => BUDDIES[key].kind !== undefined);
     expect(authored.sort()).toEqual(
-      ['ansem', 'frostfire', 'kekius', 'rocky', 'triple_t', 'trollface'].sort(),
+      ['alon', 'ansem', 'frostfire', 'kekius', 'rocky', 'solbot', 'triple_t', 'trollface'].sort(),
     );
   });
 
