@@ -24,7 +24,12 @@ import { ITEMS } from '../src/sim/data';
 import type { InvSlot } from '../src/sim/types';
 import { itemDisplayName } from '../src/ui/entity_i18n';
 import { ensureLocaleLoaded, setLanguage, t } from '../src/ui/i18n';
-import { setWalletConnectionAddresses, setWalletUiEnabled } from '../src/ui/wallet_balance';
+import {
+  onWalletUiChange,
+  setWalletConnectionAddresses,
+  setWalletUiEnabled,
+  setWocBalance,
+} from '../src/ui/wallet_balance';
 import {
   type WocMarketHooks,
   WocMarketWindow,
@@ -252,11 +257,13 @@ interface Rig {
   fake: FakeClient;
   hooks: WocMarketHooks;
   signMessage: ReturnType<typeof vi.fn>;
+  signAndSend: ReturnType<typeof vi.fn>;
   world: { inventory: InvSlot[] };
   tooltips: Map<Element, () => string>;
   closeOthers: ReturnType<typeof vi.fn<() => void>>;
   restoreFocus: ReturnType<typeof vi.fn<(target: HTMLElement | null) => void>>;
   openWallet: ReturnType<typeof vi.fn<() => void>>;
+  refreshWocBalance: ReturnType<typeof vi.fn<(force?: boolean) => void>>;
 }
 
 function rig(
@@ -264,12 +271,14 @@ function rig(
 ): Rig {
   const fake = fakeClient(over.rows);
   const signMessage = vi.fn(async () => 'sig');
+  const signAndSend = vi.fn(async () => 'txsig');
   const hooks: WocMarketHooks = {
     client: fake.client,
     characterId: () => 1,
     walletLinked: () => over.walletLinked ?? true,
-    signAndSendTransactionBase64: async () => 'txsig',
-    signMessageBase58: signMessage as unknown as (m: string) => Promise<string>,
+    signAndSendTransactionBase64:
+      signAndSend as unknown as WocMarketHooks['signAndSendTransactionBase64'],
+    signMessageBase58: signMessage as unknown as WocMarketHooks['signMessageBase58'],
   };
   const root = document.createElement('div');
   root.id = 'woc-market-window';
@@ -280,6 +289,7 @@ function rig(
   const closeOthers = vi.fn<() => void>();
   const restoreFocus = vi.fn<(target: HTMLElement | null) => void>();
   const openWallet = vi.fn<() => void>();
+  const refreshWocBalance = vi.fn<(force?: boolean) => void>();
   const deps: WocMarketWindowDeps = {
     root: () => root,
     world: () => world as unknown as IWorld,
@@ -293,6 +303,7 @@ function rig(
     captureFocus: () => document.activeElement as HTMLElement | null,
     restoreFocus,
     openWallet,
+    refreshWocBalance,
   };
   const win = new WocMarketWindow(deps);
   return {
@@ -301,11 +312,13 @@ function rig(
     fake,
     hooks,
     signMessage,
+    signAndSend,
     world,
     tooltips,
     closeOthers,
     restoreFocus,
     openWallet,
+    refreshWocBalance,
   };
 }
 
@@ -319,11 +332,13 @@ beforeEach(() => {
   document.body.innerHTML = '';
   vi.useRealTimers();
   setLanguage('en');
+  onWalletUiChange(() => {});
   // The Solana wallet card reads the shared connection state (wallet_balance),
   // the same module the window's balance gate reads; each test starts from the
   // feature-off default so only the wallet arms below paint the card.
   setWalletUiEnabled(false);
   setWalletConnectionAddresses(null, null);
+  setWocBalance(null);
 });
 
 describe('WocMarketWindow live rig: open, browse, select', () => {
@@ -333,6 +348,7 @@ describe('WocMarketWindow live rig: open, browse, select', () => {
     // Synchronous first paint: the header and the loading line, before any
     // answer lands, and the other windows were told to close.
     expect(r.root.style.display).toBe('flex');
+    expect(r.refreshWocBalance).toHaveBeenCalledTimes(1);
     expect(r.closeOthers).toHaveBeenCalledTimes(1);
     expect(r.root.textContent).toContain(t('hudChrome.wocMarket.loading'));
     await flush();
@@ -432,6 +448,7 @@ describe('WocMarketWindow live rig: open, browse, select', () => {
   it("a linked wallet keeps the card with the Claudium panel's Manage / Reconnect button, and a wallet change repaints it", async () => {
     setWalletUiEnabled(true);
     setWalletConnectionAddresses('linked', 'linked');
+    setWocBalance(15_625, true);
     const r = rig({ walletLinked: true });
     r.win.open();
     await flush();
@@ -441,9 +458,23 @@ describe('WocMarketWindow live rig: open, browse, select', () => {
     );
     expect(manage.textContent).toBe(t('hudChrome.wocStore.wallet.manage'));
     expect(q(r.root, '.wm-banner-wallet p').textContent).toBe(
-      t('hudChrome.wocStore.wallet.linkedConnected'),
+      t('hudChrome.wocMarket.walletLinkedConnected'),
     );
+    expect(q(r.root, '.wm-wallet-balance').textContent).toContain('15,625 $WOC');
+    expect(q(r.root, '.wm-wallet-balance').textContent).toContain('$2.00 USD');
     manage.focus();
+    const unchangedCard = q(r.root, '.wm-banner-wallet');
+    r.win.onWalletChanged();
+    expect(q(r.root, '.wm-banner-wallet')).toBe(unchangedCard);
+    // A balance-only update keeps the connection kind unchanged, but the
+    // Exchange still repaints the amount beside the Manage button.
+    onWalletUiChange(() => r.win.onWalletChanged());
+    setWocBalance(7_812.5, true);
+    expect(q(r.root, '.wm-wallet-balance').textContent).toContain('7,812.5 $WOC');
+    expect(q(r.root, '.wm-wallet-balance').textContent).toContain('$1.00 USD');
+    expect(document.activeElement).toBe(
+      q(r.root, '.wm-banner-wallet button[data-action="connect-wallet"]'),
+    );
     // The wallet app disconnects: the Hud's onWalletUiChange fan-out reaches
     // the window, which repaints the card (no digest moves for this) and keeps
     // the player's focus on the button they were on.
@@ -457,6 +488,11 @@ describe('WocMarketWindow live rig: open, browse, select', () => {
     expect(q(r.root, '.wm-banner-wallet').getAttribute('data-wallet-kind')).toBe(
       'linked_disconnected',
     );
+    expect(q(r.root, '.wm-banner-wallet p').textContent).toBe(
+      t('hudChrome.wocMarket.walletLinkedDisconnected'),
+    );
+    expect(q(r.root, '.wm-wallet-balance').textContent).toContain('7,812.5 $WOC');
+    expect(q(r.root, '.wm-wallet-balance').textContent).toContain('$1.00 USD');
     expect(document.activeElement).toBe(reconnect);
     reconnect.click();
     expect(r.openWallet).toHaveBeenCalledTimes(1);
@@ -1210,6 +1246,102 @@ describe('WocMarketWindow live rig: the busyGen close guard', () => {
   });
 });
 
+describe('WocMarketWindow live rig: payment balance refresh', () => {
+  it.each(['bond', 'settlement'] as const)(
+    'refreshes the verified balance after a successful %s confirmation',
+    async (kind) => {
+      const r = rig();
+      r.win.open();
+      await flush();
+      r.refreshWocBalance.mockClear();
+
+      r.hooks.client.confirmBond = vi.fn(async () => ({ ok: true as const, standing: true }));
+      r.hooks.client.confirmSettlement = vi.fn(async () => ({
+        ok: true as const,
+        state: 'delivered',
+      }));
+      const quote = {
+        signatureRequired: false as const,
+        reference: 'refresh-balance',
+        transactionBase64: 'dev-transaction',
+        amount: null,
+        seller: null,
+        burn: null,
+        treasury: null,
+        expiresAtMs: NOW + 60_000,
+      };
+      Reflect.set(
+        r.win,
+        'pendingQuote',
+        kind === 'bond'
+          ? { kind, bidId: 7, itemId: EPIC, usdCents: 250, quote }
+          : {
+              kind,
+              settlementId: 8,
+              itemId: EPIC,
+              usdCents: 2_500,
+              deadlineAtMs: NOW + 60_000,
+              quote,
+            },
+      );
+
+      await (r.win as unknown as { signPendingQuote(): Promise<void> }).signPendingQuote();
+
+      expect(r.refreshWocBalance).toHaveBeenCalledOnce();
+      expect(r.refreshWocBalance).toHaveBeenCalledWith(true);
+    },
+  );
+});
+
+describe('WocMarketWindow live rig: desktop signer arguments', () => {
+  it('the step-up signer receives the SERVER message AND the challenge nonce', async () => {
+    // The desktop arm resolves the server-stored message by the nonce, so a
+    // dropped or transposed second argument silently strands every desktop
+    // listing; both parameters are strings, so only a runtime assertion
+    // catches it (the source pins cannot: the stepUp proof line carries the
+    // same substring).
+    const r = rig();
+    r.win.open();
+    await flush();
+    q<HTMLButtonElement>(r.root, '.wm-tab[data-tab="sell"]').click();
+    const input = q<HTMLInputElement>(r.root, '.wm-combo-input');
+    input.focus();
+    input.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    q(r.root, '.wm-combo-item').dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    q<HTMLInputElement>(r.root, 'input[data-field="sell-start"]').value = '25';
+    q<HTMLButtonElement>(r.root, 'button[data-action="sell-submit"]').click();
+    await flush();
+    expect(r.signMessage).toHaveBeenCalledWith('sign me', 'n1');
+  });
+
+  it('the payment signer receives the transaction bytes AND the quote reference', async () => {
+    // Same shape for payments: the desktop arm resolves the registered quote
+    // by reference; a null second argument makes every desktop payment throw.
+    const r = rig();
+    r.win.open();
+    await flush();
+    r.hooks.client.confirmBond = vi.fn(async () => ({ ok: true as const, standing: true }));
+    Reflect.set(r.win, 'pendingQuote', {
+      kind: 'bond',
+      bidId: 7,
+      itemId: EPIC,
+      usdCents: 250,
+      quote: {
+        signatureRequired: true,
+        reference: 'WOC_pay_ref_1',
+        transactionBase64: 'payable-transaction',
+        amount: null,
+        seller: null,
+        burn: null,
+        treasury: null,
+        expiresAtMs: NOW + 60_000,
+      },
+    });
+    await (r.win as unknown as { signPendingQuote(): Promise<void> }).signPendingQuote();
+    expect(r.signAndSend).toHaveBeenCalledWith('payable-transaction', 'WOC_pay_ref_1');
+  });
+});
+
 describe('WocMarketWindow live rig: the platform gate', () => {
   it('never opens without hooks (the config-off build)', () => {
     const r = rig();
@@ -1224,6 +1356,7 @@ describe('WocMarketWindow live rig: the platform gate', () => {
       captureFocus: () => null,
       restoreFocus: () => {},
       openWallet: () => {},
+      refreshWocBalance: r.refreshWocBalance,
     });
     gated.open();
     expect(r.root.style.display).toBe('none');

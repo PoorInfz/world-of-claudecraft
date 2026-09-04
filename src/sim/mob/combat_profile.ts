@@ -1,5 +1,11 @@
 import { isLockedOut, isSilenced } from '../combat/cc';
 import { DUNGEON_X_THRESHOLD, MOBS } from '../data';
+import {
+  advancePin,
+  holdsAggroInInstance,
+  pinInPlace,
+  releasePin,
+} from '../instances/instance_combat_hold';
 import { combatProfileForMob, effectiveMobMeleeRange, type MobCombatProfile } from '../mob_combat';
 import type { SimContext } from '../sim_context';
 import { clearThreat } from '../threat';
@@ -12,9 +18,10 @@ import {
   steadyAngleTo,
 } from '../types';
 import { chainPullTransitHoldsLeash, clearChainPullInbound } from './chain_pull_transit';
+import { updateDerelictBomber } from './derelict_bomber';
 import { dragonkinEngageShout } from './dragonkin_brood';
 import { NYTHRAXIS_SPIRIT_MENDING_CAST_ID } from './healer_channel';
-import { chaseStalledUnreachable } from './reachability';
+import { blockedTowardTarget, chaseStalledUnreachable } from './reachability';
 import { resetRiftMechanicWindups } from './rift_escape_window';
 import { retargetMob, updateMobTarget } from './targeting';
 
@@ -32,9 +39,11 @@ type EngagedTickHook = () => void;
 function startEvadeHome(mob: Entity): void {
   mob.aiState = 'evade';
   mob.aggroTargetId = null;
+  mob.autoAttack = false; // leashing home: not swinging, whatever it was doing before
   clearThreat(mob);
   mob.leashAnchor = null;
   clearChainPullInbound(mob);
+  releasePin(mob);
   // A frozen windup must not detonate mid-walk-home (its ring is long gone);
   // the full evade reset on arrival clears the rest of the mechanic state.
   resetRiftMechanicWindups(mob);
@@ -57,8 +66,12 @@ export function mobEffectiveMeleeRange(mob: Entity): number {
 }
 
 export function tryMobMeleeSwingInRange(ctx: SimContext, mob: Entity, target: Entity): boolean {
-  if (dist2d(mob.pos, target.pos) > mobEffectiveMeleeRange(mob)) return false;
+  if (dist2d(mob.pos, target.pos) > mobEffectiveMeleeRange(mob)) {
+    mob.autoAttack = false;
+    return false;
+  }
   mob.aiState = 'attack';
+  mob.autoAttack = true;
   mob.facing = steadyAngleTo(mob.pos, target.pos, mob.facing);
   if (mob.swingTimer <= 0) {
     ctx.mobSwing(mob, target);
@@ -84,18 +97,27 @@ export function updateMobCombatProfile(
   updateMobTarget(ctx, mob);
   const target = mob.aggroTargetId !== null ? ctx.entities.get(mob.aggroTargetId) : null;
   if (!target || target.dead) {
+    mob.autoAttack = false;
+    // No target, no pin: a mob that lost its fight never keeps the immune stance.
+    releasePin(mob);
     retargetMob(ctx, mob);
     return 'done';
   }
   if (ctx.maybeFlee(mob, target)) return 'done';
 
+  // Inside a claimed instance slot a mob never resets by distance
+  // (instances/instance_combat_hold.ts): neither leash sends it home, and a
+  // stall holds it in place immune and aggro'd instead.
+  const instanceHold = profile.canLeash && holdsAggroInInstance(ctx, mob);
   if (profile.canLeash) {
     // The hard tether measures from the SPAWN, never the refreshing anchor,
     // and ignores the flee-recovery grace: past it the mob goes home, however
     // the fight has been dragged. Checked before the soft leash so a tethered
-    // mob can never be walked out one anchor-refresh at a time.
-    const hardLeash = MOBS[mob.templateId]?.hardLeashRadius;
-    if (hardLeash !== undefined && dist2d(mob.pos, mob.spawnPos) > hardLeash) {
+    // mob can never be walked out one anchor-refresh at a time. Inside a slot
+    // neither leash ever sends the mob home; the bookkeeping below still runs
+    // so a chain pull's transit grace is spent on arrival as before.
+    const hardLeash = mob.ignoreHardLeash ? undefined : MOBS[mob.templateId]?.hardLeashRadius;
+    if (!instanceHold && hardLeash !== undefined && dist2d(mob.pos, mob.spawnPos) > hardLeash) {
       startEvadeHome(mob);
       return 'done';
     }
@@ -114,10 +136,22 @@ export function updateMobCombatProfile(
     // so the hard tether above and the stall postlude below still apply. See
     // mob/chain_pull_transit.ts.
     const inTransit = chainPullTransitHoldsLeash(mob, leashAnchor, leash);
-    if (dist2d(mob.pos, leashAnchor) > leash && mob.fleeReturnTimer <= 0 && !inTransit) {
+    if (
+      !instanceHold &&
+      dist2d(mob.pos, leashAnchor) > leash &&
+      mob.fleeReturnTimer <= 0 &&
+      !inTransit
+    ) {
       startEvadeHome(mob);
       return 'done';
     }
+  }
+
+  // Suicide-bomber mechs own their whole engaged tick (face-before-move approach,
+  // arming windup, detonation) in place of the normal pursuit + melee swing.
+  if (MOBS[mob.templateId]?.meleeBomb) {
+    updateDerelictBomber(ctx, mob, target, profile);
+    return 'done';
   }
 
   onEngagedTick?.();
@@ -138,6 +172,7 @@ export function updateMobCombatProfile(
     if (mob.shoutIntroUntil !== undefined && ctx.time < mob.shoutIntroUntil) {
       mob.facing = steadyAngleTo(mob.pos, target.pos, mob.facing);
       mob.aiState = 'attack';
+      mob.autoAttack = false; // standing through the shout window, not swinging yet
       return 'done';
     }
   }
@@ -160,7 +195,7 @@ export function updateMobCombatProfile(
   if (spell) {
     const result = updateCasterCombat(ctx, mob, target, profile, spell);
     if (profile.canLeash && chaseStalledUnreachable(ctx, mob, target, spell.range, chaseSpeed)) {
-      startEvadeHome(mob);
+      onChaseStalled(mob, instanceHold);
       return 'done';
     }
     return result;
@@ -171,10 +206,56 @@ export function updateMobCombatProfile(
     profile.canLeash &&
     chaseStalledUnreachable(ctx, mob, target, profile.meleeRange, chaseSpeed)
   ) {
-    startEvadeHome(mob);
+    onChaseStalled(mob, instanceHold);
     return 'done';
   }
   return mob.aiState === 'attack' ? 'runAttackMechanics' : 'done';
+}
+
+/**
+ * The pinned arm (instances/instance_combat_hold.ts): the whole engaged tick of
+ * a mob holding in place. It stands, faces its target, swings and casts nothing
+ * (the caller skips every mechanic), and re-checks the hold each tick: the
+ * target back in reach, or an open step toward it, releases the pin and the
+ * normal chase resumes next tick. Once the grace is spent it phases straight
+ * through the blocking geometry toward the target every tick until in reach,
+ * so a perch ends in a fight rather than a stalemate. A lost target drops the
+ * pin with the fight. Draws no rng.
+ */
+export function holdPinnedMob(ctx: SimContext, mob: Entity): void {
+  const target = mob.aggroTargetId !== null ? ctx.entities.get(mob.aggroTargetId) : null;
+  if (!target || target.dead) {
+    releasePin(mob);
+    mob.autoAttack = false;
+    retargetMob(ctx, mob);
+    return;
+  }
+  const profile = mobCombatProfile(mob);
+  const reach = MOBS[mob.templateId]?.petSpell?.range ?? profile.meleeRange;
+  const chaseSpeed = mob.moveSpeed * profile.chaseSpeedMult * ctx.moveSpeedMult(mob);
+  mob.autoAttack = false;
+  mob.facing = steadyAngleTo(mob.pos, target.pos, mob.facing);
+  if (dist2d(mob.pos, target.pos) <= reach) {
+    releasePin(mob);
+    return;
+  }
+  if (advancePin(mob)) {
+    ctx.moveToward(mob, target.pos, chaseSpeed, true);
+    return;
+  }
+  if (!blockedTowardTarget(ctx, mob, target.pos, chaseSpeed)) releasePin(mob);
+}
+
+/** The stall verdict: an unreachable target sends an open-world mob home (the
+ *  classic evade, full heal on arrival), while an instance mob holds in place
+ *  immune and aggro'd (instances/instance_combat_hold.ts) so a perch inside a
+ *  dungeon neither resets the pull nor yields free damage. */
+export function onChaseStalled(mob: Entity, instanceHold: boolean): void {
+  if (instanceHold) {
+    pinInPlace(mob);
+    return;
+  }
+  startEvadeHome(mob);
 }
 
 // Healer-hold behavior for channelHeal mobs: stand a short distance from the
@@ -200,6 +281,7 @@ function updateHealerHold(ctx: SimContext, mob: Entity): MobCombatProfileResult 
     mob.healProtecteeId = protectee?.id ?? null;
   }
   if (!protectee) return null; // nobody to heal: fall back to melee AI
+  mob.autoAttack = false; // healing/standing off, never melee, in every branch below
   mob.facing = Math.atan2(protectee.pos.x - mob.pos.x, protectee.pos.z - mob.pos.z);
   const clearBar = () => {
     mob.castingAbility = null;
@@ -248,6 +330,7 @@ function updateCasterCombat(
       mob.aiState = 'chase';
       return 'done';
     }
+    mob.autoAttack = false; // casting from range, not swinging
     ctx.updateRangedPetAttack(mob, target, spell);
     return 'done';
   }
@@ -277,6 +360,7 @@ function updatePursuitProfileCombat(
   target: Entity,
   profile: MobCombatProfile,
 ): void {
+  mob.autoAttack = false; // default: tryMobMeleeSwingInRange will overwrite to true if genuinely in range
   mob.swingTimer = Math.max(0, mob.swingTimer - DT);
   if (profile.swingWhilePursuing || mob.aiState === 'attack') {
     tryMobMeleeSwingInRange(ctx, mob, target);

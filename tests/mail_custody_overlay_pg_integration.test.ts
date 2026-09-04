@@ -11,7 +11,7 @@
 import type { Pool as PgPool } from 'pg';
 import { Pool } from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { Sim } from '../src/sim/sim';
+import { type CharacterState, type MailSave, type MarketSave, Sim } from '../src/sim/sim';
 
 const ADMIN_URL = process.env.TEST_DATABASE_URL;
 const VERIFY_DB = 'wocc_mail_custody_verify';
@@ -31,6 +31,7 @@ describeDb('mail custody overlay (REAL Postgres)', () => {
   let pool: PgPool;
   let db: typeof import('../server/db');
   let overlay: typeof import('../server/mail_custody_overlay');
+  let nextSeq = 0;
 
   beforeAll(async () => {
     admin = new Pool({ connectionString: ADMIN_URL, max: 2 });
@@ -67,8 +68,51 @@ describeDb('mail custody overlay (REAL Postgres)', () => {
     letter: 'delivery' as const,
     items: [{ itemId: 'rusty_hatchet', count: 1 }],
   };
+  const MARKET = { listings: [], collections: {} } as unknown as MarketSave;
+  const STATE = {
+    level: 1,
+    questLog: [],
+    questsDone: [],
+    inventory: [],
+  } as unknown as CharacterState;
+
+  async function makeSaveCharacter(): Promise<number> {
+    const account = await pool.query(
+      `INSERT INTO accounts (username, password_hash) VALUES ($1, 'x') RETURNING id`,
+      [`mailcustody_${++nextSeq}`],
+    );
+    const character = await pool.query(
+      `INSERT INTO characters (account_id, name, class, realm, level, state)
+       VALUES ($1, $2, 'warrior', $3, 1, '{}'::jsonb) RETURNING id`,
+      [
+        Number(account.rows[0].id),
+        `MailCustody${nextSeq}`,
+        (await import('../server/realm')).REALM,
+      ],
+    );
+    return Number(character.rows[0].id);
+  }
+
+  function allMailPartitions(sim: Sim): { recipientKey: string; letters: MailSave['mail'] }[] {
+    const byRecipient = new Map<string, MailSave['mail']>();
+    for (const letter of sim.serializeMail().mail) {
+      const bucket = byRecipient.get(letter.recipientKey) ?? [];
+      bucket.push(letter);
+      byRecipient.set(letter.recipientKey, bucket);
+    }
+    return [...byRecipient].map(([recipientKey, letters]) => ({ recipientKey, letters }));
+  }
+
+  async function saveCurrentMailBook(characterId: number, sim: Sim): Promise<void> {
+    const partitions = allMailPartitions(sim);
+    expect(partitions.length).toBeGreaterThan(0);
+    expect(await db.saveCharacterAndMarketState(characterId, 1, STATE, MARKET, partitions)).toBe(
+      true,
+    );
+  }
 
   it('carries a parcel through crash replay, then bakes it into a clean book write', async () => {
+    const characterId = await makeSaveCharacter();
     overlay.resetCustodyParcelOverlayForTests();
 
     // Book + persist the row (the parcel path; the book itself is the live
@@ -91,11 +135,11 @@ describeDb('mail custody overlay (REAL Postgres)', () => {
     expect(merged).toEqual({ replayed: 1, present: 0, refused: 0, stale: 0, ok: true });
     expect(sim2.hasCustodyParcel(REF)).toBe(true);
 
-    // CLEAN SHUTDOWN: the next full-book write carries the parcel; the bake
-    // inside saveMailState deletes the row, and the accounting watermark is
-    // born (accounted_through starts at -infinity: a first write has no
+    // CLEAN SHUTDOWN: the next committed partition write carries the parcel;
+    // the bake inside saveCharacterAndMarketState deletes the row, and the
+    // accounting watermark is born (accounted_through starts at -infinity: a first write has no
     // previous write to vouch for).
-    await db.saveMailState(sim2.serializeMail());
+    await saveCurrentMailBook(characterId, sim2);
     const after = await pool.query(`SELECT count(*)::int AS n FROM mail_custody_parcels`);
     expect(after.rows[0].n).toBe(0);
     const wmBorn = await pool.query(
@@ -111,10 +155,10 @@ describeDb('mail custody overlay (REAL Postgres)', () => {
     const remerge = await overlay.mergeCustodyParcelOverlay(sim3);
     expect(remerge).toEqual({ replayed: 0, present: 0, refused: 0, stale: 0, ok: true });
 
-    // A SECOND book write advances accounted_through to the FIRST write's
+    // A SECOND partition write advances accounted_through to the FIRST write's
     // transaction start (the two-column lag): finite now, and strictly
     // behind last_book_write, compared in SQL at full precision.
-    await db.saveMailState(sim3.serializeMail());
+    await saveCurrentMailBook(characterId, sim3);
     const wm = await pool.query(
       `SELECT (accounted_through = '-infinity'::timestamptz) AS neg,
               (accounted_through < last_book_write) AS ordered

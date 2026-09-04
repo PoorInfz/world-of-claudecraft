@@ -414,6 +414,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     noDiscard: true,
     sellValue: 0,
   },
+<<<<<<< HEAD
   // Cosmetic buddy whistle. Owning the item IS owning the buddy (src/sim/
   // buddies.ts buddyOwned); it stays valid from the bank too, and it
   // transfers like any other unbound item, exactly like mount reins but with
@@ -542,6 +543,18 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     buddy: 'dragon',
     quality: 'epic',
     noVendorSell: true,
+=======
+  // Developer-only, same treatment as the tank above: no acquisition path, so
+  // it stays soulbound rather than tradable. Use /dev give reins_rickshaw_mount
+  // while the feature remains under development.
+  reins_rickshaw_mount: {
+    id: 'reins_rickshaw_mount',
+    name: 'Bound Reins: Bonebound Rickshaw',
+    kind: 'mount',
+    mount: 'rickshaw_mount',
+    quality: 'epic',
+    soulbound: true,
+>>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     noDiscard: true,
     sellValue: 0,
   },
@@ -610,8 +623,15 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   },
   // --- bags (kind:'bag', equip into one of the 4 bag sockets for +bagSlots
   // pooled inventory capacity; the 16-slot backpack is implicit). Tiered by
-  // quality: common bags are vendor goods, uncommon drops from beasts, rare
-  // and epic from dungeon bosses. See src/sim/bags.ts for the capacity rules. ---
+  // quality: common bags are vendor goods, uncommon drop from beasts, rare
+  // and epic come from dungeon bosses and world drops, and the materials-only
+  // satchels (materialsOnly: true, feeding the second pool; see their own
+  // section below) run a parallel ladder. Two deliberate tiering calls, not
+  // drift: the 16-slot rare wayfarers_backpack out-slots the 14-slot epic
+  // mistcallers_duffel, the classic-era rare-large-bag shape, kept
+  // intentionally alongside the epic; and sellValue follows QUALITY tier,
+  // not slot count, so the epic duffel vendors above the larger rare, also
+  // intentional. See src/sim/bags.ts for the capacity rules. ---
   linen_pouch: {
     id: 'linen_pouch',
     name: 'Linen Pouch',
@@ -653,6 +673,47 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     quality: 'epic',
     bagSlots: 14,
     sellValue: 9000,
+  },
+  // The one rare world-drop bag, and the joint-largest general bag at 16 slots
+  // (the crafted Resonantweave Bag is the deterministic route to the same
+  // ceiling). Drop-only, so no buyValue and no market seed row: it stays
+  // player-listed the way every other drop does.
+  wayfarers_backpack: {
+    id: 'wayfarers_backpack',
+    name: "Wayfarer's Backpack",
+    kind: 'bag',
+    quality: 'rare',
+    bagSlots: 16,
+    sellValue: 3800,
+  },
+  // --- materials-only satchels (materialsOnly: true). Their bagSlots feed the
+  // second, materials-only pool instead of the general one, so the capacity
+  // they add is usable only by items in the derived material taxonomy. The
+  // trade is the point: more total room, but the extra room is specialized.
+  // See src/sim/bag_pools.ts for the pool arithmetic. ---
+  // The entry rung, and the only materials satchel a vendor stocks. Priced
+  // under the general 8-slot Traveler's Knapsack (2000) because it carries
+  // strictly less: same slot count, restricted contents.
+  burlap_reagent_pouch: {
+    id: 'burlap_reagent_pouch',
+    name: 'Burlap Reagent Pouch',
+    kind: 'bag',
+    quality: 'common',
+    bagSlots: 8,
+    materialsOnly: true,
+    sellValue: 250,
+    buyValue: 1000,
+  },
+  // The dungeon rung: Grand Necromancer Velkhar's hoard in the Gravewyrm
+  // Sanctum. Same drop shape as the Gravewoven Bag on Morthen.
+  necromancers_reagent_satchel: {
+    id: 'necromancers_reagent_satchel',
+    name: "Necromancer's Reagent Satchel",
+    kind: 'bag',
+    quality: 'rare',
+    bagSlots: 20,
+    materialsOnly: true,
+    sellValue: 4200,
   },
   // --- food & drink (vendor, fished, conjured; see also zone2.ts/zone3.ts and
   // profession_items.ts for the higher zone-bracket and crafted-cooking tiers).

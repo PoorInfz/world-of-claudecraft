@@ -8,7 +8,8 @@ import { describe, expect, it } from 'vitest';
 import { HEROIC_DUNGEON_TUNING, HEROIC_MARK_ITEM_ID } from '../src/sim/content/dungeon_difficulty';
 import { DUNGEON_MOBS } from '../src/sim/content/dungeons';
 import { TEMPLE_DUNGEON_MOBS } from '../src/sim/content/temple';
-import { ITEMS, MOBS } from '../src/sim/data';
+import { DUNGEONS, ITEMS, MOBS } from '../src/sim/data';
+import { IGNIVAR_RAID_ROOM_IDS } from '../src/sim/ignivar_raid_ids';
 import {
   applyDungeonMobTuning,
   claimDifficultyForDungeon,
@@ -39,15 +40,28 @@ const SYNTHETIC: MobTemplate = {
 };
 
 describe('heroic tuning data contract', () => {
-  it('covers the five five-player dungeons plus the raid arena, with their final bosses', () => {
+  it('covers the five five-player dungeons plus the raid rooms (the Ignivar chain door-first) and final bosses', () => {
+    // The forge lift is the Ignivar chain's overworld door: it must be
+    // heroic-eligible or the whole chain's claim clamps to normal there
+    // (tests/ignivar_heroic_entry.test.ts drives the real door path).
     expect([...HEROIC_DUNGEON_IDS].sort()).toEqual([
       'drowned_temple',
       'gravewyrm_sanctum',
       'hollow_crypt',
+      'ignivar_forge_approach',
+      'ignivar_forge_lift',
+      'ignivar_inner_crucible',
+      'ignivar_molten_assembly',
+      'ignivar_raid_arena',
       'nythraxis_boss_arena',
       'sunken_bastion',
       'wildheart_basin',
     ]);
+    // The lift record is eligibility-only, and that premise holds only while
+    // the room spawns nothing: its factors are all 1, so the day a spawn is
+    // added to the lift, its heroic tuning becomes a real balance statement
+    // and needs authored numbers like its siblings.
+    expect(DUNGEONS.ignivar_forge_lift.spawns).toEqual([]);
     expect(
       Object.fromEntries(Object.values(HEROIC_DUNGEON_TUNING).map((t) => [t.id, t.finalBossId])),
     ).toEqual({
@@ -57,6 +71,8 @@ describe('heroic tuning data contract', () => {
       gravewyrm_sanctum: 'korzul_the_gravewyrm',
       wildheart_basin: 'wildheart_high_priest',
       nythraxis_boss_arena: 'nythraxis_scourge_of_thornpeak',
+      ignivar_raid_arena: 'ignivar_herald_of_the_last_flame',
+      ignivar_inner_crucible: 'varkhul_forgefather_of_the_last_flame',
     });
     for (const tuning of Object.values(HEROIC_DUNGEON_TUNING)) {
       expect(tuning.level).toBe(22);
@@ -75,6 +91,8 @@ describe('heroic tuning data contract', () => {
       gravewyrm_sanctum: 1,
       wildheart_basin: 1,
       nythraxis_boss_arena: 3,
+      ignivar_raid_arena: 3,
+      ignivar_inner_crucible: 3,
     });
   });
 
@@ -111,6 +129,8 @@ describe('heroic tuning data contract', () => {
       // summoned 250 floor through damageMultiplierByMob, so the raid's
       // addDamageMultiplier stays an inert mirror of damageMultiplier.
       nythraxis_boss_arena: [3.2, 7.25, 7.25, 1.2],
+      ignivar_raid_arena: [1.75, 2, 2, 1.2],
+      ignivar_inner_crucible: [5 / 3, 1.2459633027522936, 1, 1.2],
     });
   });
 });
@@ -120,6 +140,25 @@ describe('claimDifficultyForDungeon', () => {
     expect(claimDifficultyForDungeon('hollow_crypt', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('gravewyrm_sanctum', 'heroic')).toBe('heroic');
     expect(claimDifficultyForDungeon('nythraxis_boss_arena', 'heroic')).toBe('heroic');
+    expect(claimDifficultyForDungeon('ignivar_raid_arena', 'heroic')).toBe('heroic');
+    // Derived door-room guard: the Ignivar chain's difficulty is decided at
+    // whichever room carries the overworld walk-up door (the chain head), and
+    // a clamp there silently normalizes the whole raid (the v0.41.0 bug: the
+    // door moved to the forge lift, which had no tuning record, and the
+    // hardcoded id pins above stayed green). Deriving from the live room list
+    // makes this fail on its own the next time the entrance moves.
+    for (const roomId of IGNIVAR_RAID_ROOM_IDS) {
+      if (DUNGEONS[roomId].overworldDoor === false) continue;
+      expect(claimDifficultyForDungeon(roomId, 'heroic'), `${roomId} is a door room`).toBe(
+        'heroic',
+      );
+    }
+    // The chain HEAD decides the claim every deeper room inherits, so it stays
+    // pinned even if a future layout gives it no overworld door.
+    expect(claimDifficultyForDungeon(IGNIVAR_RAID_ROOM_IDS[0], 'heroic')).toBe('heroic');
+    expect(claimDifficultyForDungeon('ignivar_forge_approach', 'heroic')).toBe('heroic');
+    expect(claimDifficultyForDungeon('ignivar_molten_assembly', 'heroic')).toBe('heroic');
+    expect(claimDifficultyForDungeon('ignivar_inner_crucible', 'heroic')).toBe('heroic');
     // The attunement dungeon is story content: normal even when heroic is selected.
     expect(claimDifficultyForDungeon('nythraxis_crypt', 'heroic')).toBe('normal');
     expect(claimDifficultyForDungeon('no_such_dungeon', 'heroic')).toBe('normal');
@@ -229,15 +268,17 @@ describe('applyDungeonMobTuning', () => {
 });
 
 describe('boss templates are CC and snare immune on BOTH difficulties', () => {
-  it('every boss-flagged template of the five endgame instances carries both flags', () => {
-    // The complete boss enumeration of the four five-mans plus the raid: these
-    // are the ONLY boss: true templates in dungeons.ts + temple.ts (Korgath,
-    // Velkhar, Sexton Marrow, Olen, Selthe, and the Nythraxis adds are
-    // deliberately NOT boss-flagged). Template-level flags cover normal spawns
-    // too: the applyAura gates read MOBS[templateId] at fire time, so a normal
-    // Korzul can no longer be stunned or kited on a snare (the economy retune
-    // assumes boss swings actually land).
+  it('every boss-flagged dungeon template carries both flags', () => {
+    // The complete boss enumeration of the four five-mans, the public raid,
+    // and both Ignivar development-raid encounters. These are the ONLY boss: true templates
+    // in dungeons.ts + temple.ts (Korgath, Velkhar, Sexton Marrow, Olen, Selthe,
+    // and the Nythraxis adds are deliberately NOT boss-flagged). Template-level
+    // flags cover normal spawns too: the applyAura gates read MOBS[templateId]
+    // at fire time, so a normal Korzul can no longer be stunned or kited on a
+    // snare (the economy retune assumes boss swings actually land).
     const bossIds = [
+      'ignivar_herald_of_the_last_flame',
+      'varkhul_forgefather_of_the_last_flame',
       'morthen',
       'vael_the_mistcaller',
       'ysolei',

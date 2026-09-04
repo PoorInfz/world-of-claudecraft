@@ -1175,4 +1175,6 @@ export const tr_TR: Record<string, string> = {
   'wealth.purse': 'Karakterler hakkında:',
   'wealth.total': 'Toplam:',
   'wealth.updatedAt': 'güncellendi {when}',
+  'usage.metric.walletHandoffAuthorizationEvicted': 'Masaüstü cüzdan devri tahliyeleri',
+  'usage.metric.walletHandoffCreateRejected': 'Reddedilen masaüstü cüzdan devirleri',
 };

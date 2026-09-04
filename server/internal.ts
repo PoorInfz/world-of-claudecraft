@@ -105,7 +105,15 @@ export async function handleInternalApi(
  * line here), the service's kill switch freezes the arm with the other
  * operator writes, and the ruling rides the realm-scoped transition CAS.
  */
-const LISTING_STATUSES = ['active', 'ending', 'settling', 'closed', 'all'] as const;
+const LISTING_STATUSES = [
+  'active',
+  'ending',
+  'settling',
+  'closed',
+  'sold',
+  'cancelled',
+  'all',
+] as const;
 const OFFER_STATUSES = ['pending', 'accepted', 'declined', 'withdrawn', 'expired', 'all'] as const;
 
 const OPS_DAY_MS = 24 * 60 * 60 * 1000;

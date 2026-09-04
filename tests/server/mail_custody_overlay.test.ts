@@ -453,7 +453,10 @@ describe('bake and merge wiring order', () => {
     const firstAwaitAt = body.indexOf('await ');
     const deleteAt = body.indexOf('deleteBakedCustodyRefsIn(');
     const advanceAt = body.indexOf('advanceCustodyWatermarkIn(');
-    const commitAt = body.indexOf("await client.query('COMMIT')");
+    // transaction.commit(), not a raw client.query('COMMIT'): the fenced save
+    // rides the deadline wrapper that owns the statement/lock timeouts and the
+    // abort-driven pg_cancel_backend, so the commit goes through it too.
+    const commitAt = body.indexOf('await transaction.commit()');
     const confirmAt = body.indexOf('confirmBakedCustodyRefs(');
     for (const at of [snapshotAt, firstAwaitAt, deleteAt, advanceAt, commitAt, confirmAt]) {
       expect(at).toBeGreaterThan(-1);
@@ -493,7 +496,7 @@ describe('bake and merge wiring order', () => {
   });
 
   it('game.loadMail merges the overlay only after a successful book load', () => {
-    const body = boundedBody(gameSrc, 'async loadMail()', 'async saveMail()');
+    const body = boundedBody(gameSrc, 'async loadMail(): Promise<void>', 'async saveMail(');
     const loadAt = body.indexOf('this.sim.loadMail(await loadMailState())');
     const mergeAt = body.indexOf('mergeCustodyParcelOverlay(this.sim)');
     const catchAt = body.indexOf('catch');
@@ -507,14 +510,19 @@ describe('bake and merge wiring order', () => {
     expect(mergeAt).toBeLessThan(catchAt);
   });
 
-  it('both callers serialize the book synchronously at the call, never across an await', () => {
-    // The third leg of the snapshot contract: no awaited gap between the
-    // caller's serializeMail() and the writer's entry. A hoist above an
-    // await would silently reopen the fast-collect bake hole with every
-    // other pin still green.
-    expect(gameSrc).toContain('saveMailState(this.sim.serializeMail())');
+  it('both callers drain dirty mail partitions inside the queued write', () => {
+    // The partitioned mail path replaces whole-book writes: the dirty set is
+    // drained inside the same queued write that persists it, so a write failure
+    // can rearm exactly the partitions it consumed. It rides
+    // enqueueBackgroundMarketWrite (market FIFO first, THEN the major-producer
+    // permit) so a dirty-book character save cannot invert against a periodic
+    // mail save, and it still carries the profiler sample through.
     expect(gameSrc).toMatch(
-      /saveCharacterAndMarketState\(\s*session\.characterId,\s*snap\.level,\s*snap,\s*this\.sim\.serializeMarket\(\),\s*this\.sim\.serializeMail\(\),/,
+      /await writeDirtyMailPartitions<TickProfilerSample>\(\s*this\.sim,\s*\(write, context\) => this\.enqueueBackgroundMarketWrite\(write, context\),\s*false,\s*sample,\s*\)/,
+    );
+    expect(gameSrc).toContain('mailPartitionsForRearm = this.sim.takeDirtyMailPartitions()');
+    expect(gameSrc).toMatch(
+      /saveCharacterAndMarketState\(\s*session\.characterId,\s*snap\.level,\s*snap,\s*this\.sim\.serializeMarket\(\),\s*mailPartitionsForRearm,/,
     );
   });
 });

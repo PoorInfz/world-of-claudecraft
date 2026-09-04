@@ -341,6 +341,8 @@ export const ja_JP: Record<string, string> = {
   'usage.cacheColEvictions': '削除',
   'usage.cacheEntriesOfMax': '{entries} / {max}',
   'usage.notAvailable': 'なし',
+  'usage.metric.walletHandoffAuthorizationEvicted': 'デスクトップウォレット認証の削除',
+  'usage.metric.walletHandoffCreateRejected': 'デスクトップウォレット認証の拒否',
   'usage.metric.wocBalanceApi': '$WOC残高APIリクエスト',
   'usage.metric.wocBalanceRateLimited': '$WOC残高の制限リクエスト',
   'usage.metric.wocBalanceRpc': 'Solana RPC残高読み取り',

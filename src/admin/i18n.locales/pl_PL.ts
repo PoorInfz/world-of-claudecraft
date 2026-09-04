@@ -1167,4 +1167,8 @@ export const pl_PL: Record<string, string> = {
   'wealth.purse': 'Na postaciach:',
   'wealth.total': 'Całkowity:',
   'wealth.updatedAt': 'zaktualizowano {when}',
+  // v0.41 release i18n fill (pl_PL autoFillable batch).
+  'usage.metric.walletHandoffAuthorizationEvicted':
+    'Usunięcia autoryzacji przekazania portfela z komputera',
+  'usage.metric.walletHandoffCreateRejected': 'Odrzucenia przekazania portfela z komputera',
 };

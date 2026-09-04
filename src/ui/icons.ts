@@ -8,6 +8,7 @@
 // from the ability school / item kind + name keywords, so everything always
 // has a proper icon. Results are cached as data URLs.
 
+import { IGNIVAR_ART_PENDING_ITEM_IDS } from '../sim/content/ignivar_loot';
 import { isRawCookingCatch } from '../sim/content/items';
 import { ABILITIES, ITEMS } from '../sim/data';
 import { crestIconUrl } from './crest_icon_art';
@@ -2555,6 +2556,36 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   ),
   earthquake: r('earth', 'earthBrown', ['sunburst'], ['crack']),
   attack: r('steel', 'steel', ['sword'], ['motion']),
+  // Ignivar and Varkhul encounter-journal icons. These ids are UI-owned rather
+  // than cast ids so related fire mechanics remain visually distinct at a glance.
+  raid_ignivar_forge_strike: r('fire', 'ember', ['mace', { p: 'flame', ...BR }], ['glow']),
+  raid_ignivar_brand: r('fire', 'blood', ['sigil_rune', { p: 'flame', ...BR }], ['glow']),
+  raid_ignivar_searing_torrent: r('fire', 'ember', ['flame', { p: 'droplet', ...BR, pal: 'ice' }]),
+  raid_ignivar_rain_of_cinders: r('fire', 'ember', [
+    { p: 'meteor', x: -10, y: -8, s: 0.72 },
+    { p: 'meteor', x: 11, y: 10, s: 0.62 },
+  ]),
+  raid_ignivar_revolving_inferno: r('fire', 'ember', ['sunburst', 'flame'], ['arcs']),
+  raid_ignivar_forge_wave: r('fire', 'ember', ['droplet', { p: 'sunburst', ...BIG }], ['arcs']),
+  raid_ignivar_apocalypse: r('shadow', 'blood', ['skull', { p: 'flame', ...BR }], ['glow']),
+  raid_ignivar_judgment: r('fire', 'holyGold', ['mace', { p: 'sunburst', ...BIG }], ['glow']),
+  raid_ignivar_chains: r('steel', 'ember', ['tendrils', { p: 'flame', ...BR }], ['arcs']),
+  raid_ignivar_last_inferno: r('blood', 'ember', ['skull', 'flame'], ['glow', 'drips']),
+  raid_varkhul_makers_brand: r('steel', 'ember', ['sigil_rune', { p: 'mace', ...BR }], ['glow']),
+  raid_varkhul_frontal: r('fury', 'ember', ['mace', { p: 'flame', ...BR }], ['motion']),
+  raid_varkhul_cinder_orbs: r('fire', 'ember', [
+    { p: 'sunburst', x: -10, y: -8, s: 0.68 },
+    { p: 'sunburst', x: 11, y: 10, s: 0.58 },
+  ]),
+  raid_varkhul_shared_pyre: r('fire', 'holyGold', ['heart', { p: 'flame', ...BR }], ['glow']),
+  raid_varkhul_forgestorm: r('storm', 'ember', ['meteor', { p: 'flame', ...BR }], ['arcs']),
+  raid_varkhul_tempering_ray: r('fire', 'holyGold', ['bolt', { p: 'shield', ...BR }], ['glow']),
+  raid_varkhul_anvils_decree: r('steel', 'ember', ['mace', { p: 'sunburst', ...BIG }], ['crack']),
+  raid_varkhul_masters_assembly: r('steel', 'gold', ['sigil_rune', { p: 'mace', ...BR }], ['arcs']),
+  raid_varkhul_crucible_beam: r('fire', 'ember', ['bolt', { p: 'shield', ...BR }], ['arcs']),
+  raid_varkhul_forge_legion: r('steel', 'ember', ['helm', { p: 'mace', ...BR }]),
+  raid_varkhul_masterpiece_unbound: r('fury', 'blood', ['mace', 'flame'], ['glow']),
+  raid_varkhul_worldfire: r('fire', 'blood', ['sunburst', 'flame'], ['glow', 'drips']),
   // pet action bar (dedicated, never a class ability id: see pet_action_icons.ts).
   pet_attack: r('blood', 'blood', ['fang'], ['motion']),
   pet_growl: r('fury', 'gold', ['roar'], ['arcs']),
@@ -3171,6 +3202,19 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   moonkin_form: r('nature', 'sky', ['moon'], ['sparkle']),
   feral_charge: r('nature', 'earthBrown', ['paw'], ['motion']),
   swiftmend: r('nature', 'leafGreen', ['droplet'], ['glow']),
+  // Groveheart resurrections: the in-combat single rez (a heart bursting back
+  // to life) and the out-of-combat group rez (the ancestor_return shape in the
+  // druid's leaf, not the shaman's rune).
+  wildwake: r('nature', 'leafGreen', ['heart', { p: 'sunburst', ...TR }], ['glow']),
+  grove_awakening: r(
+    'nature',
+    'leafGreen',
+    [
+      { p: 'cross', s: 0.9 },
+      { p: 'leaf', ...TR },
+    ],
+    ['sparkle', 'glow'],
+  ),
   // Talents V2 and the winning Warrior overlay. These explicit recipes remain
   // the deterministic fallback contract even when authored painted art wins at
   // render time, and every recipe is deliberately distinct.
@@ -3266,6 +3310,17 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
     ['cross', { p: 'wing', ...BR }],
     ['sparkle', 'arcs'],
   ),
+  // Benison/Doctrine out-of-combat group rez: the holy cross with a lifted
+  // wing, distinct from prayer_of_healing's sunburst and the mass-rez twins.
+  prayer_of_returning: r(
+    'holy',
+    'holyGold',
+    [
+      { p: 'cross', s: 0.9 },
+      { p: 'wing', ...TR },
+    ],
+    ['sparkle', 'glow'],
+  ),
   // shaman
   healing_stream: r('nature', 'sky', ['droplet', { p: 'heart', ...BR }], ['sparkle']),
   chain_lightning: r(
@@ -3336,10 +3391,11 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
 };
 
 const ITEM_RECIPES: Record<string, IconRecipe> = {
-  // Bags (+ the implicit backpack the bag bar shows). All six now ship painted art
-  // (ITEM_IMAGE_IDS / UI_ITEM_IMAGE_IDS below), which iconDataUrl prefers; these recipes
-  // stay as the drawn fallback. Palettes step up with the quality tier so the bag reads
-  // richer as it grows.
+  // Bags (+ the implicit backpack the bag bar shows). Every shipped bag carries painted
+  // art (ITEM_IMAGE_IDS / UI_ITEM_IMAGE_IDS below), which iconDataUrl prefers; the
+  // pre-phase-05 family below keeps a drawn fallback recipe, newer bags rely on
+  // itemFallback's kind-aware sack arm. Palettes step up with the quality tier so the
+  // bag reads richer as it grows.
   backpack: r('leather', 'earthBrown', [{ p: 'sack', pal: 'earthBrown' }]),
   linen_pouch: r('cloth', 'cloth', [{ p: 'sack', pal: 'cloth' }]),
   travelers_knapsack: r('leather', 'leather', [{ p: 'sack', pal: 'leather' }]),
@@ -4335,6 +4391,8 @@ export const ABILITY_IMAGE_IDS = new Set<string>([
   'summon_tithefiend',
   'martyrs_aegis',
   'choir_of_deliverance',
+  // 2026-09-01 healer resurrection parity wave (gpt-image-2, style-referenced).
+  'prayer_of_returning',
   // warlock (CraftPix premium "RPG Warlock skill icons" pack + "RPG Demon skill icons"
   // pack for the summons/life_tap/searing_pain that the warlock pack couldn't cover).
   'shadow_bolt',
@@ -4671,6 +4729,9 @@ export const ABILITY_IMAGE_IDS = new Set<string>([
   'swiftmend',
   'tranquility',
   'typhoon',
+  // 2026-09-01 healer resurrection parity wave (gpt-image-2, style-referenced).
+  'wildwake',
+  'grove_awakening',
   // hunter
   'aspect_of_the_wild',
   'bestial_wrath',
@@ -5173,7 +5234,9 @@ export const ITEM_IMAGE_IDS = new Set<string>([
   'soulflame_cord',
   'stormcallers_waistguard',
   'sturdy_belt',
-  // bags (the whole equippable set; the implicit backpack is a UI id, see UI_ITEM_IMAGE_IDS)
+  // bags (the six pre-phase-05 ids; the phase 05 catalog enters via the
+  // auto-derived non-weapon sweep below, so new bags never join this hand
+  // list; the implicit backpack is a UI id, see UI_ITEM_IMAGE_IDS)
   'gravewoven_bag',
   'linen_pouch',
   'mistcallers_duffel',
@@ -5254,6 +5317,7 @@ export const ITEM_IMAGE_IDS = new Set<string>([
   'reins_stormfeather_griffin',
   'reins_thunderstrut_gobbler',
   'reins_terrorspark_groundshaker',
+  'reins_rickshaw_mount',
 ]);
 
 // The grouped literals above preserve the curated catalog's provenance history. Derive the
@@ -5287,6 +5351,7 @@ export const UI_ITEM_IMAGE_IDS = new Set<string>(['backpack']);
 // bell icons are rendered from their own world models
 // (scripts/render_island_item_icons.mjs), so they ship with committed art like
 // every other item.
+<<<<<<< HEAD
 // The buddy whistle set lands here: real painted art per docs/design/
 // item-icon-art-style.md still needs to be commissioned for every one of
 // them (the committed GLBs under public/models/buddies/ are the 3D world
@@ -5304,6 +5369,16 @@ export const ITEM_ART_PENDING = new Set<string>([
   'whistle_cate_coin',
   'whistle_dragon',
 ]);
+=======
+//
+// The Ignivar raid loot table (content/ignivar_loot.ts) currently carries the
+// whole debt: 192 non-weapon items behind the development-only Crucible raid,
+// enumerated here until their painted wave lands (the raid itself ships with a
+// dev-only entrance, so no player-facing surface shows a procedural icon yet).
+// The 10 raid weapons are excluded: weapons never enter this set (guard A2);
+// they ship painted art through WEAPON_IMAGE_IDS like every other weapon.
+export const ITEM_ART_PENDING = new Set<string>(IGNIVAR_ART_PENDING_ITEM_IDS);
+>>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
 
 /** Static URL of an item's (or a UI pseudo-item's) image icon, or null if it uses a recipe. */
 export function itemImageUrl(id: string): string | null {
@@ -5333,9 +5408,24 @@ export const DEED_ART_PENDING: ReadonlySet<string> = new Set([
   // (docs/achievements/icon-brief.md).
   'exp_the_last_keep',
   'exp_dawnhold_castle',
+  // The bank socket ladder pair (Bank Storage phase 06): both are 'social', so
+  // both fall back to the deed_cat_social crest until their commissioned art
+  // lands (docs/achievements/icon-brief.md). Neither carries a reward, so the
+  // title-shelf rule that forbids a title deed from riding this ledger does
+  // not apply.
+  'soc_strongbox_outfitter',
+  'soc_four_bags_deep',
   // The Proving Shore graduation deed rides the deed_cat_progression crest
   // until its commissioned art lands (docs/achievements/icon-brief.md).
   'prog_ready_for_an_adventure',
+  // The Crucible of the Last Spring raid deeds: all five are 'dungeon', so
+  // each rides the deed_cat_dungeon crest until its commissioned art lands
+  // (docs/achievements/icon-brief.md).
+  'dgn_ignivar',
+  'dgn_ignivar_heroic',
+  'dgn_varkhul',
+  'dgn_varkhul_heroic',
+  'dgn_varkhul_flawless',
 ]);
 /** Static URL of a deed crest's painted art, or null when the crest id has no committed image. */
 export function deedImageUrl(crestId: string): string | null {

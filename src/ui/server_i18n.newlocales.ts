@@ -1,6 +1,7 @@
 // GENERATED new-locale server-message blocks. Spread into DICT in server_i18n.ts.
 export const SERVER_NEW = {
   cs_CZ: {
+    'error.bankPurchaseInProgress': 'V tvé bance právě probíhá nákup.',
     'pledge.noGuild': 'Žádná gilda s tímto jménem.',
     'pledge.noneToWithdraw': 'Nemáš žádný slib, který bys mohl(a) stáhnout.',
     'pledge.onlyOfficers': 'Sliby mohou spravovat jen důstojníci a mistr gildy.',
@@ -84,6 +85,8 @@ export const SERVER_NEW = {
     'guild.createFee': 'K založení cechu potřebuješ {amount} zlata.',
     'guild.bankNotEmpty': 'Před rozpuštěním cechu musí být cechovní banka vyprázdněna.',
     'guild.bankClosing': 'Cechovní banka se zavírá. Zkus to za chvíli znovu.',
+    'guild.bankSettling': 'Cechovní banka stále ukládá nedávnou změnu. Zkus to za chvíli znovu.',
+    'guild.bankBusy': 'Jsi zaneprázdněn. Zkus to za chvíli znovu.',
     'guild.notInYours': '{name} není ve tvém cechu.',
     'guild.nowRank': '{name} má nyní hodnost {rank}.',
     'guild.onlyGmChangeRanks': 'Hodnosti může měnit jen vůdce cechu.',
@@ -136,6 +139,7 @@ export const SERVER_NEW = {
     'world.left': '{name} opustil(a) svět. ({reason})',
   },
   da_DK: {
+    'error.bankPurchaseInProgress': 'Din bank har et igangværende køb.',
     'pledge.noGuild': 'Ingen guild med det navn.',
     'pledge.noneToWithdraw': 'Du har intet løfte at trække tilbage.',
     'pledge.onlyOfficers': 'Kun officerer og guildmesteren kan håndtere løfter.',
@@ -220,6 +224,9 @@ export const SERVER_NEW = {
     'guild.createFee': 'Du skal bruge {amount} guld for at grundlægge en lavsforening.',
     'guild.bankNotEmpty': 'Lavsforeningens bank skal tømmes, før lavsforeningen kan opløses.',
     'guild.bankClosing': 'Lavsforeningens bank lukker. Prøv igen om et øjeblik.',
+    'guild.bankSettling':
+      'Lavsforeningens bank gemmer stadig en nylig ændring. Prøv igen om et øjeblik.',
+    'guild.bankBusy': 'Du er optaget. Prøv igen om et øjeblik.',
     'guild.notInYours': '{name} er ikke i din lavsforening.',
     'guild.nowRank': '{name} er nu {rank}.',
     'guild.onlyGmChangeRanks': 'Kun Lavsmesteren kan ændre rangordener.',
@@ -271,6 +278,7 @@ export const SERVER_NEW = {
     'world.left': '{name} har forladt verdenen. ({reason})',
   },
   id_ID: {
+    'error.bankPurchaseInProgress': 'Bankmu memiliki pembelian yang sedang berlangsung.',
     'pledge.noGuild': 'Tidak ada guild dengan nama itu.',
     'pledge.noneToWithdraw': 'Kamu tidak punya ikrar untuk ditarik.',
     'pledge.onlyOfficers': 'Hanya perwira dan Guild Master yang dapat mengelola ikrar.',
@@ -357,6 +365,8 @@ export const SERVER_NEW = {
     'guild.createFee': 'Kamu membutuhkan {amount} emas untuk mendirikan guild.',
     'guild.bankNotEmpty': 'Bank guild harus dikosongkan sebelum guild dapat dibubarkan.',
     'guild.bankClosing': 'Bank guild sedang ditutup. Coba lagi sebentar lagi.',
+    'guild.bankSettling': 'Bank guild masih menyimpan perubahan terbaru. Coba lagi sebentar lagi.',
+    'guild.bankBusy': 'Kamu sedang sibuk. Coba lagi sebentar lagi.',
     'guild.notInYours': '{name} tidak ada dalam guild-mu.',
     'guild.nowRank': '{name} sekarang menjadi {rank}.',
     'guild.onlyGmChangeRanks': 'Hanya Guild Master yang boleh mengubah pangkat.',
@@ -411,6 +421,7 @@ export const SERVER_NEW = {
     'world.left': '{name} telah meninggalkan dunia. ({reason})',
   },
   nl_NL: {
+    'error.bankPurchaseInProgress': 'Je bank heeft een lopende aankoop.',
     'pledge.noGuild': 'Geen gilde met die naam.',
     'pledge.noneToWithdraw': 'Je hebt geen gelofte om in te trekken.',
     'pledge.onlyOfficers': 'Alleen officieren en de gildemeester kunnen geloftes beheren.',
@@ -495,6 +506,9 @@ export const SERVER_NEW = {
     'guild.createFee': 'Je hebt {amount} goud nodig om een gilde te stichten.',
     'guild.bankNotEmpty': 'De gildebank moet leeg zijn voordat de gilde kan worden opgeheven.',
     'guild.bankClosing': 'De gildebank sluit. Probeer het zo meteen opnieuw.',
+    'guild.bankSettling':
+      'De gildebank slaat nog een recente wijziging op. Probeer het zo meteen opnieuw.',
+    'guild.bankBusy': 'Je bent bezig. Probeer het zo meteen opnieuw.',
     'guild.notInYours': '{name} zit niet in je gilde.',
     'guild.nowRank': '{name} is nu {rank}.',
     'guild.onlyGmChangeRanks': 'Alleen de Gildemeester mag rangen wijzigen.',
@@ -549,6 +563,7 @@ export const SERVER_NEW = {
     'world.left': '{name} heeft de wereld verlaten. ({reason})',
   },
   pl_PL: {
+    'error.bankPurchaseInProgress': 'W twoim banku trwa zakup.',
     'pledge.noGuild': 'Nie ma gildii o tej nazwie.',
     'pledge.noneToWithdraw': 'Nie masz ślubowania do wycofania.',
     'pledge.onlyOfficers': 'Ślubowaniami mogą zarządzać tylko oficerowie i mistrz gildii.',
@@ -637,6 +652,8 @@ export const SERVER_NEW = {
     'guild.bankNotEmpty':
       'Bank gildii musi zostać opróżniony, zanim gildia będzie mogła zostać rozwiązana.',
     'guild.bankClosing': 'Bank gildii jest zamykany. Spróbuj ponownie za chwilę.',
+    'guild.bankSettling': 'Bank gildii wciąż zapisuje niedawną zmianę. Spróbuj ponownie za chwilę.',
+    'guild.bankBusy': 'Jesteś zajęty. Spróbuj ponownie za chwilę.',
     'guild.notInYours': '{name} nie należy do twojej gildii.',
     'guild.nowRank': '{name} ma teraz rangę {rank}.',
     'guild.onlyGmChangeRanks': 'Tylko Mistrz Gildii może zmieniać rangi.',
@@ -690,6 +707,7 @@ export const SERVER_NEW = {
     'world.left': '{name} opuścił świat. ({reason})',
   },
   sv_SE: {
+    'error.bankPurchaseInProgress': 'Din bank har ett pågående köp.',
     'pledge.noGuild': 'Ingen guild med det namnet.',
     'pledge.noneToWithdraw': 'Du har inget löfte att dra tillbaka.',
     'pledge.onlyOfficers': 'Bara officerare och guildmästaren kan hantera löften.',
@@ -776,6 +794,9 @@ export const SERVER_NEW = {
     'guild.createFee': 'Du behöver {amount} guld för att grunda ett gille.',
     'guild.bankNotEmpty': 'Gillesbanken måste tömmas innan gillet kan upplösas.',
     'guild.bankClosing': 'Gillesbanken stänger. Försök igen om ett ögonblick.',
+    'guild.bankSettling':
+      'Gillesbanken sparar fortfarande en nyligen gjord ändring. Försök igen om ett ögonblick.',
+    'guild.bankBusy': 'Du är upptagen. Försök igen om ett ögonblick.',
     'guild.notInYours': '{name} är inte med i ditt gille.',
     'guild.nowRank': '{name} är nu {rank}.',
     'guild.onlyGmChangeRanks': 'Endast gillesmästaren kan ändra rang.',
@@ -828,6 +849,7 @@ export const SERVER_NEW = {
     'world.left': '{name} har lämnat världen. ({reason})',
   },
   tr_TR: {
+    'error.bankPurchaseInProgress': 'Bankanda devam eden bir satın alma var.',
     'pledge.noGuild': 'Bu isimde bir lonca yok.',
     'pledge.noneToWithdraw': 'Geri çekecek bir yeminin yok.',
     'pledge.onlyOfficers': 'Yeminleri yalnızca subaylar ve Lonca Ustası yönetebilir.',
@@ -912,6 +934,9 @@ export const SERVER_NEW = {
     'guild.createFee': 'Lonca kurmak için {amount} altın gerekir.',
     'guild.bankNotEmpty': 'Lonca dağıtılmadan önce lonca bankası boşaltılmalıdır.',
     'guild.bankClosing': 'Lonca bankası kapanıyor. Birazdan tekrar dene.',
+    'guild.bankSettling':
+      'Lonca bankası hâlâ yakın zamandaki bir değişikliği kaydediyor. Birazdan tekrar dene.',
+    'guild.bankBusy': 'Meşgulsün. Birazdan tekrar dene.',
     'guild.notInYours': '{name} loncanda değil.',
     'guild.nowRank': '{name} artık {rank}.',
     'guild.onlyGmChangeRanks': 'Yalnızca Lonca Lideri rütbeleri değiştirebilir.',
@@ -964,6 +989,7 @@ export const SERVER_NEW = {
     'world.left': '{name} dünyadan ayrıldı. ({reason})',
   },
   vi_VN: {
+    'error.bankPurchaseInProgress': 'Ngân hàng của bạn có một giao dịch mua đang xử lý.',
     'pledge.noGuild': 'Không có bang hội nào tên như vậy.',
     'pledge.noneToWithdraw': 'Bạn không có lời thề nào để rút lại.',
     'pledge.onlyOfficers': 'Chỉ sĩ quan và Bang chủ mới được quản lý lời thề.',
@@ -1051,6 +1077,9 @@ export const SERVER_NEW = {
     'guild.bankNotEmpty':
       'Ngân khố bang hội phải được dọn sạch trước khi bang hội có thể bị giải tán.',
     'guild.bankClosing': 'Ngân hàng bang hội đang đóng. Hãy thử lại sau giây lát.',
+    'guild.bankSettling':
+      'Ngân hàng bang hội vẫn đang lưu một thay đổi gần đây. Hãy thử lại sau giây lát.',
+    'guild.bankBusy': 'Bạn đang bận. Hãy thử lại sau giây lát.',
     'guild.notInYours': '{name} không ở trong bang hội của bạn.',
     'guild.nowRank': '{name} giờ là {rank}.',
     'guild.onlyGmChangeRanks': 'Chỉ Bang Chủ mới có thể thay đổi cấp bậc.',

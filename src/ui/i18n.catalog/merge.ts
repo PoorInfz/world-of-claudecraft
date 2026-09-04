@@ -554,7 +554,14 @@ const mergeStringsEn = {
       elixir: 'Elixir',
       bag: 'Bag',
       mount: 'Mount',
+<<<<<<< HEAD
       buddy: 'Buddy',
+=======
+      // Presentation split for the mech chroma armor plates (the tradable
+      // cosmetic skins): their KIND stays 'tool' internally, but the tooltip
+      // line reads Skin (item_kind_label.ts owns the split).
+      skin: 'Skin',
+>>>>>>> 181fd59a07efbe72fb2edd69e30ca3b6213b1b99
     },
     tooltip: {
       ...itemNames.en.itemUi.tooltip,
@@ -571,6 +578,9 @@ const mergeStringsEn = {
       // World Market's bag-capacity dropdown (market_window.ts), which reuses it so a new
       // bag size needs no new key. Rewording this restyles that market control too.
       bagSlots: '{slots} Slot Bag',
+      // The materials-only satchel variant (phase 05 two-pool bags): the same
+      // tooltip and socket-aria sites, English-appended until the release fill.
+      bagSlotsMaterials: '{slots} Slot Materials Bag',
     },
     vendor: {
       ...itemNames.en.itemUi.vendor,

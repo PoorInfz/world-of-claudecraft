@@ -17,6 +17,7 @@ import {
   startAccountWealthSweep,
 } from '../server/account_wealth';
 import type { TopWealthHolderRow } from '../server/account_wealth_db';
+import { mailPartitionMarkerKey, mailRecipientKey } from '../server/mail_partition_backfill';
 
 afterEach(() => {
   resetTopWealthHoldersForTests();
@@ -25,7 +26,20 @@ afterEach(() => {
 
 describe('parseEscrowStateKey', () => {
   it('parses realm-scoped mail and market keys and rejects everything else', () => {
-    expect(parseEscrowStateKey('mail:eastbrook')).toEqual({ kind: 'mail', realm: 'eastbrook' });
+    expect(parseEscrowStateKey('mail:eastbrook')).toEqual({
+      kind: 'mail',
+      realm: 'eastbrook',
+      format: 'legacy',
+    });
+    expect(parseEscrowStateKey(mailRecipientKey('eastbrook', '12'))).toEqual({
+      kind: 'mail',
+      realm: 'eastbrook',
+      format: 'partition',
+    });
+    expect(parseEscrowStateKey(mailPartitionMarkerKey('eastbrook'))).toEqual({
+      kind: 'mailPartitionMarker',
+      realm: 'eastbrook',
+    });
     expect(parseEscrowStateKey('market:eastbrook')).toEqual({
       kind: 'market',
       realm: 'eastbrook',
@@ -121,6 +135,40 @@ describe('escrowTotalsFromStateRows', () => {
         { key: 'market:westvale', data: { collections: [null, { key: 7, copper: 5 }] } },
       ]),
     ).toEqual([]);
+  });
+
+  it('ignores a retained legacy mail blob once that realm has partition rows', () => {
+    const totals = escrowTotalsFromStateRows([
+      {
+        key: 'mail:eastbrook',
+        data: { mail: [{ recipientKey: '12', copper: 500 }] },
+      },
+      {
+        key: mailRecipientKey('eastbrook', '12'),
+        data: { mail: [{ recipientKey: '12', copper: 500 }] },
+      },
+      {
+        key: 'mail:westvale',
+        data: { mail: [{ recipientKey: '12', copper: 700 }] },
+      },
+    ]);
+    expect(totals).toEqual([
+      { characterId: 12, characterName: null, realm: null, mailCopper: 1_200, marketCopper: 0 },
+    ]);
+  });
+
+  it('ignores a retained legacy mail blob once that realm has only the marker', () => {
+    const totals = escrowTotalsFromStateRows([
+      {
+        key: 'mail:eastbrook',
+        data: { mail: [{ recipientKey: '12', copper: 500 }] },
+      },
+      {
+        key: mailPartitionMarkerKey('eastbrook'),
+        data: { legacyRowFound: true, recipientCount: 1, letterCount: 1 },
+      },
+    ]);
+    expect(totals).toEqual([]);
   });
 });
 

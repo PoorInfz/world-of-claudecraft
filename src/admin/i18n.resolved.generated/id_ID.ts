@@ -178,6 +178,8 @@ export const id_ID: AdminTranslations = {
   "usage.cacheColEvictions": "Penggusuran",
   "usage.cacheEntriesOfMax": "{entries} / {max}",
   "usage.notAvailable": "t/a",
+  "usage.metric.walletHandoffAuthorizationEvicted": "Penggusuran serah terima dompet desktop",
+  "usage.metric.walletHandoffCreateRejected": "Serah terima dompet desktop yang ditolak",
   "usage.metric.wocBalanceApi": "Permintaan API saldo $WOC",
   "usage.metric.wocBalanceRateLimited": "Permintaan saldo $WOC yang dibatasi",
   "usage.metric.wocBalanceRpc": "Pembacaan saldo RPC Solana",

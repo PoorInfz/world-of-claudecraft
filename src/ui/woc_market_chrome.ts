@@ -20,8 +20,10 @@ import { formatDateTime, formatDuration, formatNumber, t } from './i18n';
 import { ITEM_QUALITY_LABEL_KEYS, itemQualityLabel } from './item_kind_label';
 import { itemSlotLabel } from './item_slot_labels';
 import { svgIcon } from './ui_icons';
+import { usdDollarsText } from './usd_text';
 import { walletCardKeys } from './wallet_card_keys';
 import type { WalletConnectionView } from './wallet_connection_view';
+import { wocTokensText } from './woc_tokens_text';
 
 /** The browse faces' control row: the sort control LEADS the row (the 15 QA
  *  sign-off note), the filters follow it, the pager closes the row. Pure
@@ -259,25 +261,53 @@ export function wocBondScheduleNotesHtml(args: {
 export function wocMarketBannersHtml(args: {
   paused: boolean;
   wallet: WalletConnectionView | null;
+  tokensPerUsd?: number | null;
 }): string {
   const banners =
     (args.paused
       ? `<div class="wm-banner wm-banner-paused">${esc(t('hudChrome.wocMarket.pausedBanner'))}</div>`
-      : '') + wocWalletCardHtml(args.wallet);
+      : '') + wocWalletCardHtml(args.wallet, args.tokensPerUsd ?? null);
   return banners === '' ? '' : `<div class="wm-strip">${banners}</div>`;
 }
 
-function wocWalletCardHtml(wallet: WalletConnectionView | null): string {
+export function wocWalletCardSig(wallet: WalletConnectionView): string {
+  return `${wallet.kind}|${wallet.balanceVerified ? wallet.balance : ''}`;
+}
+
+function wocWalletCardHtml(
+  wallet: WalletConnectionView | null,
+  tokensPerUsd: number | null,
+): string {
   if (wallet === null || !wallet.enabled) return '';
-  const { bodyKey, actionKey } = walletCardKeys(wallet.kind);
+  const sharedKeys = walletCardKeys(wallet.kind);
+  const bodyKey =
+    wallet.kind === 'linked_disconnected'
+      ? 'hudChrome.wocMarket.walletLinkedDisconnected'
+      : wallet.kind === 'linked_connected'
+        ? 'hudChrome.wocMarket.walletLinkedConnected'
+        : sharedKeys.bodyKey;
+  const balance = wocWalletBalanceHtml(wallet, tokensPerUsd);
   return (
     `<div class="wm-banner wm-banner-wallet" data-wallet-kind="${esc(wallet.kind)}">` +
     `<strong>${esc(t('hudChrome.wocStore.wallet.title'))}</strong>` +
     `<p>${esc(t(bodyKey))}</p>` +
+    balance +
     `<button type="button" data-action="connect-wallet" ${FOCUS_KEY_ATTR}="wm-connect-wallet">${esc(
-      t(actionKey),
+      t(sharedKeys.actionKey),
     )}</button></div>`
   );
+}
+
+function wocWalletBalanceHtml(wallet: WalletConnectionView, tokensPerUsd: number | null): string {
+  if (!wallet.balanceVerified || wallet.balance === null) return '';
+  const tokens = t('wallet.balanceAmount', { amount: wocTokensText(wallet.balance) });
+  const usd =
+    tokensPerUsd !== null && Number.isFinite(tokensPerUsd) && tokensPerUsd > 0
+      ? t('hudChrome.wocMarket.walletUsdBalance', {
+          amount: usdDollarsText(wallet.balance / tokensPerUsd),
+        })
+      : t('hudChrome.wocMarket.walletUsdUnknown');
+  return `<span class="wm-wallet-balance"><strong>${esc(tokens)}</strong><span>${esc(usd)}</span></span>`;
 }
 
 /**

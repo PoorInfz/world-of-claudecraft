@@ -1168,4 +1168,7 @@ export const sv_SE: Record<string, string> = {
   'wealth.purse': 'På karaktärer:',
   'wealth.total': 'Total:',
   'wealth.updatedAt': 'uppdaterad {when}',
+  'usage.metric.walletHandoffAuthorizationEvicted':
+    'Utrensade plånboksöverlämningar för skrivbordsappen',
+  'usage.metric.walletHandoffCreateRejected': 'Avvisade plånboksöverlämningar för skrivbordsappen',
 };

@@ -16,6 +16,14 @@ import {
   TEMPORAL_HOURGLASS_SELF_RADIUS,
   type WeaponInfo,
 } from '../types';
+import {
+  GROVESPRING_2PC_SWIFTMEND_HEAL_MULT,
+  GROVESPRING_4PC_OVERBLOOM_HARVEST_PCT,
+  HEXTHREAD_2PC_NEEDLE_DOOM_BONUS,
+  MOONSCORCH_2PC_TEMPEST_EXTEND_CAP_SEC,
+  setBonusFlag,
+  WILDFANG_2PC_REDHARVEST_ENERGY_MULT,
+} from './ignivar_set_bonuses';
 import { PALADIN_CORE_ABILITIES } from './paladin_core_abilities';
 import { PRIEST_ABILITIES } from './priest';
 import { MENDING_WATERS_MANA_COST, TIDECALL_MANA_COST } from './shaman_tuning';
@@ -420,6 +428,9 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'seraphic_vigil',
       'shadowform',
       'summon_tithefiend',
+      // Out-of-combat mass resurrection shared by the two healing specs
+      // (Benison and Doctrine), the collective_reversal twin.
+      'prayer_of_returning',
     ],
     color: 0xc6d4f0,
   },
@@ -597,6 +608,10 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'hurricane',
       'skull_bash',
       'primal_reflexes',
+      // Groveheart resurrections: the in-combat single rez and the
+      // out-of-combat group rez (collective_reversal twin).
+      'wildwake',
+      'grove_awakening',
     ],
     color: 0xff8c1a,
   },
@@ -764,7 +779,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'hamstring',
     name: 'Hobbling Cut',
     class: 'warrior',
-    learnLevel: 5,
+    learnLevel: 4,
     cost: 10,
     castTime: 0,
     cooldown: 0,
@@ -1594,7 +1609,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'frostbolt',
     name: 'Rimelance',
     class: 'mage',
-    learnLevel: 4,
+    learnLevel: 2,
     cost: 25,
     castTime: 1.5,
     cooldown: 0,
@@ -2089,7 +2104,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'polymorph',
     name: 'Bewitch',
     class: 'mage',
-    learnLevel: 7,
+    learnLevel: 6,
     cost: 50,
     castTime: 1.5,
     cooldown: 0,
@@ -2117,7 +2132,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'frost_nova',
     name: 'Icebind',
     class: 'mage',
-    learnLevel: 5,
+    learnLevel: 3,
     cost: 35,
     castTime: 0,
     cooldown: 22,
@@ -2615,10 +2630,11 @@ export const ABILITIES: Record<string, AbilityDef> = {
   // ---- Chronomancy out-of-combat mass resurrection. The base seven-second cast
   // and mana cost are provisional playtest values. It has no target and rewinds all
   // dead members on the authoritative group or raid roster at cast completion.
-  // The five-minute cooldown is the real throttle: requiresOutOfCombat alone is not
-  // one, because a backline caster who never draws aggro drops combat mid-fight the
-  // moment combatTimer passes the 5s linger (see the engagedPids pass in sim.ts), so
-  // a zero-cooldown mass rez could be chained repeatedly inside a single encounter.
+  // requiresOutOfCombat is a real gate: the engaged pass (combat/engaged_combat.ts)
+  // holds everyone a live mob still carries on its hate table, and an engaged boss
+  // holds every nearby member of its attackers' group, so a backline caster cannot
+  // drop combat mid-fight by idling through the 5s linger. The five-minute cooldown
+  // is the throttle across encounters (and after a wipe, once the boss resets).
   collective_reversal: {
     id: 'collective_reversal',
     name: 'Collective Reversal',
@@ -2975,7 +2991,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'backstab',
     name: 'Craven Thrust',
     class: 'rogue',
-    learnLevel: 4,
+    learnLevel: 3,
     cost: 60,
     castTime: 0,
     cooldown: 0,
@@ -3030,7 +3046,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'gouge',
     name: 'Eye Jab',
     class: 'rogue',
-    learnLevel: 6,
+    learnLevel: 5,
     cost: 45,
     castTime: 0,
     cooldown: 10,
@@ -3061,7 +3077,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     tooltipOmitEffectLines: true,
     name: 'Ghostfoot',
     class: 'rogue',
-    learnLevel: 8,
+    learnLevel: 6,
     cost: 0,
     castTime: 0,
     cooldown: 300,
@@ -3111,7 +3127,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'kidney_shot',
     name: 'Low Blow',
     class: 'rogue',
-    learnLevel: 8,
+    learnLevel: 7,
     cost: 25,
     castTime: 0,
     cooldown: 20,
@@ -3127,7 +3143,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'ambush',
     name: "Lurker's Strike",
     class: 'rogue',
-    learnLevel: 5,
+    learnLevel: 4,
     cost: 60,
     castTime: 0,
     cooldown: 0,
@@ -3937,7 +3953,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'serpent_sting',
     name: 'Venom Barb',
     class: 'hunter',
-    learnLevel: 4,
+    learnLevel: 3,
     cost: 15,
     castTime: 0,
     cooldown: 0,
@@ -3968,7 +3984,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'arcane_shot',
     name: 'Fell Shot',
     class: 'hunter',
-    learnLevel: 5,
+    learnLevel: 2,
     cost: 25,
     castTime: 0,
     cooldown: 6,
@@ -3989,7 +4005,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'concussive_shot',
     name: 'Rattling Shot',
     class: 'hunter',
-    learnLevel: 8,
+    learnLevel: 7,
     cost: 20,
     castTime: 0,
     cooldown: 12,
@@ -4385,7 +4401,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'shadow_word_pain',
     name: 'Dirge of Decay',
     class: 'priest',
-    learnLevel: 4,
+    learnLevel: 2,
     cost: 25,
     castTime: 0,
     cooldown: 0,
@@ -4414,7 +4430,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'power_word_shield',
     name: 'Psalm of Warding',
     class: 'priest',
-    learnLevel: 6,
+    learnLevel: 4,
     cost: 45,
     castTime: 0,
     cooldown: 6,
@@ -4450,7 +4466,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'renew',
     name: 'Lingering Grace',
     class: 'priest',
-    learnLevel: 8,
+    learnLevel: 6,
     cost: 30,
     castTime: 0,
     cooldown: 0,
@@ -4480,7 +4496,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'mind_blast',
     name: 'Mindfracture',
     class: 'priest',
-    learnLevel: 5,
+    learnLevel: 3,
     cost: 50,
     castTime: 1.5,
     cooldown: 8,
@@ -4756,6 +4772,12 @@ export const ABILITIES: Record<string, AbilityDef> = {
     description:
       'Heal a friendly target for $d, then jump to up to 2 allies within 12 yards. Each jump heals for 50% of the previous target. Each ally reached consumes your remaining Mending Current and immediately heals for 125% of the amount consumed. The initial heal increases with Spell Power. (Spiritmend signature)',
   },
+  // ---- Spiritmend out-of-combat mass resurrection, the Chronomancy
+  // collective_reversal twin. requiresOutOfCombat is a real gate (the engaged pass in
+  // combat/engaged_combat.ts holds a backline healer in combat for the whole
+  // encounter), and the five-minute cooldown is the throttle across encounters. Kept
+  // equal to collective_reversal so the two mass rezzes cannot be played against each
+  // other; both are pinned to that equality.
   ancestor_return: {
     id: 'ancestor_return',
     name: "Ancestors' Return",
@@ -4764,7 +4786,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     learnLevel: 20,
     cost: 250,
     castTime: 7,
-    cooldown: 0,
+    cooldown: 300,
     range: 0,
     school: 'nature',
     requiresTarget: false,
@@ -4842,7 +4864,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'earth_shock',
     name: 'Earthen Jolt',
     class: 'shaman',
-    learnLevel: 4,
+    learnLevel: 2,
     cost: 30,
     castTime: 0,
     cooldown: 6,
@@ -4871,7 +4893,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'lightning_shield',
     name: 'Thunder Ward',
     class: 'shaman',
-    learnLevel: 5,
+    learnLevel: 3,
     cost: 25,
     castTime: 0,
     cooldown: 0,
@@ -4927,7 +4949,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'flame_shock',
     name: 'Cinder Jolt',
     class: 'shaman',
-    learnLevel: 8,
+    learnLevel: 4,
     cost: 35,
     castTime: 0,
     cooldown: 6,
@@ -4974,7 +4996,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'frost_shock',
     name: 'Rime Jolt',
     class: 'shaman',
-    learnLevel: 8,
+    learnLevel: 6,
     cost: 50,
     castTime: 0,
     cooldown: 6,
@@ -5089,21 +5111,34 @@ export const ABILITIES: Record<string, AbilityDef> = {
     range: 30,
     school: 'shadow',
     requiresTarget: true,
-    effects: [{ type: 'afflictionNeedle' }, { type: 'directDamage', min: 22, max: 27 }],
+    effects: [
+      { type: 'afflictionNeedle', doom: 7 },
+      { type: 'directDamage', min: 22, max: 27 },
+    ],
     ranks: [
       {
         rank: 2,
         level: 12,
         cost: 30,
-        effects: [{ type: 'afflictionNeedle' }, { type: 'directDamage', min: 36, max: 43 }],
+        effects: [
+          { type: 'afflictionNeedle', doom: 7 },
+          { type: 'directDamage', min: 36, max: 43 },
+        ],
       },
       {
         rank: 3,
         level: 20,
         cost: 35,
-        effects: [{ type: 'afflictionNeedle' }, { type: 'directDamage', min: 41, max: 49 }],
+        effects: [
+          { type: 'afflictionNeedle', doom: 7 },
+          { type: 'directDamage', min: 41, max: 49 },
+        ],
       },
     ],
+    // The sim-source description keeps the BASE literal 7 (the $-form
+    // contract in tests/ability_tooltip_consistency.test.ts: brace tokens are
+    // reserved for the translated catalog). The catalog row splices the
+    // RESOLVED payload as {needleDoom}, so Hexthread 2pc wearers read 9 there.
     description:
       'Pierces the enemy for $d Shadow damage and generates 7 Condemnation on impact if it still bears your Evil Eye. Completing a cast moves your primary Evil Eye to the target and adds a Fate Thread for 12 sec, up to 3. Fate Threads stay with you when the Eye moves or its target dies. Targeting a secondary Coven Eye swaps it with the primary Eye.',
   },
@@ -5332,7 +5367,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     name: 'Burning Pact',
     class: 'warlock',
     specs: ['destruction'],
-    learnLevel: 1,
+    learnLevel: 5,
     cost: 25,
     castTime: 2.0,
     cooldown: 0,
@@ -5370,7 +5405,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     name: 'Blackrot',
     class: 'warlock',
     excludeSpecs: ['affliction', 'demonology', 'destruction'],
-    learnLevel: 4,
+    learnLevel: 2,
     cost: 35,
     castTime: 2.0,
     cooldown: 0,
@@ -5400,7 +5435,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     class: 'warlock',
     excludeSpecs: ['affliction'],
     excludeSpecsAtLevel: 14,
-    learnLevel: 6,
+    learnLevel: 4,
     cost: 0,
     castTime: 0,
     cooldown: 0,
@@ -5458,7 +5493,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     name: 'Consume',
     class: 'warlock',
     excludeSpecs: ['demonology'],
-    learnLevel: 7,
+    learnLevel: 6,
     cost: 25,
     castTime: 0,
     channel: { duration: 3, ticks: 3 },
@@ -5577,7 +5612,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'umbral_anchor',
     name: 'Umbral Anchor',
     class: 'warlock',
-    learnLevel: 5,
+    learnLevel: 3,
     cost: 25,
     castTime: 0,
     cooldown: 45,
@@ -5782,7 +5817,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     name: 'Essence Reap',
     class: 'warlock',
     specs: ['demonology'],
-    learnLevel: 1,
+    learnLevel: 5,
     cost: 30,
     castTime: 1.8,
     cooldown: 0,
@@ -5821,7 +5856,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     name: 'Raise Graveguard',
     class: 'warlock',
     specs: ['demonology'],
-    learnLevel: 1,
+    learnLevel: 5,
     cost: 0,
     castTime: 2.5,
     cooldown: 3,
@@ -6142,7 +6177,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'moonfire',
     name: 'Lunar Tempest',
     class: 'druid',
-    learnLevel: 4,
+    learnLevel: 2,
     cost: 25,
     castTime: 0,
     cooldown: 0,
@@ -6202,14 +6237,17 @@ export const ABILITIES: Record<string, AbilityDef> = {
       { type: 'directDamage', min: 20, max: 26 },
       { type: 'extendDot', dot: 'moonfire', seconds: 6, maxBonus: 6 },
     ],
+    // The per-application extension cap is the $t splice (the resolved
+    // extendDot maxBonus, see abilityDurationValue): Moonscorch 2pc wearers
+    // read 12 there, everyone else the base 6.
     description:
-      'Moonwing Form only. Strikes for $d Arcane damage, adds 1 Moontide (max 3), and extends your Lunar Tempest by 6 sec, up to 6 sec per application. At 3 Moontide, this button becomes Moonsurge: an instant strike for 136 to 162 Arcane damage (plus spell power) that spends all 3.',
+      'Moonwing Form only. Strikes for $d Arcane damage, adds 1 Moontide (max 3), and extends your Lunar Tempest by 6 sec, up to $t sec per application. At 3 Moontide, this button becomes Moonsurge: an instant strike for 136 to 162 Arcane damage (plus spell power) that spends all 3.',
   },
   rejuvenation: {
     id: 'rejuvenation',
     name: 'Wildbloom',
     class: 'druid',
-    learnLevel: 4,
+    learnLevel: 3,
     cost: 25,
     castTime: 0,
     cooldown: 0,
@@ -6278,7 +6316,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'entangling_roots',
     name: 'Gripping Roots',
     class: 'druid',
-    learnLevel: 8,
+    learnLevel: 7,
     cost: 35,
     castTime: 1.5,
     cooldown: 0,
@@ -6437,7 +6475,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     tooltipOmitEffectLines: true,
     name: 'Wolf Form',
     class: 'druid',
-    learnLevel: 5,
+    learnLevel: 4,
     cost: 30,
     castTime: 0,
     cooldown: 0,
@@ -6453,7 +6491,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     tooltipOmitEffectLines: true,
     name: 'Stalk',
     class: 'druid',
-    learnLevel: 5,
+    learnLevel: 4,
     cost: 0,
     castTime: 0,
     cooldown: 0,
@@ -6527,7 +6565,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     class: 'druid',
     // Learned at 8 (was 14) so the combo points Rendclaw and Flense build from
     // level 5 have a spender for every druid, not only ferals with Redharvest.
-    learnLevel: 8,
+    learnLevel: 6,
     cost: 35,
     castTime: 0,
     cooldown: 0,
@@ -6757,7 +6795,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     class: 'druid',
     // Learned at 8 (was 18) so Stalk has its payoff soon after it is learned
     // instead of thirteen levels later.
-    learnLevel: 8,
+    learnLevel: 7,
     cost: 50,
     castTime: 0,
     cooldown: 0,
@@ -7378,7 +7416,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     offGcd: true,
     effects: [{ type: 'selfBuff', kind: 'hunter_cold_focus', value: 1, duration: 12 }],
     description:
-      'For 12 sec, Measured Shot restores 50% more Focus, and Long Draw costs 25% less and casts 30% faster. (Coldsight signature)',
+      'For 12 sec, Measured Shot restores 30 Focus, and Long Draw costs 25% less and casts 30% faster. (Coldsight signature)',
   },
   bloodhook: {
     id: 'bloodhook',
@@ -7674,6 +7712,10 @@ export const ABILITIES: Record<string, AbilityDef> = {
     requiresTarget: true,
     effects: [{ type: 'destructionConflagrate' }, { type: 'directDamage', min: 118, max: 140 }],
     description:
+      // The sim-source description keeps the BASE literal 2 (the $-form
+      // contract in tests/ability_tooltip_consistency.test.ts); the catalog
+      // row splices the RESOLVED count as {charges}, so Ruincaller 2pc
+      // wearers read 3 there.
       'Advances one future tick of your Burning Pact, then ignites the target for $d Fire damage. Generates 1 Wrack and 1 Desolation. Holds 2 charges. (Destruction signature)',
   },
   moonkin_form: {
@@ -7866,8 +7908,61 @@ export const ABILITIES: Record<string, AbilityDef> = {
     requiresAuraKind: 'verdance',
     requiresAuraStacks: 5,
     effects: [{ type: 'druidOverbloom', harvestPct: 0.6 }],
+    // The harvest fraction is the $b splice (the resolved druidOverbloom
+    // harvestPct, see abilityBuffValue): Grovespring 4pc wearers read 75
+    // there, everyone else the base 60.
     description:
-      'Spends your 5 Verdance: every ally carrying your heal-over-time effects is instantly healed for 60% of the healing those effects had left, the effects are removed, and the target gets a fresh Wildbloom.',
+      'Spends your 5 Verdance: every ally carrying your heal-over-time effects is instantly healed for $b% of the healing those effects had left, the effects are removed, and the target gets a fresh Wildbloom.',
+  },
+  // In-combat single-target resurrection, the Groveheart sibling of Temporal
+  // Reversal: same offer flow (combat/resurrection_offer.ts), so the accept
+  // returns the fallen at the caster's side with no resurrection sickness.
+  // Five minutes, the shared resurrection cooldown (owner directive
+  // 2026-09-01): the cooldown is the real throttle on chaining combat rezzes
+  // inside one encounter.
+  wildwake: {
+    id: 'wildwake',
+    name: 'Wildwake',
+    class: 'druid',
+    specs: ['restoration'],
+    learnLevel: 16,
+    cost: 60,
+    castTime: 2,
+    cooldown: 300,
+    range: 30,
+    school: 'nature',
+    requiresTarget: true,
+    targetType: 'friendly',
+    targetsDead: true,
+    effects: [{ type: 'resurrectAlly', hpFrac: 0.35 }],
+    description:
+      'Coax a fallen ally into sudden bloom, returning them to life at your side with 35% of their health and mana, even in the thick of combat. (Groveheart)',
+  },
+  // Out-of-combat mass resurrection, the ancestor_return / collective_reversal
+  // twin. The five-minute cooldown is the real throttle: requiresOutOfCombat
+  // alone is not one, because a backline healer who never draws aggro drops
+  // combat mid-fight the moment combatTimer passes the 5s linger (see the
+  // engagedPids pass in sim.ts), so a zero-cooldown mass rez could be chained
+  // repeatedly inside a single encounter. Kept equal to collective_reversal so
+  // the mass rezzes cannot be played against each other; tests pin that
+  // equality.
+  grove_awakening: {
+    id: 'grove_awakening',
+    name: 'Grove Awakening',
+    class: 'druid',
+    specs: ['restoration'],
+    learnLevel: 20,
+    cost: 250,
+    castTime: 7,
+    cooldown: 300,
+    range: 0,
+    school: 'nature',
+    requiresTarget: false,
+    requiresOutOfCombat: true,
+    projectile: false,
+    effects: [{ type: 'massResurrectGroup', hpFrac: 0.3 }],
+    description:
+      'Call every fallen member of your group or raid within 40 yards and in your line of sight back to your side with 30% health and mana. Cannot be cast in combat. (Groveheart)',
   },
 
   // Baseline class interrupts: every caster-pressuring class trains a short-cooldown
@@ -7924,7 +8019,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     id: 'counterspell',
     name: 'Spellbreak',
     class: 'mage',
-    learnLevel: 5,
+    learnLevel: 4,
     cost: 45,
     castTime: 0,
     cooldown: 24,
@@ -8727,7 +8822,12 @@ export function applyTalentMods(entry: KnownAbility, mods: TalentModifiers): voi
           effect.type === 'selfBuff' ||
           effect.type === 'buffTarget' ||
           effect.type === 'absorb' ||
-          effect.type === 'hot'
+          effect.type === 'hot' ||
+          // Emberfury 2pc (the Crucible set doc's rewrite-list extension):
+          // the Enrage an enrageChance effect grants reads its RESOLVED
+          // duration, so a durationFlat row lengthens the buff for engine
+          // and tooltip alike.
+          effect.type === 'enrageChance'
         ) {
           return { ...effect, duration: Math.max(0, effect.duration + (am.durationFlat ?? 0)) };
         }
@@ -8760,9 +8860,83 @@ export function applyTalentMods(entry: KnownAbility, mods: TalentModifiers): voi
               // damage; a re-coat picks up the new value).
               e.type === 'imbue'
               ? { ...e, bonus: Math.round(e.bonus * mul) }
-              : e,
+              : // Forgewall 2pc (the Crucible set doc's scaleEffect
+                // extension): Iron Resolve's rage-to-absorb rate is the
+                // buff-shaped value on absorbSpentResource, so the generic
+                // per-ability knob reaches it and the tooltip splice reads
+                // the same resolved rate the dispatch consumes.
+                e.type === 'absorbSpentResource'
+                ? { ...e, mult: Math.round(e.mult * mul) }
+                : e,
       );
     }
+  }
+  // Hexthread 2pc (the Crucible set doc): Needle of Fate grants 2 additional
+  // Condemnation. The bonus is baked into the RESOLVED afflictionNeedle
+  // payload, the ONE number the dispatch (resolveNeedleOfFate) and the
+  // {needleDoom} description splice both read, so the engine and the printed
+  // figure can never diverge. eyeGeneration still multiplies the total after
+  // (x0.5-with-rounding secondary Eyes, x2 under Hour of Judgment), the set
+  // doc's disclosures.
+  if (entry.def.id === 'needle_of_fate' && mods.selected[setBonusFlag('hexthread', 2)] === true) {
+    entry.effects = entry.effects.map((e) =>
+      e.type === 'afflictionNeedle' ? { ...e, doom: e.doom + HEXTHREAD_2PC_NEEDLE_DOOM_BONUS } : e,
+    );
+  }
+  // Moonscorch 2pc (the Crucible set doc): Moonseed may extend Lunar Tempest
+  // twice per application. The per-application cap is baked into the RESOLVED
+  // extendDot effect (6 -> 12), the ONE number the extendOwnedDot dispatch
+  // and the {duration} description splice both read; the per-press extension
+  // (seconds 6) stays untouched, so each press still adds 6 sec and the
+  // third press stays dead. Deterministic, no rng involved.
+  if (entry.def.id === 'moonseed' && mods.selected[setBonusFlag('moonscorch', 2)] === true) {
+    entry.effects = entry.effects.map((e) =>
+      e.type === 'extendDot' ? { ...e, maxBonus: MOONSCORCH_2PC_TEMPEST_EXTEND_CAP_SEC } : e,
+    );
+  }
+  // Wildfang 2pc (the Crucible set doc): Redharvest restores 45 energy, up
+  // from 30 (rank-3 truth). The multiplier is baked into the RESOLVED
+  // gainResource amount, the one number the dispatch's resource grant reads;
+  // Math.floor keeps the rank ladder at 22/33/45. gainResource is exempt from
+  // the generic damage scaling above (economy, not damage), so this is the
+  // one write. Deterministic, no rng involved.
+  if (
+    entry.def.id === 'redharvest' &&
+    mods.selected[setBonusFlag('wildfang_emberhide', 2)] === true
+  ) {
+    entry.effects = entry.effects.map((e) =>
+      e.type === 'gainResource'
+        ? { ...e, amount: Math.floor(e.amount * WILDFANG_2PC_REDHARVEST_ENERGY_MULT) }
+        : e,
+    );
+  }
+  // Grovespring 2pc (the Crucible set doc): Swiftmend heals 25 percent more.
+  // A bespoke rewrite of the RESOLVED consumeAura heal (the set doc's named
+  // eff.heal hook: no generic knob reaches it without folding into the
+  // additive baseline), applied AFTER the generic scaling so the bend is an
+  // exact 1.25x on the resolved base; the $d tooltip splice reads the same
+  // range. The healPower rider keeps its base scaling (disclosed).
+  if (entry.def.id === 'swiftmend' && mods.selected[setBonusFlag('grovespring', 2)] === true) {
+    entry.effects = entry.effects.map((e) =>
+      e.type === 'consumeAura' && e.heal
+        ? {
+            ...e,
+            heal: {
+              min: Math.round(e.heal.min * GROVESPRING_2PC_SWIFTMEND_HEAL_MULT),
+              max: Math.round(e.heal.max * GROVESPRING_2PC_SWIFTMEND_HEAL_MULT),
+            },
+          }
+        : e,
+    );
+  }
+  // Grovespring 4pc (the Crucible set doc): Overbloom harvests 75 percent.
+  // The fraction is baked into the RESOLVED druidOverbloom effect, the ONE
+  // number resolveDruidOverbloom and the {buff} description splice both
+  // read. Deterministic, no rng involved.
+  if (entry.def.id === 'overbloom' && mods.selected[setBonusFlag('grovespring', 4)] === true) {
+    entry.effects = entry.effects.map((e) =>
+      e.type === 'druidOverbloom' ? { ...e, harvestPct: GROVESPRING_4PC_OVERBLOOM_HARVEST_PCT } : e,
+    );
   }
 }
 

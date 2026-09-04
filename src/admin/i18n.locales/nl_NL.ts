@@ -1177,4 +1177,8 @@ export const nl_NL: Record<string, string> = {
   'wealth.purse': 'Over karakters:',
   'wealth.total': 'Totaal:',
   'wealth.updatedAt': 'bijgewerkt {when}',
+  // nl_NL release i18n fill (autoFillable batch).
+  'usage.metric.walletHandoffAuthorizationEvicted':
+    'Verwijderde autorisaties voor desktop-portemonnee-overdracht',
+  'usage.metric.walletHandoffCreateRejected': 'Geweigerde desktop-portemonnee-overdrachten',
 };

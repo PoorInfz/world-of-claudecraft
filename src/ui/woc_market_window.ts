@@ -16,7 +16,6 @@ import type {
   WocActivityView,
   WocEstimateView,
   WocListingView,
-  WocMarketClient,
   WocMarketStatus,
   WocQuoteView,
   WocSaleView,
@@ -49,7 +48,6 @@ import {
   walletBridgeReason,
   walletBridgeReasonText,
 } from './wallet_bridge_reason_text';
-import type { WalletConnectionKind } from './wallet_connection_view';
 import { overWalletBalance } from './woc_affordable_core';
 import { wocActivityHtml } from './woc_market_activity_html';
 import {
@@ -66,7 +64,9 @@ import {
   wocSellEmptyHtml,
   wocSellerPaneHtml,
   wocSpinnerHtml,
+  wocWalletCardSig,
 } from './woc_market_chrome';
+import type { WocMarketHooks } from './woc_market_hooks';
 import { anyBondAwaitingChain, shouldPollWocMarket } from './woc_market_poll_core';
 import {
   wocBondPendingText,
@@ -86,25 +86,9 @@ import {
 } from './woc_market_view';
 import { wocTokensText } from './woc_tokens_text';
 
-/** Online-only glue main.ts wires (the ClaudiumHooks pattern): the typed SDK,
- *  the session identity, and the wallet signer. Absent hooks = the window is
- *  never openable (the platform gate). */
-export interface WocMarketHooks {
-  client: WocMarketClient;
-  characterId(): number;
-  walletLinked(): boolean;
-  /** Sign and broadcast a service-built transaction through the reviewed
-   *  wallet bridge (the src/net/wallet.ts signAndSendTransactionBase64
-   *  vocabulary; the payload is always a server-authorized quote, never
-   *  client-assembled). Resolves the signature; throws an Error whose
-   *  message is already player-facing. */
-  signAndSendTransactionBase64(transactionBase64: string): Promise<string>;
-  /** Sign the SERVER-BUILT step-up challenge message (B6/R1) with the linked
-   *  wallet (no transaction, no funds). Same bridge and same contract as the
-   *  transaction signer: resolves the base58 signature; throws an Error whose
-   *  message is already player-facing. */
-  signMessageBase58(message: string): Promise<string>;
-}
+// The hooks contract lives in its own leaf module (wiring, window, and the
+// trade arm all consume it); re-exported here so importers keep one home.
+export type { WocMarketHooks } from './woc_market_hooks';
 
 export interface WocMarketWindowDeps {
   root(): HTMLElement;
@@ -112,11 +96,10 @@ export interface WocMarketWindowDeps {
   hooks(): WocMarketHooks | null;
   closeOthers(): void;
   hideTooltip(): void;
-  /** Open the shared wallet connect flow (the woc:wallet-verify event the
-   *  store, bags and daily rewards buttons dispatch): the unlinked-wallet
-   *  banner's shortcut, so the window never says 'link a wallet' without a
-   *  way to do it right there. */
+  /** Open the shared wallet connect flow, giving the unlinked-wallet banner a
+   *  direct path to link through the same event as the other wallet surfaces. */
   openWallet(): void;
+  refreshWocBalance(force?: boolean): void;
   /** The shared hover/focus tooltip binder (Hud.attachTooltip). It owns the
    *  positioning and the only forced-reflow reads involved, which is what keeps
    *  this cold window's no-layout-read contract intact. */
@@ -289,12 +272,10 @@ export class WocMarketWindow {
    *  because the detail's estimate covers the current bid, not the buy-now. */
   private buyNowTokens: number | null = null;
 
-  /** The VERIFIED wallet's balance: the account-linked wallet is the one that
-   *  will actually pay, so a merely-connected figure would gate the wrong one. */
   private walletTokens(): number | null {
     return verifiedWocBalance();
   }
-  private paintedWalletKind: WalletConnectionKind | null = null;
+  private paintedWalletSig = '';
   private busy = false;
   private busyLabel: TranslationKey | null = null;
   /** Bumped every time a mutation starts AND every time the window closes. A
@@ -343,6 +324,7 @@ export class WocMarketWindow {
     this.opener = this.deps.captureFocus();
     this.deps.closeOthers();
     this.deps.root().style.display = 'flex';
+    this.deps.refreshWocBalance();
     void this.reload();
   }
 
@@ -586,11 +568,9 @@ export class WocMarketWindow {
     this.render();
   }
 
-  /** Wallet fan-out arm (Hud's onWalletUiChange, the Claudium panel's twin): the
-   *  card is module state the view digest never sees, so a connect repaints here.
-   *  Gated on the card's own state, so a balance tick alone rebuilds nothing. */
+  /** Wallet fan-out arm: the card is module state the view digest never sees. */
   onWalletChanged(): void {
-    if (walletConnectionView().kind === this.paintedWalletKind) return;
+    if (wocWalletCardSig(walletConnectionView()) === this.paintedWalletSig) return;
     this.relocalize();
   }
 
@@ -841,10 +821,13 @@ export class WocMarketWindow {
     // The standing banners and the footer are chrome builders (the pure-core
     // split); the window resolves its own state (notice sentence, busy label)
     // and the builders own the markup.
-    // The wallet card is shared connection state, not model state: onWalletChanged() repaints it.
     const wallet = walletConnectionView();
-    this.paintedWalletKind = wallet.kind;
-    const bannerStrip = wocMarketBannersHtml({ paused: model.paused, wallet });
+    this.paintedWalletSig = wocWalletCardSig(wallet);
+    const bannerStrip = wocMarketBannersHtml({
+      paused: model.paused,
+      wallet,
+      tokensPerUsd: model.tokensPerUsd,
+    });
     const foot = wocMarketFootHtml({
       paused: model.paused,
       tokensPerUsd: model.tokensPerUsd,
@@ -2236,7 +2219,10 @@ export class WocMarketWindow {
         this.busyLabel = 'hudChrome.wocMarket.signing';
         this.render();
         try {
-          stepUpSignature = await hooks.signMessageBase58(issued.challenge.message);
+          stepUpSignature = await hooks.signMessageBase58(
+            issued.challenge.message,
+            issued.challenge.nonce,
+          );
         } catch (err) {
           // Dev channel keeps the raw error; the player line is CLASSIFIED
           // (decline, timeout, missing wallet), never err.message raw (the
@@ -2418,6 +2404,7 @@ export class WocMarketWindow {
         try {
           signature = await hooks.signAndSendTransactionBase64(
             pending.quote.transactionBase64 ?? '',
+            pending.quote.reference ?? null,
           );
         } catch (err) {
           // Same classification rule as the step-up arm, payment-flavored.
@@ -2481,6 +2468,7 @@ export class WocMarketWindow {
         }
       }
       this.pendingQuote = null;
+      this.deps.refreshWocBalance(true); // Token-account changes emit no wallet event.
       await this.reload();
     });
   }

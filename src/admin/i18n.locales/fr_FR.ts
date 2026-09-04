@@ -363,6 +363,8 @@ export const fr_FR: Record<string, string> = {
   'usage.metric.cardPublishRequest': 'Requêtes de publication de carte joueur',
   'usage.metric.cardPublishRejected': 'Publications de carte rejetées',
   'usage.metric.cardPublishRateLimited': 'Publications de carte limitées',
+  'usage.metric.walletHandoffAuthorizationEvicted': 'Évictions de transfert de portefeuille bureau',
+  'usage.metric.walletHandoffCreateRejected': 'Rejets de transfert de portefeuille bureau',
   'usage.cache.wocBalance': 'Cache de solde $WOC',
   'usage.cache.githubReleases': 'Cache des versions GitHub',
   'common.ago': 'il y a {value}',

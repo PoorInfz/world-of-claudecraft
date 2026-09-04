@@ -317,6 +317,8 @@ export const de_DE: Record<string, string> = {
   'usage.metric.walletUnlinkFailure': 'Abgelehnte Wallet-Trennungen',
   'usage.metric.walletUnlinkSuccess': 'Abgeschlossene Wallet-Trennungen',
   'usage.metric.walletLinkRateLimited': 'Gedrosselte Wallet-Verknüpfungen',
+  'usage.metric.walletHandoffAuthorizationEvicted': 'Entfernte Desktop-Wallet-Übergaben',
+  'usage.metric.walletHandoffCreateRejected': 'Abgelehnte Desktop-Wallet-Übergaben',
   'usage.metric.cardPublishRequest': 'Veröffentlichungen von Spielerkarten',
   'usage.metric.cardPublishRejected': 'Abgelehnte Spielerkarten-Veröffentlichungen',
   'usage.metric.cardPublishRateLimited': 'Gedrosselte Spielerkarten-Veröffentlichungen',
