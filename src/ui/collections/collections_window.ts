@@ -56,7 +56,12 @@ export interface CollectionsWindowDeps extends PainterHostPresentation {
   /** Mount the shared turntable showing this renderer visual key. A key with no
    *  rig is a no-op for the caller to ignore: the pane then shows the icon
    *  alone rather than an empty canvas. */
-  mountPreview(container: HTMLElement, visualKey: string, kind: CollectionPreviewKind): void;
+  mountPreview(
+    container: HTMLElement,
+    visualKey: string,
+    kind: CollectionPreviewKind,
+    tint: number,
+  ): void;
   /** Buddy and mount keys the viewer owns, and the item ids they carry or wear
    *  (the set tab's per-piece marks). All three come straight off IWorld. */
   ownedBuddyKeys(): ReadonlySet<string>;
@@ -88,6 +93,39 @@ const STAT_LABEL: Record<CollectionSetStat, TranslationKey> = {
   agility: 'hudChrome.collections.stat.agility',
   strength: 'hudChrome.collections.stat.strength',
   mixed: 'hudChrome.collections.stat.mixed',
+};
+
+/** Flavour text per companion. A typed map rather than a built key: tsc names
+ *  the buddy that lost its blurb, instead of a missing string appearing live. */
+const BUDDY_LORE: Readonly<Record<string, TranslationKey>> = {
+  ember_fox: 'hudChrome.collections.buddyLore.ember_fox',
+  moss_hare: 'hudChrome.collections.buddyLore.moss_hare',
+  frog: 'hudChrome.collections.buddyLore.frog',
+  crimson_claw_crab: 'hudChrome.collections.buddyLore.crimson_claw_crab',
+  golden_sentinel: 'hudChrome.collections.buddyLore.golden_sentinel',
+  nightfang: 'hudChrome.collections.buddyLore.nightfang',
+  tuskhorn_boar: 'hudChrome.collections.buddyLore.tuskhorn_boar',
+  emerald_wolf: 'hudChrome.collections.buddyLore.emerald_wolf',
+  tiger: 'hudChrome.collections.buddyLore.tiger',
+  cate_coin: 'hudChrome.collections.buddyLore.cate_coin',
+  alon: 'hudChrome.collections.buddyLore.alon',
+  trollface: 'hudChrome.collections.buddyLore.trollface',
+  ansem: 'hudChrome.collections.buddyLore.ansem',
+  triple_t: 'hudChrome.collections.buddyLore.triple_t',
+  kekius: 'hudChrome.collections.buddyLore.kekius',
+  solbot: 'hudChrome.collections.buddyLore.solbot',
+  frostfire: 'hudChrome.collections.buddyLore.frostfire',
+  rocky: 'hudChrome.collections.buddyLore.rocky',
+  proud_grunt: 'hudChrome.collections.buddyLore.proud_grunt',
+  loot_goblin: 'hudChrome.collections.buddyLore.loot_goblin',
+  penny_goldspark: 'hudChrome.collections.buddyLore.penny_goldspark',
+  stag: 'hudChrome.collections.buddyLore.stag',
+  alpaca: 'hudChrome.collections.buddyLore.alpaca',
+  bull: 'hudChrome.collections.buddyLore.bull',
+  spider: 'hudChrome.collections.buddyLore.spider',
+  raptor: 'hudChrome.collections.buddyLore.raptor',
+  skeleton: 'hudChrome.collections.buddyLore.skeleton',
+  crystal_lich: 'hudChrome.collections.buddyLore.crystal_lich',
 };
 
 const PET_KIND_LABEL: Record<CollectionPetKind, TranslationKey> = {
@@ -310,7 +348,13 @@ export class CollectionsWindow {
               (set) => `
             <button type="button" data-key="${esc(set.setId)}"
               class="col-row${set.setId === selectedKey ? ' active' : ''}">
-              <span class="col-row-name q-${esc(set.quality)}">${esc(set.name)}</span>
+              <span class="col-row-name q-${esc(set.quality)}">${esc(set.name)}${
+                set.itemLevel === undefined
+                  ? ''
+                  : ` <span class="col-ilvl">${esc(
+                      t('hudChrome.collections.set.itemLevel', { level: num(set.itemLevel) }),
+                    )}</span>`
+              }</span>
               <span class="col-row-state">${esc(
                 t('hudChrome.collections.set.owned', {
                   owned: num(set.ownedCount),
@@ -411,9 +455,12 @@ export class CollectionsWindow {
     const row = rows.find((candidate) => candidate.key === selectedKey);
     if (!row) return '';
     const name = row.itemId ? itemDisplayName(ITEMS[row.itemId]) : row.name;
+    const loreKey = BUDDY_LORE[row.key];
+    const lore = loreKey ? `<p class="col-lore">${esc(t(loreKey))}</p>` : '';
     return `
-      <div class="col-preview" data-preview="${esc(row.visualKey ?? '')}"></div>
+      <div class="col-preview" data-preview="${esc(row.visualKey ?? '')}" data-tint="${row.tint}"></div>
       <h3 class="col-detail-name q-${esc(row.quality)}">${esc(name)}</h3>
+      ${lore}
       ${this.factsHtml(row.facts)}`;
   }
 
@@ -521,7 +568,12 @@ export class CollectionsWindow {
     const preview = root.querySelector<HTMLElement>('[data-preview]');
     const visualKey = preview?.dataset.preview ?? '';
     if (preview && visualKey) {
-      this.deps.mountPreview(preview, visualKey, this.tab === 'mounts' ? 'mount' : 'buddy');
+      this.deps.mountPreview(
+        preview,
+        visualKey,
+        this.tab === 'mounts' ? 'mount' : 'buddy',
+        Number(preview.dataset.tint ?? 0xffffff),
+      );
     }
   }
 

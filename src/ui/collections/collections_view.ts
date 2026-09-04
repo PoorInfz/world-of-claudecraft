@@ -66,6 +66,10 @@ export interface CollectionEntryView {
   /** Which of the three buddy groups this row sits in. Mount rows carry
    *  'beast' and never use it: only the buddy tab groups. */
   petKind: CollectionPetKind;
+  /** The follower's entity dye (content/buddy_mobs.ts). Inert on a rig with
+   *  baked textures, and the whole colour on a shared animal or skeleton rig,
+   *  which is exactly how the world draws it. */
+  tint: number;
   /** True when the viewer owns the granting item. */
   owned: boolean;
   /** False when nothing in the game grants this entry today; the window says
@@ -198,6 +202,7 @@ function entryFor(
   visualKey: string | null,
   ownedKeys: ReadonlySet<string>,
   petKind: CollectionPetKind = 'beast',
+  tint = 0xffffff,
 ): CollectionEntryView {
   const facts = itemId ? collectionItemFacts(itemId) : null;
   return {
@@ -208,6 +213,7 @@ function entryFor(
     visualKey,
     facts,
     petKind,
+    tint,
     owned: ownedKeys.has(key),
     obtainable: facts?.obtainable ?? false,
   };
@@ -240,6 +246,7 @@ export function buildCollectionsView(input: CollectionsViewInput): CollectionsVi
       input.buddyVisualKeys[key] ?? null,
       input.ownedBuddyKeys,
       petKindOf(BUDDY_MOBS[buddyTemplateId(key)]?.family ?? 'beast'),
+      BUDDY_MOBS[buddyTemplateId(key)]?.color ?? 0xffffff,
     ),
   );
   // The tab reads kind first, then rarity, then catalog order: a collector

@@ -5400,10 +5400,10 @@ export class Hud {
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#collections-window'),
     ...this.windowFocus('#collections-window'),
-    mountPreview: (container, previewKey, kind) =>
+    mountPreview: (container, previewKey, kind, tint) =>
       this.mountSharedPreview(
         container,
-        collectionsPreviewOptions(previewKey, this.sim.cfg.playerClass, kind),
+        collectionsPreviewOptions(previewKey, this.sim.cfg.playerClass, kind, tint),
       ),
     exchangeClient: () => this.wocMarketHooks?.client ?? null,
   });
@@ -16853,6 +16853,8 @@ export class Hud {
       offhand: string | null;
       /** The active Armory weapon-skin cosmetic (null = the item's own model). */
       weaponSkinId: string | null;
+      /** Entity dye for a tinted rig; white (the default) leaves baked art alone. */
+      tint?: number;
       framing: PreviewFramingName;
       /** Compose the turntable from this authored look instead of mounting the
        *  stock class rig. Set for the SELF sheet, whose body must match the one
@@ -16883,7 +16885,13 @@ export class Hud {
       // Mech is class-agnostic; mirror the wearer class's hand layout so the
       // paperdoll matches the in-world render.
       const override = opts.previewKey === 'player_mech' ? mechHeldWeaponOverride(opts.cls) : null;
-      this.charPreview.setVisualKey(opts.previewKey, opts.mainhand, override, opts.offhand);
+      this.charPreview.setVisualKey(
+        opts.previewKey,
+        opts.mainhand,
+        override,
+        opts.offhand,
+        opts.tint,
+      );
     } else {
       this.charPreview.setClass(opts.cls, opts.mainhand, opts.offhand);
     }

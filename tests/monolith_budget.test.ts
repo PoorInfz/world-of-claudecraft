@@ -280,7 +280,10 @@ const MONOLITHS: MonolithRow[] = [
     // Plus 1 for the Hunting window: the ONE line is the presentation-bag
     // spread onto its deps, which is what buys the set pieces a real item
     // tooltip. Exact count.
-    ceiling: 18938,
+    // Plus 8 for the preview dye: the tint field on the shared mount options
+    // and the multi-line setVisualKey call that forwards it, which is what
+    // stops a tinted buddy rig rendering white in the pane. Exact count.
+    ceiling: 18946,
     seam: 'pure view core + thin painter on PainterHost (src/ui/CLAUDE.md)',
   },
   {

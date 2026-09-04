@@ -12186,6 +12186,15 @@
     font-size: 14px;
     margin: 0 0 6px;
   }
+  /* The companion blurb: flavour, so it reads quieter than the derived facts
+     under it and never competes with them for the eye. */
+  .col-lore {
+    margin: 0 0 8px;
+    font-size: 11px;
+    font-style: italic;
+    line-height: 1.45;
+    color: #ded6c2;
+  }
   .col-line {
     display: flex;
     gap: 8px;

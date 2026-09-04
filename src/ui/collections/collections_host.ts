@@ -51,6 +51,7 @@ export function collectionsPreviewOptions(
   previewKey: string,
   cls: PlayerClass,
   kind: CollectionPreviewKind,
+  tint = 0xffffff,
 ): {
   cls: PlayerClass;
   skin: number;
@@ -59,6 +60,7 @@ export function collectionsPreviewOptions(
   offhand: null;
   weaponSkinId: null;
   framing: PreviewFramingName;
+  tint: number;
 } {
   return {
     cls,
@@ -68,6 +70,7 @@ export function collectionsPreviewOptions(
     offhand: null,
     weaponSkinId: null,
     framing: kind === 'mount' ? 'collectionMount' : 'collectionBuddy',
+    tint,
   };
 }
 
@@ -117,7 +120,12 @@ export interface CollectionsHost extends PainterHostPresentation {
   /** Mount the SHARED character turntable on this visual key (Hud's
    *  mountSharedPreview). One canvas serves the sheet, the inspect stage and
    *  this window, so Collections adds no GPU producer of its own. */
-  mountPreview(container: HTMLElement, visualKey: string, kind: CollectionPreviewKind): void;
+  mountPreview(
+    container: HTMLElement,
+    visualKey: string,
+    kind: CollectionPreviewKind,
+    tint: number,
+  ): void;
   /** The live Exchange client, or null when the Exchange is not attached to
    *  this build (desktop, native, offline) or has not attached yet. Read per
    *  call and never captured, so a client that attaches after the window was
