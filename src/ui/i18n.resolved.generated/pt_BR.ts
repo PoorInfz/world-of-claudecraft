@@ -3438,10 +3438,10 @@ export const pt_BR: EnTranslations = {
       "logAdminPurge": "Um administrador removeu {count} {item}"
     },
     "collections": {
-      "title": "Collections",
-      "close": "Close collections",
-      "keybindLabel": "Collections",
-      "launcherTitle": "Collections: buddies, mounts and item sets",
+      "title": "Hunting",
+      "close": "Close hunting",
+      "keybindLabel": "Hunting",
+      "launcherTitle": "Hunting: buddies, mounts and item sets",
       "tabs": {
         "buddies": "Buddies",
         "mounts": "Mounts",
@@ -3451,6 +3451,11 @@ export const pt_BR: EnTranslations = {
         "owned": "Collected",
         "notOwned": "Not collected",
         "unavailable": "Not obtainable yet"
+      },
+      "petKind": {
+        "beast": "Beasts",
+        "humanoid": "Humanoids",
+        "undead": "Undead"
       },
       "armor": {
         "cloth": "Cloth",
@@ -3464,7 +3469,9 @@ export const pt_BR: EnTranslations = {
         "mixed": "Hybrid"
       },
       "set": {
-        "owned": "{owned} of {total} pieces"
+        "owned": "{owned} of {total} pieces",
+        "itemLevel": "ilvl {level}",
+        "bonusLabel": "{pieces} pieces"
       },
       "detail": {
         "dropLabel": "Drops from",

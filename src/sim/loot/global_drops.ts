@@ -29,13 +29,17 @@ export interface GlobalBuddyDropTier {
 // draw order. Re-enabling a tier is then a one-number edit that also cannot
 // reshape a golden. chance 0 can never win: Rng.chance is a strict `< p`.
 //
-// Rare stays reachable, just not here: the three vendor rares (Proud Grunt,
-// Loot Goblin, Penny Goldspark, see content/buddies.ts) are bought with honor,
-// Heroic Marks and gold respectively.
+// 2026-09-04: rare joins the table at 0.05%, a twentieth of the uncommon rate,
+// so a blue companion is a genuine long-odds find rather than vendor-only. The
+// three vendor rares (Proud Grunt, Loot Goblin, Penny Goldspark) keep their
+// currency counters as the reliable route; this is the lucky one.
+//
+// Epic stays withheld at chance 0: the one epic with a live source is the
+// Crystal Lich, and Nythraxis owns that chase (content/dungeons.ts).
 export const GLOBAL_BUDDY_DROP_TIERS: readonly GlobalBuddyDropTier[] = [
   { quality: 'common', chance: 0.015 },
   { quality: 'uncommon', chance: 0.01 },
-  { quality: 'rare', chance: 0 },
+  { quality: 'rare', chance: 0.0005 },
   { quality: 'epic', chance: 0 },
 ];
 

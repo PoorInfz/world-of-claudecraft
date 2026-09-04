@@ -18,6 +18,7 @@ import { BUDDY_KEYS } from '../../sim/content/buddies';
 import { buddyTemplateId } from '../../sim/content/buddy_mobs';
 import type { PlayerClass } from '../../sim/types';
 import type { IWorld } from '../../world_api';
+import type { PainterHostPresentation } from '../painter_host';
 import {
   type CollectionPreviewKind,
   CollectionsWindow,
@@ -107,7 +108,7 @@ export async function exchangeLowestCentsFor(
   return lowest;
 }
 
-export interface CollectionsHost {
+export interface CollectionsHost extends PainterHostPresentation {
   root(): HTMLElement;
   world(): IWorld;
   closeOthers(): void;
@@ -130,6 +131,12 @@ export interface CollectionsHost {
  *  viewer carries or wears. */
 export function collectionsWindowDeps(host: CollectionsHost): CollectionsWindowDeps {
   return {
+    // The presentation bag rides straight through: icons and tooltips are the
+    // HUD's, so a set piece here reads exactly as it does in the bags.
+    itemIcon: host.itemIcon,
+    moneyHtml: host.moneyHtml,
+    itemTooltip: host.itemTooltip,
+    attachTooltip: host.attachTooltip,
     root: host.root,
     world: host.world,
     closeOthers: host.closeOthers,

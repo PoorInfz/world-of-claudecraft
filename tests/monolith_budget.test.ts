@@ -277,7 +277,10 @@ const MONOLITHS: MonolithRow[] = [
     // prompt_dialog.ts (the family home), hud.ts keeps a delegator.
     // Re-measured on the tree that merged the v0.41.3 line into the buddy
     // branch: both arms grew the file, so neither ceiling described the result.
-    ceiling: 18937,
+    // Plus 1 for the Hunting window: the ONE line is the presentation-bag
+    // spread onto its deps, which is what buys the set pieces a real item
+    // tooltip. Exact count.
+    ceiling: 18938,
     seam: 'pure view core + thin painter on PainterHost (src/ui/CLAUDE.md)',
   },
   {

@@ -28,8 +28,10 @@ describe('collection source derivation', () => {
     const facts = collectionItemFacts('whistle_proud_grunt');
     expect(facts?.obtainable).toBe(true);
     expect(facts?.drops).toEqual([]);
-    // Held out of the loot table: rare rides a tier pinned at chance 0.
-    expect(facts?.globalDrop).toBeNull();
+    // Rare joined the global table at 0.05% (loot/global_drops.ts), so the
+    // vendor is the reliable route and the drop is the lucky one; both show.
+    expect(facts?.globalDrop?.quality).toBe('rare');
+    expect(facts?.globalDrop?.chance).toBe(0.0005);
     expect(facts?.vendors).toHaveLength(1);
     const vendor = facts?.vendors[0];
     expect(vendor?.npcId).toBe('warmarshal_draven_kole');

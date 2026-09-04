@@ -24,9 +24,10 @@ import { ITEMS } from '../../sim/data';
 import type { ArmorType } from '../../sim/types';
 import type { IWorld } from '../../world_api';
 import { markDialogRoot } from '../dialog_root';
-import { itemDisplayName } from '../entity_i18n';
+import { itemDisplayName, itemSetBonusField, tEntity } from '../entity_i18n';
 import { esc } from '../esc';
 import { formatMoney, formatNumber, type TranslationKey, t } from '../i18n';
+import type { PainterHostPresentation } from '../painter_host';
 import { svgIcon } from '../ui_icons';
 import { itemIconImgHtml } from '../unknown_item_icon';
 import type { CollectionDropSource, CollectionItemFacts } from './collection_sources';
@@ -34,6 +35,8 @@ import {
   buildCollectionsView,
   COLLECTIONS_TABS,
   type CollectionEntryView,
+  type CollectionPetGroupView,
+  type CollectionPetKind,
   type CollectionSetStat,
   type CollectionSetView,
   type CollectionsTabId,
@@ -44,7 +47,7 @@ import {
  *  player's height, so they cannot share one camera crop. */
 export type CollectionPreviewKind = 'buddy' | 'mount';
 
-export interface CollectionsWindowDeps {
+export interface CollectionsWindowDeps extends PainterHostPresentation {
   root(): HTMLElement;
   world(): IWorld;
   closeOthers(): void;
@@ -86,6 +89,19 @@ const STAT_LABEL: Record<CollectionSetStat, TranslationKey> = {
   strength: 'hudChrome.collections.stat.strength',
   mixed: 'hudChrome.collections.stat.mixed',
 };
+
+const PET_KIND_LABEL: Record<CollectionPetKind, TranslationKey> = {
+  beast: 'hudChrome.collections.petKind.beast',
+  humanoid: 'hudChrome.collections.petKind.humanoid',
+  undead: 'hudChrome.collections.petKind.undead',
+};
+
+/** The authored text of one set bonus tier, through the same entity key the
+ *  item tooltip reads, so this window can never word a bonus differently from
+ *  the tooltip beside it. */
+function setBonusText(setId: string, pieces: number): string {
+  return tEntity({ kind: 'itemSet', id: setId, field: itemSetBonusField(pieces) });
+}
 
 const num = (value: number): string => formatNumber(value, { maximumFractionDigits: 0 });
 
@@ -226,7 +242,9 @@ export class CollectionsWindow {
         <div class="col-list" role="list">${
           this.tab === 'sets'
             ? this.setListHtml(view.setGroups, selectedKey)
-            : this.entryListHtml(rows, selectedKey)
+            : this.tab === 'buddies'
+              ? this.buddyListHtml(view.buddyGroups, selectedKey)
+              : this.entryListHtml(rows, selectedKey)
         }</div>
         <div class="col-detail">${
           this.tab === 'sets'
@@ -243,6 +261,20 @@ export class CollectionsWindow {
   private defaultSelection(view: CollectionsView, rows: CollectionEntryView[]): string {
     if (this.tab === 'sets') return view.setGroups[0]?.sets[0]?.setId ?? '';
     return rows[0]?.key ?? '';
+  }
+
+  /** The buddy tab: one heading per pet kind, rows already in rarity order
+   *  (the view core sorts them, so the painter never re-decides). */
+  private buddyListHtml(groups: readonly CollectionPetGroupView[], selectedKey: string): string {
+    return groups
+      .map(
+        (group) => `
+        <div class="col-group">
+          <h3 class="col-group-head">${esc(t(PET_KIND_LABEL[group.kind]))}</h3>
+          ${this.entryListHtml(group.entries, selectedKey)}
+        </div>`,
+      )
+      .join('');
   }
 
   private entryListHtml(rows: readonly CollectionEntryView[], selectedKey: string): string {
@@ -396,15 +428,29 @@ export class CollectionsWindow {
           : cents === undefined
             ? t('hudChrome.collections.detail.exchangeNone')
             : usd(cents);
+        const level =
+          piece.itemLevel === undefined
+            ? ''
+            : ` <span class="col-ilvl">${esc(t('hudChrome.collections.set.itemLevel', { level: num(piece.itemLevel) }))}</span>`;
+        const tick = piece.owned ? '<span class="col-tick" aria-hidden="true">&#10003;</span>' : '';
         return `
-        <li class="col-piece">
+        <li class="col-piece${piece.owned ? ' col-owned' : ''}" data-item="${esc(piece.itemId)}">
           ${iconHtml(piece.itemId, set.quality)}
-          <span class="col-row-name q-${esc(set.quality)}">${esc(itemDisplayName(ITEMS[piece.itemId]))}</span>
+          <span class="col-row-name q-${esc(set.quality)}">${tick}${esc(itemDisplayName(ITEMS[piece.itemId]))}${level}</span>
           ${this.factsHtml(piece.facts)}
           ${this.line('hudChrome.collections.detail.marketLabel', this.marketPriceText(piece.itemId))}
           ${this.line('hudChrome.collections.detail.exchangeLabel', exchange)}
         </li>`;
       })
+      .join('');
+    const bonuses = set.bonuses
+      .map(
+        (tier) => `
+        <p class="col-line col-bonus${tier.owned ? ' col-bonus-live' : ''}">
+          <span class="col-line-label">${esc(t('hudChrome.collections.set.bonusLabel', { pieces: num(tier.pieces) }))}</span>
+          <span class="col-line-value">${esc(setBonusText(set.setId, tier.pieces))}</span>
+        </p>`,
+      )
       .join('');
     return `
       <h3 class="col-detail-name q-${esc(set.quality)}">${esc(set.name)}</h3>
@@ -414,8 +460,12 @@ export class CollectionsWindow {
         t('hudChrome.collections.set.owned', {
           owned: num(set.ownedCount),
           total: num(set.pieces.length),
-        }),
+        }) +
+          (set.itemLevel === undefined
+            ? ''
+            : ` ${t('hudChrome.collections.set.itemLevel', { level: num(set.itemLevel) })}`),
       )}</span></p>
+      ${bonuses}
       <ul class="col-pieces">${pieces}</ul>`;
   }
 
@@ -458,6 +508,14 @@ export class CollectionsWindow {
         this.render();
         if (this.tab === 'sets') this.fetchExchangePrices(key);
       });
+    }
+    // The real item tooltip, the same markup the bags and the vendor grid
+    // show: hovering a set piece here answers stats, bonuses and compare
+    // without the player leaving the window.
+    for (const row of root.querySelectorAll<HTMLElement>('[data-item]')) {
+      const item = ITEMS[row.dataset.item ?? ''];
+      if (!item) continue;
+      this.deps.attachTooltip(row, () => this.deps.itemTooltip(item));
     }
     root.querySelector('[data-close]')?.addEventListener('click', () => this.close());
     const preview = root.querySelector<HTMLElement>('[data-preview]');

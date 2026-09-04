@@ -3438,10 +3438,10 @@ export const en_XA: EnTranslations = {
       "logAdminPurge": "[Áñ áðɱíñíšţŕáţóŕ ŕéɱóʋéð {count} {item}]"
     },
     "collections": {
-      "title": "[Çóļļéçţíóñš]",
-      "close": "[Çļóšé çóļļéçţíóñš]",
-      "keybindLabel": "[Çóļļéçţíóñš]",
-      "launcherTitle": "[Çóļļéçţíóñš: ƀúððíéš, ɱóúñţš áñð íţéɱ šéţš]",
+      "title": "[Ĥúñţíñĝ]",
+      "close": "[Çļóšé ĥúñţíñĝ]",
+      "keybindLabel": "[Ĥúñţíñĝ]",
+      "launcherTitle": "[Ĥúñţíñĝ: ƀúððíéš, ɱóúñţš áñð íţéɱ šéţš]",
       "tabs": {
         "buddies": "[Ɓúððíéš]",
         "mounts": "[Ɱóúñţš]",
@@ -3451,6 +3451,11 @@ export const en_XA: EnTranslations = {
         "owned": "[Çóļļéçţéð]",
         "notOwned": "[Ñóţ çóļļéçţéð]",
         "unavailable": "[Ñóţ óƀţáíñáƀļé ýéţ]"
+      },
+      "petKind": {
+        "beast": "[Ɓéášţš]",
+        "humanoid": "[Ĥúɱáñóíðš]",
+        "undead": "[Úñðéáð]"
       },
       "armor": {
         "cloth": "[Çļóţĥ]",
@@ -3464,7 +3469,9 @@ export const en_XA: EnTranslations = {
         "mixed": "[Ĥýƀŕíð]"
       },
       "set": {
-        "owned": "[{owned} óƒ {total} þíéçéš]"
+        "owned": "[{owned} óƒ {total} þíéçéš]",
+        "itemLevel": "[íļʋļ {level}]",
+        "bonusLabel": "[{pieces} þíéçéš]"
       },
       "detail": {
         "dropLabel": "[Ðŕóþš ƒŕóɱ]",

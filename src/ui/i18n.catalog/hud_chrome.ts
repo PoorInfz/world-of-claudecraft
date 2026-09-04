@@ -4656,10 +4656,10 @@ export const hudChromeStrings = {
   // Sources are derived from the live content tables, so these strings are
   // frames around derived values, never a second copy of the content itself.
   collections: {
-    title: 'Collections',
-    close: 'Close collections',
-    keybindLabel: 'Collections',
-    launcherTitle: 'Collections: buddies, mounts and item sets',
+    title: 'Hunting',
+    close: 'Close hunting',
+    keybindLabel: 'Hunting',
+    launcherTitle: 'Hunting: buddies, mounts and item sets',
     tabs: {
       buddies: 'Buddies',
       mounts: 'Mounts',
@@ -4671,6 +4671,12 @@ export const hudChromeStrings = {
       // The catalog carries entries with no source assigned yet. The row still
       // renders: "not in the game yet" is the answer a collector needs.
       unavailable: 'Not obtainable yet',
+    },
+    // The buddy tab groups by what a companion IS before it sorts by rarity.
+    petKind: {
+      beast: 'Beasts',
+      humanoid: 'Humanoids',
+      undead: 'Undead',
     },
     armor: {
       cloth: 'Cloth',
@@ -4687,6 +4693,12 @@ export const hudChromeStrings = {
     },
     set: {
       owned: '{owned} of {total} pieces',
+      // Item level, the tab's sort key: a player compares two families by it,
+      // so it rides both the family header and every piece row.
+      itemLevel: 'ilvl {level}',
+      // A set bonus tier. The bonus TEXT itself comes from the item entity
+      // catalog, the same source the item tooltip reads.
+      bonusLabel: '{pieces} pieces',
     },
     detail: {
       dropLabel: 'Drops from',

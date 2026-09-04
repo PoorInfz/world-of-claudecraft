@@ -8,14 +8,44 @@
 // window opens and cheap enough to rebuild on a tab switch.
 
 import { BUDDIES, BUDDY_KEYS, type BuddyKey } from '../../sim/content/buddies';
+import { BUDDY_MOBS, buddyTemplateId } from '../../sim/content/buddy_mobs';
 import { MOUNTS, type MountKey } from '../../sim/content/mounts';
 import { ITEM_SETS, ITEMS } from '../../sim/data';
+import { itemLevel } from '../../sim/item_level';
 import type { ArmorType, ItemDef } from '../../sim/types';
 import { type CollectionItemFacts, collectionItemFacts } from './collection_sources';
 
 export type CollectionsTabId = 'buddies' | 'mounts' | 'sets';
 
 export const COLLECTIONS_TABS: readonly CollectionsTabId[] = ['buddies', 'mounts', 'sets'];
+
+/** What a companion IS, the buddy tab's outer grouping. Derived from the
+ *  follower's own mob family (content/buddy_mobs.ts), collapsed to the three
+ *  buckets a collector actually sorts by: everything that is not a walking
+ *  corpse or a person is a beast, spiders and raptors included. */
+export type CollectionPetKind = 'beast' | 'humanoid' | 'undead';
+
+/** Pet kinds in the order the tab lists them. */
+export const COLLECTION_PET_KINDS: readonly CollectionPetKind[] = ['beast', 'humanoid', 'undead'];
+
+/** Rarity order INSIDE a kind: purple first, then blue, green, white. The
+ *  catalog has no grey (poor) whistle and must not grow one: greys were folded
+ *  into white by the same 2026-09-04 call that set this order, so anything
+ *  unranked sorts as common rather than inventing a fifth rung. */
+export const COLLECTION_RARITY_ORDER: readonly string[] = ['epic', 'rare', 'uncommon', 'common'];
+
+export function petKindOf(family: string): CollectionPetKind {
+  if (family === 'undead') return 'undead';
+  if (family === 'humanoid') return 'humanoid';
+  return 'beast';
+}
+
+/** Sort rank of a quality on the tab: lower sorts first. A quality the ladder
+ *  does not name (a grey, were one ever authored) ranks with white. */
+export function rarityRank(quality: string): number {
+  const i = COLLECTION_RARITY_ORDER.indexOf(quality);
+  return i < 0 ? COLLECTION_RARITY_ORDER.indexOf('common') : i;
+}
 
 /** One buddy or mount row. */
 export interface CollectionEntryView {
@@ -33,6 +63,9 @@ export interface CollectionEntryView {
   /** Null exactly when itemId is null: an entry with no item has no source,
    *  no price and no bind state to report. */
   facts: CollectionItemFacts | null;
+  /** Which of the three buddy groups this row sits in. Mount rows carry
+   *  'beast' and never use it: only the buddy tab groups. */
+  petKind: CollectionPetKind;
   /** True when the viewer owns the granting item. */
   owned: boolean;
   /** False when nothing in the game grants this entry today; the window says
@@ -47,6 +80,9 @@ export type CollectionSetStat = 'intellect' | 'agility' | 'strength' | 'mixed';
 export interface CollectionSetPieceView {
   itemId: string;
   name: string;
+  /** Item level, the tab's sort key. Undefined for a piece the level index
+   *  does not rank (jewelry and cosmetics carry none). */
+  itemLevel: number | undefined;
   facts: CollectionItemFacts | null;
   owned: boolean;
 }
@@ -57,9 +93,22 @@ export interface CollectionSetView {
   armorType: ArmorType;
   stat: CollectionSetStat;
   quality: string;
+  /** The family's item level: the highest its pieces reach, which is what a
+   *  player compares two sets by. Undefined only when no piece ranks. */
+  itemLevel: number | undefined;
   pieces: CollectionSetPieceView[];
   /** Pieces the viewer owns, of pieces.length. */
   ownedCount: number;
+  /** The authored set bonuses, ascending, each with the piece count it wants
+   *  and whether the viewer already OWNS that many. Ownership, not equipped:
+   *  this window is a collection ledger, and the tooltip is where a worn-set
+   *  answer belongs. */
+  bonuses: CollectionSetBonusView[];
+}
+
+export interface CollectionSetBonusView {
+  pieces: number;
+  owned: boolean;
 }
 
 /** Sets grouped the way the window shows them: armor type, then primary stat. */
@@ -69,8 +118,19 @@ export interface CollectionSetGroupView {
   sets: CollectionSetView[];
 }
 
+/** One heading of the buddy tab: a pet kind and the rows under it, already
+ *  in rarity order. */
+export interface CollectionPetGroupView {
+  kind: CollectionPetKind;
+  entries: CollectionEntryView[];
+}
+
 export interface CollectionsView {
+  /** Every buddy in one list, kind then rarity: the flat read the preview
+   *  and the selection default still want. */
   buddies: CollectionEntryView[];
+  /** The same rows split into their headings, which is what the tab paints. */
+  buddyGroups: CollectionPetGroupView[];
   mounts: CollectionEntryView[];
   setGroups: CollectionSetGroupView[];
 }
@@ -137,6 +197,7 @@ function entryFor(
   itemId: string | null,
   visualKey: string | null,
   ownedKeys: ReadonlySet<string>,
+  petKind: CollectionPetKind = 'beast',
 ): CollectionEntryView {
   const facts = itemId ? collectionItemFacts(itemId) : null;
   return {
@@ -146,6 +207,7 @@ function entryFor(
     quality: facts?.quality ?? 'common',
     visualKey,
     facts,
+    petKind,
     owned: ownedKeys.has(key),
     obtainable: facts?.obtainable ?? false,
   };
@@ -177,7 +239,17 @@ export function buildCollectionsView(input: CollectionsViewInput): CollectionsVi
       // share an animal rig rather than shipping one of their own).
       input.buddyVisualKeys[key] ?? null,
       input.ownedBuddyKeys,
+      petKindOf(BUDDY_MOBS[buddyTemplateId(key)]?.family ?? 'beast'),
     ),
+  );
+  // The tab reads kind first, then rarity, then catalog order: a collector
+  // scans for the purple in their group, and the stable third key keeps two
+  // whistles of one rarity from swapping places between renders.
+  buddies.sort(
+    (a, b) =>
+      COLLECTION_PET_KINDS.indexOf(a.petKind) - COLLECTION_PET_KINDS.indexOf(b.petKind) ||
+      rarityRank(a.quality) - rarityRank(b.quality) ||
+      BUDDY_KEYS.indexOf(a.key as BuddyKey) - BUDDY_KEYS.indexOf(b.key as BuddyKey),
   );
   const mounts = (Object.keys(MOUNTS) as MountKey[]).map((key) =>
     entryFor(
@@ -202,32 +274,54 @@ export function buildCollectionsView(input: CollectionsViewInput): CollectionsVi
     if (!SET_QUALITY_FLOOR.has(quality)) continue;
     const armorType = setArmorType(pieces);
     if (!armorType) continue;
-    const ordered = [...pieces].sort((a, b) => a.id.localeCompare(b.id));
+    // Pieces read high item level first, the order a player judges gear in;
+    // ties fall back to the id so the list never reshuffles between renders.
+    const ordered = [...pieces].sort(
+      (a, b) => (itemLevel(b) ?? 0) - (itemLevel(a) ?? 0) || a.id.localeCompare(b.id),
+    );
+    const levels = pieces
+      .map((piece) => itemLevel(piece))
+      .filter((n): n is number => n !== undefined);
+    const setItemLevel = levels.length > 0 ? Math.max(...levels) : undefined;
+    const ownedPieces = ordered.filter((piece) => input.ownedItemIds.has(piece.id)).length;
     sets.push({
       setId: set.id,
       name: set.name,
       armorType,
       stat: setPrimaryStat(pieces),
       quality,
+      itemLevel: setItemLevel,
       pieces: ordered.map((piece) => ({
         itemId: piece.id,
         name: piece.name,
+        itemLevel: itemLevel(piece),
         facts: collectionItemFacts(piece.id),
         owned: input.ownedItemIds.has(piece.id),
       })),
-      ownedCount: ordered.filter((piece) => input.ownedItemIds.has(piece.id)).length,
+      ownedCount: ownedPieces,
+      bonuses: [...(set.bonuses ?? [])]
+        .sort((a, b) => a.pieces - b.pieces)
+        .map((tier) => ({ pieces: tier.pieces, owned: ownedPieces >= tier.pieces })),
     });
   }
 
   const setGroups: CollectionSetGroupView[] = [];
   for (const armorType of COLLECTION_ARMOR_TYPES) {
     for (const stat of COLLECTION_SET_STATS) {
+      // Highest item level first inside a heading: the newest raid tier is what
+      // a player opens this tab for, and name order buried it among the older
+      // families. Name is the tiebreak so equal tiers stay stable.
       const matching = sets
         .filter((set) => set.armorType === armorType && set.stat === stat)
-        .sort((a, b) => a.name.localeCompare(b.name));
+        .sort((a, b) => (b.itemLevel ?? 0) - (a.itemLevel ?? 0) || a.name.localeCompare(b.name));
       if (matching.length > 0) setGroups.push({ armorType, stat, sets: matching });
     }
   }
 
-  return { buddies, mounts, setGroups };
+  const buddyGroups: CollectionPetGroupView[] = COLLECTION_PET_KINDS.map((kind) => ({
+    kind,
+    entries: buddies.filter((row) => row.petKind === kind),
+  })).filter((group) => group.entries.length > 0);
+
+  return { buddies, buddyGroups, mounts, setGroups };
 }

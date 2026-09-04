@@ -10,6 +10,9 @@ import { ITEMS } from '../src/sim/data';
 import {
   buildCollectionsView,
   COLLECTION_ARMOR_TYPES,
+  COLLECTION_PET_KINDS,
+  petKindOf,
+  rarityRank,
   setArmorType,
   setPrimaryStat,
 } from '../src/ui/collections/collections_view';
@@ -25,7 +28,9 @@ const EMPTY = {
 describe('collections view model', () => {
   it('lists every catalog buddy and every catalog mount, owned or not', () => {
     const view = buildCollectionsView(EMPTY);
-    expect(view.buddies.map((b) => b.key)).toEqual([...BUDDY_KEYS]);
+    // Same set, different ORDER: the tab sorts by pet kind then rarity, so
+    // compare membership here and pin the ordering in its own case below.
+    expect([...view.buddies.map((b) => b.key)].sort()).toEqual([...BUDDY_KEYS].sort());
     expect(view.mounts.map((m) => m.key)).toEqual(Object.keys(MOUNTS));
     expect(view.buddies.every((b) => b.owned === false)).toBe(true);
   });
@@ -88,6 +93,73 @@ describe('collections view model', () => {
       (a, b) => COLLECTION_ARMOR_TYPES.indexOf(a) - COLLECTION_ARMOR_TYPES.indexOf(b),
     );
     expect(seen).toEqual(ordered);
+  });
+
+  it('groups buddies by pet kind, purple to white inside each kind', () => {
+    const view = buildCollectionsView(EMPTY);
+    expect(view.buddyGroups.map((g) => g.kind)).toEqual(
+      COLLECTION_PET_KINDS.filter((kind) => view.buddies.some((b) => b.petKind === kind)),
+    );
+    for (const group of view.buddyGroups) {
+      // Every row really belongs to its heading...
+      expect(group.entries.every((row) => row.petKind === group.kind)).toBe(true);
+      // ...and rarity never climbs back up inside one.
+      const ranks = group.entries.map((row) => rarityRank(row.quality));
+      expect(ranks).toEqual([...ranks].sort((a, b) => a - b));
+    }
+    // The groups partition the flat list: nothing lost, nothing counted twice.
+    expect(view.buddyGroups.reduce((n, g) => n + g.entries.length, 0)).toBe(view.buddies.length);
+  });
+
+  it('reads the pet kind off the follower mob family, not off a second table', () => {
+    expect(petKindOf('undead')).toBe('undead');
+    expect(petKindOf('humanoid')).toBe('humanoid');
+    // Everything else collects as a beast, spiders and raptors included.
+    expect(petKindOf('spider')).toBe('beast');
+    expect(petKindOf('reptile')).toBe('beast');
+    expect(petKindOf('beast')).toBe('beast');
+  });
+
+  it('ranks an unnamed quality with white, so no grey rung can appear', () => {
+    expect(rarityRank('epic')).toBeLessThan(rarityRank('rare'));
+    expect(rarityRank('rare')).toBeLessThan(rarityRank('uncommon'));
+    expect(rarityRank('uncommon')).toBeLessThan(rarityRank('common'));
+    expect(rarityRank('poor')).toBe(rarityRank('common'));
+  });
+
+  it('orders set pieces and families by item level, and marks what is owned', () => {
+    const view = buildCollectionsView(EMPTY);
+    for (const group of view.setGroups) {
+      const levels = group.sets.map((set) => set.itemLevel ?? 0);
+      expect(levels).toEqual([...levels].sort((a, b) => b - a));
+      for (const set of group.sets) {
+        const pieceLevels = set.pieces.map((piece) => piece.itemLevel ?? 0);
+        expect(pieceLevels).toEqual([...pieceLevels].sort((a, b) => b - a));
+        // Nothing is owned in this fixture, so every bonus reads unmet.
+        expect(set.ownedCount).toBe(0);
+        expect(set.bonuses.every((tier) => tier.owned === false)).toBe(true);
+        // Bonus tiers ascend, which is the order the pane paints them.
+        const tiers = set.bonuses.map((tier) => tier.pieces);
+        expect(tiers).toEqual([...tiers].sort((a, b) => a - b));
+      }
+    }
+  });
+
+  it('marks the pieces the viewer carries, and lights the tiers they reach', () => {
+    const anySet = buildCollectionsView(EMPTY).setGroups[0]?.sets[0];
+    expect(anySet).toBeDefined();
+    if (!anySet) return;
+    const owned = new Set(anySet.pieces.slice(0, 2).map((piece) => piece.itemId));
+    const view = buildCollectionsView({ ...EMPTY, ownedItemIds: owned });
+    const set = view.setGroups.flatMap((g) => g.sets).find((s) => s.setId === anySet.setId);
+    expect(set?.ownedCount).toBe(2);
+    expect(
+      set?.pieces
+        .filter((piece) => piece.owned)
+        .map((piece) => piece.itemId)
+        .sort(),
+    ).toEqual([...owned].sort());
+    for (const tier of set?.bonuses ?? []) expect(tier.owned).toBe(tier.pieces <= 2);
   });
 
   it('derives a set stat from its pieces and calls an even split mixed', () => {

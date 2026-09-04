@@ -33,17 +33,17 @@ describe('global buddy-whistle drop', () => {
     expect(GLOBAL_BUDDY_DROP_TIERS.map((t) => [t.quality, t.chance])).toEqual([
       ['common', 0.015],
       ['uncommon', 0.01],
-      ['rare', 0],
+      ['rare', 0.0005],
       ['epic', 0],
     ]);
   });
 
-  it('keeps rare and epic listed but unwinnable, so the per-kill draw count is unchanged', () => {
+  it('keeps epic listed but unwinnable, so the per-kill draw count is unchanged', () => {
     // The two withheld tiers are held at chance 0 rather than deleted: every
     // tier draws unconditionally in rollLoot, so the row is what pins the draw
     // count the parity goldens ride on. Both still resolve a real pool, which
     // is what makes re-enabling one a single-number edit.
-    for (const quality of ['rare', 'epic']) {
+    for (const quality of ['epic']) {
       const tier = GLOBAL_BUDDY_DROP_TIERS.find((t) => t.quality === quality);
       expect(tier, quality).toBeTruthy();
       expect(tier?.chance, quality).toBe(0);

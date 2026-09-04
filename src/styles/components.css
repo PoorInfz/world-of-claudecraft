@@ -12208,6 +12208,33 @@
     margin: 8px 0 0;
     padding: 0;
   }
+  /* A piece the player already owns: green tick beside the name and a green
+     ring on the icon, so a set can be read at a glance without counting. */
+  .col-piece.col-owned .item-icon {
+    outline: 2px solid #4fdc6a;
+    outline-offset: -2px;
+    border-radius: 3px;
+  }
+  .col-tick {
+    color: #4fdc6a;
+    margin-right: 4px;
+    font-weight: 700;
+  }
+  /* Item level rides the name line, dimmer than the name it qualifies. */
+  .col-ilvl {
+    color: #c9c1a8;
+    font-size: 10px;
+    font-weight: 400;
+  }
+  /* A set bonus the player has the pieces for reads live, the rest sit muted,
+     matching how the item tooltip lights a met tier. */
+  .col-bonus .col-line-value {
+    opacity: 0.6;
+  }
+  .col-bonus-live .col-line-value {
+    opacity: 1;
+    color: #4fdc6a;
+  }
   .col-piece {
     display: grid;
     grid-template-columns: auto 1fr;

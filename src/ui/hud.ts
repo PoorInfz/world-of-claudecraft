@@ -5395,6 +5395,7 @@ export class Hud {
   // there (collections_host.ts); the idle preview rides the SHARED turntable, so
   // the window adds no second WebGL context.
   private readonly collectionsWindow = buildCollectionsWindow({
+    ...this.presentationBag,
     root: () => $('#collections-window'),
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#collections-window'),

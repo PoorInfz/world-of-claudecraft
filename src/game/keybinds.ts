@@ -264,7 +264,7 @@ export const BIND_ACTIONS: BindAction[] = [
     // Shift+KeyC: bare KeyC is the character sheet, and Collections is its
     // catalog sibling, so it sits on the same letter one modifier up.
     id: 'collections',
-    label: 'Collections (Buddies, Mounts and Item Sets)',
+    label: 'Hunting (Buddies, Mounts and Item Sets)',
     category: 'Interface',
     kind: 'edge',
     defaults: ['Shift+KeyC'],
