@@ -2301,6 +2301,9 @@ export const VISUALS: Record<string, VisualDef> = {
     url: `${BUDDIES_DIR}/forgemaw.glb`,
     height: 0.85,
     clips: BUDDY_CLIPS,
+    // The rig is authored facing -Z, so without this it heels the owner
+    // back-to-front: chest toward the camera while its owner walks away.
+    yaw: Math.PI,
   },
   // Yumi, the Protect Yumi objective cat familiar (Meshy rig, scale baked by
   // scripts/_bake_meshy_scale.mjs, meshopt + 1024 webp). The GLB ships ONE
