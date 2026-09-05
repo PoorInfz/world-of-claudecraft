@@ -190,6 +190,16 @@ export class CollectionsWindow {
    *  shell, or offline). Distinct from an empty price map, which means the
    *  Exchange answered and nothing is listed. */
   private exchangeAvailable = true;
+  /** How far each tab's catalog list is scrolled. render() rebuilds the whole
+   *  panel's innerHTML, which throws the scroller away and its offset with it,
+   *  so without this a click on a row two screens down would snap the player
+   *  back to the top of the catalog. Per tab, because each tab is its own
+   *  list and its own place. */
+  private listScroll: Partial<Record<CollectionsTabId, number>> = {};
+  /** The tab the CURRENT DOM belongs to, so an offset read off the live
+   *  scroller is filed under the list it actually came from: a tab switch
+   *  repaints a different tab into the same node in the same frame. */
+  private paintedTab: CollectionsTabId | null = null;
 
   constructor(private readonly deps: CollectionsWindowDeps) {}
 
@@ -266,6 +276,7 @@ export class CollectionsWindow {
     this.lastSig = sig;
 
     const root = this.deps.root();
+    this.rememberListScroll(root);
     root.innerHTML = `
       <div class="panel-title">
         <span id="collections-title">${esc(t('hudChrome.collections.title'))}</span>
@@ -297,6 +308,25 @@ export class CollectionsWindow {
         }</div>
       </div>`;
     this.wire(root);
+    this.restoreListScroll(root);
+  }
+
+  /** Read the live scroller before innerHTML drops it. */
+  private rememberListScroll(root: HTMLElement): void {
+    if (this.paintedTab === null) return;
+    const list = root.querySelector<HTMLElement>('.col-list');
+    if (list) this.listScroll[this.paintedTab] = list.scrollTop;
+  }
+
+  /** Put the new scroller back where the old one stood. A shorter list clamps
+   *  itself, so a tab whose catalog shrank lands at its own bottom rather than
+   *  out of range. */
+  private restoreListScroll(root: HTMLElement): void {
+    this.paintedTab = this.tab;
+    const top = this.listScroll[this.tab] ?? 0;
+    if (top <= 0) return;
+    const list = root.querySelector<HTMLElement>('.col-list');
+    if (list) list.scrollTop = top;
   }
 
   private defaultSelection(view: CollectionsView, rows: CollectionEntryView[]): string {
