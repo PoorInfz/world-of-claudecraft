@@ -49,7 +49,8 @@ export type BuddyKey =
   | 'spider'
   | 'raptor'
   | 'skeleton'
-  | 'crystal_lich';
+  | 'crystal_lich'
+  | 'forgemaw';
 
 /** How the Hunting window groups a companion. Mostly the follower's own mob
  *  family says it (a wolf is a beast), but two groups are editorial and no
@@ -211,6 +212,14 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
   crystal_lich: {
     key: 'crystal_lich',
     name: 'Crystal Lich',
+  },
+  // epic, and the only companion gated behind HEROIC difficulty: both
+  // Crucible bosses drop it, and neither drops it on Normal
+  // (content/heroic_loot.ts, whose tables only roll under a heroic claim).
+  forgemaw: {
+    key: 'forgemaw',
+    name: 'Forgemaw The Molten',
+    kind: 'elemental',
   },
 };
 

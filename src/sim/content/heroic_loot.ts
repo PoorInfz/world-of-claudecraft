@@ -773,6 +773,11 @@ export const HEROIC_BOSS_LOOT: Record<string, LootEntry[]> = {
     { itemId: 'forgefathers_warhammer', chance: 0.34, rollGroup: 'ignivar_h_weapon' },
     { itemId: 'anvilguard_blade', chance: 0.33, rollGroup: 'ignivar_h_weapon' },
     { itemId: 'springtouched_crozier', chance: 0.33, rollGroup: 'ignivar_h_weapon' },
+    // Forgemaw The Molten (content/buddies.ts), 1% and ungrouped: an
+    // independent draw, so the cosmetic never displaces a sigil or a weapon
+    // from the exact-1.00 partitions above. Both Crucible bosses carry it at
+    // the same rate, and neither Normal table does: heroic IS the gate.
+    { itemId: 'whistle_forgemaw', chance: 0.01 },
   ],
   [VARKHUL_BOSS_ID]: [
     { itemId: 'sigil_anvil_chest', chance: 0.34, rollGroup: 'varkhul_h_sigil_robe' },
@@ -791,5 +796,7 @@ export const HEROIC_BOSS_LOOT: Record<string, LootEntry[]> = {
     { itemId: 'heart_of_the_end_greatblade', chance: 0.34, rollGroup: 'varkhul_h_weapon' },
     { itemId: 'forgefire_spire', chance: 0.33, rollGroup: 'varkhul_h_weapon' },
     { itemId: 'staff_of_the_last_spring', chance: 0.33, rollGroup: 'varkhul_h_weapon' },
+    // Forgemaw The Molten, the same 1% independent draw Ignivar carries.
+    { itemId: 'whistle_forgemaw', chance: 0.01 },
   ],
 };

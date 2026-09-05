@@ -126,6 +126,7 @@ const BUDDY_LORE: Readonly<Record<string, TranslationKey>> = {
   raptor: 'hudChrome.collections.buddyLore.raptor',
   skeleton: 'hudChrome.collections.buddyLore.skeleton',
   crystal_lich: 'hudChrome.collections.buddyLore.crystal_lich',
+  forgemaw: 'hudChrome.collections.buddyLore.forgemaw',
 };
 
 const PET_KIND_LABEL: Record<CollectionPetKind, TranslationKey> = {

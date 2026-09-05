@@ -4729,6 +4729,8 @@ export const hudChromeStrings = {
         'It came up out of the Wraithwood barrows, dusted itself off, and has followed people about ever since. Nobody has established whose bones these were.',
       crystal_lich:
         'A splinter of Nythraxis itself, still humming with the cold that shaped it. It answers to whoever pulled it from the wreck of the raid, and it has not forgiven them for it.',
+      forgemaw:
+        "Forged in the Crucible of the Last Spring and never quite finished, it walked out of Ignivar's foundry while the hammers were still falling. Only the heroic descent finds it: the molten thing keeps returning to the forge that made it, and follows home whoever survives the fire twice.",
     },
     // The buddy tab groups by what a companion IS before it sorts by rarity.
     petKind: {

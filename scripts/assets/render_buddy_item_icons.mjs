@@ -60,6 +60,8 @@ export const BUDDY_ICON_BATCH = [
   { itemId: 'whistle_skeleton', glb: 'public/models/chars/enemies/skeleton_minion.glb' },
   // The epic Nythraxis drop, from its own GLB.
   { itemId: 'whistle_crystal_lich', glb: 'public/models/buddies/crystal_lich.glb' },
+  // The epic heroic-Crucible drop, from its own GLB.
+  { itemId: 'whistle_forgemaw', glb: 'public/models/buddies/forgemaw.glb' },
 ];
 
 /** True when a GLB declares the KTX2 texture extension, which the preview
@@ -99,8 +101,16 @@ async function renderOne({ itemId, glb, tint }) {
 
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
-  for (const entry of BUDDY_ICON_BATCH) await renderOne(entry);
+  // Optional item-id arguments render just those rows. The renderer is not
+  // byte-deterministic, so re-running the whole batch to add a single icon
+  // rewrites every shipped webp and drags the art ledger along with it; name
+  // the new ids instead and the rest of the catalog stays untouched.
+  const only = new Set(process.argv.slice(2));
+  const batch = only.size ? BUDDY_ICON_BATCH.filter((e) => only.has(e.itemId)) : BUDDY_ICON_BATCH;
+  const missing = [...only].filter((id) => !batch.some((e) => e.itemId === id));
+  if (missing.length) throw new Error(`not in BUDDY_ICON_BATCH: ${missing.join(', ')}`);
+  for (const entry of batch) await renderOne(entry);
   await closePreview();
   rmSync(TMP_DIR, { recursive: true, force: true });
-  console.log(`\nrendered ${BUDDY_ICON_BATCH.length} buddy icons -> ${OUT_DIR}`);
+  console.log(`\nrendered ${batch.length} buddy icons -> ${OUT_DIR}`);
 }

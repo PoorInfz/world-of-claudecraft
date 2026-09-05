@@ -140,6 +140,14 @@ export const BUDDY_MOBS: Record<string, MobTemplate> = {
     'undead',
     0xffffff,
   ),
+  // The Crucible drop. Its own GLB carries the molten texture, so the color
+  // is inert here like every other dedicated-rig buddy.
+  [buddyTemplateId('forgemaw')]: buddyTemplate(
+    'forgemaw',
+    'Forgemaw The Molten',
+    'elemental',
+    0xffffff,
+  ),
 };
 
 /** Every valid buddy templateId, for the cheap `isBuddyMob` membership check

@@ -2296,6 +2296,12 @@ export const VISUALS: Record<string, VisualDef> = {
     height: 0.9,
     clips: BUDDY_CLIPS,
   },
+  // epic, the heroic Crucible drop. Baked molten texture, so no tint.
+  buddy_forgemaw: {
+    url: `${BUDDIES_DIR}/forgemaw.glb`,
+    height: 0.85,
+    clips: BUDDY_CLIPS,
+  },
   // Yumi, the Protect Yumi objective cat familiar (Meshy rig, scale baked by
   // scripts/_bake_meshy_scale.mjs, meshopt + 1024 webp). The GLB ships ONE
   // clip, the block: mapped as the HIT reaction so she blocks when struck
@@ -3699,6 +3705,7 @@ const MOB_KEYS: Record<string, string> = {
   buddy_raptor: 'buddy_raptor',
   buddy_skeleton: 'buddy_skeleton',
   buddy_crystal_lich: 'buddy_crystal_lich',
+  buddy_forgemaw: 'buddy_forgemaw',
   // Packlord Stampede guardians are transient local templates, not MOBS rows.
   // Give the three summoned beasts distinct existing bodies instead of the
   // generic humanoid bandit fallback.

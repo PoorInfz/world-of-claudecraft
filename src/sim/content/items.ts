@@ -676,6 +676,17 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     quality: 'epic',
     sellValue: 50_000, // 5g, the flat vendor price every whistle takes
   },
+  // The one HEROIC-only companion: both Crucible bosses carry it at 1% on
+  // their heroic tables (content/heroic_loot.ts) and neither Normal table
+  // lists it at all, so the difficulty IS the gate.
+  whistle_forgemaw: {
+    id: 'whistle_forgemaw',
+    name: 'Forgemaw The Molten Whistle',
+    kind: 'buddy',
+    buddy: 'forgemaw',
+    quality: 'epic',
+    sellValue: 50_000, // 5g, the flat vendor price every whistle takes
+  },
   // Developer-only, same treatment as the tank above: no acquisition path, so
   // it stays soulbound rather than tradable. Use /dev give reins_rickshaw_mount
   // while the feature remains under development.

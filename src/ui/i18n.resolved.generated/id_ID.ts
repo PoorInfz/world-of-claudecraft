@@ -3480,7 +3480,8 @@ export const id_ID: EnTranslations = {
         "spider": "A Wraithwood weaver, palm-sized, that redecorates any pack it is carried in. The webbing is stronger than the thread it replaces.",
         "raptor": "Drakelands hatchling stock, sold on before it learns how fast it can run. Every new owner is told to keep it fed, and none of them need telling twice.",
         "skeleton": "It came up out of the Wraithwood barrows, dusted itself off, and has followed people about ever since. Nobody has established whose bones these were.",
-        "crystal_lich": "A splinter of Nythraxis itself, still humming with the cold that shaped it. It answers to whoever pulled it from the wreck of the raid, and it has not forgiven them for it."
+        "crystal_lich": "A splinter of Nythraxis itself, still humming with the cold that shaped it. It answers to whoever pulled it from the wreck of the raid, and it has not forgiven them for it.",
+        "forgemaw": "Forged in the Crucible of the Last Spring and never quite finished, it walked out of Ignivar's foundry while the hammers were still falling. Only the heroic descent finds it: the molten thing keeps returning to the forge that made it, and follows home whoever survives the fire twice."
       },
       "petKind": {
         "beast": "Beasts",
@@ -13481,6 +13482,9 @@ export const id_ID: EnTranslations = {
       "whistle_crystal_lich": {
         "name": "Crystal Lich Whistle"
       },
+      "whistle_forgemaw": {
+        "name": "Forgemaw The Molten Whistle"
+      },
       "lastflame_core": {
         "name": "Inti Api Terakhir"
       },
@@ -15570,6 +15574,9 @@ export const id_ID: EnTranslations = {
       },
       "buddy_crystal_lich": {
         "name": "Crystal Lich"
+      },
+      "buddy_forgemaw": {
+        "name": "Forgemaw The Molten"
       },
       "ironvein_foreman": {
         "name": "Mandor Ironvein"

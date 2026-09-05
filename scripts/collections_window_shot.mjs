@@ -83,13 +83,15 @@ await shotTab(null, 'collections_buddies');
 await shotTab('mounts', 'collections_mounts');
 await shotTab('sets', 'collections_sets');
 
-// Back to the buddy tab and select the Crystal Lich, so
-// the shot carries the epic rig, its idle clip and its raid source lines.
+// Back to the buddy tab and select one companion by key (BUDDY_SHOT, default
+// the newest epic), so the shot carries a dedicated rig, its idle clip and its
+// source lines rather than the list alone.
 await jsClick('#collections-window [data-tab="buddies"]');
 await sleep(600);
-await jsClick('#collections-window [data-key="crystal_lich"]');
+const shotKey = process.env.BUDDY_SHOT ?? 'forgemaw';
+await jsClick(`#collections-window [data-key="${shotKey}"]`);
 await sleep(1500);
-await shotTab(null, 'collections_crystal_lich');
+await shotTab(null, `collections_${shotKey}`);
 await page.screenshot({ path: 'tmp/collections_full.png' });
 
 console.log(errors.length ? 'ERRORS:\n' + errors.join('\n') : 'no console/page errors');

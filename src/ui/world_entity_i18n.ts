@@ -279,6 +279,7 @@ const MOB_IDS = [
   'buddy_raptor',
   'buddy_skeleton',
   'buddy_crystal_lich',
+  'buddy_forgemaw',
 ] as const;
 
 const NPC_IDS = [
