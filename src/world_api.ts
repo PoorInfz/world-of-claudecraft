@@ -552,6 +552,7 @@ export const COMMAND_NAMES = [
   'crucible_buy',
   'mount_toggle',
   'buddy_toggle',
+  'buddy_autoloot',
   'mount_train_begin',
   'mount_train_answer',
   'mount_train_abort',
@@ -1028,6 +1029,10 @@ export const COMMAND_FACETS = {
   // self-snapshot read (terse `bud`, no send, untagged); summoning one is an
   // item use (use_item), not a buddy command.
   buddy_toggle: 'IWorldBuddies',
+  // buddy_autoloot: enable/disable the buddy's loot errand (snake_case wire
+  // string, same family as buddy_toggle). The result rides the same self
+  // snapshot the toggle does (terse `budal`, no send, untagged).
+  buddy_autoloot: 'IWorldBuddies',
   // IWorldDungeonFinder: the group finder (snake_case wire strings, by design).
   // dungeonFinderInfo / dungeonFinderBoard are snapshot reads (no send, untagged).
   df_roles: 'IWorldDungeonFinder',

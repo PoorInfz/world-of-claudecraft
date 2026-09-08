@@ -5085,6 +5085,15 @@ export interface Entity extends ClientMirroredEntityFields {
   // persisted selection, same as mounts: summoning is an item use, and the
   // whistle you clicked IS the choice.
   buddyKey: string;
+  // Buddy autoloot toggled on (players only; false otherwise). Set from the
+  // buddy's own target-frame right-click menu (src/sim/buddies.ts's
+  // setBuddyAutoloot). While on, the live buddy entity breaks off its heel to
+  // walk to the owner's OWN lootable corpses inside BUDDY_LOOT_RANGE and loot
+  // them for the owner (src/sim/pet/buddy_autoloot.ts). Syncs in identity
+  // fields (terse `budal`) like `bud` above so the menu can render the right
+  // Enable/Disable row. Session state, not persisted, exactly like buddyKey:
+  // the buddy itself is re-summoned every login.
+  buddyAutoloot: boolean;
   // Equipped mainhand item id (players only; null otherwise). Render-only: the
   // client maps it to a held weapon model. Recomputed in recalcPlayerStats and
   // synced in identity fields (terse `mh`). The sim never reads it for gameplay.

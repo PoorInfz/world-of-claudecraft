@@ -2761,6 +2761,7 @@ export class ClientWorld extends ReconWireState implements IWorld {
         e.skin = w.sk ?? 0;
         e.mountKey = w.mnt ?? ''; // active rideable mount ('' dismounted); feeds speed + render
         e.buddyKey = w.bud ?? ''; // active cosmetic buddy ('' none); HUD/UI identity only, not read by the renderer (the buddy's own owned mob entity carries the body)
+        e.buddyAutoloot = w.budal === true; // buddy autoloot armed; HUD/UI only (the errand itself runs server-side)
         e.mainhandItemId = w.mh ?? null; // equipped mainhand → held weapon model (render-only)
         e.offhandItemId = w.oh ?? null; // equipped offhand → held weapon model (render-only)
         e.weaponSkinId = w.wsk ?? null; // active weapon-skin cosmetic (render-only)
@@ -4254,6 +4255,12 @@ export class ClientWorld extends ReconWireState implements IWorld {
   }
   toggleBuddy(): void {
     this.cmd({ cmd: 'buddy_toggle' });
+  }
+  // Autoloot is a server-authoritative preference like the toggle above: no
+  // optimistic local flip, the `budal` identity field on the next snapshot is
+  // what the menu renders from.
+  setBuddyAutoloot(enabled: boolean): void {
+    this.cmd({ cmd: 'buddy_autoloot', on: enabled });
   }
   // --- riding skill purchase: server-authoritative; on success the snapshot
   // delta (mntRtd=true) confirms the skill was granted. ---

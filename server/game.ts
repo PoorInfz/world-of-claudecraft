@@ -1387,6 +1387,11 @@ function identityFields(e: Entity): Record<string, unknown> {
   // entity rendered through the ordinary per-mob path, so this is HUD/UI
   // identity only (src/sim/types.ts's buddyKey doc).
   if (e.buddyKey) out.bud = e.buddyKey;
+  // Buddy autoloot armed (false omitted, like the two above). Only the owner's
+  // own client reads it (to render the Enable/Disable row on the buddy's
+  // target-frame menu); it rides identity rather than a self delta because it
+  // changes about as often as `bud` does and costs nothing while off.
+  if (e.buddyAutoloot) out.budal = true;
   if (e.mainhandItemId) out.mh = e.mainhandItemId; // equipped mainhand → held weapon model (render-only)
   if (e.offhandItemId) out.oh = e.offhandItemId; // equipped offhand → held weapon model (render-only)
   if (e.weaponSkinId) out.wsk = e.weaponSkinId; // active weapon-skin cosmetic (render-only, like mh)
@@ -7133,6 +7138,12 @@ export class GameServer {
       // ownership; the entity mirror `bud` field carries the result.
       case 'buddy_toggle':
         sim.toggleBuddyFor(pid);
+        break;
+      // Buddy autoloot: a preference flip, settable with no buddy out. The
+      // errand itself (walking to the player's own corpses and looting them)
+      // is entirely server-side, in the Sim tick.
+      case 'buddy_autoloot':
+        if (typeof msg.on === 'boolean') sim.setBuddyAutolootFor(pid, msg.on);
         break;
       // Riding lesson: the Sim re-validates everything (level, range, quest
       // state, fee, session state).

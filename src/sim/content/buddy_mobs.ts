@@ -19,16 +19,17 @@ export function buddyTemplateId(key: BuddyKey): string {
 
 // One shared scale for the whole roster (2026-08-30 owner request: use the
 // dragon's own scale for every buddy, present and future). History, for
-// anyone tracing why this is 1.89: hunter-pet proportion (1x the rig's
+// anyone tracing why this is 1.701: hunter-pet proportion (1x the rig's
 // authored height) run through -70%, then +50% off that, then +100% off
 // THAT (1 * 0.3 * 1.5 * 2 = 0.9), then cate_coin's own +200% bump made
 // universal (0.9 * 3 = 2.7), then the dragon's own -30% (2.7 * 0.7 = 1.89)
-// made universal in turn. (That dragon buddy has since been removed from the
-// game; the number it set stayed, which is why the trail names a key the
-// catalog no longer has.) No per-buddy override any more: buddyTemplate
-// below takes no scale argument on purpose, so a new buddy can never be
-// added at an inconsistent size.
-const BUDDY_SCALE = 1.89;
+// made universal in turn, and finally a roster-wide -10% (1.89 * 0.9 =
+// 1.701, the 2026-09-08 owner request). (That dragon buddy has since been
+// removed from the game; the number it set stayed, which is why the trail
+// names a key the catalog no longer has.) No per-buddy override any more:
+// buddyTemplate below takes no scale argument on purpose, so a new buddy can
+// never be added at an inconsistent size.
+const BUDDY_SCALE = 1.701;
 
 function buddyTemplate(
   key: BuddyKey,

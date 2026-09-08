@@ -442,6 +442,7 @@ export const IWORLD_MEMBERS = [
   // --- cosmetic buddies (IWorldBuddies) ---
   { name: 'ownedBuddies', kind: 'method' }, // read-returning
   { name: 'toggleBuddy', kind: 'method' },
+  { name: 'setBuddyAutoloot', kind: 'method' },
   // --- Dungeon Finder facet (IWorldDungeonFinder) ---
   { name: 'dungeonFinderInfo', kind: 'data' },
   { name: 'dungeonFinderBoard', kind: 'data' },
@@ -665,9 +666,9 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     // even when the total agrees. Only running the suite says what these
     // numbers really are; never reconcile them by arithmetic in the diff (the
     // numbers below were set from a suite run, not from this narrative).
-    expect(IWORLD_MEMBERS.length).toBe(345);
+    expect(IWORLD_MEMBERS.length).toBe(346);
     expect(DATA_MEMBERS.length).toBe(95);
-    expect(METHOD_MEMBERS.length).toBe(250);
+    expect(METHOD_MEMBERS.length).toBe(251);
   });
   it('has no duplicate member names', () => {
     const names = IWORLD_MEMBERS.map((m) => m.name);
@@ -960,6 +961,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'sellItem',
       'setActiveBorder',
       'setActiveTitle',
+      'setBuddyAutoloot',
       'setDungeonDifficulty',
       'setGuildPledgeSettings',
       'setHelmHidden',
@@ -1328,6 +1330,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'sellItem',
       'setActiveBorder',
       'setActiveTitle',
+      'setBuddyAutoloot',
       'setDungeonDifficulty',
       'setGuildPledgeSettings',
       'setHelmHidden',
@@ -1872,6 +1875,7 @@ type _ExhaustMounts = AssertNever<Exclude<keyof IWorldMounts, (typeof FACET_MOUN
 const FACET_BUDDIES = [
   'ownedBuddies',
   'toggleBuddy',
+  'setBuddyAutoloot',
 ] as const satisfies readonly (keyof IWorldBuddies)[];
 type _ExhaustBuddies = AssertNever<Exclude<keyof IWorldBuddies, (typeof FACET_BUDDIES)[number]>>;
 const FACET_DUNGEON_FINDER = [
@@ -2035,8 +2039,8 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the facet
 
   it('the facet union equals the pinned IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(345);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(345);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(346);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(346);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

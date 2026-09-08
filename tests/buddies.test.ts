@@ -23,16 +23,21 @@ import {
 } from '../src/sim/buddies';
 import { BUDDIES, BUDDY_KEYS, buddyDef, normalizeBuddyKey } from '../src/sim/content/buddies';
 import { buddyTemplateId } from '../src/sim/content/buddy_mobs';
+import { MOBS } from '../src/sim/data';
+import { createMob } from '../src/sim/entity';
 import { useItem } from '../src/sim/items';
 import {
   BUDDY_FOLLOW_BACK,
-  BUDDY_FOLLOW_LEFT,
+  BUDDY_FOLLOW_RIGHT,
+  buddyFollowTarget,
   buddyOf,
   isBuddyMob,
 } from '../src/sim/pet/buddy_ai';
+import { BUDDY_LOOT_RANGE, buddyLootTarget } from '../src/sim/pet/buddy_autoloot';
 import { petOf } from '../src/sim/pet/pet_commands';
 import type { PlayerMeta } from '../src/sim/sim';
 import { Sim } from '../src/sim/sim';
+import { dist2d, type Entity, INTERACT_RANGE, type Vec3 } from '../src/sim/types';
 import { VENDOR_TEST_WORLD } from './sim_shared';
 
 function makeWorld() {
@@ -240,7 +245,7 @@ describe('buddy entity: real, server-simulated, heels like a hunter pet', () => 
     expect(second.templateId).toBe(buddyTemplateId('moss_hare'));
   });
 
-  it('heels back onto its left-and-back offset after the owner walks away', () => {
+  it('heels back onto its right-and-back offset after the owner walks away', () => {
     const sim = makeWorld();
     const pid = join(sim);
     sim.addItem('whistle_ember_fox', 1, pid);
@@ -258,8 +263,8 @@ describe('buddy entity: real, server-simulated, heels like a hunter pet', () => 
     // instead of silently matching its own (also-broken) output.
     const sinF = Math.sin(owner.facing);
     const cosF = Math.cos(owner.facing);
-    const targetX = owner.pos.x - BUDDY_FOLLOW_LEFT * cosF - BUDDY_FOLLOW_BACK * sinF;
-    const targetZ = owner.pos.z + BUDDY_FOLLOW_LEFT * sinF - BUDDY_FOLLOW_BACK * cosF;
+    const targetX = owner.pos.x - BUDDY_FOLLOW_RIGHT * cosF - BUDDY_FOLLOW_BACK * sinF;
+    const targetZ = owner.pos.z + BUDDY_FOLLOW_RIGHT * sinF - BUDDY_FOLLOW_BACK * cosF;
     const dx = buddy.pos.x - targetX;
     const dz = buddy.pos.z - targetZ;
     expect(Math.sqrt(dx * dx + dz * dz)).toBeLessThan(3.6);
@@ -286,5 +291,129 @@ describe('ownedBuddies refuses a meta with no containers', () => {
     expect(() => ownedBuddies(noBags)).toThrow(TypeError);
     const noBank = { inventory: [] } as unknown as PlayerMeta;
     expect(() => ownedBuddies(noBank)).toThrow(TypeError);
+  });
+});
+
+// Buddy autoloot (2026-09-08 owner request): the toggle on the buddy's own
+// target-frame menu sends the buddy out to loot the OWNER'S OWN corpses inside
+// BUDDY_LOOT_RANGE and bring the loot back to the owner's bags. The rules that
+// matter are the ownership rule ("no otros": never a stranger's corpse, never
+// even a party-mate's tap) and the leash rule (range measured from the OWNER,
+// so the buddy cannot be baited off across the map).
+describe('buddy autoloot', () => {
+  // A dead, lootable wolf at `pos`, tapped by `tappedBy` (null = untapped).
+  function corpseAt(sim: Sim, id: number, pos: Vec3, tappedBy: number | null): Entity {
+    const template = MOBS.forest_wolf;
+    const mob = createMob(id, template, template.maxLevel, { ...pos });
+    mob.dead = true;
+    mob.aiState = 'dead';
+    mob.corpseTimer = 9999;
+    mob.respawnTimer = 9999;
+    mob.lootable = true;
+    mob.tappedById = tappedBy;
+    mob.loot = { copper: 0, items: [{ itemId: 'wolf_fang', count: 1 }] };
+    sim.ctx.addEntity(mob);
+    return mob;
+  }
+
+  function summonFox(sim: Sim, pid: number): Entity {
+    sim.addItem('whistle_ember_fox', 1, pid);
+    summonBuddyItem(sim.ctx, pid, 'ember_fox');
+    return buddyOf(sim.ctx, pid)!;
+  }
+
+  it('is off until the menu arms it, and the toggle survives a re-summon', () => {
+    const sim = makeWorld();
+    const pid = join(sim);
+    expect(sim.entities.get(pid)!.buddyAutoloot).toBe(false);
+    sim.setBuddyAutolootFor(pid, true);
+    expect(sim.entities.get(pid)!.buddyAutoloot).toBe(true);
+    summonFox(sim, pid);
+    toggleBuddy(sim.ctx, pid);
+    // Dismissing the buddy is not "disable autoloot": the preference is the
+    // player's, not the individual follower's.
+    expect(sim.entities.get(pid)!.buddyAutoloot).toBe(true);
+    sim.setBuddyAutolootFor(pid, false);
+    expect(sim.entities.get(pid)!.buddyAutoloot).toBe(false);
+  });
+
+  it('walks to the owner’s own corpse and loots it into the OWNER’s bags', () => {
+    const sim = makeWorld();
+    const pid = join(sim);
+    const owner = sim.entities.get(pid)!;
+    const buddy = summonFox(sim, pid);
+    const corpse = corpseAt(sim, 90001, { x: owner.pos.x + 15, y: owner.pos.y, z: owner.pos.z }, pid);
+    sim.setBuddyAutolootFor(pid, true);
+    const before = sim.countItem('wolf_fang', pid);
+    for (let i = 0; i < 200 && sim.entities.get(corpse.id)?.loot; i++) sim.tick();
+    // The loot is the owner's; the buddy carries nothing of its own.
+    expect(sim.countItem('wolf_fang', pid)).toBe(before + 1);
+    expect(corpse.loot).toBeNull();
+    // And it was the BUDDY that made the trip, not the owner.
+    expect(dist2d(buddy.pos, corpse.pos)).toBeLessThanOrEqual(INTERACT_RANGE);
+    expect(dist2d(owner.pos, corpse.pos)).toBeGreaterThan(INTERACT_RANGE);
+  });
+
+  it('heels home again once there is nothing left to fetch', () => {
+    const sim = makeWorld();
+    const pid = join(sim);
+    const owner = sim.entities.get(pid)!;
+    const buddy = summonFox(sim, pid);
+    corpseAt(sim, 90002, { x: owner.pos.x + 12, y: owner.pos.y, z: owner.pos.z }, pid);
+    sim.setBuddyAutolootFor(pid, true);
+    for (let i = 0; i < 400; i++) sim.tick();
+    const target = buddyFollowTarget(owner);
+    expect(dist2d(buddy.pos, target)).toBeLessThan(3.6);
+  });
+
+  it('never touches a corpse that is not the owner’s, even armed and in range', () => {
+    const sim = makeWorld();
+    const pid = join(sim);
+    const stranger = sim.addPlayer('warrior', 'Stranger');
+    const owner = sim.entities.get(pid)!;
+    const buddy = summonFox(sim, pid);
+    const corpse = corpseAt(
+      sim,
+      90003,
+      { x: owner.pos.x + 10, y: owner.pos.y, z: owner.pos.z },
+      stranger,
+    );
+    sim.setBuddyAutolootFor(pid, true);
+    for (let i = 0; i < 200; i++) sim.tick();
+    expect(corpse.loot?.items[0]?.count).toBe(1);
+    expect(sim.countItem('wolf_fang', pid)).toBe(0);
+    // It did not even set out: it is still standing on its heel offset.
+    expect(dist2d(buddy.pos, buddyFollowTarget(owner))).toBeLessThan(3.6);
+    expect(buddyLootTarget(sim.ctx, owner)).toBeNull();
+  });
+
+  it('ignores an owned corpse beyond BUDDY_LOOT_RANGE of the OWNER', () => {
+    const sim = makeWorld();
+    const pid = join(sim);
+    const owner = sim.entities.get(pid)!;
+    summonFox(sim, pid);
+    const far = corpseAt(
+      sim,
+      90004,
+      { x: owner.pos.x + BUDDY_LOOT_RANGE + 10, y: owner.pos.y, z: owner.pos.z },
+      pid,
+    );
+    sim.setBuddyAutolootFor(pid, true);
+    expect(buddyLootTarget(sim.ctx, owner)).toBeNull();
+    // Walk the owner close enough and the same corpse becomes the errand.
+    owner.pos.x = far.pos.x - 10;
+    sim.ctx.rebucket(owner);
+    expect(buddyLootTarget(sim.ctx, owner)?.id).toBe(far.id);
+  });
+
+  it('stays home while the toggle is off, however close the owner’s corpse is', () => {
+    const sim = makeWorld();
+    const pid = join(sim);
+    const owner = sim.entities.get(pid)!;
+    const buddy = summonFox(sim, pid);
+    const corpse = corpseAt(sim, 90005, { x: owner.pos.x + 8, y: owner.pos.y, z: owner.pos.z }, pid);
+    for (let i = 0; i < 200; i++) sim.tick();
+    expect(corpse.loot?.items[0]?.count).toBe(1);
+    expect(dist2d(buddy.pos, buddyFollowTarget(owner))).toBeLessThan(3.6);
   });
 });

@@ -2420,6 +2420,12 @@ export const zh_CN: EnTranslations = {
       "watchYouTube": "在 YouTube 观看",
       "streamerBadgeTitle": "认证主播"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "拾取设置",
       "close": "关闭拾取设置",

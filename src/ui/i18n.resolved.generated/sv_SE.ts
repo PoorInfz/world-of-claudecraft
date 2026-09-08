@@ -2420,6 +2420,12 @@ export const sv_SE: EnTranslations = {
       "watchYouTube": "Titta på YouTube",
       "streamerBadgeTitle": "Verifierad streamer"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "Byteinställningar",
       "close": "Stäng byteinställningar",

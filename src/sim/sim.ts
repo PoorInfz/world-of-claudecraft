@@ -41,7 +41,11 @@ import {
 } from './bank';
 import * as bankSocketsMod from './bank_sockets';
 import { extractTradableCopyImpl, grantTradableCopyImpl } from './broker_custody';
-import { ownedBuddies as ownedBuddiesImpl, toggleBuddy as toggleBuddyImpl } from './buddies';
+import {
+  ownedBuddies as ownedBuddiesImpl,
+  setBuddyAutoloot as setBuddyAutolootImpl,
+  toggleBuddy as toggleBuddyImpl,
+} from './buddies';
 import { campSpawnOffset } from './camp_scatter';
 import type { CharacterState, PetState } from './character_state';
 
@@ -4185,12 +4189,22 @@ export class Sim {
     return meta ? ownedBuddiesImpl(meta) : [];
   }
 
+  /** Per-pid buddy autoloot toggle (the server command path); the IWorld member
+   *  below rides primaryId. Rules live in src/sim/buddies.ts, the per-tick
+   *  errand it arms in src/sim/pet/buddy_autoloot.ts. */
+  setBuddyAutolootFor(pid: number, enabled: boolean): boolean {
+    return setBuddyAutolootImpl(this.ctx, pid, enabled);
+  }
+
   // --- IWorldBuddies ---
   ownedBuddies(): readonly BuddyKey[] {
     return this.ownedBuddiesFor(this.primaryId);
   }
   toggleBuddy(): void {
     this.toggleBuddyFor(this.primaryId);
+  }
+  setBuddyAutoloot(enabled: boolean): void {
+    this.setBuddyAutolootFor(this.primaryId, enabled);
   }
 
   /** Purchase the riding skill from Marla (80g). Server path; IWorld member rides

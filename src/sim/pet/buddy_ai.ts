@@ -5,13 +5,14 @@
 // stranded-pet teleport recovery, all reused verbatim, not reimplemented.
 //
 // Two differences from a real combat pet, both deliberate:
-//  - It heels toward a fixed LEFT-AND-BEHIND offset point (buddyFollowTarget
-//    below), not the owner's exact tile, so it keeps standing where the old
-//    purely-cosmetic follower always stood (2026-08-27 owner request: same
-//    side, only the locomotion under it changed from client-side geometry to
-//    real server AI). petFollow's optional `targetOverride` param exists
-//    solely for this call site; every real pet call site omits it and heels
-//    on the owner's own position exactly as before.
+//  - It heels toward a fixed RIGHT-AND-BEHIND offset point (buddyFollowTarget
+//    below), not the owner's exact tile, so it keeps standing off to the
+//    same side the old purely-cosmetic follower stood on (2026-08-27 owner
+//    request: same side, only the locomotion under it changed from
+//    client-side geometry to real server AI). petFollow's optional
+//    `targetOverride` param exists solely for this call site and for the
+//    autoloot errand below; every real pet call site omits it and heels on
+//    the owner's own position exactly as before.
 //  - It carries zero combat: spawned hostile:false/idle and never dispatched
 //    through updatePet's combat arm, so it never acquires a target, swings,
 //    or takes threat. Nothing ever targets a non-hostile owned entity, so it
@@ -27,28 +28,37 @@ import { MOBS } from '../data';
 import { createMob } from '../entity';
 import type { SimContext } from '../sim_context';
 import type { Entity, Vec3 } from '../types';
+import { updateBuddyAutoloot } from './buddy_autoloot';
 import { petFollow } from './pet_ai';
 
-// Local-space offset from the owner: +X is the owner's right, +Z is the
-// owner's forward (Entity.facing's "0 = +Z" convention). Values match the
-// retired render-only follower's own offset (src/render/buddy_follow.ts,
-// BUDDY_FOLLOW_LEFT/BACK) so the buddy keeps standing on the same side.
+// Local-space offset from the owner, in yards, along the SAME two unit
+// vectors the player movement kernel uses (src/sim/player_motion.ts:
+// forward = (sin f, cos f), right = (-cos f, sin f), with Entity.facing's
+// "0 = +Z" convention). The constant was called BUDDY_FOLLOW_LEFT until
+// 2026-09-08 after the retired render-only follower it inherited its numbers
+// from; the axis it adds along was always `right`, so the name was simply
+// wrong and is fixed here rather than left to mislead the next reader.
+//
+// 2026-09-08 owner request: the buddy stood too close, so both offsets grew
+// by 1 yard (2 -> 3 right, 1.2 -> 2.2 back).
+//
 // Exported (alongside buddyFollowTarget below) so tests/buddies.test.ts can
 // pin the heel offset against owner.pos/owner.facing directly, instead of
 // re-deriving its expectation through the function under test.
-export const BUDDY_FOLLOW_LEFT = 2;
-export const BUDDY_FOLLOW_BACK = 1.2;
+export const BUDDY_FOLLOW_RIGHT = 3;
+export const BUDDY_FOLLOW_BACK = 2.2;
 
-/** The buddy's heel target for the current tick. Every in-module call site
- *  above is the only real caller; tests/buddies.test.ts pins the offset
- *  independently against BUDDY_FOLLOW_LEFT/BACK rather than calling this. */
+/** The buddy's heel target for the current tick: owner + right * RIGHT -
+ *  forward * BACK. Every in-module call site above is the only real caller;
+ *  tests/buddies.test.ts pins the offset independently against
+ *  BUDDY_FOLLOW_RIGHT/BACK rather than calling this. */
 export function buddyFollowTarget(owner: Entity): Vec3 {
   const sinF = Math.sin(owner.facing);
   const cosF = Math.cos(owner.facing);
   return {
-    x: owner.pos.x - BUDDY_FOLLOW_LEFT * cosF - BUDDY_FOLLOW_BACK * sinF,
+    x: owner.pos.x - BUDDY_FOLLOW_RIGHT * cosF - BUDDY_FOLLOW_BACK * sinF,
     y: owner.pos.y,
-    z: owner.pos.z + BUDDY_FOLLOW_LEFT * sinF - BUDDY_FOLLOW_BACK * cosF,
+    z: owner.pos.z + BUDDY_FOLLOW_RIGHT * sinF - BUDDY_FOLLOW_BACK * cosF,
   };
 }
 
@@ -108,7 +118,13 @@ export function despawnBuddyEntity(ctx: SimContext, ownerId: number): void {
  *  has no HP of its own to lose and no revive command to owe, so it just
  *  keeps standing by its fallen owner and resumes heeling once they're back
  *  up — closer to the old purely-cosmetic follower's behavior (which never
- *  disappeared for any reason) than to the pet death handling. */
+ *  disappeared for any reason) than to the pet death handling.
+ *
+ *  The one thing that displaces the heel is the autoloot errand
+ *  (buddy_autoloot.ts): with the owner's toggle on and one of their own
+ *  corpses in range, the buddy walks to that corpse and loots it for them
+ *  instead, and heels again the moment there is nothing left to fetch. It
+ *  still never fights, and still carries nothing of its own. */
 export function updateBuddyMob(ctx: SimContext, buddy: Entity): void {
   const owner = buddy.ownerId === null ? null : ctx.entities.get(buddy.ownerId);
   const activeKey = owner ? normalizeBuddyKey(owner.buddyKey) : '';
@@ -116,5 +132,6 @@ export function updateBuddyMob(ctx: SimContext, buddy: Entity): void {
     ctx.dropEntity(buddy.id);
     return;
   }
+  if (updateBuddyAutoloot(ctx, buddy, owner)) return;
   petFollow(ctx, buddy, owner, buddyFollowTarget(owner));
 }

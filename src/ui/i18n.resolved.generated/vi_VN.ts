@@ -2420,6 +2420,12 @@ export const vi_VN: EnTranslations = {
       "watchYouTube": "Xem trên YouTube",
       "streamerBadgeTitle": "Người phát trực tiếp đã được xác minh"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "Cài Đặt Chiến Lợi Phẩm",
       "close": "Đóng cài đặt chiến lợi phẩm",

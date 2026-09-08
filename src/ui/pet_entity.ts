@@ -23,3 +23,11 @@ export function isControllableOwnedPet(entity: OwnedMobIdentity, ownerId: number
     !isBuddyMob(entity)
   );
 }
+
+/** The other half of the pair above: YOUR OWN cosmetic buddy, the one owned
+ * mob that opens the buddy menu (autoloot) rather than the pet command menu.
+ * Someone else's buddy is excluded, so right-clicking a stranger's follower
+ * offers nothing, exactly as before. */
+export function isOwnBuddy(entity: OwnedMobIdentity, ownerId: number): boolean {
+  return entity.kind === 'mob' && entity.ownerId === ownerId && isBuddyMob(entity);
+}

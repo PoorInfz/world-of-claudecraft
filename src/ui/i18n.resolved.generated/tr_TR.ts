@@ -2420,6 +2420,12 @@ export const tr_TR: EnTranslations = {
       "watchYouTube": "YouTube'da izle",
       "streamerBadgeTitle": "Doğrulanmış yayıncı"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "Ganimet Ayarları",
       "close": "Ganimet ayarlarını kapat",

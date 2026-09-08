@@ -2420,6 +2420,12 @@ export const cs_CZ: EnTranslations = {
       "watchYouTube": "Sledovat na YouTube",
       "streamerBadgeTitle": "Ověřený streamer"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "Nastavení kořisti",
       "close": "Zavřít nastavení kořisti",

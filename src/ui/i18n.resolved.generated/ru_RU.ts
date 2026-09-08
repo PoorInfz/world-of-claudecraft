@@ -2420,6 +2420,12 @@ export const ru_RU: EnTranslations = {
       "watchYouTube": "Смотреть на YouTube",
       "streamerBadgeTitle": "Проверенный стример"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "Настройки добычи",
       "close": "Закрыть настройки добычи",

@@ -102,3 +102,16 @@ export function toggleBuddy(ctx: SimContext, pid: number): boolean {
   despawnBuddyEntity(ctx, pid);
   return true;
 }
+
+/** Enable/disable the autoloot errand for whatever buddy this player has out
+ *  (src/sim/pet/buddy_autoloot.ts does the work each tick). A PREFERENCE, not
+ *  a buddy command: it is settable with no buddy out and survives a
+ *  dismiss/re-summon, so a player who puts a buddy away and whistles a
+ *  different one does not have to re-arm it. Session state either way, like
+ *  buddyKey itself: nothing here is persisted. */
+export function setBuddyAutoloot(ctx: SimContext, pid: number, enabled: boolean): boolean {
+  const e = ctx.entities.get(pid);
+  if (!e) return false;
+  e.buddyAutoloot = enabled;
+  return true;
+}

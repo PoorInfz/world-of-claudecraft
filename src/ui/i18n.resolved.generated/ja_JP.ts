@@ -2420,6 +2420,12 @@ export const ja_JP: EnTranslations = {
       "watchYouTube": "YouTube で視聴",
       "streamerBadgeTitle": "認証済み配信者"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "分配設定",
       "close": "分配設定を閉じる",

@@ -2420,6 +2420,12 @@ export const en_XA: EnTranslations = {
       "watchYouTube": "[Ŵáţçĥ óñ ÝóúŢúƀé]",
       "streamerBadgeTitle": "[Ʋéŕíƒíéð šţŕéáɱéŕ]"
     },
+    "buddyMenu": {
+      "autolootEnable": "[Éñáƀļé Áúţóļóóţ]",
+      "autolootDisable": "[Ðíšáƀļé Áúţóļóóţ]",
+      "autolootHint": "[Ýóúŕ ƀúððý ƒéţçĥéš ļóóţ ƒŕóɱ ýóúŕ óŵñ çóŕþšéš ŵíţĥíñ 30 ýáŕðš.]",
+      "cancel": "[Çáñçéļ]"
+    },
     "lootSettings": {
       "title": "[Ļóóţ Šéţţíñĝš]",
       "close": "[Çļóšé ļóóţ šéţţíñĝš]",

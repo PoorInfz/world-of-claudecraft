@@ -2420,6 +2420,12 @@ export const pt_BR: EnTranslations = {
       "watchYouTube": "Assistir no YouTube",
       "streamerBadgeTitle": "Streamer verificado"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "Configurações de Saque",
       "close": "Fechar configurações de saque",

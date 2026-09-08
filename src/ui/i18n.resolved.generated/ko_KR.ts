@@ -2420,6 +2420,12 @@ export const ko_KR: EnTranslations = {
       "watchYouTube": "YouTube에서 시청",
       "streamerBadgeTitle": "인증된 스트리머"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "전리품 설정",
       "close": "전리품 설정 닫기",

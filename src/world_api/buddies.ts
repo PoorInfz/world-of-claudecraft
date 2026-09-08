@@ -24,4 +24,10 @@ export interface IWorldBuddies {
   /** Dismiss the active buddy (no-op when none is out). Summoning a specific
    *  buddy is an item use, not a keybind. */
   toggleBuddy(): void;
+  /** Enable/disable the buddy autoloot errand: while on, the buddy walks to
+   *  the player's OWN lootable corpses within 30yd and loots them for them
+   *  (src/sim/pet/buddy_autoloot.ts). A preference, settable with no buddy
+   *  out; the live state rides the entity mirror (Entity.buddyAutoloot, terse
+   *  `budal`) like buddyKey, so there is no read member here either. */
+  setBuddyAutoloot(enabled: boolean): void;
 }

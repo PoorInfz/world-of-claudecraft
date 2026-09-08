@@ -3080,6 +3080,19 @@ export const hudChromeStrings = {
     // player menu the name itself opens, with the channel link(s) up top.
     streamerBadgeTitle: 'Verified streamer',
   },
+  // Right-click (desktop) / double-tap (touch) menu on the target frame when
+  // the target is your OWN cosmetic buddy. A buddy takes no pet commands, so
+  // this menu is only the autoloot errand: while it is on, the buddy walks to
+  // your own lootable corpses within 30 yards and loots them for you.
+  buddyMenu: {
+    autolootEnable: 'Enable Autoloot',
+    autolootDisable: 'Disable Autoloot',
+    // Hover/`title` explanation on whichever of the two rows is showing, so the
+    // 30-yard rule and the "your corpses only" rule are discoverable from the
+    // menu itself rather than only from patch notes.
+    autolootHint: 'Your buddy fetches loot from your own corpses within 30 yards.',
+    cancel: 'Cancel',
+  },
   lootSettings: {
     title: 'Loot Settings',
     close: 'Close loot settings',

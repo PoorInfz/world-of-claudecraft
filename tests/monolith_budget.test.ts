@@ -283,7 +283,14 @@ const MONOLITHS: MonolithRow[] = [
     // Plus 8 for the preview dye: the tint field on the shared mount options
     // and the multi-line setVisualKey call that forwards it, which is what
     // stops a tinted buddy rig rendering white in the pane. Exact count.
-    ceiling: 18946,
+    // Raised 18946 -> 18956 (+10) for the buddy autoloot menu. The branch DID
+    // pay what it owns: the target-frame menu's routing rule and the buddy
+    // menu's markup moved to src/ui/hud/target_frame_menu.ts (pure, no DOM,
+    // testable), which shrank the dispatcher from 24 lines to 14. What is left
+    // here is the thin opener that places the popup and binds its rows, which
+    // needs Hud's own private popup helpers. Exact count: any further growth
+    // reds again.
+    ceiling: 18956,
     seam: 'pure view core + thin painter on PainterHost (src/ui/CLAUDE.md)',
   },
   {
@@ -484,7 +491,13 @@ const MONOLITHS: MonolithRow[] = [
     // described the merged file. Measured, not reconciled by arithmetic.
     // Re-measured on the tree that merged the v0.41.3 line into the buddy
     // branch: both arms grew the file, so neither ceiling described the result.
-    ceiling: 12355,
+    // Raised 12355 -> 12369 (+14) for the buddy autoloot command. All the
+    // BEHAVIOR landed behind the seam (src/sim/pet/buddy_autoloot.ts, plus the
+    // rule in src/sim/buddies.ts); what is here is the two thin delegates the
+    // architecture itself mandates — the per-pid one the server calls and the
+    // IWorld member the client calls — and the widened buddies.ts import. There
+    // is no seam that lets a new IWorld command skip this file. Exact count.
+    ceiling: 12369,
     seam: 'a sim system module behind SimContext (src/sim/CLAUDE.md)',
   },
   {
@@ -616,7 +629,11 @@ const MONOLITHS: MonolithRow[] = [
     // described the merged file. Measured, not reconciled by arithmetic.
     // Re-measured on the tree that merged the v0.41.3 line into the buddy
     // branch: both arms grew the file, so neither ceiling described the result.
-    ceiling: 10602,
+    // Raised 10602 -> 10613 (+11) for the buddy autoloot command: one case in
+    // the command switch (which delegates straight into the Sim) and one
+    // omitted-when-false identity field. Both are this file's own dispatch
+    // spine, not logic that could live in a sibling. Exact count.
+    ceiling: 10613,
     seam: 'a sibling server module; see the hot-path seams in server/CLAUDE.md',
   },
   {
@@ -686,7 +703,11 @@ const MONOLITHS: MonolithRow[] = [
     // Re-measured when the 47c1aacaae merge was finally resolved: that commit
     // landed with conflict markers still in the tree, so neither arm's number
     // described the merged file. Measured, not reconciled by arithmetic.
-    ceiling: 5706,
+    // Raised 5706 -> 5713 (+7) for the buddy autoloot command: the IWorldBuddies
+    // member that sends it and the one line that mirrors `budal` off the
+    // snapshot. Thin-consumer wiring with no branch-owned extraction available.
+    // Exact count.
+    ceiling: 5713,
     seam: 'a src/net sibling module (the refactor/net-online split is the template)',
   },
   {

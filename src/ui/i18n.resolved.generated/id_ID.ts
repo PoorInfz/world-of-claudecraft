@@ -2420,6 +2420,12 @@ export const id_ID: EnTranslations = {
       "watchYouTube": "Tonton di YouTube",
       "streamerBadgeTitle": "Streamer terverifikasi"
     },
+    "buddyMenu": {
+      "autolootEnable": "Enable Autoloot",
+      "autolootDisable": "Disable Autoloot",
+      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
+      "cancel": "Cancel"
+    },
     "lootSettings": {
       "title": "Pengaturan Jarahan",
       "close": "Tutup pengaturan jarahan",

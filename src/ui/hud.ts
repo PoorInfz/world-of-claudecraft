@@ -519,6 +519,7 @@ import { RiftMapPainter } from './hud/rift';
 import { RiftFloorTrackerController } from './hud/rift/rift_floor_tracker_controller';
 import { StanceBarController } from './hud/stance';
 import { closeOpenTouchMenu } from './hud/tap_menu';
+import { buddyMenuHtml, targetFrameMenuKind } from './hud/target_frame_menu';
 import { dismissBuyQuantityPrompts } from './hud/vendor/buy_quantity_prompt_window';
 import { buildCrucibleVendorView } from './hud/vendor/crucible_vendor_view';
 import { renderCrucibleVendorWindow } from './hud/vendor/crucible_vendor_window';
@@ -663,7 +664,7 @@ import { partyFrameSignature, selectPartyFrameMembers } from './party_frames';
 import { PartyFramesPainter } from './party_frames_painter';
 import type { PerfOverlayHooks } from './perf_overlay_settings';
 import { PET_ACTION_ICONS, petFeedButtonState, petSpecialButtonState } from './pet_action_icons';
-import { isControllableOwnedPet, ownedCombatSourceOwnerId } from './pet_entity';
+import { ownedCombatSourceOwnerId } from './pet_entity';
 import { findOwnPet, findPetsByOwner, petFrameDescriptorInto } from './pet_frame_view';
 import {
   chatPlayerContextActions,
@@ -17849,27 +17850,18 @@ export class Hud {
   }
 
   // Open the target-frame unit menu at a viewport point, shared by the desktop
-  // right-click (contextmenu) and the touch double-tap. A friendly player (not
-  // you) gets the social/party menu; your own pet gets the pet menu; a live wild
-  // hostile mob (in a party) gets the raid-marker menu, mirroring Sim.setMarker's
-  // markable criteria so the menu never appears where it would be a no-op.
+  // right-click (contextmenu) and the touch double-tap. WHICH menu a target
+  // opens is targetFrameMenuKind's rule (hud/target_frame_menu.ts); this only
+  // dispatches to the matching opener.
   private openTargetFrameMenuAt(x: number, y: number): void {
     const tid = this.sim.player.targetId;
     const t = tid !== null ? this.sim.entities.get(tid) : null;
-    if (t && t.kind === 'player' && t.id !== this.sim.playerId) {
-      this.openContextMenu(t.id, t.name, x, y);
-    } else if (t && isControllableOwnedPet(t, this.sim.playerId)) {
-      this.openPetMenu(t.id, t.name, t.dead, x, y);
-    } else if (
-      t &&
-      t.kind === 'mob' &&
-      !t.dead &&
-      t.hostile &&
-      t.ownerId === null &&
-      this.sim.partyInfo
-    ) {
-      this.openMarkerMenu(t.id, t.name, x, y);
-    }
+    if (!t) return;
+    const kind = targetFrameMenuKind(t, this.sim.playerId, !!this.sim.partyInfo);
+    if (kind === 'player') this.openContextMenu(t.id, t.name, x, y);
+    else if (kind === 'pet') this.openPetMenu(t.id, t.name, t.dead, x, y);
+    else if (kind === 'buddy') this.openBuddyMenu(t.name, x, y);
+    else if (kind === 'marker') this.openMarkerMenu(t.id, t.name, x, y);
   }
 
   /**
@@ -18287,6 +18279,24 @@ export class Hud {
           );
         }
       });
+    });
+  }
+
+  /** Your own cosmetic buddy's target-frame menu: one row, the autoloot errand
+   *  (src/sim/pet/buddy_autoloot.ts owns its rules). The armed state is read off
+   *  the entity mirror (Entity.buddyAutoloot, terse `budal`) exactly as the rest
+   *  of the HUD reads buddyKey, so the row offers the flip the SERVER would
+   *  make; the write is server-authoritative and lands on the next snapshot. */
+  openBuddyMenu(name: string, x: number, y: number): void {
+    const el = $('#ctx-menu');
+    el.classList.remove(CTX_MENU_PICKER_CLASS);
+    const armed = this.sim.entities.get(this.sim.playerId)?.buddyAutoloot === true;
+    el.innerHTML = buddyMenuHtml(name, armed);
+    el.style.display = 'block';
+    this.placePopupAt(el, x, y, 170, 240);
+    this.keepPopupOnScreen(el);
+    this.bindContextMenuActions((act) => {
+      if (act === 'autoloot') this.sim.setBuddyAutoloot(!armed);
     });
   }
 
