@@ -252,6 +252,7 @@ const MOB_IDS = [
   // canonical-fallback name still has to resolve in every locale the moment
   // a player turns it on.
   'buddy_ember_fox',
+  'buddy_emberfall_phoenix',
   'buddy_moss_hare',
   'buddy_frog',
   'buddy_crimson_claw_crab',

@@ -706,6 +706,19 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     quality: 'uncommon',
     sellValue: 50_000, // 5g, the flat vendor price every whistle takes
   },
+  // Epic, and NOT OBTAINABLE yet (2026-09-08 owner request): no mob table
+  // lists it, no vendor stocks it, and the global epic tier sits at chance 0
+  // (loot/global_drops.ts), so being an epic is not itself a source. Nothing
+  // else has to change to keep it that way: a source is added the day it is
+  // authored. Tradable like every other whistle, so it is not soulbound.
+  whistle_emberfall_phoenix: {
+    id: 'whistle_emberfall_phoenix',
+    name: 'Emberfall Phoenix Whistle',
+    kind: 'buddy',
+    buddy: 'emberfall_phoenix',
+    quality: 'epic',
+    sellValue: 50_000, // 5g, the flat vendor price every whistle takes
+  },
   // Developer-only, same treatment as the tank above: no acquisition path, so
   // it stays soulbound rather than tradable. Use /dev give reins_rickshaw_mount
   // while the feature remains under development.

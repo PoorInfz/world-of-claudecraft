@@ -14608,4 +14608,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '怨靈林放出來、又不肯收回去的一張咧嘴笑臉。每一次試圖描述牠的嘗試，都以描述者自己笑場放棄告終。',
   'hudChrome.collections.buddyLore.tuskhorn_boar':
     '荊峰高地的種，被牧人刻意育成短腿，圖的是一頭拱不倒籬笆的野豬。脾氣倒是原封不動地留下來了。',
+  'entities.mobs.buddy_emberfall_phoenix.name':
+    '燼落鳳凰',
+  'entities.items.whistle_emberfall_phoenix.name':
+    '燼落鳳凰的哨子',
+  'hudChrome.collections.buddyLore.emberfall_phoenix':
+    '每逢秋天牠便燃盡成一粒餘燼，到了春天又從自己的灰裡重新升起——關於牠，誰也說不出更多了。從沒有人找到過牠的巢，也從沒有人捉到過同一隻兩次。',
 };

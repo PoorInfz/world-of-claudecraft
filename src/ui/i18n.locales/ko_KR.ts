@@ -14917,4 +14917,10 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '망령숲이 내놓고는 도로 거두어들이려 하지 않은, 히죽 웃는 것. 이를 설명하려는 시도는 매번 설명하던 사람이 웃음을 터뜨리고 포기하는 것으로 끝난다.',
   'hudChrome.collections.buddyLore.tuskhorn_boar':
     '쏜피크 고지의 혈통으로, 울타리를 무너뜨리지 못하는 멧돼지를 원한 목동들이 다리를 짧게 개량한 것이다. 성질은 그대로 남았다.',
+  'entities.mobs.buddy_emberfall_phoenix.name':
+    '잿불낙하 불사조',
+  'entities.items.whistle_emberfall_phoenix.name':
+    '잿불낙하 불사조의 호루라기',
+  'hudChrome.collections.buddyLore.emberfall_phoenix':
+    '가을마다 타들어가 한 점 잉걸불이 되었다가, 봄이면 제 재에서 다시 솟아오른다. 누구에게 물어도 할 수 있는 말은 그것이 전부다. 둥지를 찾아낸 사람도 없고, 같은 개체를 두 번 붙잡은 사람도 없다.',
 };

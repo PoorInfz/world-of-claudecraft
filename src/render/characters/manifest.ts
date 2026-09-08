@@ -2315,6 +2315,19 @@ export const VISUALS: Record<string, VisualDef> = {
     // back-to-front: chest toward the camera while its owner walks away.
     yaw: Math.PI,
   },
+  // epic, no source yet (content/buddies.ts). Baked ember plumage, so no tint.
+  // The shipped clips were IDLE/WALK and were renamed in place to the buddy
+  // convention by scripts/assets/normalize_buddy_clips.mjs, so BUDDY_CLIPS
+  // reads them like every other follower. Authored height 0.75 keeps the bird
+  // inside the 0.55-0.8 band collectionBuddy framing assumes
+  // (characters/preview_framing.ts); the rig is wider than it is tall (wings
+  // out), and `height` normalizes on the vertical, so the wingspan lands near
+  // a mount-free 1.7 units once BUDDY_SCALE multiplies it.
+  buddy_emberfall_phoenix: {
+    url: `${BUDDIES_DIR}/emberfall_phoenix.glb`,
+    height: 0.75,
+    clips: BUDDY_CLIPS,
+  },
   // Yumi, the Protect Yumi objective cat familiar (Meshy rig, scale baked by
   // scripts/_bake_meshy_scale.mjs, meshopt + 1024 webp). The GLB ships ONE
   // clip, the block: mapped as the HIT reaction so she blocks when struck
@@ -3721,6 +3734,7 @@ const MOB_KEYS: Record<string, string> = {
   buddy_forgemaw: 'buddy_forgemaw',
   buddy_crystal_tide: 'buddy_crystal_tide',
   buddy_phantom: 'buddy_phantom',
+  buddy_emberfall_phoenix: 'buddy_emberfall_phoenix',
   // Packlord Stampede guardians are transient local templates, not MOBS rows.
   // Give the three summoned beasts distinct existing bodies instead of the
   // generic humanoid bandit fallback.

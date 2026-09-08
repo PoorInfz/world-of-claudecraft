@@ -52,7 +52,8 @@ export type BuddyKey =
   | 'crystal_lich'
   | 'forgemaw'
   | 'crystal_tide'
-  | 'phantom';
+  | 'phantom'
+  | 'emberfall_phoenix';
 
 /** How the Hunting window groups a companion. Mostly the follower's own mob
  *  family says it (a wolf is a beast), but two groups are editorial and no
@@ -236,6 +237,17 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
     key: 'phantom',
     name: 'Phantom',
     kind: 'elemental',
+  },
+  // epic, and deliberately UNOBTAINABLE for now: no mob table lists its
+  // whistle, no vendor stocks it, and the global epic tier is withheld at
+  // chance 0 (loot/global_drops.ts), so nothing in the game hands it over yet.
+  // The Hunting window already answers that honestly -- collection_sources.ts
+  // derives sources from the live tables and reports UNOBTAINABLE for an item
+  // nothing points at -- so the companion ships visible and uncollectable
+  // until it is given a source. A beast by family, so no `kind` override.
+  emberfall_phoenix: {
+    key: 'emberfall_phoenix',
+    name: 'Emberfall Phoenix',
   },
 };
 

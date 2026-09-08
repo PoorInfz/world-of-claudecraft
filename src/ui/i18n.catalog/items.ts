@@ -2491,6 +2491,7 @@ const ITEM_ENTITY_IDS = [
   'whistle_forgemaw',
   'whistle_crystal_tide',
   'whistle_phantom',
+  'whistle_emberfall_phoenix',
   // Crucible raid professions (docs/prd/ignivar-raid-professions.md).
   'lastflame_core',
   // Ignivar raid loot (Crucible of the Last Spring), src/sim/content/ignivar_loot.ts.
@@ -2875,6 +2876,7 @@ const APPENDED_ITEM_NAMES: Partial<Record<ItemEntityId, string>> = {
   whistle_forgemaw: 'Forgemaw The Molten Whistle',
   whistle_crystal_tide: 'Crystal Tide Whistle',
   whistle_phantom: 'Phantom Whistle',
+  whistle_emberfall_phoenix: 'Emberfall Phoenix Whistle',
   // Crucible raid professions, English-appended like the waves above (the
   // maintainer fills every locale at release).
   lastflame_core: 'Core of the Last Flame',

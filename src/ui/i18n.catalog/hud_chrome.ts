@@ -4748,6 +4748,8 @@ export const hudChromeStrings = {
         'A tide sprite that rides its own drop of sea-glass, hooked out of still water by anglers from the Vale to Farshore who were fishing for supper. It keeps the water it came up in, and it will not be talked into going back.',
       phantom:
         'A palm-sized haunt out of the Wraithwood barrows, all sheet and no bones, which turns up in a pack that was closed and stays for the company. Nobody has worked out what it wants, and it has never once tried to frighten anyone.',
+      emberfall_phoenix:
+        'It burns down to an ember every autumn and comes back up out of its own ash by spring, which is the whole of what anyone can tell you about it. Nobody has ever found a nest, and nobody has ever caught one twice.',
     },
     // The buddy tab groups by what a companion IS before it sorts by rarity.
     petKind: {

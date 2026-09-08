@@ -3489,7 +3489,8 @@ export const zh_CN: EnTranslations = {
         "crystal_lich": "尼思拉克西斯本体的一枚碎片，至今仍鸣响着塑成它的那股寒意。谁把它从团队副本的残骸里拽出来，它就听谁的——而且始终没有原谅那个人。",
         "forgemaw": "在最后泉源熔炉中锻造，却始终没有真正完工——锤声未歇，它便自己走出了伊格尼瓦的铸场。只有英雄难度的下潜才能找到它：这熔融之物总会回到造出它的那座炉子，然后跟着两度熬过烈火的人回家。",
         "crystal_tide": "一只乘着自己那滴海玻璃的潮汐精灵，被从东溪谷到远岸只想钓顿晚饭的渔人从静水里勾了上来。它把捞起它的那捧水一直带在身边，怎么劝也不肯回去。",
-        "phantom": "来自怨灵林古冢的巴掌大幽魂，只有一层布、没有骨头，会出现在一个明明合好的背包里，然后为了作伴留下来。没人弄清它想要什么，而它一次也没试过吓唬谁。"
+        "phantom": "来自怨灵林古冢的巴掌大幽魂，只有一层布、没有骨头，会出现在一个明明合好的背包里，然后为了作伴留下来。没人弄清它想要什么，而它一次也没试过吓唬谁。",
+        "emberfall_phoenix": "每逢秋天它便燃尽成一粒余烬，到了春天又从自己的灰里重新升起——关于它，谁也说不出更多了。从没有人找到过它的巢，也从没有人捉到过同一只两次。"
       },
       "petKind": {
         "beast": "野兽",
@@ -13500,6 +13501,9 @@ export const zh_CN: EnTranslations = {
       "whistle_phantom": {
         "name": "幻魂的哨子"
       },
+      "whistle_emberfall_phoenix": {
+        "name": "烬落凤凰的哨子"
+      },
       "lastflame_core": {
         "name": "末焰之核"
       },
@@ -15508,6 +15512,9 @@ export const zh_CN: EnTranslations = {
       },
       "buddy_ember_fox": {
         "name": "余烬狐"
+      },
+      "buddy_emberfall_phoenix": {
+        "name": "烬落凤凰"
       },
       "buddy_moss_hare": {
         "name": "Moss Hare"

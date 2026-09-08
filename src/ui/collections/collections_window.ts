@@ -129,6 +129,7 @@ const BUDDY_LORE: Readonly<Record<string, TranslationKey>> = {
   forgemaw: 'hudChrome.collections.buddyLore.forgemaw',
   crystal_tide: 'hudChrome.collections.buddyLore.crystal_tide',
   phantom: 'hudChrome.collections.buddyLore.phantom',
+  emberfall_phoenix: 'hudChrome.collections.buddyLore.emberfall_phoenix',
 };
 
 const PET_KIND_LABEL: Record<CollectionPetKind, TranslationKey> = {

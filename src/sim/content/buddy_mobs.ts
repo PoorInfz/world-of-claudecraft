@@ -158,6 +158,14 @@ export const BUDDY_MOBS: Record<string, MobTemplate> = {
     0xffffff,
   ),
   [buddyTemplateId('phantom')]: buddyTemplate('phantom', 'Phantom', 'elemental', 0xffffff),
+  // The epic with no source yet (content/buddies.ts says why). Its own GLB
+  // carries the baked ember plumage, so the color is inert here as usual.
+  [buddyTemplateId('emberfall_phoenix')]: buddyTemplate(
+    'emberfall_phoenix',
+    'Emberfall Phoenix',
+    'beast',
+    0xffffff,
+  ),
 };
 
 /** Every valid buddy templateId, for the cheap `isBuddyMob` membership check

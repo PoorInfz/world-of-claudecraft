@@ -14912,4 +14912,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'レイスウッドが世に出し、二度と引き取ろうとしなかった、にやりと笑うもの。これを説明しようとする試みは、いつも説明する側が笑い出して諦めるところで終わる。',
   'hudChrome.collections.buddyLore.tuskhorn_boar':
     'ソーンピーク高地の血統。柵を倒せない猪が欲しかった羊飼いたちによって、脚を短く掛け合わされた。気性のほうはそのまま残った。',
+  'entities.mobs.buddy_emberfall_phoenix.name':
+    'エンバーフォール・フェニックス',
+  'entities.items.whistle_emberfall_phoenix.name':
+    'エンバーフォール・フェニックスの笛',
+  'hudChrome.collections.buddyLore.emberfall_phoenix':
+    '秋ごとに燃え尽きて一粒の燃えさしとなり、春には自らの灰から立ち上がってくる。誰に訊いても言えるのはそれだけだ。巣を見つけた者はおらず、同じ個体を二度捕らえた者もいない。',
 };
