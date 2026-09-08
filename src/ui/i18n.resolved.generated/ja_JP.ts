@@ -1563,7 +1563,7 @@ export const ja_JP: EnTranslations = {
       "showDevBadges": "開発者バッジを表示",
       "showOwnNameplate": "自分のネームプレートを表示",
       "showPlayerNameplates": "プレイヤーのネームプレートを表示",
-      "showPetNames": "Show Pet Names",
+      "showPetNames": "ペット名を表示",
       "uiScale": "UIスケール",
       "playerFrameScale": "プレイヤーフレームの大きさ",
       "targetFrameScale": "ターゲットフレームの大きさ",
@@ -1994,7 +1994,7 @@ export const ja_JP: EnTranslations = {
       "gossipOptionAria": "{name}のウォーフェアセット商店を見る",
       "jewelry": "アクセサリー",
       "weapons": "武器",
-      "companions": "Companions",
+      "companions": "コンパニオン",
       "owned": "所有済み",
       "buyAria": "{item}を{honor}で購入",
       "buyOwnedAria": "{item}を{honor}で購入、所有済み",
@@ -2421,10 +2421,10 @@ export const ja_JP: EnTranslations = {
       "streamerBadgeTitle": "認証済み配信者"
     },
     "buddyMenu": {
-      "autolootEnable": "Enable Autoloot",
-      "autolootDisable": "Disable Autoloot",
-      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
-      "cancel": "Cancel"
+      "autolootEnable": "自動収集を有効化",
+      "autolootDisable": "自動収集を無効化",
+      "autolootHint": "バディが30ヤード以内にあるあなた自身の死体から戦利品を回収します。",
+      "cancel": "キャンセル"
     },
     "lootSettings": {
       "title": "分配設定",
@@ -3444,102 +3444,102 @@ export const ja_JP: EnTranslations = {
       "logAdminPurge": "管理者が {item} を {count} 個削除しました"
     },
     "collections": {
-      "title": "Hunting",
-      "close": "Close hunting",
-      "keybindLabel": "Hunting",
-      "launcherTitle": "Hunting: buddies, mounts and item sets",
+      "title": "ハンティング",
+      "close": "ハンティングを閉じる",
+      "keybindLabel": "ハンティング",
+      "launcherTitle": "ハンティング：バディ、マウント、装備セット",
       "tabs": {
-        "buddies": "Buddies",
-        "mounts": "Mounts",
+        "buddies": "バディ",
+        "mounts": "マウント",
         "sets": "Item Sets"
       },
       "state": {
-        "owned": "Collected",
-        "notOwned": "Not collected",
-        "unavailable": "Not obtainable yet"
+        "owned": "収集済み",
+        "notOwned": "未収集",
+        "unavailable": "まだ入手不可"
       },
       "buddyLore": {
-        "ember_fox": "A vixen out of the Eastbrook Vale hedgerows, named for the coal-red coat that shows through winter scrub. The trappers there gave up on the kits generations ago and started leaving food out instead.",
-        "moss_hare": "The Willowfen hare, green-furred from a lifetime bedded down in wet peat. Fen herbalists count them lucky and will not have one chased off a doorstep.",
-        "frog": "Mirefen Marsh raises them fat and unbothered, singing all night from the reed beds. The marsh guides swear a boat carrying one never runs aground.",
-        "crimson_claw_crab": "A Farshore tidal crab whose claw stays red long after it leaves the water. Dock crews used to race them along the boards for coin.",
-        "golden_sentinel": "A watch-beetle of the Amberfall, gilded by the resin it grew up in. The name is older than the resin: sentinels of a kind kept those groves long before anyone thought to bottle the sap.",
-        "nightfang": "A young Nightbloom hunter, silent even by the standards of its kind. It follows for the company and hunts nothing larger than a moth.",
-        "tuskhorn_boar": "Thornpeak stock, bred short-legged by shepherds who wanted a boar that could not put a fence down. It kept the temper regardless.",
-        "emerald_wolf": "A Wraithwood pup, its coat green in the canopy light that never quite reaches the forest floor. The wardens raise whichever orphans the wood leaves behind.",
-        "tiger": "Palmreach stripes on an animal that has never seen the Palmreach: the line has been kept in captivity since the old menageries closed. It answers to a whistle and to nothing else.",
-        "cate_coin": "A cat that will not be parted from the coin it sits on, and that nobody has ever seen eat. Eastbrook merchants still argue over which of the two is the pet.",
-        "alon": "A traveller's mascot from a road no map will admit to, turning up wherever a plan is going badly. It watches, it approves, and it offers no help whatsoever.",
-        "trollface": "A grinning thing the Wraithwood put out and would not take back. Every attempt to describe it ends with the describer laughing and giving up.",
-        "ansem": "It speaks of doors and of darkness and will not be drawn further on either. The Nightbloom cultists claim it as theirs; it wanders off whenever they hold a rite.",
-        "triple_t": "Three of something, or one thing three times over. The accounts disagree, and the creature will not hold still long enough to be counted.",
-        "kekius": "A laughing companion of unclear origin, adopted by the Galecrest race yards as a charm. It has outlived four stables that swore by it.",
-        "solbot": "A small sun-fed automaton, dug half-buried out of the Drakelands ash and still ticking. Whatever workshop built it left no mark anywhere on the casing.",
-        "frostfire": "Born in the Frostveil Reach where a hot spring surfaces through the ice field, and it has never settled on which half it belongs to. It steams in cold air and shivers in warm.",
-        "rocky": "A stone-shelled crawler off the Thornpeak scree, slow and thoroughly unbothered. Miners keep them for the way they go still a moment before a collapse.",
-        "proud_grunt": "A veteran of the Warfare stores who kept the salute and lost the rank. Warmarshal Draven Kole hands one to any soldier with honor enough to know what that costs.",
-        "loot_goblin": "It follows anyone carrying Heroic Marks and has never once been caught stealing. Quartermaster Vex maintains that this proves nothing at all.",
-        "penny_goldspark": "A gnome tinker's apprentice who charges by the hour and is worth every copper of it. Armorer Hode took her on to settle a debt and now sells the arrangement to anyone holding a thousand gold.",
-        "stag": "Evergarden bloodline, bred down from the great stags the wardens once rode. It still lowers its head at a raised hand, from a habit older than the animal.",
-        "alpaca": "The Galecrest herds keep them for wool and for temper: nothing stays calmer in a storm. This one will spit at exactly one person per journey.",
-        "bull": "A Vale bull the size of a dog, which is the only reason anyone agreed to keep one indoors. The temperament did not scale down with the rest.",
-        "spider": "A Wraithwood weaver, palm-sized, that redecorates any pack it is carried in. The webbing is stronger than the thread it replaces.",
-        "raptor": "Drakelands hatchling stock, sold on before it learns how fast it can run. Every new owner is told to keep it fed, and none of them need telling twice.",
-        "skeleton": "It came up out of the Wraithwood barrows, dusted itself off, and has followed people about ever since. Nobody has established whose bones these were.",
-        "crystal_lich": "A splinter of Nythraxis itself, still humming with the cold that shaped it. It answers to whoever pulled it from the wreck of the raid, and it has not forgiven them for it.",
-        "forgemaw": "Forged in the Crucible of the Last Spring and never quite finished, it walked out of Ignivar's foundry while the hammers were still falling. Only the heroic descent finds it: the molten thing keeps returning to the forge that made it, and follows home whoever survives the fire twice.",
-        "crystal_tide": "A tide sprite that rides its own drop of sea-glass, hooked out of still water by anglers from the Vale to Farshore who were fishing for supper. It keeps the water it came up in, and it will not be talked into going back.",
-        "phantom": "A palm-sized haunt out of the Wraithwood barrows, all sheet and no bones, which turns up in a pack that was closed and stays for the company. Nobody has worked out what it wants, and it has never once tried to frighten anyone."
+        "ember_fox": "イーストブルック渓谷の生け垣から来た雌狐。冬枯れの茂みごしに覗く炭のように赤い毛からその名がついた。土地の罠師たちは何世代も前に子狐を狙うのをやめ、代わりに餌を置くようになった。",
+        "moss_hare": "ウィローフェンの野ウサギ。湿った泥炭に一生寝床を作るうちに毛が緑になった。沼の薬草師たちはこれを縁起物とし、戸口に来たものを追い払わせない。",
+        "frog": "マイアフェン湿地はこれを丸々と、のんきに育てる。葦の茂みから一晩じゅう鳴きどおしだ。沼の案内人たちは、これを乗せた舟は決して座礁しないと請け合う。",
+        "crimson_claw_crab": "遠つ岸の潮だまりのカニ。水から上げてしばらく経っても爪は赤いままだ。かつて波止場の連中は板の上でこれを競走させ、小銭を賭けていた。",
+        "golden_sentinel": "アンバーフォールの見張り甲虫。育った樹脂に鍍金されて金色になった。名のほうが樹脂より古い。誰かが樹液を瓶に詰めようと思いつくずっと前から、その種の歩哨がその林を守っていた。",
+        "nightfang": "ナイトブルームの若い狩人。同族の基準で見てもなお静かだ。連れ立つのは人恋しさからで、蛾より大きな獲物は狩らない。",
+        "tuskhorn_boar": "ソーンピーク高地の血統。柵を倒せない猪が欲しかった羊飼いたちによって、脚を短く掛け合わされた。気性のほうはそのまま残った。",
+        "emerald_wolf": "レイスウッドの子狼。林床までほとんど届かない木漏れ日の下では、その毛は緑に見える。森が残していった孤児は、どれもウォーデンたちが育てる。",
+        "tiger": "パームリーチの縞を持ちながら、パームリーチを見たことのない獣。古い見世物小屋が閉じて以来、この血統はずっと飼育下にある。応じるのは笛の音だけで、ほかには何にも応えない。",
+        "cate_coin": "腰を下ろしたコインから決して離れず、物を食べるところを誰も見たことがない猫。イーストブルックの商人たちは今も、どちらがペットなのかで揉めている。",
+        "alon": "どの地図も認めない道から来た旅人のマスコット。計画が狂っている場所に必ず現れる。見て、うなずいて、助けは一切しない。",
+        "trollface": "レイスウッドが世に出し、二度と引き取ろうとしなかった、にやりと笑うもの。これを説明しようとする試みは、いつも説明する側が笑い出して諦めるところで終わる。",
+        "ansem": "扉と闇について語るが、それ以上は決して口を割らない。ナイトブルームの信徒は自分たちのものだと言い張るが、儀式のたびにどこかへ行ってしまう。",
+        "triple_t": "何かが三つなのか、一つのものが三度あるのか。証言はどれも食い違い、当の生き物は数えられるほど長くはじっとしていない。",
+        "kekius": "出自不明の笑う相棒。ゲイルクレストの競走場が縁起物として迎え入れた。これを頼みにしていた厩舎を四つ見送っても、まだ健在だ。",
+        "solbot": "陽光を糧とする小さな自動機械。ドレイクランドの灰に半ば埋もれたところを掘り出されたが、まだ動いていた。これを造った工房は、筐体のどこにも刻印を残していない。",
+        "frostfire": "フロストヴェイルの果てで、氷原を突いて温泉が湧く場所に生まれた。自分がどちらの側のものなのか、いまだに決めかねている。冷たい空気の中では湯気を立て、暖かい所では震える。",
+        "rocky": "ソーンピーク高地のガレ場に棲む石殻の這うもの。のろく、そして何ごとにも動じない。落盤の直前に一瞬だけぴたりと止まる、そのために坑夫たちが飼っている。",
+        "proud_grunt": "戦備倉庫の古参兵。敬礼は保ち、階級は失った。戦元帥ドレイヴン・コールは、その代償を知るだけの名誉を持つ兵にこれを託す。",
+        "loot_goblin": "英雄の証を持つ者なら誰にでもついていくが、盗みを働くところを一度も押さえられていない。補給係ヴェックスは、それは何の証明にもならないと言い張っている。",
+        "penny_goldspark": "ノームの技師の弟子。時間で料金を取るが、その銅貨一枚ぶんの働きは必ずする。防具師ホードは借りを清算するために彼女を引き取り、今では千金を持つ者なら誰にでもこの取り決めを売っている。",
+        "stag": "エバーガーデンの血統。かつてウォーデンたちが乗った大鹿から小さく掛け合わされてきた。手を挙げれば今も頭を下げる。この個体より古い習いだ。",
+        "alpaca": "ゲイルクレストの群れは羊毛と気性のために飼っている。嵐の中でこれほど落ち着いた家畜はいない。この個体は道中きっかり一人に唾を吐く。",
+        "bull": "犬ほどの大きさのイーストブルック渓谷の雄牛。屋内で飼うのを誰もが承知した理由はそれだけだ。気性のほうは小さくならなかった。",
+        "spider": "レイスウッドの織り手。手のひらほどの大きさで、入れられた荷袋を必ず模様替えしてしまう。その糸は、置き換えられた縫い糸より丈夫だ。",
+        "raptor": "ドレイクランドの孵化個体。自分がどれだけ速く走れるかを覚える前に売りに出される。新しい飼い主は必ず「餌を切らすな」と言われ、二度言われる者はいない。",
+        "skeleton": "レイスウッドの塚から這い出し、自分の埃を払って、それ以来ずっと人についてまわっている。この骨が誰のものだったのかは、まだ誰も突き止めていない。",
+        "crystal_lich": "ナイスラクシスそのものの破片で、今なおそれを形づくった冷気を帯びて震えている。レイドの残骸から引き出した者に従うが、そのことをまだ許してはいない。",
+        "forgemaw": "最後の泉のるつぼで鍛えられ、ついに完成しなかったもの。槌の音がまだ響くうちにイグニヴァルの鋳場から歩み出た。見つけられるのはヒロイックの踏破だけだ。この溶けたものは自分を作った炉へ戻り続け、二度炎を生き延びた者について家まで来る。",
+        "crystal_tide": "自分のシーグラスの雫に乗る潮の精。イーストブルック渓谷から遠つ岸まで、夕飯を釣るつもりだった釣り人が静かな水から引き上げた。上がってきた時の水を離さず、戻れと言われても聞かない。",
+        "phantom": "レイスウッドの塚から出た手のひらほどの亡霊。布ばかりで骨はない。閉じたはずの荷袋の中に現れ、人恋しさから居着いてしまう。何を求めているのかは誰にも分からず、これまで一度も誰かを脅かそうとしたことがない。"
       },
       "petKind": {
-        "beast": "Beasts",
-        "elemental": "Elementals",
-        "humanoid": "Humanoids",
-        "undead": "Undead",
-        "celebrity": "Celebrities"
+        "beast": "ビースト",
+        "elemental": "エレメンタル",
+        "humanoid": "ヒューマノイド",
+        "undead": "アンデッド",
+        "celebrity": "セレブリティ"
       },
       "armor": {
-        "cloth": "Cloth",
+        "cloth": "布",
         "mail": "Mail",
-        "leather": "Leather"
+        "leather": "革"
       },
       "stat": {
-        "intellect": "Intellect",
-        "agility": "Agility",
-        "strength": "Strength",
-        "mixed": "Hybrid"
+        "intellect": "知力",
+        "agility": "敏捷性",
+        "strength": "筋力",
+        "mixed": "ハイブリッド"
       },
       "set": {
-        "owned": "{owned} of {total} pieces",
-        "itemLevel": "ilvl {level}",
-        "bonusLabel": "{pieces} pieces"
+        "owned": "{total}部位中{owned}部位",
+        "itemLevel": "アイテムレベル {level}",
+        "bonusLabel": "{pieces}部位"
       },
       "detail": {
-        "dropLabel": "Drops from",
+        "dropLabel": "ドロップ元",
         "vendorLabel": "Sold by",
-        "bindLabel": "Binding",
-        "sellLabel": "Vendor pays",
-        "marketLabel": "World Market",
-        "exchangeLabel": "$WOC Exchange",
-        "setLabel": "Collected",
-        "drop": "{mob} ({location}), {chance}% per kill",
-        "heroicDrop": "{mob} ({location}), Heroic only, {chance}% per kill",
-        "dropWithHeroic": "{mob} ({location}), {chance}% per kill, {heroicChance}% on Heroic",
-        "globalDrop": "Any enemy, {chance}% per kill, one of {count} at this rarity",
-        "fishingDrop": "Fishing anywhere, {chance}% per catch",
+        "bindLabel": "装備制限",
+        "sellLabel": "商人の買取額",
+        "marketLabel": "ワールドマーケット",
+        "exchangeLabel": "$WOC取引所",
+        "setLabel": "収集済み",
+        "drop": "{mob}（{location}）、討伐ごとに{chance}%",
+        "heroicDrop": "{mob}（{location}）、ヒロイック限定、討伐ごとに{chance}%",
+        "dropWithHeroic": "{mob}（{location}）、討伐ごとに{chance}%、ヒロイックでは{heroicChance}%",
+        "globalDrop": "任意の敵、討伐ごとに{chance}%、同レアリティ{count}種のうち1つ",
+        "fishingDrop": "どこでも釣り、釣り上げるごとに{chance}%",
         "vendor": "{npc} ({location}) for {price}",
-        "honorPrice": "{amount} Honor",
-        "marksPrice": "{amount} Heroic Marks",
-        "noSource": "No source in the game yet",
-        "noItem": "No item grants this yet",
-        "tradeable": "Tradeable",
-        "soulbound": "Soulbound",
-        "noSell": "Cannot be sold",
-        "marketAtMerchant": "Shown at the Merchant",
-        "marketChecking": "Checking...",
-        "marketNone": "No listings",
-        "exchangeNone": "No listings",
-        "exchangeUnavailable": "Not available on this client"
+        "honorPrice": "名誉{amount}",
+        "marksPrice": "英雄の証{amount}",
+        "noSource": "ゲーム内に入手手段はまだありません",
+        "noItem": "これを与えるアイテムはまだありません",
+        "tradeable": "取引可能",
+        "soulbound": "魂縛",
+        "noSell": "売却不可",
+        "marketAtMerchant": "商人のところで表示",
+        "marketChecking": "確認中…",
+        "marketNone": "出品なし",
+        "exchangeNone": "出品なし",
+        "exchangeUnavailable": "このクライアントでは利用できません"
       }
     },
     "calendar": {
@@ -9872,7 +9872,7 @@ export const ja_JP: EnTranslations = {
       "elixir": "エリクサー",
       "bag": "バッグ",
       "mount": "マウント",
-      "buddy": "Buddy",
+      "buddy": "バディ",
       "skin": "スキン"
     },
     "stats": {
@@ -13408,97 +13408,97 @@ export const ja_JP: EnTranslations = {
         "name": "たましいの石"
       },
       "whistle_ember_fox": {
-        "name": "Ember Fox Whistle"
+        "name": "燃えさし狐の笛"
       },
       "whistle_moss_hare": {
-        "name": "Moss Hare Whistle"
+        "name": "コケウサギの笛"
       },
       "whistle_frog": {
-        "name": "Frog Whistle"
+        "name": "カエルの笛"
       },
       "whistle_crimson_claw_crab": {
-        "name": "Crimson Claw Crab Whistle"
+        "name": "紅爪ガニの笛"
       },
       "whistle_golden_sentinel": {
-        "name": "Golden Sentinel Whistle"
+        "name": "黄金の歩哨の笛"
       },
       "whistle_nightfang": {
-        "name": "Nightfang Whistle"
+        "name": "ナイトファングの笛"
       },
       "whistle_tuskhorn_boar": {
-        "name": "Tuskhorn Boar Whistle"
+        "name": "タスクホーン・ボアの笛"
       },
       "whistle_emerald_wolf": {
-        "name": "Emerald Wolf Whistle"
+        "name": "エメラルドウルフの笛"
       },
       "whistle_tiger": {
-        "name": "Tiger Whistle"
+        "name": "トラの笛"
       },
       "whistle_cate_coin": {
-        "name": "Cate Coin Whistle"
+        "name": "ケイトコインの笛"
       },
       "whistle_alon": {
-        "name": "Alon Whistle"
+        "name": "アロンの笛"
       },
       "whistle_trollface": {
-        "name": "Trollface Whistle"
+        "name": "トロールフェイスの笛"
       },
       "whistle_ansem": {
-        "name": "Ansem Whistle"
+        "name": "アンセムの笛"
       },
       "whistle_triple_t": {
-        "name": "Triple T Whistle"
+        "name": "トリプルTの笛"
       },
       "whistle_kekius": {
-        "name": "Kekius Whistle"
+        "name": "ケキウスの笛"
       },
       "whistle_solbot": {
-        "name": "Solbot Whistle"
+        "name": "ソルボットの笛"
       },
       "whistle_frostfire": {
-        "name": "Frostfire Whistle"
+        "name": "フロストファイアの笛"
       },
       "whistle_rocky": {
-        "name": "Rocky Whistle"
+        "name": "ロッキーの笛"
       },
       "whistle_proud_grunt": {
-        "name": "Proud Grunt Whistle"
+        "name": "誇り高きグラントの笛"
       },
       "whistle_loot_goblin": {
-        "name": "Loot Goblin Whistle"
+        "name": "戦利品ゴブリンの笛"
       },
       "whistle_penny_goldspark": {
-        "name": "Penny Goldspark Whistle"
+        "name": "ペニー・ゴールドスパークの笛"
       },
       "whistle_stag": {
-        "name": "Stag Whistle"
+        "name": "牡鹿の笛"
       },
       "whistle_alpaca": {
-        "name": "Alpaca Whistle"
+        "name": "アルパカの笛"
       },
       "whistle_bull": {
-        "name": "Bull Whistle"
+        "name": "雄牛の笛"
       },
       "whistle_spider": {
-        "name": "Spider Whistle"
+        "name": "クモの笛"
       },
       "whistle_raptor": {
-        "name": "Raptor Whistle"
+        "name": "ラプターの笛"
       },
       "whistle_skeleton": {
-        "name": "Skeleton Whistle"
+        "name": "スケルトンの笛"
       },
       "whistle_crystal_lich": {
-        "name": "Crystal Lich Whistle"
+        "name": "クリスタルリッチの笛"
       },
       "whistle_forgemaw": {
-        "name": "Forgemaw The Molten Whistle"
+        "name": "溶けたフォージモウの笛"
       },
       "whistle_crystal_tide": {
-        "name": "Crystal Tide Whistle"
+        "name": "クリスタルタイドの笛"
       },
       "whistle_phantom": {
-        "name": "Phantom Whistle"
+        "name": "ファントムの笛"
       },
       "lastflame_core": {
         "name": "最後の炎の核"
@@ -15507,7 +15507,7 @@ export const ja_JP: EnTranslations = {
         "name": "盆地の声ズルガー"
       },
       "buddy_ember_fox": {
-        "name": "Ember Fox"
+        "name": "燃えさし狐"
       },
       "buddy_moss_hare": {
         "name": "Moss Hare"
@@ -15516,22 +15516,22 @@ export const ja_JP: EnTranslations = {
         "name": "Frog"
       },
       "buddy_crimson_claw_crab": {
-        "name": "Crimson Claw Crab"
+        "name": "紅爪ガニ"
       },
       "buddy_golden_sentinel": {
-        "name": "Golden Sentinel"
+        "name": "黄金の歩哨"
       },
       "buddy_nightfang": {
-        "name": "Nightfang"
+        "name": "ナイトファング"
       },
       "buddy_tuskhorn_boar": {
-        "name": "Tuskhorn Boar"
+        "name": "タスクホーン・ボア"
       },
       "buddy_emerald_wolf": {
-        "name": "Emerald Wolf"
+        "name": "エメラルドウルフ"
       },
       "buddy_tiger": {
-        "name": "Tiger"
+        "name": "トラ"
       },
       "buddy_cate_coin": {
         "name": "Cate Coin"
@@ -15540,64 +15540,64 @@ export const ja_JP: EnTranslations = {
         "name": "Alon"
       },
       "buddy_trollface": {
-        "name": "Trollface"
+        "name": "トロールフェイス"
       },
       "buddy_ansem": {
-        "name": "Ansem"
+        "name": "アンセム"
       },
       "buddy_triple_t": {
-        "name": "Triple T"
+        "name": "トリプルT"
       },
       "buddy_kekius": {
-        "name": "Kekius"
+        "name": "ケキウス"
       },
       "buddy_solbot": {
-        "name": "Solbot"
+        "name": "ソルボット"
       },
       "buddy_frostfire": {
-        "name": "Frostfire"
+        "name": "フロストファイア"
       },
       "buddy_rocky": {
-        "name": "Rocky"
+        "name": "ロッキー"
       },
       "buddy_proud_grunt": {
-        "name": "Proud Grunt"
+        "name": "誇り高きグラント"
       },
       "buddy_loot_goblin": {
-        "name": "Loot Goblin"
+        "name": "戦利品ゴブリン"
       },
       "buddy_penny_goldspark": {
-        "name": "Penny Goldspark"
+        "name": "ペニー・ゴールドスパーク"
       },
       "buddy_stag": {
         "name": "Stag"
       },
       "buddy_alpaca": {
-        "name": "Alpaca"
+        "name": "アルパカ"
       },
       "buddy_bull": {
         "name": "Bull"
       },
       "buddy_spider": {
-        "name": "Spider"
+        "name": "クモ"
       },
       "buddy_raptor": {
-        "name": "Raptor"
+        "name": "ラプター"
       },
       "buddy_skeleton": {
-        "name": "Skeleton"
+        "name": "スケルトン"
       },
       "buddy_crystal_lich": {
-        "name": "Crystal Lich"
+        "name": "クリスタルリッチ"
       },
       "buddy_forgemaw": {
-        "name": "Forgemaw The Molten"
+        "name": "溶けたフォージモウ"
       },
       "buddy_crystal_tide": {
-        "name": "Crystal Tide"
+        "name": "クリスタルタイド"
       },
       "buddy_phantom": {
-        "name": "Phantom"
+        "name": "ファントム"
       },
       "ironvein_foreman": {
         "name": "鉄脈の現場監督"

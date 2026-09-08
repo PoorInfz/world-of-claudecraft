@@ -1563,7 +1563,7 @@ export const ru_RU: EnTranslations = {
       "showDevBadges": "Показывать значки разработчика",
       "showOwnNameplate": "Показывать свою табличку с именем",
       "showPlayerNameplates": "Показывать таблички с именами игроков",
-      "showPetNames": "Show Pet Names",
+      "showPetNames": "Показывать имена питомцев",
       "uiScale": "Масштаб интерфейса",
       "playerFrameScale": "Размер рамки игрока",
       "targetFrameScale": "Размер рамки цели",
@@ -1994,7 +1994,7 @@ export const ru_RU: EnTranslations = {
       "gossipOptionAria": "Просмотреть магазин комплектов Боевой мощи у {name}",
       "jewelry": "Украшения",
       "weapons": "Оружие",
-      "companions": "Companions",
+      "companions": "Спутники",
       "owned": "Получено",
       "buyAria": "Купить {item} за {honor}",
       "buyOwnedAria": "Купить {item} за {honor}, уже получено",
@@ -2421,10 +2421,10 @@ export const ru_RU: EnTranslations = {
       "streamerBadgeTitle": "Проверенный стример"
     },
     "buddyMenu": {
-      "autolootEnable": "Enable Autoloot",
-      "autolootDisable": "Disable Autoloot",
-      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
-      "cancel": "Cancel"
+      "autolootEnable": "Включить автосбор",
+      "autolootDisable": "Выключить автосбор",
+      "autolootHint": "Спутник соберёт добычу с ваших собственных трупов в радиусе 30 ярдов.",
+      "cancel": "Отмена"
     },
     "lootSettings": {
       "title": "Настройки добычи",
@@ -3444,102 +3444,102 @@ export const ru_RU: EnTranslations = {
       "logAdminPurge": "Администратор удалил {count} шт. {item}"
     },
     "collections": {
-      "title": "Hunting",
-      "close": "Close hunting",
-      "keybindLabel": "Hunting",
-      "launcherTitle": "Hunting: buddies, mounts and item sets",
+      "title": "Охота",
+      "close": "Закрыть охоту",
+      "keybindLabel": "Охота",
+      "launcherTitle": "Охота: спутники, транспорт и комплекты",
       "tabs": {
-        "buddies": "Buddies",
-        "mounts": "Mounts",
+        "buddies": "Спутники",
+        "mounts": "Транспорт",
         "sets": "Item Sets"
       },
       "state": {
-        "owned": "Collected",
-        "notOwned": "Not collected",
-        "unavailable": "Not obtainable yet"
+        "owned": "Собрано",
+        "notOwned": "Не собрано",
+        "unavailable": "Пока недоступно"
       },
       "buddyLore": {
-        "ember_fox": "A vixen out of the Eastbrook Vale hedgerows, named for the coal-red coat that shows through winter scrub. The trappers there gave up on the kits generations ago and started leaving food out instead.",
-        "moss_hare": "The Willowfen hare, green-furred from a lifetime bedded down in wet peat. Fen herbalists count them lucky and will not have one chased off a doorstep.",
-        "frog": "Mirefen Marsh raises them fat and unbothered, singing all night from the reed beds. The marsh guides swear a boat carrying one never runs aground.",
-        "crimson_claw_crab": "A Farshore tidal crab whose claw stays red long after it leaves the water. Dock crews used to race them along the boards for coin.",
-        "golden_sentinel": "A watch-beetle of the Amberfall, gilded by the resin it grew up in. The name is older than the resin: sentinels of a kind kept those groves long before anyone thought to bottle the sap.",
-        "nightfang": "A young Nightbloom hunter, silent even by the standards of its kind. It follows for the company and hunts nothing larger than a moth.",
-        "tuskhorn_boar": "Thornpeak stock, bred short-legged by shepherds who wanted a boar that could not put a fence down. It kept the temper regardless.",
-        "emerald_wolf": "A Wraithwood pup, its coat green in the canopy light that never quite reaches the forest floor. The wardens raise whichever orphans the wood leaves behind.",
-        "tiger": "Palmreach stripes on an animal that has never seen the Palmreach: the line has been kept in captivity since the old menageries closed. It answers to a whistle and to nothing else.",
-        "cate_coin": "A cat that will not be parted from the coin it sits on, and that nobody has ever seen eat. Eastbrook merchants still argue over which of the two is the pet.",
-        "alon": "A traveller's mascot from a road no map will admit to, turning up wherever a plan is going badly. It watches, it approves, and it offers no help whatsoever.",
-        "trollface": "A grinning thing the Wraithwood put out and would not take back. Every attempt to describe it ends with the describer laughing and giving up.",
-        "ansem": "It speaks of doors and of darkness and will not be drawn further on either. The Nightbloom cultists claim it as theirs; it wanders off whenever they hold a rite.",
-        "triple_t": "Three of something, or one thing three times over. The accounts disagree, and the creature will not hold still long enough to be counted.",
-        "kekius": "A laughing companion of unclear origin, adopted by the Galecrest race yards as a charm. It has outlived four stables that swore by it.",
-        "solbot": "A small sun-fed automaton, dug half-buried out of the Drakelands ash and still ticking. Whatever workshop built it left no mark anywhere on the casing.",
-        "frostfire": "Born in the Frostveil Reach where a hot spring surfaces through the ice field, and it has never settled on which half it belongs to. It steams in cold air and shivers in warm.",
-        "rocky": "A stone-shelled crawler off the Thornpeak scree, slow and thoroughly unbothered. Miners keep them for the way they go still a moment before a collapse.",
-        "proud_grunt": "A veteran of the Warfare stores who kept the salute and lost the rank. Warmarshal Draven Kole hands one to any soldier with honor enough to know what that costs.",
-        "loot_goblin": "It follows anyone carrying Heroic Marks and has never once been caught stealing. Quartermaster Vex maintains that this proves nothing at all.",
-        "penny_goldspark": "A gnome tinker's apprentice who charges by the hour and is worth every copper of it. Armorer Hode took her on to settle a debt and now sells the arrangement to anyone holding a thousand gold.",
-        "stag": "Evergarden bloodline, bred down from the great stags the wardens once rode. It still lowers its head at a raised hand, from a habit older than the animal.",
-        "alpaca": "The Galecrest herds keep them for wool and for temper: nothing stays calmer in a storm. This one will spit at exactly one person per journey.",
-        "bull": "A Vale bull the size of a dog, which is the only reason anyone agreed to keep one indoors. The temperament did not scale down with the rest.",
-        "spider": "A Wraithwood weaver, palm-sized, that redecorates any pack it is carried in. The webbing is stronger than the thread it replaces.",
-        "raptor": "Drakelands hatchling stock, sold on before it learns how fast it can run. Every new owner is told to keep it fed, and none of them need telling twice.",
-        "skeleton": "It came up out of the Wraithwood barrows, dusted itself off, and has followed people about ever since. Nobody has established whose bones these were.",
-        "crystal_lich": "A splinter of Nythraxis itself, still humming with the cold that shaped it. It answers to whoever pulled it from the wreck of the raid, and it has not forgiven them for it.",
-        "forgemaw": "Forged in the Crucible of the Last Spring and never quite finished, it walked out of Ignivar's foundry while the hammers were still falling. Only the heroic descent finds it: the molten thing keeps returning to the forge that made it, and follows home whoever survives the fire twice.",
-        "crystal_tide": "A tide sprite that rides its own drop of sea-glass, hooked out of still water by anglers from the Vale to Farshore who were fishing for supper. It keeps the water it came up in, and it will not be talked into going back.",
-        "phantom": "A palm-sized haunt out of the Wraithwood barrows, all sheet and no bones, which turns up in a pack that was closed and stays for the company. Nobody has worked out what it wants, and it has never once tried to frighten anyone."
+        "ember_fox": "Лисица из живых изгородей Истврукской долины, названная за угольно-красную шубу, что просвечивает сквозь зимний подлесок. Тамошние звероловы махнули рукой на её выводки поколения назад и вместо этого начали оставлять им еду.",
+        "moss_hare": "Заяц Ивовой Топи, зазеленевший от жизни в мокром торфе. Болотные травники считают их к удаче и не позволят прогнать такого от порога.",
+        "frog": "Мирефенская топь растит их упитанными и беспечными; они поют всю ночь напролёт из тростников. Болотные проводники божатся, что лодка с такой на борту никогда не садится на мель.",
+        "crimson_claw_crab": "Приливный краб с Дальнего Берега, клешня которого остаётся красной ещё долго после того, как он выйдет из воды. Портовые артели когда-то гоняли их наперегонки по доскам на деньги.",
+        "golden_sentinel": "Жук-часовой из Янтарной Пади, позолоченный смолой, в которой вырос. Имя старше смолы: стражи этого рода берегли те рощи задолго до того, как кому-то пришло в голову разливать сок по склянкам.",
+        "nightfang": "Юный охотник из Ночецветья, тихий даже по меркам своего рода. Он ходит следом ради общества и не охотится ни на что крупнее мотылька.",
+        "tuskhorn_boar": "Порода с Терновых высот, выведенная коротконогой пастухами, которым нужен был вепрь, не способный завалить изгородь. Нрав при этом остался прежним.",
+        "emerald_wolf": "Волчонок из Призрачной Чащи; в свете крон, что почти не достаёт до земли, его шерсть кажется зелёной. Стражи выхаживают всех сирот, которых оставляет лес.",
+        "tiger": "Полосы Пальмового Берега на звере, который Пальмового Берега в глаза не видел: эту линию держат в неволе с тех пор, как закрылись старые зверинцы. Он отзывается на свист и больше ни на что.",
+        "cate_coin": "Кот, который ни за что не расстанется с монетой, на которой сидит, и которого никто никогда не видел за едой. Торговцы Истврука до сих пор спорят, кто из этих двоих чей питомец.",
+        "alon": "Талисман путников с дороги, которую не признаёт ни одна карта; появляется везде, где план идёт наперекосяк. Смотрит, одобряет и не помогает совершенно ничем.",
+        "trollface": "Ухмыляющаяся тварь, которую Призрачная Чаща выпустила и обратно брать отказалась. Всякая попытка её описать кончается тем, что описывающий начинает смеяться и бросает.",
+        "ansem": "Говорит о дверях и о тьме и больше ни слова не скажет ни о том, ни о другом. Культисты Ночецветья зовут его своим, а он уходит всякий раз, когда они начинают обряд.",
+        "triple_t": "То ли три чего-то, то ли одно и то же трижды. Свидетельства расходятся, а само существо не стоит на месте достаточно долго, чтобы его пересчитать.",
+        "kekius": "Смеющийся спутник неясного происхождения, взятый на скаковых дворах Гейлкреста как талисман. Он пережил четыре конюшни, что на него божились.",
+        "solbot": "Маленький автоматон, питающийся солнцем; его откопали наполовину засыпанным в пепле Земель Драконов, и он всё ещё тикал. Мастерская, что его собрала, не оставила на корпусе ни единого клейма.",
+        "frostfire": "Рождённый в Морозном Пределе там, где сквозь ледяное поле пробивается горячий источник, он так и не решил, к какой из половин принадлежит. На холоде парит, в тепле дрожит.",
+        "rocky": "Каменнопанцирный ползун с осыпей Терновых высот, медлительный и совершенно невозмутимый. Горняки держат их за то, как они замирают за миг до обвала.",
+        "proud_grunt": "Ветеран военных складов, сохранивший выправку и потерявший чин. Военный маршал Дравен Коул отдаёт такого любому солдату, чьей чести хватает, чтобы понимать, чего это стоило.",
+        "loot_goblin": "Он ходит за всяким, у кого есть Героические знаки, и ни разу не был пойман на воровстве. Интендант Векс настаивает, что это ровным счётом ничего не доказывает.",
+        "penny_goldspark": "Подмастерье гнома-механика, что берёт почасовую плату и отрабатывает каждую медяшку. Бронник Ходе взял её в счёт долга, а теперь продаёт этот уговор всякому, у кого при себе тысяча золотых.",
+        "stag": "Кровь Вечного Сада, выведенная из тех больших оленей, на которых когда-то ездили стражи. Он до сих пор склоняет голову перед поднятой рукой — по привычке, что старше его самого.",
+        "alpaca": "В стадах Гейлкреста их держат ради шерсти и нрава: в бурю никто не сохраняет такого спокойствия. Этот плюётся ровно в одного человека за поездку.",
+        "bull": "Бык из Истврукской долины размером с собаку, и это единственная причина, по которой его согласились держать в доме. Нрав вместе с остальным уменьшаться не стал.",
+        "spider": "Ткач из Призрачной Чащи размером с ладонь, который перестраивает по-своему любой рюкзак, где его несут. Паутина крепче тех ниток, что она заменяет.",
+        "raptor": "Выводок из Земель Драконов, которого продают прежде, чем он поймёт, как быстро умеет бегать. Каждому новому хозяину велят его кормить, и дважды повторять никому не приходится.",
+        "skeleton": "Он выбрался из курганов Призрачной Чащи, отряхнулся и с тех пор ходит за людьми. Чьи это были кости, так никто и не установил.",
+        "crystal_lich": "Осколок самого Нитраксиса, всё ещё гудящий тем холодом, что его создал. Он слушается того, кто вытащил его из обломков рейда, и до сих пор этого не простил.",
+        "forgemaw": "Выкованный в Горниле Последнего Источника и так и не законченный, он вышел из литейной Игнивара, пока молоты ещё били. Найти его можно только в героическом спуске: расплавленное создание всё возвращается в горн, что его сделал, и уходит домой за тем, кто выжил в огне дважды.",
+        "crystal_tide": "Приливный дух верхом на собственной капле морского стекла, выуженный из тихой воды рыбаками от Истврукской долины до Дальнего Берега, которые ловили себе ужин. Он хранит ту воду, в которой поднялся, и уговорить его вернуться невозможно.",
+        "phantom": "Призрак размером с ладонь из курганов Призрачной Чащи, весь из савана и без единой косточки; заводится в закрытом рюкзаке и остаётся ради компании. Никто не понял, чего он хочет, и он ни разу никого не попытался напугать."
       },
       "petKind": {
-        "beast": "Beasts",
-        "elemental": "Elementals",
-        "humanoid": "Humanoids",
-        "undead": "Undead",
-        "celebrity": "Celebrities"
+        "beast": "Звери",
+        "elemental": "Элементали",
+        "humanoid": "Гуманоиды",
+        "undead": "Нежить",
+        "celebrity": "Знаменитости"
       },
       "armor": {
-        "cloth": "Cloth",
+        "cloth": "Ткань",
         "mail": "Mail",
-        "leather": "Leather"
+        "leather": "Кожа"
       },
       "stat": {
-        "intellect": "Intellect",
-        "agility": "Agility",
-        "strength": "Strength",
-        "mixed": "Hybrid"
+        "intellect": "Интеллект",
+        "agility": "Ловкость",
+        "strength": "Сила",
+        "mixed": "Гибрид"
       },
       "set": {
-        "owned": "{owned} of {total} pieces",
-        "itemLevel": "ilvl {level}",
-        "bonusLabel": "{pieces} pieces"
+        "owned": "{owned} из {total} предметов",
+        "itemLevel": "ур. предмета {level}",
+        "bonusLabel": "предметов: {pieces}"
       },
       "detail": {
-        "dropLabel": "Drops from",
+        "dropLabel": "Выпадает с",
         "vendorLabel": "Sold by",
-        "bindLabel": "Binding",
-        "sellLabel": "Vendor pays",
-        "marketLabel": "World Market",
-        "exchangeLabel": "$WOC Exchange",
-        "setLabel": "Collected",
-        "drop": "{mob} ({location}), {chance}% per kill",
-        "heroicDrop": "{mob} ({location}), Heroic only, {chance}% per kill",
-        "dropWithHeroic": "{mob} ({location}), {chance}% per kill, {heroicChance}% on Heroic",
-        "globalDrop": "Any enemy, {chance}% per kill, one of {count} at this rarity",
-        "fishingDrop": "Fishing anywhere, {chance}% per catch",
+        "bindLabel": "Привязка",
+        "sellLabel": "Торговец платит",
+        "marketLabel": "Мировой рынок",
+        "exchangeLabel": "Биржа $WOC",
+        "setLabel": "Собрано",
+        "drop": "{mob} ({location}), {chance}% за убийство",
+        "heroicDrop": "{mob} ({location}), только героический режим, {chance}% за убийство",
+        "dropWithHeroic": "{mob} ({location}), {chance}% за убийство, {heroicChance}% в героическом режиме",
+        "globalDrop": "Любой противник, {chance}% за убийство, один из {count} этой редкости",
+        "fishingDrop": "Рыбалка где угодно, {chance}% за улов",
         "vendor": "{npc} ({location}) for {price}",
-        "honorPrice": "{amount} Honor",
-        "marksPrice": "{amount} Heroic Marks",
-        "noSource": "No source in the game yet",
-        "noItem": "No item grants this yet",
-        "tradeable": "Tradeable",
-        "soulbound": "Soulbound",
-        "noSell": "Cannot be sold",
-        "marketAtMerchant": "Shown at the Merchant",
-        "marketChecking": "Checking...",
-        "marketNone": "No listings",
-        "exchangeNone": "No listings",
-        "exchangeUnavailable": "Not available on this client"
+        "honorPrice": "{amount} чести",
+        "marksPrice": "{amount} героических знаков",
+        "noSource": "В игре пока нет источника",
+        "noItem": "Пока ни один предмет это не даёт",
+        "tradeable": "Можно обменять",
+        "soulbound": "Персональный",
+        "noSell": "Нельзя продать",
+        "marketAtMerchant": "Показано у торговца",
+        "marketChecking": "Проверка…",
+        "marketNone": "Нет лотов",
+        "exchangeNone": "Нет лотов",
+        "exchangeUnavailable": "Недоступно в этом клиенте"
       }
     },
     "calendar": {
@@ -9872,7 +9872,7 @@ export const ru_RU: EnTranslations = {
       "elixir": "Эликсир",
       "bag": "Сумка",
       "mount": "Транспорт",
-      "buddy": "Buddy",
+      "buddy": "Спутник",
       "skin": "Облик"
     },
     "stats": {
@@ -13408,97 +13408,97 @@ export const ru_RU: EnTranslations = {
         "name": "Камень Ухода"
       },
       "whistle_ember_fox": {
-        "name": "Ember Fox Whistle"
+        "name": "Свисток: Тлеющая лисица"
       },
       "whistle_moss_hare": {
-        "name": "Moss Hare Whistle"
+        "name": "Свисток: Моховой заяц"
       },
       "whistle_frog": {
-        "name": "Frog Whistle"
+        "name": "Свисток: Лягушка"
       },
       "whistle_crimson_claw_crab": {
-        "name": "Crimson Claw Crab Whistle"
+        "name": "Свисток: Багровоклешневый краб"
       },
       "whistle_golden_sentinel": {
-        "name": "Golden Sentinel Whistle"
+        "name": "Свисток: Золотой страж"
       },
       "whistle_nightfang": {
-        "name": "Nightfang Whistle"
+        "name": "Свисток: Ночной Клык"
       },
       "whistle_tuskhorn_boar": {
-        "name": "Tuskhorn Boar Whistle"
+        "name": "Свисток: Клыкорогий вепрь"
       },
       "whistle_emerald_wolf": {
-        "name": "Emerald Wolf Whistle"
+        "name": "Свисток: Изумрудный волк"
       },
       "whistle_tiger": {
-        "name": "Tiger Whistle"
+        "name": "Свисток: Тигр"
       },
       "whistle_cate_coin": {
-        "name": "Cate Coin Whistle"
+        "name": "Свисток: Кейт Коин"
       },
       "whistle_alon": {
-        "name": "Alon Whistle"
+        "name": "Свисток: Алон"
       },
       "whistle_trollface": {
-        "name": "Trollface Whistle"
+        "name": "Свисток: Тролльфейс"
       },
       "whistle_ansem": {
-        "name": "Ansem Whistle"
+        "name": "Свисток: Ансем"
       },
       "whistle_triple_t": {
-        "name": "Triple T Whistle"
+        "name": "Свисток: Тройное Т"
       },
       "whistle_kekius": {
-        "name": "Kekius Whistle"
+        "name": "Свисток: Кекиус"
       },
       "whistle_solbot": {
-        "name": "Solbot Whistle"
+        "name": "Свисток: Солбот"
       },
       "whistle_frostfire": {
-        "name": "Frostfire Whistle"
+        "name": "Свисток: Ледяное пламя"
       },
       "whistle_rocky": {
-        "name": "Rocky Whistle"
+        "name": "Свисток: Рокки"
       },
       "whistle_proud_grunt": {
-        "name": "Proud Grunt Whistle"
+        "name": "Свисток: Гордый рубака"
       },
       "whistle_loot_goblin": {
-        "name": "Loot Goblin Whistle"
+        "name": "Свисток: Гоблин-барыга"
       },
       "whistle_penny_goldspark": {
-        "name": "Penny Goldspark Whistle"
+        "name": "Свисток: Пенни Златоискра"
       },
       "whistle_stag": {
-        "name": "Stag Whistle"
+        "name": "Свисток: Олень"
       },
       "whistle_alpaca": {
-        "name": "Alpaca Whistle"
+        "name": "Свисток: Альпака"
       },
       "whistle_bull": {
-        "name": "Bull Whistle"
+        "name": "Свисток: Бык"
       },
       "whistle_spider": {
-        "name": "Spider Whistle"
+        "name": "Свисток: Паук"
       },
       "whistle_raptor": {
-        "name": "Raptor Whistle"
+        "name": "Свисток: Раптор"
       },
       "whistle_skeleton": {
-        "name": "Skeleton Whistle"
+        "name": "Свисток: Скелет"
       },
       "whistle_crystal_lich": {
-        "name": "Crystal Lich Whistle"
+        "name": "Свисток: Хрустальный лич"
       },
       "whistle_forgemaw": {
-        "name": "Forgemaw The Molten Whistle"
+        "name": "Свисток: Горнилозев Расплавленный"
       },
       "whistle_crystal_tide": {
-        "name": "Crystal Tide Whistle"
+        "name": "Свисток: Хрустальный прилив"
       },
       "whistle_phantom": {
-        "name": "Phantom Whistle"
+        "name": "Свисток: Фантом"
       },
       "lastflame_core": {
         "name": "Ядро Последнего Пламени"
@@ -15507,7 +15507,7 @@ export const ru_RU: EnTranslations = {
         "name": "Зулгар, Голос Котловины"
       },
       "buddy_ember_fox": {
-        "name": "Ember Fox"
+        "name": "Тлеющая лисица"
       },
       "buddy_moss_hare": {
         "name": "Moss Hare"
@@ -15516,22 +15516,22 @@ export const ru_RU: EnTranslations = {
         "name": "Frog"
       },
       "buddy_crimson_claw_crab": {
-        "name": "Crimson Claw Crab"
+        "name": "Багровоклешневый краб"
       },
       "buddy_golden_sentinel": {
-        "name": "Golden Sentinel"
+        "name": "Золотой страж"
       },
       "buddy_nightfang": {
-        "name": "Nightfang"
+        "name": "Ночной Клык"
       },
       "buddy_tuskhorn_boar": {
-        "name": "Tuskhorn Boar"
+        "name": "Клыкорогий вепрь"
       },
       "buddy_emerald_wolf": {
-        "name": "Emerald Wolf"
+        "name": "Изумрудный волк"
       },
       "buddy_tiger": {
-        "name": "Tiger"
+        "name": "Тигр"
       },
       "buddy_cate_coin": {
         "name": "Cate Coin"
@@ -15540,64 +15540,64 @@ export const ru_RU: EnTranslations = {
         "name": "Alon"
       },
       "buddy_trollface": {
-        "name": "Trollface"
+        "name": "Тролльфейс"
       },
       "buddy_ansem": {
-        "name": "Ansem"
+        "name": "Ансем"
       },
       "buddy_triple_t": {
-        "name": "Triple T"
+        "name": "Тройное Т"
       },
       "buddy_kekius": {
-        "name": "Kekius"
+        "name": "Кекиус"
       },
       "buddy_solbot": {
-        "name": "Solbot"
+        "name": "Солбот"
       },
       "buddy_frostfire": {
-        "name": "Frostfire"
+        "name": "Ледяное пламя"
       },
       "buddy_rocky": {
-        "name": "Rocky"
+        "name": "Рокки"
       },
       "buddy_proud_grunt": {
-        "name": "Proud Grunt"
+        "name": "Гордый рубака"
       },
       "buddy_loot_goblin": {
-        "name": "Loot Goblin"
+        "name": "Гоблин-барыга"
       },
       "buddy_penny_goldspark": {
-        "name": "Penny Goldspark"
+        "name": "Пенни Златоискра"
       },
       "buddy_stag": {
         "name": "Stag"
       },
       "buddy_alpaca": {
-        "name": "Alpaca"
+        "name": "Альпака"
       },
       "buddy_bull": {
         "name": "Bull"
       },
       "buddy_spider": {
-        "name": "Spider"
+        "name": "Паук"
       },
       "buddy_raptor": {
-        "name": "Raptor"
+        "name": "Раптор"
       },
       "buddy_skeleton": {
-        "name": "Skeleton"
+        "name": "Скелет"
       },
       "buddy_crystal_lich": {
-        "name": "Crystal Lich"
+        "name": "Хрустальный лич"
       },
       "buddy_forgemaw": {
-        "name": "Forgemaw The Molten"
+        "name": "Горнилозев Расплавленный"
       },
       "buddy_crystal_tide": {
-        "name": "Crystal Tide"
+        "name": "Хрустальный прилив"
       },
       "buddy_phantom": {
-        "name": "Phantom"
+        "name": "Фантом"
       },
       "ironvein_foreman": {
         "name": "Прораб Железной жилы"

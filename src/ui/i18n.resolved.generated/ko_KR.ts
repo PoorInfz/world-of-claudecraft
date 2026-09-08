@@ -1563,7 +1563,7 @@ export const ko_KR: EnTranslations = {
       "showDevBadges": "개발자 배지 표시",
       "showOwnNameplate": "내 이름표 표시",
       "showPlayerNameplates": "플레이어 이름표 표시",
-      "showPetNames": "Show Pet Names",
+      "showPetNames": "펫 이름 표시",
       "uiScale": "UI 배율",
       "playerFrameScale": "플레이어 프레임 크기",
       "targetFrameScale": "대상 프레임 크기",
@@ -1994,7 +1994,7 @@ export const ko_KR: EnTranslations = {
       "gossipOptionAria": "{name}이(가) 운영하는 워페어 세트 상점 둘러보기",
       "jewelry": "장신구",
       "weapons": "무기",
-      "companions": "Companions",
+      "companions": "동료",
       "owned": "보유 중",
       "buyAria": "{honor}에 {item} 구매",
       "buyOwnedAria": "{honor}에 {item} 구매, 이미 보유 중",
@@ -2421,10 +2421,10 @@ export const ko_KR: EnTranslations = {
       "streamerBadgeTitle": "인증된 스트리머"
     },
     "buddyMenu": {
-      "autolootEnable": "Enable Autoloot",
-      "autolootDisable": "Disable Autoloot",
-      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
-      "cancel": "Cancel"
+      "autolootEnable": "자동 전리품 켜기",
+      "autolootDisable": "자동 전리품 끄기",
+      "autolootHint": "버디가 30야드 이내에 있는 당신 소유의 시체에서 전리품을 가져옵니다.",
+      "cancel": "취소"
     },
     "lootSettings": {
       "title": "전리품 설정",
@@ -3444,102 +3444,102 @@ export const ko_KR: EnTranslations = {
       "logAdminPurge": "관리자가 {item} {count}개를 삭제했습니다"
     },
     "collections": {
-      "title": "Hunting",
-      "close": "Close hunting",
-      "keybindLabel": "Hunting",
-      "launcherTitle": "Hunting: buddies, mounts and item sets",
+      "title": "사냥",
+      "close": "사냥 닫기",
+      "keybindLabel": "사냥",
+      "launcherTitle": "사냥: 버디, 탈것, 아이템 세트",
       "tabs": {
-        "buddies": "Buddies",
-        "mounts": "Mounts",
+        "buddies": "버디",
+        "mounts": "탈것",
         "sets": "Item Sets"
       },
       "state": {
-        "owned": "Collected",
-        "notOwned": "Not collected",
-        "unavailable": "Not obtainable yet"
+        "owned": "수집함",
+        "notOwned": "수집 안 함",
+        "unavailable": "아직 획득 불가"
       },
       "buddyLore": {
-        "ember_fox": "A vixen out of the Eastbrook Vale hedgerows, named for the coal-red coat that shows through winter scrub. The trappers there gave up on the kits generations ago and started leaving food out instead.",
-        "moss_hare": "The Willowfen hare, green-furred from a lifetime bedded down in wet peat. Fen herbalists count them lucky and will not have one chased off a doorstep.",
-        "frog": "Mirefen Marsh raises them fat and unbothered, singing all night from the reed beds. The marsh guides swear a boat carrying one never runs aground.",
-        "crimson_claw_crab": "A Farshore tidal crab whose claw stays red long after it leaves the water. Dock crews used to race them along the boards for coin.",
-        "golden_sentinel": "A watch-beetle of the Amberfall, gilded by the resin it grew up in. The name is older than the resin: sentinels of a kind kept those groves long before anyone thought to bottle the sap.",
-        "nightfang": "A young Nightbloom hunter, silent even by the standards of its kind. It follows for the company and hunts nothing larger than a moth.",
-        "tuskhorn_boar": "Thornpeak stock, bred short-legged by shepherds who wanted a boar that could not put a fence down. It kept the temper regardless.",
-        "emerald_wolf": "A Wraithwood pup, its coat green in the canopy light that never quite reaches the forest floor. The wardens raise whichever orphans the wood leaves behind.",
-        "tiger": "Palmreach stripes on an animal that has never seen the Palmreach: the line has been kept in captivity since the old menageries closed. It answers to a whistle and to nothing else.",
-        "cate_coin": "A cat that will not be parted from the coin it sits on, and that nobody has ever seen eat. Eastbrook merchants still argue over which of the two is the pet.",
-        "alon": "A traveller's mascot from a road no map will admit to, turning up wherever a plan is going badly. It watches, it approves, and it offers no help whatsoever.",
-        "trollface": "A grinning thing the Wraithwood put out and would not take back. Every attempt to describe it ends with the describer laughing and giving up.",
-        "ansem": "It speaks of doors and of darkness and will not be drawn further on either. The Nightbloom cultists claim it as theirs; it wanders off whenever they hold a rite.",
-        "triple_t": "Three of something, or one thing three times over. The accounts disagree, and the creature will not hold still long enough to be counted.",
-        "kekius": "A laughing companion of unclear origin, adopted by the Galecrest race yards as a charm. It has outlived four stables that swore by it.",
-        "solbot": "A small sun-fed automaton, dug half-buried out of the Drakelands ash and still ticking. Whatever workshop built it left no mark anywhere on the casing.",
-        "frostfire": "Born in the Frostveil Reach where a hot spring surfaces through the ice field, and it has never settled on which half it belongs to. It steams in cold air and shivers in warm.",
-        "rocky": "A stone-shelled crawler off the Thornpeak scree, slow and thoroughly unbothered. Miners keep them for the way they go still a moment before a collapse.",
-        "proud_grunt": "A veteran of the Warfare stores who kept the salute and lost the rank. Warmarshal Draven Kole hands one to any soldier with honor enough to know what that costs.",
-        "loot_goblin": "It follows anyone carrying Heroic Marks and has never once been caught stealing. Quartermaster Vex maintains that this proves nothing at all.",
-        "penny_goldspark": "A gnome tinker's apprentice who charges by the hour and is worth every copper of it. Armorer Hode took her on to settle a debt and now sells the arrangement to anyone holding a thousand gold.",
-        "stag": "Evergarden bloodline, bred down from the great stags the wardens once rode. It still lowers its head at a raised hand, from a habit older than the animal.",
-        "alpaca": "The Galecrest herds keep them for wool and for temper: nothing stays calmer in a storm. This one will spit at exactly one person per journey.",
-        "bull": "A Vale bull the size of a dog, which is the only reason anyone agreed to keep one indoors. The temperament did not scale down with the rest.",
-        "spider": "A Wraithwood weaver, palm-sized, that redecorates any pack it is carried in. The webbing is stronger than the thread it replaces.",
-        "raptor": "Drakelands hatchling stock, sold on before it learns how fast it can run. Every new owner is told to keep it fed, and none of them need telling twice.",
-        "skeleton": "It came up out of the Wraithwood barrows, dusted itself off, and has followed people about ever since. Nobody has established whose bones these were.",
-        "crystal_lich": "A splinter of Nythraxis itself, still humming with the cold that shaped it. It answers to whoever pulled it from the wreck of the raid, and it has not forgiven them for it.",
-        "forgemaw": "Forged in the Crucible of the Last Spring and never quite finished, it walked out of Ignivar's foundry while the hammers were still falling. Only the heroic descent finds it: the molten thing keeps returning to the forge that made it, and follows home whoever survives the fire twice.",
-        "crystal_tide": "A tide sprite that rides its own drop of sea-glass, hooked out of still water by anglers from the Vale to Farshore who were fishing for supper. It keeps the water it came up in, and it will not be talked into going back.",
-        "phantom": "A palm-sized haunt out of the Wraithwood barrows, all sheet and no bones, which turns up in a pack that was closed and stays for the company. Nobody has worked out what it wants, and it has never once tried to frighten anyone."
+        "ember_fox": "이스트브룩 골짜기의 산울타리에서 온 암여우로, 겨울 덤불 사이로 비치는 숯빛 붉은 털에서 이름을 얻었다. 그곳 사냥꾼들은 몇 세대 전에 새끼 잡기를 포기하고, 대신 먹이를 내놓기 시작했다.",
+        "moss_hare": "버들늪의 산토끼로, 젖은 이탄에 평생 몸을 눕히며 털이 초록으로 물들었다. 늪지 약초사들은 이들을 길조로 여기며, 문간에 온 녀석을 내쫓게 두지 않는다.",
+        "frog": "마이어펜 습지는 이들을 살지고 태평하게 길러낸다. 갈대밭에서 밤새도록 노래한다. 늪 안내인들은 이 녀석을 태운 배는 절대 좌초하지 않는다고 장담한다.",
+        "crimson_claw_crab": "먼바다 해안의 조간대 게로, 물 밖에 나온 지 한참이 지나도 집게가 붉게 남는다. 부두 인부들은 예전에 판자 위에서 이들을 경주시키며 돈을 걸었다.",
+        "golden_sentinel": "호박빛 가을터의 파수 딱정벌레로, 자라난 수지에 도금되어 금빛을 띤다. 이름이 수지보다 오래되었다. 누군가 수액을 병에 담을 생각을 하기 훨씬 전부터, 그런 부류의 파수꾼들이 그 숲을 지켜왔다.",
+        "nightfang": "밤꽃 평원의 어린 사냥꾼으로, 제 동족의 기준으로 봐도 유난히 조용하다. 곁을 따르는 것은 그저 함께 있고 싶어서이고, 나방보다 큰 것은 사냥하지 않는다.",
+        "tuskhorn_boar": "쏜피크 고지의 혈통으로, 울타리를 무너뜨리지 못하는 멧돼지를 원한 목동들이 다리를 짧게 개량한 것이다. 성질은 그대로 남았다.",
+        "emerald_wolf": "망령숲의 새끼 늑대로, 숲 바닥까지 거의 닿지 않는 잎새 사이 빛 아래에서는 털이 초록빛을 띤다. 숲이 남긴 고아는 어떤 것이든 관리인들이 거두어 기른다.",
+        "tiger": "야자 해안의 줄무늬를 지녔으나 야자 해안을 본 적 없는 짐승으로, 옛 동물원이 문을 닫은 뒤로 이 혈통은 줄곧 사육되어 왔다. 오직 호루라기에만 응하고 그 밖의 어떤 것에도 응하지 않는다.",
+        "cate_coin": "깔고 앉은 동전에서 절대 떨어지지 않으며, 무언가 먹는 모습을 본 사람이 아무도 없는 고양이. 이스트브룩 상인들은 아직도 둘 중 어느 쪽이 애완동물인지를 두고 다툰다.",
+        "alon": "어떤 지도에도 없는 길에서 온 여행자의 마스코트로, 일이 틀어지는 곳이면 어디든 나타난다. 지켜보고, 고개를 끄덕이고, 도움은 전혀 주지 않는다.",
+        "trollface": "망령숲이 내놓고는 도로 거두어들이려 하지 않은, 히죽 웃는 것. 이를 설명하려는 시도는 매번 설명하던 사람이 웃음을 터뜨리고 포기하는 것으로 끝난다.",
+        "ansem": "문과 어둠에 대해 말하지만 그 이상은 결코 말하지 않는다. 밤꽃 평원의 신도들은 자기네 것이라 주장하지만, 의식을 치를 때마다 어디론가 사라진다.",
+        "triple_t": "무언가가 셋인지, 한 가지가 세 번 겹친 것인지. 증언마다 말이 다르고, 정작 이 생물은 셀 수 있을 만큼 가만히 있어 주지 않는다.",
+        "kekius": "출처가 분명치 않은 웃는 동행으로, 게일크레스트 경주장이 부적 삼아 거두었다. 이 녀석을 믿고 맹세하던 마구간 네 곳보다 오래 살아남았다.",
+        "solbot": "햇빛을 먹고 도는 작은 자동기계로, 드레이크랜드의 잿더미에 반쯤 묻힌 채 파냈을 때도 여전히 움직이고 있었다. 이를 만든 공방은 외피 어디에도 표시를 남기지 않았다.",
+        "frostfire": "서리장막 봉우리에서 온천이 빙원을 뚫고 솟는 자리에 태어났으며, 자신이 어느 쪽에 속하는지 아직도 정하지 못했다. 찬 공기에서는 김을 내고, 따뜻한 곳에서는 몸을 떤다.",
+        "rocky": "쏜피크 고지의 너덜지대에 사는 돌껍질 기어다니는 것으로, 느리고 무엇에도 아랑곳하지 않는다. 광부들은 붕락 직전 한순간 딱 멈춰 서는 그 습성 때문에 이들을 기른다.",
+        "proud_grunt": "전쟁 보급창의 노병으로, 경례는 지켰으나 계급은 잃었다. 전쟁원수 드레이븐 콜은 그 대가를 알 만큼의 명예를 지닌 병사에게라면 누구에게든 한 명을 내어준다.",
+        "loot_goblin": "영웅의 징표를 지닌 사람이라면 누구든 따라다니지만, 훔치다 걸린 적은 단 한 번도 없다. 병참장교 벡스는 그것이 아무것도 증명하지 못한다고 주장한다.",
+        "penny_goldspark": "노움 기술자의 견습으로, 시간당 삯을 받지만 구리 한 닢까지 값을 한다. 방어구 제작자 호드는 빚을 갚느라 그녀를 거두었고, 이제는 금화 천 냥을 쥔 사람이면 누구에게든 이 계약을 판다.",
+        "stag": "상록 정원의 혈통으로, 관리인들이 예전에 타던 큰 사슴에서 대를 이어 작게 길러낸 것이다. 손을 들면 여전히 고개를 숙이는데, 이 짐승 자신보다 오래된 버릇이다.",
+        "alpaca": "게일크레스트의 무리는 털과 성정 때문에 이들을 기른다. 폭풍 속에서 이보다 침착한 짐승은 없다. 이 녀석은 여정마다 정확히 한 사람에게 침을 뱉는다.",
+        "bull": "개만 한 크기의 이스트브룩 골짜기 황소로, 사람들이 실내에서 기르기로 한 이유는 오직 그 크기뿐이다. 성질머리는 함께 줄어들지 않았다.",
+        "spider": "망령숲의 직조자로, 손바닥만 한 크기에, 자기가 담긴 배낭이라면 어디든 새로 꾸며 놓는다. 그 거미줄은 대신 들어간 실보다 질기다.",
+        "raptor": "드레이크랜드의 부화 개체로, 제가 얼마나 빨리 달릴 수 있는지 깨닫기 전에 팔려 나간다. 새 주인은 하나같이 굶기지 말라는 말을 듣고, 두 번 들을 필요가 있는 사람은 없다.",
+        "skeleton": "망령숲의 고분에서 기어 나와 제 몸의 먼지를 털고는, 그 뒤로 줄곧 사람들을 따라다닌다. 이 뼈가 누구의 것이었는지는 아직 아무도 밝혀내지 못했다.",
+        "crystal_lich": "나이트락시스 자신의 파편으로, 그를 빚어낸 냉기를 아직도 웅웅 울리며 품고 있다. 공격대의 잔해에서 자신을 끄집어낸 자를 따르지만, 그 일을 아직 용서하지는 않았다.",
+        "forgemaw": "마지막 샘의 도가니에서 벼려졌으나 끝내 완성되지 못한 것으로, 망치질이 아직 이어지는 동안 이그니바르의 주조장을 제 발로 걸어 나왔다. 오직 영웅 난이도의 공략만이 그를 찾아낸다. 이 용융체는 자신을 만든 화로로 자꾸 돌아가고, 불길을 두 번 살아남은 자를 따라 집까지 온다.",
+        "crystal_tide": "자기 몫의 바다유리 방울을 타고 다니는 조수 정령으로, 이스트브룩 골짜기부터 먼바다 해안까지 저녁거리를 낚던 낚시꾼들이 잔잔한 물에서 건져 올렸다. 자신이 딸려 올라온 물을 그대로 지니고 다니며, 돌아가라는 말은 듣지 않는다.",
+        "phantom": "망령숲의 고분에서 나온 손바닥만 한 유령으로, 온통 천뿐이고 뼈는 없다. 분명히 닫아둔 배낭 안에 나타나서는 함께 있고 싶다는 이유로 눌러앉는다. 무엇을 원하는지 아무도 알아내지 못했고, 누군가를 겁주려 한 적은 한 번도 없다."
       },
       "petKind": {
-        "beast": "Beasts",
-        "elemental": "Elementals",
-        "humanoid": "Humanoids",
-        "undead": "Undead",
-        "celebrity": "Celebrities"
+        "beast": "야수",
+        "elemental": "정령",
+        "humanoid": "인간형",
+        "undead": "언데드",
+        "celebrity": "유명 인사"
       },
       "armor": {
-        "cloth": "Cloth",
+        "cloth": "천",
         "mail": "Mail",
-        "leather": "Leather"
+        "leather": "가죽"
       },
       "stat": {
-        "intellect": "Intellect",
-        "agility": "Agility",
-        "strength": "Strength",
-        "mixed": "Hybrid"
+        "intellect": "지능",
+        "agility": "민첩성",
+        "strength": "힘",
+        "mixed": "혼합"
       },
       "set": {
-        "owned": "{owned} of {total} pieces",
-        "itemLevel": "ilvl {level}",
-        "bonusLabel": "{pieces} pieces"
+        "owned": "{total}개 중 {owned}개",
+        "itemLevel": "아이템 레벨 {level}",
+        "bonusLabel": "{pieces}개 세트"
       },
       "detail": {
-        "dropLabel": "Drops from",
+        "dropLabel": "드롭 출처",
         "vendorLabel": "Sold by",
-        "bindLabel": "Binding",
-        "sellLabel": "Vendor pays",
-        "marketLabel": "World Market",
-        "exchangeLabel": "$WOC Exchange",
-        "setLabel": "Collected",
-        "drop": "{mob} ({location}), {chance}% per kill",
-        "heroicDrop": "{mob} ({location}), Heroic only, {chance}% per kill",
-        "dropWithHeroic": "{mob} ({location}), {chance}% per kill, {heroicChance}% on Heroic",
-        "globalDrop": "Any enemy, {chance}% per kill, one of {count} at this rarity",
-        "fishingDrop": "Fishing anywhere, {chance}% per catch",
+        "bindLabel": "귀속",
+        "sellLabel": "상인 지불액",
+        "marketLabel": "월드 마켓",
+        "exchangeLabel": "$WOC 거래소",
+        "setLabel": "수집함",
+        "drop": "{mob}({location}), 처치당 {chance}%",
+        "heroicDrop": "{mob}({location}), 영웅 난이도 전용, 처치당 {chance}%",
+        "dropWithHeroic": "{mob}({location}), 처치당 {chance}%, 영웅 난이도에서 {heroicChance}%",
+        "globalDrop": "아무 적, 처치당 {chance}%, 같은 등급 {count}종 중 하나",
+        "fishingDrop": "아무 곳에서나 낚시, 낚을 때마다 {chance}%",
         "vendor": "{npc} ({location}) for {price}",
-        "honorPrice": "{amount} Honor",
-        "marksPrice": "{amount} Heroic Marks",
-        "noSource": "No source in the game yet",
-        "noItem": "No item grants this yet",
-        "tradeable": "Tradeable",
-        "soulbound": "Soulbound",
-        "noSell": "Cannot be sold",
-        "marketAtMerchant": "Shown at the Merchant",
-        "marketChecking": "Checking...",
-        "marketNone": "No listings",
-        "exchangeNone": "No listings",
-        "exchangeUnavailable": "Not available on this client"
+        "honorPrice": "명예 {amount}",
+        "marksPrice": "영웅의 징표 {amount}",
+        "noSource": "아직 게임 내 획득처가 없습니다",
+        "noItem": "아직 이를 주는 아이템이 없습니다",
+        "tradeable": "거래 가능",
+        "soulbound": "귀속",
+        "noSell": "판매 불가",
+        "marketAtMerchant": "상인에게서 확인",
+        "marketChecking": "확인 중…",
+        "marketNone": "등록된 물품 없음",
+        "exchangeNone": "등록된 물품 없음",
+        "exchangeUnavailable": "이 클라이언트에서는 사용할 수 없습니다"
       }
     },
     "calendar": {
@@ -9872,7 +9872,7 @@ export const ko_KR: EnTranslations = {
       "elixir": "비약",
       "bag": "가방",
       "mount": "탈것",
-      "buddy": "Buddy",
+      "buddy": "버디",
       "skin": "스킨"
     },
     "stats": {
@@ -13408,97 +13408,97 @@ export const ko_KR: EnTranslations = {
         "name": "안식의 돌"
       },
       "whistle_ember_fox": {
-        "name": "Ember Fox Whistle"
+        "name": "잉걸불 여우의 호루라기"
       },
       "whistle_moss_hare": {
-        "name": "Moss Hare Whistle"
+        "name": "이끼 산토끼의 호루라기"
       },
       "whistle_frog": {
-        "name": "Frog Whistle"
+        "name": "개구리의 호루라기"
       },
       "whistle_crimson_claw_crab": {
-        "name": "Crimson Claw Crab Whistle"
+        "name": "진홍 집게 게의 호루라기"
       },
       "whistle_golden_sentinel": {
-        "name": "Golden Sentinel Whistle"
+        "name": "황금 파수병의 호루라기"
       },
       "whistle_nightfang": {
-        "name": "Nightfang Whistle"
+        "name": "밤엄니의 호루라기"
       },
       "whistle_tuskhorn_boar": {
-        "name": "Tuskhorn Boar Whistle"
+        "name": "엄니뿔 멧돼지의 호루라기"
       },
       "whistle_emerald_wolf": {
-        "name": "Emerald Wolf Whistle"
+        "name": "에메랄드 늑대의 호루라기"
       },
       "whistle_tiger": {
-        "name": "Tiger Whistle"
+        "name": "호랑이의 호루라기"
       },
       "whistle_cate_coin": {
-        "name": "Cate Coin Whistle"
+        "name": "케이트 코인의 호루라기"
       },
       "whistle_alon": {
-        "name": "Alon Whistle"
+        "name": "알론의 호루라기"
       },
       "whistle_trollface": {
-        "name": "Trollface Whistle"
+        "name": "트롤페이스의 호루라기"
       },
       "whistle_ansem": {
-        "name": "Ansem Whistle"
+        "name": "안셈의 호루라기"
       },
       "whistle_triple_t": {
-        "name": "Triple T Whistle"
+        "name": "트리플 T의 호루라기"
       },
       "whistle_kekius": {
-        "name": "Kekius Whistle"
+        "name": "케키우스의 호루라기"
       },
       "whistle_solbot": {
-        "name": "Solbot Whistle"
+        "name": "솔봇의 호루라기"
       },
       "whistle_frostfire": {
-        "name": "Frostfire Whistle"
+        "name": "서리불꽃의 호루라기"
       },
       "whistle_rocky": {
-        "name": "Rocky Whistle"
+        "name": "로키의 호루라기"
       },
       "whistle_proud_grunt": {
-        "name": "Proud Grunt Whistle"
+        "name": "자랑스러운 병졸의 호루라기"
       },
       "whistle_loot_goblin": {
-        "name": "Loot Goblin Whistle"
+        "name": "전리품 고블린의 호루라기"
       },
       "whistle_penny_goldspark": {
-        "name": "Penny Goldspark Whistle"
+        "name": "페니 골드스파크의 호루라기"
       },
       "whistle_stag": {
-        "name": "Stag Whistle"
+        "name": "수사슴의 호루라기"
       },
       "whistle_alpaca": {
-        "name": "Alpaca Whistle"
+        "name": "알파카의 호루라기"
       },
       "whistle_bull": {
-        "name": "Bull Whistle"
+        "name": "황소의 호루라기"
       },
       "whistle_spider": {
-        "name": "Spider Whistle"
+        "name": "거미의 호루라기"
       },
       "whistle_raptor": {
-        "name": "Raptor Whistle"
+        "name": "랩터의 호루라기"
       },
       "whistle_skeleton": {
-        "name": "Skeleton Whistle"
+        "name": "해골의 호루라기"
       },
       "whistle_crystal_lich": {
-        "name": "Crystal Lich Whistle"
+        "name": "수정 리치의 호루라기"
       },
       "whistle_forgemaw": {
-        "name": "Forgemaw The Molten Whistle"
+        "name": "용융의 화로아귀의 호루라기"
       },
       "whistle_crystal_tide": {
-        "name": "Crystal Tide Whistle"
+        "name": "수정 물결의 호루라기"
       },
       "whistle_phantom": {
-        "name": "Phantom Whistle"
+        "name": "팬텀의 호루라기"
       },
       "lastflame_core": {
         "name": "마지막 불꽃의 핵"
@@ -15507,7 +15507,7 @@ export const ko_KR: EnTranslations = {
         "name": "분지의 목소리 줄가르"
       },
       "buddy_ember_fox": {
-        "name": "Ember Fox"
+        "name": "잉걸불 여우"
       },
       "buddy_moss_hare": {
         "name": "Moss Hare"
@@ -15516,22 +15516,22 @@ export const ko_KR: EnTranslations = {
         "name": "Frog"
       },
       "buddy_crimson_claw_crab": {
-        "name": "Crimson Claw Crab"
+        "name": "진홍 집게 게"
       },
       "buddy_golden_sentinel": {
-        "name": "Golden Sentinel"
+        "name": "황금 파수병"
       },
       "buddy_nightfang": {
-        "name": "Nightfang"
+        "name": "밤엄니"
       },
       "buddy_tuskhorn_boar": {
-        "name": "Tuskhorn Boar"
+        "name": "엄니뿔 멧돼지"
       },
       "buddy_emerald_wolf": {
-        "name": "Emerald Wolf"
+        "name": "에메랄드 늑대"
       },
       "buddy_tiger": {
-        "name": "Tiger"
+        "name": "호랑이"
       },
       "buddy_cate_coin": {
         "name": "Cate Coin"
@@ -15540,64 +15540,64 @@ export const ko_KR: EnTranslations = {
         "name": "Alon"
       },
       "buddy_trollface": {
-        "name": "Trollface"
+        "name": "트롤페이스"
       },
       "buddy_ansem": {
-        "name": "Ansem"
+        "name": "안셈"
       },
       "buddy_triple_t": {
-        "name": "Triple T"
+        "name": "트리플 T"
       },
       "buddy_kekius": {
-        "name": "Kekius"
+        "name": "케키우스"
       },
       "buddy_solbot": {
-        "name": "Solbot"
+        "name": "솔봇"
       },
       "buddy_frostfire": {
-        "name": "Frostfire"
+        "name": "서리불꽃"
       },
       "buddy_rocky": {
-        "name": "Rocky"
+        "name": "로키"
       },
       "buddy_proud_grunt": {
-        "name": "Proud Grunt"
+        "name": "자랑스러운 병졸"
       },
       "buddy_loot_goblin": {
-        "name": "Loot Goblin"
+        "name": "전리품 고블린"
       },
       "buddy_penny_goldspark": {
-        "name": "Penny Goldspark"
+        "name": "페니 골드스파크"
       },
       "buddy_stag": {
         "name": "Stag"
       },
       "buddy_alpaca": {
-        "name": "Alpaca"
+        "name": "알파카"
       },
       "buddy_bull": {
         "name": "Bull"
       },
       "buddy_spider": {
-        "name": "Spider"
+        "name": "거미"
       },
       "buddy_raptor": {
-        "name": "Raptor"
+        "name": "랩터"
       },
       "buddy_skeleton": {
-        "name": "Skeleton"
+        "name": "해골"
       },
       "buddy_crystal_lich": {
-        "name": "Crystal Lich"
+        "name": "수정 리치"
       },
       "buddy_forgemaw": {
-        "name": "Forgemaw The Molten"
+        "name": "용융의 화로아귀"
       },
       "buddy_crystal_tide": {
-        "name": "Crystal Tide"
+        "name": "수정 물결"
       },
       "buddy_phantom": {
-        "name": "Phantom"
+        "name": "팬텀"
       },
       "ironvein_foreman": {
         "name": "철맥 감독관"

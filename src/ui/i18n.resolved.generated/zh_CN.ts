@@ -1563,7 +1563,7 @@ export const zh_CN: EnTranslations = {
       "showDevBadges": "显示开发者徽章",
       "showOwnNameplate": "显示我的姓名板",
       "showPlayerNameplates": "显示玩家姓名板",
-      "showPetNames": "Show Pet Names",
+      "showPetNames": "显示宠物名称",
       "uiScale": "界面缩放",
       "playerFrameScale": "玩家框缩放",
       "targetFrameScale": "目标框缩放",
@@ -1994,7 +1994,7 @@ export const zh_CN: EnTranslations = {
       "gossipOptionAria": "浏览 {name} 提供的战争套装商店",
       "jewelry": "饰品",
       "weapons": "武器",
-      "companions": "Companions",
+      "companions": "伙伴",
       "owned": "已拥有",
       "buyAria": "以 {honor} 购买 {item}",
       "buyOwnedAria": "以 {honor} 购买 {item}，已拥有",
@@ -2421,10 +2421,10 @@ export const zh_CN: EnTranslations = {
       "streamerBadgeTitle": "认证主播"
     },
     "buddyMenu": {
-      "autolootEnable": "Enable Autoloot",
-      "autolootDisable": "Disable Autoloot",
-      "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
-      "cancel": "Cancel"
+      "autolootEnable": "开启自动拾取",
+      "autolootDisable": "关闭自动拾取",
+      "autolootHint": "你的伙伴会去拾取 30 码内属于你自己的尸体上的战利品。",
+      "cancel": "取消"
     },
     "lootSettings": {
       "title": "拾取设置",
@@ -3444,102 +3444,102 @@ export const zh_CN: EnTranslations = {
       "logAdminPurge": "管理员移除了 {count} 个 {item}"
     },
     "collections": {
-      "title": "Hunting",
-      "close": "Close hunting",
-      "keybindLabel": "Hunting",
-      "launcherTitle": "Hunting: buddies, mounts and item sets",
+      "title": "狩猎",
+      "close": "关闭狩猎",
+      "keybindLabel": "狩猎",
+      "launcherTitle": "狩猎：伙伴、坐骑与套装",
       "tabs": {
-        "buddies": "Buddies",
-        "mounts": "Mounts",
+        "buddies": "伙伴",
+        "mounts": "坐骑",
         "sets": "Item Sets"
       },
       "state": {
-        "owned": "Collected",
-        "notOwned": "Not collected",
-        "unavailable": "Not obtainable yet"
+        "owned": "已收集",
+        "notOwned": "未收集",
+        "unavailable": "尚无法获得"
       },
       "buddyLore": {
-        "ember_fox": "A vixen out of the Eastbrook Vale hedgerows, named for the coal-red coat that shows through winter scrub. The trappers there gave up on the kits generations ago and started leaving food out instead.",
-        "moss_hare": "The Willowfen hare, green-furred from a lifetime bedded down in wet peat. Fen herbalists count them lucky and will not have one chased off a doorstep.",
-        "frog": "Mirefen Marsh raises them fat and unbothered, singing all night from the reed beds. The marsh guides swear a boat carrying one never runs aground.",
-        "crimson_claw_crab": "A Farshore tidal crab whose claw stays red long after it leaves the water. Dock crews used to race them along the boards for coin.",
-        "golden_sentinel": "A watch-beetle of the Amberfall, gilded by the resin it grew up in. The name is older than the resin: sentinels of a kind kept those groves long before anyone thought to bottle the sap.",
-        "nightfang": "A young Nightbloom hunter, silent even by the standards of its kind. It follows for the company and hunts nothing larger than a moth.",
-        "tuskhorn_boar": "Thornpeak stock, bred short-legged by shepherds who wanted a boar that could not put a fence down. It kept the temper regardless.",
-        "emerald_wolf": "A Wraithwood pup, its coat green in the canopy light that never quite reaches the forest floor. The wardens raise whichever orphans the wood leaves behind.",
-        "tiger": "Palmreach stripes on an animal that has never seen the Palmreach: the line has been kept in captivity since the old menageries closed. It answers to a whistle and to nothing else.",
-        "cate_coin": "A cat that will not be parted from the coin it sits on, and that nobody has ever seen eat. Eastbrook merchants still argue over which of the two is the pet.",
-        "alon": "A traveller's mascot from a road no map will admit to, turning up wherever a plan is going badly. It watches, it approves, and it offers no help whatsoever.",
-        "trollface": "A grinning thing the Wraithwood put out and would not take back. Every attempt to describe it ends with the describer laughing and giving up.",
-        "ansem": "It speaks of doors and of darkness and will not be drawn further on either. The Nightbloom cultists claim it as theirs; it wanders off whenever they hold a rite.",
-        "triple_t": "Three of something, or one thing three times over. The accounts disagree, and the creature will not hold still long enough to be counted.",
-        "kekius": "A laughing companion of unclear origin, adopted by the Galecrest race yards as a charm. It has outlived four stables that swore by it.",
-        "solbot": "A small sun-fed automaton, dug half-buried out of the Drakelands ash and still ticking. Whatever workshop built it left no mark anywhere on the casing.",
-        "frostfire": "Born in the Frostveil Reach where a hot spring surfaces through the ice field, and it has never settled on which half it belongs to. It steams in cold air and shivers in warm.",
-        "rocky": "A stone-shelled crawler off the Thornpeak scree, slow and thoroughly unbothered. Miners keep them for the way they go still a moment before a collapse.",
-        "proud_grunt": "A veteran of the Warfare stores who kept the salute and lost the rank. Warmarshal Draven Kole hands one to any soldier with honor enough to know what that costs.",
-        "loot_goblin": "It follows anyone carrying Heroic Marks and has never once been caught stealing. Quartermaster Vex maintains that this proves nothing at all.",
-        "penny_goldspark": "A gnome tinker's apprentice who charges by the hour and is worth every copper of it. Armorer Hode took her on to settle a debt and now sells the arrangement to anyone holding a thousand gold.",
-        "stag": "Evergarden bloodline, bred down from the great stags the wardens once rode. It still lowers its head at a raised hand, from a habit older than the animal.",
-        "alpaca": "The Galecrest herds keep them for wool and for temper: nothing stays calmer in a storm. This one will spit at exactly one person per journey.",
-        "bull": "A Vale bull the size of a dog, which is the only reason anyone agreed to keep one indoors. The temperament did not scale down with the rest.",
-        "spider": "A Wraithwood weaver, palm-sized, that redecorates any pack it is carried in. The webbing is stronger than the thread it replaces.",
-        "raptor": "Drakelands hatchling stock, sold on before it learns how fast it can run. Every new owner is told to keep it fed, and none of them need telling twice.",
-        "skeleton": "It came up out of the Wraithwood barrows, dusted itself off, and has followed people about ever since. Nobody has established whose bones these were.",
-        "crystal_lich": "A splinter of Nythraxis itself, still humming with the cold that shaped it. It answers to whoever pulled it from the wreck of the raid, and it has not forgiven them for it.",
-        "forgemaw": "Forged in the Crucible of the Last Spring and never quite finished, it walked out of Ignivar's foundry while the hammers were still falling. Only the heroic descent finds it: the molten thing keeps returning to the forge that made it, and follows home whoever survives the fire twice.",
-        "crystal_tide": "A tide sprite that rides its own drop of sea-glass, hooked out of still water by anglers from the Vale to Farshore who were fishing for supper. It keeps the water it came up in, and it will not be talked into going back.",
-        "phantom": "A palm-sized haunt out of the Wraithwood barrows, all sheet and no bones, which turns up in a pack that was closed and stays for the company. Nobody has worked out what it wants, and it has never once tried to frighten anyone."
+        "ember_fox": "出自东溪谷树篱间的母狐，得名于冬日枯丛中透出的炭红皮毛。那里的猎人几代之前就不再打幼崽的主意，改成替它们留下食物。",
+        "moss_hare": "柳泽沼地的野兔，一辈子卧在湿泥炭里，长出了一身绿毛。沼泽的草药师视它们为吉兆，绝不肯把落在门前的赶走。",
+        "frog": "泥沼湿地把它们养得肥壮而无忧无虑，整夜在苇丛里高歌。沼泽向导都赌咒说，船上载着一只就绝不会搁浅。",
+        "crimson_claw_crab": "远岸的潮间蟹，离水许久之后钳子依旧通红。当年码头工人常让它们在跳板上赛跑赌钱。",
+        "golden_sentinel": "琥珀秋境的守望甲虫，被自己长大的那片树脂镀成了金色。这名字比树脂更古老：早在有人想到装取树液之前，就已有某种哨兵守着那些林子了。",
+        "nightfang": "夜绽花野的年轻猎手，即便以同类的标准衡量也安静得出奇。它跟着人只为作伴，猎物从不比飞蛾更大。",
+        "tuskhorn_boar": "荆峰高地的种，被牧人刻意育成短腿，图的是一头拱不倒篱笆的野猪。脾气倒是原封不动地留下来了。",
+        "emerald_wolf": "一只怨灵林的幼狼，皮毛在几乎照不到林底的树冠余光里泛着绿色。守林人会把森林留下的每一只孤儿养大。",
+        "tiger": "一身棕榈湾的斑纹，长在一头从没见过棕榈湾的兽身上：自从旧日兽苑关闭，这一支血脉便一直圈养至今。它只听哨声，此外什么也不应。",
+        "cate_coin": "一只猫，绝不肯离开自己屁股底下那枚钱币，也从没人见它吃过东西。东溪谷的商人至今还在争论：这两者到底哪一个才是宠物。",
+        "alon": "一位旅人的吉祥物，来自任何地图都不肯承认的道路，总在计划出岔子的地方现身。它看着，它点头，然后什么忙也不帮。",
+        "trollface": "怨灵林放出来、又不肯收回去的一张咧嘴笑脸。每一次试图描述它的尝试，都以描述者自己笑场放弃告终。",
+        "ansem": "它谈论门扉与黑暗，再问就不肯多说了。夜绽花野的信徒声称它属于他们；可每逢他们举行仪式，它就溜走了。",
+        "triple_t": "某样东西的三份，或是同一样东西重复三遍。各家说法互相矛盾，而这生物又从不肯老实待着让人数清。",
+        "kekius": "一位来历不明的欢笑同伴，被疾风崖的赛马场收作吉祥物。发誓靠它转运的马厩换了四家，它还在。",
+        "solbot": "一具以阳光为食的小型自动机，从龙裔荒原的火山灰里半埋着挖出来时仍在走动。造它的作坊没在外壳上留下任何印记。",
+        "frostfire": "生于霜幕之境一处温泉涌出冰原的地方，它始终没弄明白自己属于哪一半。冷天里冒着热气，暖处又直打哆嗦。",
+        "rocky": "荆峰高地碎石坡上的石壳爬行者，行动迟缓，且彻底心无挂碍。矿工养着它们，是因为它们总在塌方前一瞬静止不动。",
+        "proud_grunt": "战备仓库的一名老兵，敬礼保住了，军衔丢了。战帅德拉文·科尔会把这样一位交给任何一个荣誉足以懂得那代价的士兵。",
+        "loot_goblin": "它跟着每一个身上带着英雄徽记的人，却一次也没被抓到偷东西。军需官维克斯坚称，这压根说明不了任何问题。",
+        "penny_goldspark": "一位侏儒工匠的学徒，按小时收费，而且每一枚铜板都物有所值。护甲匠霍德当年为抵一笔债收下了她，如今谁揣着一千金，他就把这份差事卖给谁。",
+        "stag": "常青园的血脉，由守林人昔日骑乘的巨鹿一代代选育而来。有人抬手，它仍会低下头——那是比这头鹿本身更古老的习惯。",
+        "alpaca": "疾风崖的牧群养它们既为羊毛，也为脾气：暴风雨里没有比它更镇定的。这一只每趟旅程恰好会朝一个人吐口水。",
+        "bull": "一头狗一般大的东溪谷公牛，这也是唯一让人肯把它养在屋里的理由。可脾气并没跟着一起缩小。",
+        "spider": "怨灵林的织网者，巴掌大小，会把任何装着它的背包重新布置一遍。那些蛛丝比它替换掉的线还结实。",
+        "raptor": "龙裔荒原的雏龙种，还没学会自己能跑多快就被转手卖掉。每一位新主人都被叮嘱要喂饱它，而没有一个需要被叮嘱第二遍。",
+        "skeleton": "它从怨灵林的古冢里爬出来，掸了掸自己身上的土，从此就跟着人走。这副骨头当初是谁的，至今没人查清。",
+        "crystal_lich": "尼思拉克西斯本体的一枚碎片，至今仍鸣响着塑成它的那股寒意。谁把它从团队副本的残骸里拽出来，它就听谁的——而且始终没有原谅那个人。",
+        "forgemaw": "在最后泉源熔炉中锻造，却始终没有真正完工——锤声未歇，它便自己走出了伊格尼瓦的铸场。只有英雄难度的下潜才能找到它：这熔融之物总会回到造出它的那座炉子，然后跟着两度熬过烈火的人回家。",
+        "crystal_tide": "一只乘着自己那滴海玻璃的潮汐精灵，被从东溪谷到远岸只想钓顿晚饭的渔人从静水里勾了上来。它把捞起它的那捧水一直带在身边，怎么劝也不肯回去。",
+        "phantom": "来自怨灵林古冢的巴掌大幽魂，只有一层布、没有骨头，会出现在一个明明合好的背包里，然后为了作伴留下来。没人弄清它想要什么，而它一次也没试过吓唬谁。"
       },
       "petKind": {
-        "beast": "Beasts",
-        "elemental": "Elementals",
-        "humanoid": "Humanoids",
-        "undead": "Undead",
-        "celebrity": "Celebrities"
+        "beast": "野兽",
+        "elemental": "元素生物",
+        "humanoid": "人型生物",
+        "undead": "亡灵",
+        "celebrity": "名流"
       },
       "armor": {
-        "cloth": "Cloth",
+        "cloth": "布甲",
         "mail": "Mail",
-        "leather": "Leather"
+        "leather": "皮甲"
       },
       "stat": {
-        "intellect": "Intellect",
-        "agility": "Agility",
-        "strength": "Strength",
-        "mixed": "Hybrid"
+        "intellect": "智力",
+        "agility": "敏捷",
+        "strength": "力量",
+        "mixed": "混合"
       },
       "set": {
-        "owned": "{owned} of {total} pieces",
-        "itemLevel": "ilvl {level}",
-        "bonusLabel": "{pieces} pieces"
+        "owned": "{total} 件中已收集 {owned} 件",
+        "itemLevel": "装等 {level}",
+        "bonusLabel": "{pieces} 件套"
       },
       "detail": {
-        "dropLabel": "Drops from",
+        "dropLabel": "掉落自",
         "vendorLabel": "Sold by",
-        "bindLabel": "Binding",
-        "sellLabel": "Vendor pays",
-        "marketLabel": "World Market",
-        "exchangeLabel": "$WOC Exchange",
-        "setLabel": "Collected",
-        "drop": "{mob} ({location}), {chance}% per kill",
-        "heroicDrop": "{mob} ({location}), Heroic only, {chance}% per kill",
-        "dropWithHeroic": "{mob} ({location}), {chance}% per kill, {heroicChance}% on Heroic",
-        "globalDrop": "Any enemy, {chance}% per kill, one of {count} at this rarity",
-        "fishingDrop": "Fishing anywhere, {chance}% per catch",
+        "bindLabel": "绑定",
+        "sellLabel": "商人收购价",
+        "marketLabel": "世界市场",
+        "exchangeLabel": "$WOC 交易所",
+        "setLabel": "已收集",
+        "drop": "{mob}（{location}），每次击杀 {chance}%",
+        "heroicDrop": "{mob}（{location}），仅限英雄难度，每次击杀 {chance}%",
+        "dropWithHeroic": "{mob}（{location}），每次击杀 {chance}%，英雄难度 {heroicChance}%",
+        "globalDrop": "任意敌人，每次击杀 {chance}%，同稀有度 {count} 件中的一件",
+        "fishingDrop": "任意水域钓鱼，每次上钩 {chance}%",
         "vendor": "{npc} ({location}) for {price}",
-        "honorPrice": "{amount} Honor",
-        "marksPrice": "{amount} Heroic Marks",
-        "noSource": "No source in the game yet",
-        "noItem": "No item grants this yet",
-        "tradeable": "Tradeable",
-        "soulbound": "Soulbound",
-        "noSell": "Cannot be sold",
-        "marketAtMerchant": "Shown at the Merchant",
-        "marketChecking": "Checking...",
-        "marketNone": "No listings",
-        "exchangeNone": "No listings",
-        "exchangeUnavailable": "Not available on this client"
+        "honorPrice": "{amount} 荣誉",
+        "marksPrice": "{amount} 英雄徽记",
+        "noSource": "游戏中尚无获取途径",
+        "noItem": "尚无物品可以获得",
+        "tradeable": "可交易",
+        "soulbound": "灵魂绑定",
+        "noSell": "无法出售",
+        "marketAtMerchant": "在商人处查看",
+        "marketChecking": "查询中…",
+        "marketNone": "无上架",
+        "exchangeNone": "无上架",
+        "exchangeUnavailable": "此客户端不支持"
       }
     },
     "calendar": {
@@ -9872,7 +9872,7 @@ export const zh_CN: EnTranslations = {
       "elixir": "药剂",
       "bag": "背包",
       "mount": "坐骑",
-      "buddy": "Buddy",
+      "buddy": "伙伴",
       "skin": "外观"
     },
     "stats": {
@@ -13408,97 +13408,97 @@ export const zh_CN: EnTranslations = {
         "name": "往生石"
       },
       "whistle_ember_fox": {
-        "name": "Ember Fox Whistle"
+        "name": "余烬狐的哨子"
       },
       "whistle_moss_hare": {
-        "name": "Moss Hare Whistle"
+        "name": "苔藓野兔的哨子"
       },
       "whistle_frog": {
-        "name": "Frog Whistle"
+        "name": "青蛙的哨子"
       },
       "whistle_crimson_claw_crab": {
-        "name": "Crimson Claw Crab Whistle"
+        "name": "赤钳蟹的哨子"
       },
       "whistle_golden_sentinel": {
-        "name": "Golden Sentinel Whistle"
+        "name": "黄金哨兵的哨子"
       },
       "whistle_nightfang": {
-        "name": "Nightfang Whistle"
+        "name": "夜牙的哨子"
       },
       "whistle_tuskhorn_boar": {
-        "name": "Tuskhorn Boar Whistle"
+        "name": "獠角野猪的哨子"
       },
       "whistle_emerald_wolf": {
-        "name": "Emerald Wolf Whistle"
+        "name": "翡翠狼的哨子"
       },
       "whistle_tiger": {
-        "name": "Tiger Whistle"
+        "name": "猛虎的哨子"
       },
       "whistle_cate_coin": {
-        "name": "Cate Coin Whistle"
+        "name": "钱币猫的哨子"
       },
       "whistle_alon": {
-        "name": "Alon Whistle"
+        "name": "阿隆的哨子"
       },
       "whistle_trollface": {
-        "name": "Trollface Whistle"
+        "name": "巨魔脸的哨子"
       },
       "whistle_ansem": {
-        "name": "Ansem Whistle"
+        "name": "安塞姆的哨子"
       },
       "whistle_triple_t": {
-        "name": "Triple T Whistle"
+        "name": "三重T的哨子"
       },
       "whistle_kekius": {
-        "name": "Kekius Whistle"
+        "name": "凯基乌斯的哨子"
       },
       "whistle_solbot": {
-        "name": "Solbot Whistle"
+        "name": "索尔机偶的哨子"
       },
       "whistle_frostfire": {
-        "name": "Frostfire Whistle"
+        "name": "霜火的哨子"
       },
       "whistle_rocky": {
-        "name": "Rocky Whistle"
+        "name": "岩仔的哨子"
       },
       "whistle_proud_grunt": {
-        "name": "Proud Grunt Whistle"
+        "name": "骄傲步兵的哨子"
       },
       "whistle_loot_goblin": {
-        "name": "Loot Goblin Whistle"
+        "name": "战利品哥布林的哨子"
       },
       "whistle_penny_goldspark": {
-        "name": "Penny Goldspark Whistle"
+        "name": "潘妮·金火花的哨子"
       },
       "whistle_stag": {
-        "name": "Stag Whistle"
+        "name": "雄鹿的哨子"
       },
       "whistle_alpaca": {
-        "name": "Alpaca Whistle"
+        "name": "羊驼的哨子"
       },
       "whistle_bull": {
-        "name": "Bull Whistle"
+        "name": "公牛的哨子"
       },
       "whistle_spider": {
-        "name": "Spider Whistle"
+        "name": "蜘蛛的哨子"
       },
       "whistle_raptor": {
-        "name": "Raptor Whistle"
+        "name": "迅猛龙的哨子"
       },
       "whistle_skeleton": {
-        "name": "Skeleton Whistle"
+        "name": "骷髅的哨子"
       },
       "whistle_crystal_lich": {
-        "name": "Crystal Lich Whistle"
+        "name": "水晶巫妖的哨子"
       },
       "whistle_forgemaw": {
-        "name": "Forgemaw The Molten Whistle"
+        "name": "熔颚·熔融者的哨子"
       },
       "whistle_crystal_tide": {
-        "name": "Crystal Tide Whistle"
+        "name": "水晶潮汐的哨子"
       },
       "whistle_phantom": {
-        "name": "Phantom Whistle"
+        "name": "幻魂的哨子"
       },
       "lastflame_core": {
         "name": "末焰之核"
@@ -15507,7 +15507,7 @@ export const zh_CN: EnTranslations = {
         "name": "盆地之声祖尔加"
       },
       "buddy_ember_fox": {
-        "name": "Ember Fox"
+        "name": "余烬狐"
       },
       "buddy_moss_hare": {
         "name": "Moss Hare"
@@ -15516,22 +15516,22 @@ export const zh_CN: EnTranslations = {
         "name": "Frog"
       },
       "buddy_crimson_claw_crab": {
-        "name": "Crimson Claw Crab"
+        "name": "赤钳蟹"
       },
       "buddy_golden_sentinel": {
-        "name": "Golden Sentinel"
+        "name": "黄金哨兵"
       },
       "buddy_nightfang": {
-        "name": "Nightfang"
+        "name": "夜牙"
       },
       "buddy_tuskhorn_boar": {
-        "name": "Tuskhorn Boar"
+        "name": "獠角野猪"
       },
       "buddy_emerald_wolf": {
-        "name": "Emerald Wolf"
+        "name": "翡翠狼"
       },
       "buddy_tiger": {
-        "name": "Tiger"
+        "name": "猛虎"
       },
       "buddy_cate_coin": {
         "name": "Cate Coin"
@@ -15540,64 +15540,64 @@ export const zh_CN: EnTranslations = {
         "name": "Alon"
       },
       "buddy_trollface": {
-        "name": "Trollface"
+        "name": "巨魔脸"
       },
       "buddy_ansem": {
-        "name": "Ansem"
+        "name": "安塞姆"
       },
       "buddy_triple_t": {
-        "name": "Triple T"
+        "name": "三重T"
       },
       "buddy_kekius": {
-        "name": "Kekius"
+        "name": "凯基乌斯"
       },
       "buddy_solbot": {
-        "name": "Solbot"
+        "name": "索尔机偶"
       },
       "buddy_frostfire": {
-        "name": "Frostfire"
+        "name": "霜火"
       },
       "buddy_rocky": {
-        "name": "Rocky"
+        "name": "岩仔"
       },
       "buddy_proud_grunt": {
-        "name": "Proud Grunt"
+        "name": "骄傲的步兵"
       },
       "buddy_loot_goblin": {
-        "name": "Loot Goblin"
+        "name": "战利品哥布林"
       },
       "buddy_penny_goldspark": {
-        "name": "Penny Goldspark"
+        "name": "潘妮·金火花"
       },
       "buddy_stag": {
         "name": "Stag"
       },
       "buddy_alpaca": {
-        "name": "Alpaca"
+        "name": "羊驼"
       },
       "buddy_bull": {
         "name": "Bull"
       },
       "buddy_spider": {
-        "name": "Spider"
+        "name": "蜘蛛"
       },
       "buddy_raptor": {
-        "name": "Raptor"
+        "name": "迅猛龙"
       },
       "buddy_skeleton": {
-        "name": "Skeleton"
+        "name": "骷髅"
       },
       "buddy_crystal_lich": {
-        "name": "Crystal Lich"
+        "name": "水晶巫妖"
       },
       "buddy_forgemaw": {
-        "name": "Forgemaw The Molten"
+        "name": "熔颚·熔融者"
       },
       "buddy_crystal_tide": {
-        "name": "Crystal Tide"
+        "name": "水晶潮汐"
       },
       "buddy_phantom": {
-        "name": "Phantom"
+        "name": "幻魂"
       },
       "ironvein_foreman": {
         "name": "铁脉工头"
