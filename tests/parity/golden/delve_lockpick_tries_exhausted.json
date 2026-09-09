@@ -15,8 +15,8 @@
     {
       "tick": 0,
       "time": 0,
-      "nextId": 999,
-      "state": "69311947",
+      "nextId": 1007,
+      "state": "66339138",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -48,6 +48,7 @@
           "cls": "rogue",
           "companionUpgrades": {},
           "counters": {},
+          "craftDaily": {},
           "craftSkills": {},
           "deedStats": {
             "counters": {},
@@ -60,7 +61,7 @@
           },
           "delveClears": {},
           "delveDaily": {},
-          "entityId": 994,
+          "entityId": 999,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger",
@@ -68,6 +69,9 @@
           },
           "equipmentInstance": {},
           "gatheringProficiency": {},
+          "harvestPreference": {
+            "kind": "all"
+          },
           "heroicDaily": {},
           "inventory": [
             {
@@ -88,7 +92,8 @@
           "townFocus": {},
           "vault": {
             "stock": {}
-          }
+          },
+          "wyrmfallDaily": {}
         }
       ],
       "entities": [
@@ -105,7 +110,7 @@
           "fiveSecondRule": 99,
           "healPower": 6,
           "hp": 62,
-          "id": 994,
+          "id": 999,
           "kind": "player",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -157,9 +162,9 @@
     {
       "tick": 10,
       "time": 0.5,
-      "nextId": 1013,
-      "state": "d4e80d7f",
-      "events": "873d2f22",
+      "nextId": 1021,
+      "state": "be063d57",
+      "events": "9be39354",
       "rng": {
         "draws": 7,
         "digest": "62134f54"
@@ -168,9 +173,9 @@
     {
       "tick": 20,
       "time": 1,
-      "nextId": 1013,
-      "state": "2e875ba1",
-      "events": "632a979f",
+      "nextId": 1021,
+      "state": "0416b92d",
+      "events": "82b32424",
       "rng": {
         "draws": 7,
         "digest": "62134f54"
@@ -179,8 +184,8 @@
     {
       "tick": 30,
       "time": 1.5,
-      "nextId": 1013,
-      "state": "3928c827",
+      "nextId": 1021,
+      "state": "a2248adf",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -190,8 +195,8 @@
     {
       "tick": 40,
       "time": 2,
-      "nextId": 1013,
-      "state": "9456e4f5",
+      "nextId": 1021,
+      "state": "11763b91",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -201,8 +206,8 @@
     {
       "tick": 50,
       "time": 2.5,
-      "nextId": 1013,
-      "state": "77a778df",
+      "nextId": 1021,
+      "state": "4252c0f7",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -212,8 +217,8 @@
     {
       "tick": 60,
       "time": 3,
-      "nextId": 1013,
-      "state": "115da251",
+      "nextId": 1021,
+      "state": "3419705d",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -223,9 +228,15 @@
     {
       "tick": 69,
       "time": 3.45,
+<<<<<<< HEAD
       "nextId": 1014,
       "state": "40f1b298",
       "events": "c838dda8",
+=======
+      "nextId": 1022,
+      "state": "39c9617b",
+      "events": "7e72f7eb",
+>>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
       "rng": {
         "draws": 9,
         "digest": "5153b0c6"
@@ -261,6 +272,7 @@
             "kills": 1,
             "xpGained": 898
           },
+          "craftDaily": {},
           "craftSkills": {},
           "deedStats": {
             "counters": {
@@ -309,7 +321,7 @@
             "eastbrook_ledger"
           ],
           "delveMarks": 1,
-          "entityId": 994,
+          "entityId": 999,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger",
@@ -317,6 +329,9 @@
           },
           "equipmentInstance": {},
           "gatheringProficiency": {},
+          "harvestPreference": {
+            "kind": "all"
+          },
           "heroicDaily": {},
           "inventory": [
             {
@@ -340,6 +355,7 @@
           "vault": {
             "stock": {}
           },
+          "wyrmfallDaily": {},
           "xp": 898
         }
       ],
@@ -356,7 +372,7 @@
           "fiveSecondRule": 102.45,
           "healPower": 6,
           "hp": 50000,
-          "id": 994,
+          "id": 999,
           "inCombat": true,
           "kind": "player",
           "level": 7,
@@ -413,7 +429,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hp": 1,
-          "id": 1012,
+          "id": 1020,
           "kind": "object",
           "level": 1,
           "lootFfaTimer": "Infinity",
@@ -446,8 +462,13 @@
     {
       "tick": 70,
       "time": 3.5,
+<<<<<<< HEAD
       "nextId": 1014,
       "state": "1bf4db76",
+=======
+      "nextId": 1022,
+      "state": "e1f49bc9",
+>>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
       "events": "741638a5",
       "rng": {
         "draws": 9,
@@ -457,8 +478,13 @@
     {
       "tick": 71,
       "time": 3.55,
+<<<<<<< HEAD
       "nextId": 1014,
       "state": "e7322700",
+=======
+      "nextId": 1022,
+      "state": "5486da43",
+>>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
       "events": "741638a5",
       "rng": {
         "draws": 9,
@@ -495,6 +521,7 @@
             "kills": 1,
             "xpGained": 898
           },
+          "craftDaily": {},
           "craftSkills": {},
           "deedStats": {
             "counters": {
@@ -543,7 +570,7 @@
             "eastbrook_ledger"
           ],
           "delveMarks": 1,
-          "entityId": 994,
+          "entityId": 999,
           "equipment": {
             "chest": "footpad_jerkin",
             "mainhand": "rusty_dagger",
@@ -551,6 +578,9 @@
           },
           "equipmentInstance": {},
           "gatheringProficiency": {},
+          "harvestPreference": {
+            "kind": "all"
+          },
           "heroicDaily": {},
           "inventory": [
             {
@@ -574,6 +604,7 @@
           "vault": {
             "stock": {}
           },
+          "wyrmfallDaily": {},
           "xp": 898
         }
       ],
@@ -590,7 +621,7 @@
           "fiveSecondRule": 102.55,
           "healPower": 6,
           "hp": 50000,
-          "id": 994,
+          "id": 999,
           "inCombat": true,
           "kind": "player",
           "level": 7,
@@ -647,7 +678,7 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hp": 1,
-          "id": 1012,
+          "id": 1020,
           "kind": "object",
           "level": 1,
           "lootFfaTimer": "Infinity",

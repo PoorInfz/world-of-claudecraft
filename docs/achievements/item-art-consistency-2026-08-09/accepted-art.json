@@ -80,8 +80,13 @@
     },
     {
       "path": "docs/achievements/item-art-consistency-2026-08-09/final-item-art-audit-verdict.json",
+<<<<<<< HEAD
       "acceptedSha256": "a94def6c14234088a3a2899cd1735d1138f0c35c60b96c05961e439b14040c78",
       "acceptedBytes": 122269
+=======
+      "acceptedSha256": "cc7a2254f1ad5a0335494d4afee6642d3a514d762a19e23bac00c979795b5832",
+      "acceptedBytes": 140013
+>>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     }
   ],
   "generationReports": [

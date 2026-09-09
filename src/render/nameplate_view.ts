@@ -18,7 +18,11 @@
 // garbage on the hot path), mirroring the speedStreaksInto / cameraSpace out-param
 // idiom elsewhere in src/render.
 
+<<<<<<< HEAD
 import { isBuddyMob } from '../sim/pet/buddy_ai';
+=======
+import { isFeastTemplateId } from '../sim/professions/feast';
+>>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 import type { Entity } from '../sim/types';
 import { INTERACT_RANGE } from '../sim/types';
 import { comboPipsFor } from './nameplate_combo';
@@ -147,7 +151,20 @@ export function nameplatePlanInto(
     e.templateId === 'delve_bell_rope' ||
     e.templateId === 'delve_bell_rope_pulled';
   const delveInteractNear = isDelveInteract && d2 <= (INTERACT_RANGE + 1) * (INTERACT_RANGE + 1);
+<<<<<<< HEAD
   const isBuddyPet = isBuddyMob(e);
+=======
+  // The placed harvest feast (Phase 12): labels like the delve interactables,
+  // and like every object plate it carries no hp bar (the flag-family object
+  // treatment). The pad is INTERACT_RANGE + 1, the delve-family hysteresis
+  // band: the plate shows one yard PAST the bite's own INTERACT_RANGE gate
+  // (consumeFeastAction denies strictly beyond it with the merged not-found
+  // frame, farmDenied 'feast_expired', since masterwrought Phase 18), so the
+  // title is already up as a player walks into eating range and never
+  // flickers at the exact boundary.
+  const feastNear =
+    isFeastTemplateId(e.templateId) && d2 <= (INTERACT_RANGE + 1) * (INTERACT_RANGE + 1);
+>>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 
   out.hidden =
     (isSelf && !hasOverheadEmote && !showOwnNameplate) ||
@@ -159,8 +176,13 @@ export function nameplatePlanInto(
     (isBuddyPet && !showPetNames) ||
     (!standIn &&
       (d2 > NAMEPLATE_RANGE_SQ ||
+<<<<<<< HEAD
         (e.kind === 'object' && !isDoor && !delveInteractNear) ||
         (!isBuddyPet && !showNameplates && e.kind === 'mob' && !e.dead) ||
+=======
+        (e.kind === 'object' && !isDoor && !delveInteractNear && !feastNear) ||
+        (!showNameplates && e.kind === 'mob' && !e.dead) ||
+>>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
         (!showPlayerNameplates && e.kind === 'player' && !isSelf && e.id !== player.targetId)));
   out.noHealthBar = isBuddyPet;
   out.anchorYOffset =

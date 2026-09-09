@@ -23,6 +23,8 @@
 //  - producer (rollLoot): per template.loot entry, in array order -- exactly ONE
 //    ctx.rng.next() per rollGroup (partitioned across the group), then for non-group
 //    entries ctx.rng.chance(entry.chance) and, if entry.copper, ctx.rng.int(...).
+//    A `normalOnly` entry draws NOTHING on a heroic claim (loot_difficulty_gate.ts):
+//    the normal trace is unchanged, the heroic trace simply omits those draws.
 //  - consumer: tryAwardCopperByFairSplit's Fisher-Yates ctx.rng.int(i, len-1) on the
 //    remainder, and submitLootRoll's ctx.rng.int(1, 100) for need/greed (null for pass).
 //
@@ -53,8 +55,13 @@ import type {
   MasterLootThreshold,
 } from '../types';
 import { dist2d, PARTY_XP_RANGE } from '../types';
+<<<<<<< HEAD
 import { bopPartyTradeInstance } from './bop_trade_window';
 import { buddyWhistlesOfQuality, GLOBAL_BUDDY_DROP_TIERS } from './global_drops';
+=======
+import { grantAwardedLootItem, grantOrHoldAwardedLoot } from './awarded_loot_hold';
+import { lootEntryRollsOnClaim } from './loot_difficulty_gate';
+>>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 import { isTapGroupMember, LOOT_FFA_DELAY } from './loot_ffa';
 
 // How long (seconds) a need-greed roll stays open before it auto-resolves. Sole
@@ -263,6 +270,10 @@ export function rollLoot(
     return (itemLevel(variant) ?? 0) > (itemLevel(ITEMS[id]) ?? 0) ? variant.id : id;
   };
   for (const entry of template.loot) {
+    // A Normal-only row is not part of a heroic kill at all: skipped BEFORE the
+    // group bookkeeping, so a normalOnly group never draws its partition and the
+    // boss's heroic append below pays that slot instead.
+    if (!lootEntryRollsOnClaim(entry, heroicClaim)) continue;
     // Exclusive groups: a single rng draw is partitioned by the group
     // entries' chances, so at most one matching entry drops.
     // Exactly one rng.next() per group keeps replays deterministic.
@@ -368,14 +379,6 @@ export function rollLoot(
     items.push({ itemId: ctx.rng.pick(pool), count: 1 });
   }
   if (copper > 0 || items.length > 0) {
-    if (items.some((slot) => ITEMS[slot.itemId]?.soulbound)) {
-      mob.lootPartyTradeEligibility = {
-        names: eligible.map((candidate) => candidate.name),
-        characterIds: eligible.flatMap((candidate) =>
-          candidate.characterId === undefined ? [] : [candidate.characterId],
-        ),
-      };
-    }
     mob.loot = { copper, items };
     mob.lootable = true;
     // start the owner-lock countdown: after LOOT_FFA_DELAY the tap opens to all.
@@ -533,12 +536,6 @@ export function killSnapshotEligibility(
   ctx: SimContext,
   mob: Entity,
 ): { names: string[]; characterIds: number[] } {
-  if (mob.lootPartyTradeEligibility) {
-    return {
-      names: [...mob.lootPartyTradeEligibility.names],
-      characterIds: [...mob.lootPartyTradeEligibility.characterIds],
-    };
-  }
   if (!mob.lootRecipientIds || mob.lootRecipientIds.length === 0) {
     return { names: [], characterIds: [] };
   }
@@ -547,32 +544,6 @@ export function killSnapshotEligibility(
     names: candidates.map((c) => c.name),
     characterIds: candidates.flatMap((c) => (c.characterId === undefined ? [] : [c.characterId])),
   };
-}
-
-// The one grant every award arm routes through (including the corpse-return
-// openToAll pickup in interaction.ts). A SOULBOUND drop with anyone else in
-// the drop-moment snapshot is granted as an instanced copy carrying the
-// bind-on-pickup party trade window (bop_trade_window.ts): tradeable only
-// with the players who were loot-eligible at the exact kill moment, until
-// the window expires or the copy is equipped. Everything else stays the
-// plain force-add grant these sites always used.
-//
-// A windowed grant deliberately does NOT auto-equip: addItemInstance has no
-// auto-equip arm, and that is load-bearing here, because equipping strips
-// the window (items.ts equipmentPayloadFor), so an auto-equip on the win
-// would silently destroy the tradability the window exists to grant. The
-// player equips by hand, accepting the bind.
-export function grantAwardedLootItem(
-  ctx: SimContext,
-  itemId: string,
-  pid: number,
-  eligibility: { names: readonly string[]; characterIds: readonly number[] },
-): void {
-  const instance = ITEMS[itemId]?.soulbound
-    ? bopPartyTradeInstance(ctx.lockoutNowMs(), eligibility.names, eligibility.characterIds)
-    : undefined;
-  if (instance) ctx.addItemInstance(itemId, instance, pid, 1);
-  else ctx.addItem(itemId, 1, pid);
 }
 
 // Rotates a common/junk drop over the kill-time eligible party members
@@ -588,16 +559,17 @@ function tryAwardItemByRoundRobin(ctx: SimContext, itemId: string, mob: Entity):
   if (!party) return false;
   const winner = candidates[party.lootTurn % candidates.length];
   party.lootTurn++;
-  grantAwardedLootItem(ctx, itemId, winner.entityId, killSnapshotEligibility(ctx, mob));
+  grantOrHoldAwardedLoot(ctx, mob.id, itemId, winner.entityId, killSnapshotEligibility(ctx, mob));
   return true;
 }
 
 // Returns true when the item was consumed off the corpse (a roll started, a
 // round-robin winner took it, or it landed in the looter's bags); false when
 // the looter-takes-all direct grant found the looter's bags full, so the
-// caller leaves it on the corpse. The roll and round-robin paths are not
-// capacity-gated: those grants force-add (items are never destroyed, and the
-// looter cannot free space on the winner's behalf).
+// caller leaves it on the corpse. The roll and round-robin paths resolve
+// later for a winner who is not the looter, so the looter cannot free space
+// on their behalf: a full-bags winner's award is HELD on the corpse for them
+// instead (loot/awarded_loot_hold.ts), never force-added past capacity.
 export function awardSharedLootItem(
   ctx: SimContext,
   itemId: string,
@@ -856,7 +828,7 @@ export function assignMasterLoot(
         text: `${r.meta.name} assigned [[i:${roll.itemId}]] to ${targetName}.`,
         pid,
       });
-    grantAwardedLootItem(ctx, roll.itemId, targets[0], roll.windowEligible);
+    grantOrHoldAwardedLoot(ctx, roll.mobId, roll.itemId, targets[0], roll.windowEligible);
     return;
   }
   convertMasterRollToNeedGreed(ctx, roll, targets);
@@ -1002,7 +974,7 @@ export function resolveLootRoll(ctx: SimContext, roll: PendingLootRoll): void {
       });
     return;
   }
-  grantAwardedLootItem(ctx, roll.itemId, winner.pid, roll.windowEligible);
+  grantOrHoldAwardedLoot(ctx, roll.mobId, roll.itemId, winner.pid, roll.windowEligible);
 }
 
 // Whether `pid` is a currently-connected player the loot hub's addItem/resolve
@@ -1073,3 +1045,7 @@ export function pruneCorpseLoot(ctx: SimContext, mob: Entity): void {
     mob.corpseTimer = Math.min(mob.corpseTimer, 4);
   }
 }
+
+// The shared award grant moved to awarded_loot_hold.ts beside the hold that
+// gates it; re-exported so interaction.ts and the tests resolve unchanged.
+export { grantAwardedLootItem };
