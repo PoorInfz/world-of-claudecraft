@@ -428,7 +428,6 @@ const MONOLITHS: MonolithRow[] = [
     // Re-pinned to the exact merged count of the OSSBrain v0.41.0 base
     // merge: both parents had already ratcheted for their own work, so
     // the composite is the honest size. Exact count, zero slack.
-<<<<<<< HEAD
     // Minus 1 for promptModalOpen(): its modal matcher moved to
     // prompt_dialog.ts (the family home), hud.ts keeps a delegator.
     // Re-measured on the tree that merged the v0.41.3 line into the buddy
@@ -446,30 +445,21 @@ const MONOLITHS: MonolithRow[] = [
     // here is the thin opener that places the popup and binds its rows, which
     // needs Hud's own private popup helpers. Exact count: any further growth
     // reds again.
-    ceiling: 18956,
-=======
-    // RESOLVED for the merge of dca7476e0e (PR #3917,
-    // feature/v042-class-rebalance) into this branch (merge-base 7bc787780f,
-    // base ceiling 18851). Our own arm had re-pinned to 18716 across the
-    // release/v0.42.0 sync (compass-strip and rest-indicator painter
-    // extractions, the commission-order feedback move, and the
-    // professions-merge-crucible integration). The incoming arm lowered its
-    // own copy to 18723 via the on-bar key-binding mode extraction
-    // (action_bar_bind_controller.ts / action_bar_bind_banner.ts) and the
-    // Nythraxis-redo sync trim. Neither parent pin fits the resolved tree:
-    // `wc -l < src/ui/hud.ts` on the reconciled file measures 18577, below
-    // both arms, so the ceiling follows it down. Exact merged count, zero
-    // slack: any further growth reds again.
-    // The aura-tracks release sync (186dd8fe7f) composes its system-text
-    // extraction with the OSSBrain long-press and tooltip modules. The
-    // measured combined count is below both parent pins (18574 / 18489).
-    // Compose the mount cosmetics and practice lesson extractions.
-    // Measured combined size; retain zero headroom after the release merge.
-    // LOWERED for the coin-icon money readout extraction (moneyHtml moved out
-    // to src/ui/money_html.ts so the social tab's roster confirm shares it);
-    // the coordinator keeps three one-line deps wirings. Exact count, zero slack.
-    ceiling: 18461,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+    // RESOLVED for the merge of df2ae9880f (PR #3944, release/v0.42.0) into
+    // this branch. That release-side arm had independently re-pinned to
+    // 18461 across its own extraction round (compass-strip/rest-indicator
+    // painters, commission-order feedback, professions-crucible integration,
+    // the on-bar key-binding mode extraction, the Nythraxis-redo sync trim,
+    // the aura-tracks system-text extraction, the mount-cosmetics and
+    // practice-lesson extractions, the coin-icon money readout extraction).
+    // Neither parent pin (18956 nor 18461) fits the resolved tree: this
+    // conflict itself is a straight ADD on the buddy side (a self-contained
+    // popup opener, no shared line touched by the release-side extractions),
+    // so the reconciled file is the release-side base PLUS the buddy delta,
+    // not a smaller number either arm's own history would predict.
+    // `wc -l < src/ui/hud.ts` on the reconciled file measures 18514. Exact
+    // merged count, zero slack: any further growth reds again.
+    ceiling: 18514,
     seam: 'pure view core + thin painter on PainterHost (src/ui/CLAUDE.md)',
   },
   {
@@ -833,44 +823,24 @@ const MONOLITHS: MonolithRow[] = [
     // Re-pinned at the PR 3685 base sync (release v0.41.0 through the raid
     // branch): both arms edited the renderer and the union lands at the count
     // below. Measured on the merged tree. Exact merged count, zero headroom.
-<<<<<<< HEAD
     // Re-measured when the 47c1aacaae merge was finally resolved: that commit
     // landed with conflict markers still in the tree, so neither arm's number
     // described the merged file. Measured, not reconciled by arithmetic.
     // Re-measured on the tree that merged the v0.41.3 line into the buddy
     // branch: both arms grew the file, so neither ceiling described the result.
-    ceiling: 13260,
-=======
-    // RE-PINNED at the merge of release/v0.41.0 (tip 3e801dc925, the Ignivar
-    // raid span, 294 commits) into feature/masterwrought (base e19d832b47).
-    // BOTH parent pins for the record: ours 13133, the release 13249. Measured on
-    // the merged tree, never reconciled by arithmetic. Exact merged count,
-    // zero slack: any further growth reds again.
-    // Lowered 13049 -> 13023 at the Masterwrought phase 18 farm producer unit:
-    // the compile gate's shadow arm moved to src/render/shadow_depth_compile.ts
-    // (a thin wrapper stays), which paid for the farm gate closure, the gate
-    // label parameter, the zone-prewarm host weld and the single-sited farm
-    // drive.
-    // Re-pinned at the release/v0.42.0 sync of the Chimeglass Tortoise PR
-    // (#3439, carrying the Lanternback Troll of #3399): the rideable-mount
-    // lifecycle (build, live swap, teardown, rider seating, carried lamps
-    // and glows, the summon/dismount FX) moved to src/render/mount_lifecycle.ts,
-    // RESOLVED for the merge of dca7476e0e (PR #3917,
-    // feature/v042-class-rebalance) into this branch (merge-base 7bc787780f,
-    // base ceiling 13085). Our own arm had re-pinned to 12917 after the PR
-    // 3872 farm compile-gate cleanup, on top of the release/v0.42.0 mount
-    // lifecycle and Realm Builder monument merges. The incoming arm lowered
-    // its own copy to 13073 via the Drakelands map-improvements sync (Last
-    // Keep castle assembly build/attach). Neither parent pin fits the
-    // resolved tree: `wc -l < src/render/renderer.ts` on the reconciled file
-    // measures 12903, below both arms, so the ceiling follows it down. Exact
-    // merged count, zero slack: any further growth reds again.
-    // OSSBrain integration: Fiesta effects moved to render/fiesta_effects.ts.
-    // Measured after formatting; lower the ratchet with the extraction.
-    // Mount skins: bank the coordinator extraction at its measured size.
-    // Restored per-ability resurrection school lookup removes one line.
-    ceiling: 12851,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+    // RESOLVED for the merge of df2ae9880f (PR #3944, release/v0.42.0) into
+    // this branch. That release-side arm's own pin (12851) already carries a
+    // long chain of its own extractions (mount lifecycle, shadow-depth
+    // compile, Fiesta effects, mount skins, resurrection school lookup, ...);
+    // the buddy-side conflict here was purely a per-frame mount-presentation
+    // block the release side had ALREADY extracted to
+    // src/render/mount_presentation.ts (this merge took that extraction, see
+    // its own resolution note where the block used to live), so the
+    // reconciled file is close to the release side's own count rather than a
+    // sum of both. `wc -l < src/render/renderer.ts` on the reconciled file
+    // measures 12864. Exact merged count, zero slack: any further growth
+    // reds again.
+    ceiling: 12864,
     seam: 'a new src/render/<thing>.ts module the renderer calls (src/render/CLAUDE.md)',
   },
   {
@@ -1030,7 +1000,6 @@ const MONOLITHS: MonolithRow[] = [
     // Plus 2 for the Phase B set-bonus seam: the set_bonus_mods import and
     // the setPlayerLevel writer routing through computeCharacterModifiers
     // (the resolver itself is the extracted module). Exact count, zero slack.
-<<<<<<< HEAD
     // Lowered 12465 -> 12332 for the sticky-encounter combat fix, measured on
     // release/v0.41.3 (12351 there): the engaged pass's hate-table walk (and
     // PET_COMBAT_LINGER) moved to combat/engaged_combat.ts, leaving one
@@ -1049,23 +1018,15 @@ const MONOLITHS: MonolithRow[] = [
     // architecture itself mandates — the per-pid one the server calls and the
     // IWorld member the client calls — and the widened buddies.ts import. There
     // is no seam that lets a new IWorld command skip this file. Exact count.
-    ceiling: 12369,
-=======
-    // RESOLVED for the merge of dca7476e0e (PR #3917,
-    // feature/v042-class-rebalance) into this branch (merge-base 7bc787780f,
-    // base ceiling 12465). Our own arm had re-pinned to 11983 across the
-    // release/v0.42.0 syncs (auto-equip gate extraction, the Perfecting
-    // adapter move, the Intentional Gathering save-fragment move, and the
-    // professions-merge-crucible integration). The incoming arm lowered its
-    // own copy to 12212 by moving the ability cost tail into
-    // applyAbilityCostTail (combat/ability_resolution.ts) and threat
-    // calculation into combat/threat_modifiers.ts. Neither parent pin fits
-    // the resolved tree: `wc -l < src/sim/sim.ts` on the reconciled file
-    // measures 11923, below both arms, so the ceiling follows it down. Exact
-    // merged count, zero slack: any further growth reds again.
-    // Main hotfix integration: combined extractions, exact merged count.
-    ceiling: 11879,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+    // RESOLVED for the merge of df2ae9880f (PR #3944, release/v0.42.0) into
+    // this branch. That release-side arm's own pin (11879) already carries the
+    // ability-cost-tail and threat-calculation extractions on top of its own
+    // auto-equip/Perfecting/Gathering moves; the buddy-side delta here (the
+    // buddy_autoloot command's two thin delegates) is a straight add on top
+    // of that base, not overlapping any line the release-side extractions
+    // touched. `wc -l < src/sim/sim.ts` on the reconciled file measures
+    // 11925. Exact merged count, zero slack: any further growth reds again.
+    ceiling: 11925,
     seam: 'a sim system module behind SimContext (src/sim/CLAUDE.md)',
   },
   {
@@ -1260,7 +1221,16 @@ const MONOLITHS: MonolithRow[] = [
     // Measured after formatting; lower the ratchet with the extraction.
     // Compose the mount cosmetics and practice lesson extractions.
     // Measured combined size; retain zero headroom after the release merge.
-    ceiling: 11332,
+    // RESOLVED for the merge of df2ae9880f (PR #3944, release/v0.42.0) into
+    // feature/buddy-companion-system. This row's own three conflicts were a
+    // straight compose, not an either/or: each site keeps BOTH the buddy
+    // branch's showPetNames wiring and the release's nameplate-dot-scale
+    // wiring (renderer.showPetNames alongside setNameplateDotScale, and both
+    // settings-key arms in applySetting), a call-wiring firewall doing its
+    // job for two independent features rather than growth this file could
+    // extract away. `wc -l < src/main.ts` on the reconciled file measures
+    // 11344. Exact merged count, zero slack: any further growth reds again.
+    ceiling: 11344,
     seam: 'a src/game/ or src/ui/ sibling module; main.ts is a firewall, not a home',
   },
   {
@@ -1433,7 +1403,6 @@ const MONOLITHS: MonolithRow[] = [
     // Re-pinned to the exact merged count of the OSSBrain v0.41.0 base
     // merge: both parents had already ratcheted for their own work, so
     // the composite is the honest size. Exact count, zero slack.
-<<<<<<< HEAD
     // LOWERED 10641 -> 10586 by the guild bank unsettled gate (2026-09-02): the
     // escrow REFUSAL arm moved behind a GameServer port into
     // server/guild_bank_escrow_refusal.ts, and the gate itself landed in the op
@@ -1451,52 +1420,29 @@ const MONOLITHS: MonolithRow[] = [
     // the command switch (which delegates straight into the Sim) and one
     // omitted-when-false identity field. Both are this file's own dispatch
     // spine, not logic that could live in a sibling. Exact count.
-    ceiling: 10613,
-=======
-    // RE-PINNED at the TENTH release sync, the merge of release/v0.42.0 (tip
-    // 22e909839f, 380 commits) into feature/masterwrought (base e6b8edb375).
-    // BOTH parent pins for the record: ours 10286, the release 10641. Measured on
-    // the merged tree with wc -l < server/game.ts after the phase-close
-    // regeneration, never reconciled by arithmetic: the two arms' extractions
-    // compose, so the merged file is BELOW the higher parent. Exact merged
-    // count, zero slack: any further growth reds again.
-    // LOWERED 10350 -> 10347 at the Masterwrought Phase 19C (D147, the market
-    // sold-volume wiring): the dispatch swap to buyWithSoldVolume added one
-    // import, and inlining the one-use `delay` helper (a setTimeout promise) and
-    // dropping its definition paid for it and then some. Exact count, zero slack.
-    // Lowered 10347 -> 10336 in PR 3872 cleanup after removing the unused
-    // feast signer wire field plus the retired tutorial dispatch and account-fact
-    // plumbing. Measured after formatting; exact count.
-    // Perfecting command parsing and naming dispatch now live in
-    // server/perfect_item_command.ts; rank exchange remains a thin adapter.
-    // LOWERED 10330 -> 10327 at the professions-merge-crucible integration:
-    // both this extraction and the Intentional Gathering dispatch trimming
-    // (whose own arm read 10333) land together and their savings compose.
-    // Measured with wc -l < server/game.ts after biome. Exact count, zero slack.
     //
-    // THE RELEASE PARENT'S OWN HALF over this same release/v0.42.0 span, kept
-    // so the merge drops neither parent's record: chatChannelHint and
+    // THE RELEASE PARENT'S OWN HALF over the release/v0.42.0 span, kept so
+    // the merge drops neither parent's record: chatChannelHint and
     // chatSenderFlair moved to their own server/ modules; the guild roster
     // purchase rework moved the post-COMMIT save acknowledgement to
     // server/character_save_acknowledge.ts; the Riftbound band item-level
     // ladder collapsed the retired forge enchant arm to a tombstone; the
-    // guild roster pages sync re-measured the ladder's 10613 plus theirs' -9;
-    // the per-surface action-bar profiles moved the join read, per-profile
-    // merge and FIFO write to server/hotbar_layout.ts (HotbarLayoutStore),
-    // ratcheting theirs down to 10587.
+    // per-surface action-bar profiles moved the join read, per-profile merge
+    // and FIFO write to server/hotbar_layout.ts (HotbarLayoutStore); the
+    // Masterwrought Phase 19C market sold-volume wiring, the PR 3872 cleanup,
+    // the Perfecting command extraction and the professions-merge-crucible
+    // integration each paid their own way, landing the release side at
+    // 10095.
     //
-    // RE-PINNED at this merge of release/v0.42.0 into feature/masterwrought.
-    // BOTH parent pins for the record: ours 10327, the release 10587 (base
-    // 10641). server/game.ts's own conflicts (owned by a different
-    // conflict-resolution unit) are now resolved; the earlier provisional
-    // arithmetic estimate (10273) undershot the real merged file, so this is
-    // the exact `wc -l < server/game.ts` measurement on the resolved tree.
-    // RE-CONFIRMED at the final line-budget reconciliation: still 10291,
-    // below both parent pins. Exact merged count, zero slack.
-    // Mount skins: bank the coordinator extraction at its measured size.
-    // Main hotfix integration: combined extractions, exact merged count.
-    ceiling: 10095,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+    // RESOLVED for the merge of df2ae9880f (PR #3944, release/v0.42.0) into
+    // this branch. Neither parent pin (10613 nor 10095) fits the resolved
+    // tree: the buddy-side delta here (one command-switch case, one
+    // identity-field line) is a straight add that does not touch any line
+    // the release-side extractions moved, so the reconciled file sits ABOVE
+    // the release side's own pin by roughly that delta.
+    // `wc -l < server/game.ts` on the reconciled file measures 10122. Exact
+    // merged count, zero slack: any further growth reds again.
+    ceiling: 10122,
     seam: 'a sibling server module; see the hot-path seams in server/CLAUDE.md',
   },
   {
@@ -1625,7 +1571,6 @@ const MONOLITHS: MonolithRow[] = [
     // Re-pinned to the exact merged count of the OSSBrain v0.41.0 base
     // merge: both parents had already ratcheted for their own work, so
     // the composite is the honest size. Exact count, zero slack.
-<<<<<<< HEAD
     // LOWERED at the PR 3804 spell-queue fast-follow: the queuedCastTargetId
     // mirror default tipped the file one line over, and the ratchet's answer
     // is extraction, so the whole blankEntity placeholder literal moved to
@@ -1638,24 +1583,16 @@ const MONOLITHS: MonolithRow[] = [
     // member that sends it and the one line that mirrors `budal` off the
     // snapshot. Thin-consumer wiring with no branch-owned extraction available.
     // Exact count.
-    ceiling: 5713,
-=======
-    // RESOLVED for the merge of dca7476e0e (PR #3917,
-    // feature/v042-class-rebalance) into this branch (merge-base 7bc787780f,
-    // base ceiling 5856). Our own arm had re-pinned to 5802 across the
-    // release/v0.42.0 syncs (interp_math, action_bar_upload, and
-    // guild_bank_log_mirror extractions) plus the Intentional Gathering
-    // professions_self_mirror move. The incoming arm's own copy landed at
-    // 5842 via the class-balance ability presentation and Nythraxis ground
-    // telegraph extractions. Neither parent pin fits the resolved tree:
-    // `wc -l < src/net/online.ts` on the reconciled file measures 5788,
-    // below both arms, so the ceiling follows it down. Exact merged count,
-    // zero slack: any further growth reds again.
-    // OSSBrain integration: entity flair decoding moved to net/entity_flair_wire.ts.
-    // Measured after formatting; lower the ratchet with the extraction.
-    // Main hotfix integration: combined extractions, exact merged count.
-    ceiling: 5540,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+    // RESOLVED for the merge of df2ae9880f (PR #3944, release/v0.42.0) into
+    // this branch. The release-side pin (5540) already carries its own
+    // extraction chain (interp_math, action_bar_upload, guild_bank_log_mirror,
+    // professions_self_mirror, entity flair decoding, the class-balance
+    // ability presentation and Nythraxis ground telegraph extractions); the
+    // buddy-side delta here is a straight add (one IWorldBuddies send member,
+    // one mirrored identity field) that touches none of those extracted
+    // lines. `wc -l < src/net/online.ts` on the reconciled file measures
+    // 5569. Exact merged count, zero slack: any further growth reds again.
+    ceiling: 5569,
     seam: 'a src/net sibling module (the refactor/net-online split is the template)',
   },
   {

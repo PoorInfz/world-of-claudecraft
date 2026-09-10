@@ -65,6 +65,8 @@ export const BUDDY_ICON_BATCH = [
   // The fishing catch and the green elemental, both from their own GLBs.
   { itemId: 'whistle_crystal_tide', glb: 'public/models/buddies/crystal_tide.glb' },
   { itemId: 'whistle_phantom', glb: 'public/models/buddies/phantom.glb' },
+  // The epic with no source yet (content/buddies.ts), from its own GLB.
+  { itemId: 'whistle_emberfall_phoenix', glb: 'public/models/buddies/emberfall_phoenix.glb' },
 ];
 
 /** True when a GLB declares the KTX2 texture extension, which the preview

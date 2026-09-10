@@ -11273,53 +11273,6 @@ export class Renderer {
       // the clipless mounts bob procedurally (the hover cycle floats, the
       // griffin canters, the snail glides flat). `airborne` here is the real
       // flag, not the rider's suppressed one: the mount carries the jump.
-<<<<<<< HEAD
-      if (v.mountVisual && mountSpec && mountShown) {
-        const mst = this.mountAnimScratch;
-        mst.speed = st.speed;
-        mst.moving = st.moving;
-        mst.running = st.running;
-        mst.airborne = airborne;
-        mst.backwards = st.backwards;
-        mst.swimming = st.swimming;
-        if (runCharacterPresentation) {
-          v.mountVisual.update(dt, mst, animate);
-          // RAW per-frame travel, not st.speed. loco.speed is exponentially
-          // smoothed for footstep cadence and additionally latches its last
-          // value while "stalled", so it keeps reporting motion for a beat
-          // after the player actually stops -- which the wheels rode as a
-          // visible coast. The displayed position delta is the ground truth
-          // the wheels should agree with anyway: if the cart did not move this
-          // frame, the wheels must not turn this frame.
-          spinMountWheels(v, dt > 0 ? Math.hypot(vx, vz) / dt : 0, st.backwards, dt);
-          applyMountJumpAttitude(
-            v,
-            v.mountVisual.root,
-            v.visual.root,
-            mountSpec,
-            this.time,
-            moving,
-            airborne,
-            dt > 1e-4 ? dyRaw / dt : 0,
-            dt,
-          );
-          // ambient mount particles: the snail paints its slime path while
-          // gliding, the hover cycle streams aether exhaust off its tail
-          if (mountSpec.fx === 'slime') {
-            if (moving) this.vfx.mountSlimeTrail(v.group.position, dt);
-          } else if (mountSpec.fx === 'exhaust') {
-            this.vfx.mountExhaust(v.group.position, facing, dt, moving);
-          }
-        } else {
-          v.mountVisual.advanceOffscreen(dt);
-        }
-        updateRickshawPuller(v, dt, mst, animate, runCharacterPresentation);
-      }
-      // Buddy: since 2026-08-27 a real owned mob entity (src/sim/pet/
-      // buddy_ai.ts), rendered through the exact same per-entity view path as
-      // every other mob — no bespoke create/dispose/follow-transform code
-      // needed here any more.
-=======
       const mst = this.mountAnimScratch;
       mst.speed = st.speed;
       mst.moving = st.moving;
@@ -11356,7 +11309,10 @@ export class Renderer {
         mountShown && !v.mountCompilePending && runCharacterPresentation,
         mountShown && !v.mountCompilePending && runCharacterPresentation ? this.vfx : null,
       );
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      // Buddy: since 2026-08-27 a real owned mob entity (src/sim/pet/
+      // buddy_ai.ts), rendered through the exact same per-entity view path as
+      // every other mob — no bespoke create/dispose/follow-transform code
+      // needed here any more.
 
       const emoteId =
         e.kind === 'player' && e.overheadEmoteId && !e.dead ? e.overheadEmoteId : null;

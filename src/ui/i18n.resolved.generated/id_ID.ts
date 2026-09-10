@@ -10801,13 +10801,9 @@ export const id_ID: EnTranslations = {
       "flask": "Labu",
       "scroll": "Gulungan",
       "bag": "Tas",
-<<<<<<< HEAD
       "mount": "Tunggangan",
       "buddy": "Buddy",
-      "skin": "Tampilan"
-=======
-      "mount": "Tunggangan"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Zirah",

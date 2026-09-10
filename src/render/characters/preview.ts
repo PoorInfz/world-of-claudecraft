@@ -15,7 +15,7 @@ import {
   uploadTexturesInSlices,
   yieldToMainThread,
 } from '../texture_prewarm';
-import { mechAssetsReady, preloadMechAssets } from './assets';
+import { mechAssetsReady, onCharacterAssetReady, preloadMechAssets } from './assets';
 import { modularVisualKey, VISUALS, type WeaponLayoutOverride } from './manifest';
 import {
   type ArmorLoadout,
@@ -134,6 +134,24 @@ export class CharacterPreview {
   // and the same frame whichever context owns the program.
   private touchQueue: LinkedProgramTouchQueue | null = null;
   private yieldToMain: () => Promise<void> = yieldToMainThread;
+  // The most recently REQUESTED setVisualKey args, kept even when the build
+  // below fails: a mount rig is lazy-loaded (VISUALS[key].lazyPreload), so the
+  // FIRST selection of one the session has never actually ridden hits a cold
+  // GLB, resolvedGltf's fail-soft catch kicks the fetch, and the constructor
+  // throws for THIS attempt (visual.ts's asset layer never blocks synchronously
+  // on an in-flight fetch). Without a retry the canvas stayed empty until some
+  // OTHER click happened to re-run setVisualKey after the fetch had finished by
+  // then ("select another, then come back"). onCharacterAssetReady below is
+  // the retry: the same asset-arrival hook src/render/armory_preview.ts already
+  // uses for a cold weapon-skin model.
+  private pendingVisualRetry: {
+    visualKey: string;
+    weaponItemId: string | null;
+    weaponOverride: WeaponLayoutOverride | null;
+    offhandItemId: string | null;
+    tint: number;
+  } | null = null;
+  private unsubscribeCharacterAssetReady: (() => void) | null = null;
   private destroyed = false;
 
   // Drag controls
@@ -201,9 +219,34 @@ export class CharacterPreview {
     // 7. Setup Resize Observer
     this.setupResizeObserver();
 
-    // 8. Start loop
+    // 8. Retry a visual whose GLB was still in flight when it was requested
+    // (see pendingVisualRetry's doc).
+    this.unsubscribeCharacterAssetReady = onCharacterAssetReady(this.onCharacterAssetArrived);
+
+    // 9. Start loop
     this.animate();
   }
+
+  /** onCharacterAssetReady fires for EVERY character GLB reaching residency
+   *  (every buddy/creature in the post-entry stream, every lazy mount someone
+   *  else just mounted, every weapon skin); a bound instance method (not an
+   *  inline closure) so destroy() can unsubscribe the exact same reference.
+   *  No-ops unless the LAST requested visual is the one that just failed to
+   *  build (currentVisual still null) and this is genuinely the url it was
+   *  waiting on, so an unrelated arrival elsewhere in the world costs one
+   *  cheap identity check here, not a rebuild attempt. */
+  private onCharacterAssetArrived = (url: string): void => {
+    if (this.destroyed || this.currentVisual || !this.pendingVisualRetry) return;
+    if (VISUALS[this.pendingVisualRetry.visualKey]?.url !== url) return;
+    const retry = this.pendingVisualRetry;
+    this.setVisualKey(
+      retry.visualKey,
+      retry.weaponItemId,
+      retry.weaponOverride,
+      retry.offhandItemId,
+      retry.tint,
+    );
+  };
 
   /** Set the active character model by player class. Pass explicit hand ids for a
    *  character sheet; omit them to show the class starter equipment in creation. */
@@ -291,6 +334,12 @@ export class CharacterPreview {
     tint = 0xffffff,
   ): void {
     if (this.destroyed) return;
+    // Always the LATEST desired visual, whether this call early-returns,
+    // succeeds or throws below: onCharacterAssetArrived replays exactly this
+    // once the asset a failed attempt was missing shows up, and a later call
+    // here (a different click) simply overwrites what a stale retry would
+    // have replayed.
+    this.pendingVisualRetry = { visualKey, weaponItemId, weaponOverride, offhandItemId, tint };
     const look = VISUALS[visualKey]?.modular ? this.pendingLook : null;
     const nextSig = JSON.stringify([
       visualKey,
@@ -884,6 +933,9 @@ export class CharacterPreview {
   destroy(): void {
     if (this.destroyed) return;
     this.destroyed = true;
+    this.unsubscribeCharacterAssetReady?.();
+    this.unsubscribeCharacterAssetReady = null;
+    this.pendingVisualRetry = null;
     if (this.animationFrameId !== null) {
       cancelAnimationFrame(this.animationFrameId);
       this.animationFrameId = null;

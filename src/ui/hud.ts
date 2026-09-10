@@ -569,11 +569,8 @@ import { RiftFloorTrackerController } from './hud/rift/rift_floor_tracker_contro
 import { RiftForgeWindow, riftForgeInReach } from './hud/rift_forge';
 import { StanceBarController } from './hud/stance';
 import { closeOpenTouchMenu } from './hud/tap_menu';
-<<<<<<< HEAD
-import { buddyMenuHtml, targetFrameMenuKind } from './hud/target_frame_menu';
-=======
 import { createTargetDotsView, type TargetDotsInput, TargetDotsPainter } from './hud/target_dots';
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+import { buddyMenuHtml, targetFrameMenuKind } from './hud/target_frame_menu';
 import { dismissBuyQuantityPrompts } from './hud/vendor/buy_quantity_prompt_window';
 import { buildCrucibleVendorView } from './hud/vendor/crucible_vendor_view';
 import { renderCrucibleVendorWindow } from './hud/vendor/crucible_vendor_window';
@@ -742,18 +739,15 @@ import {
 } from './party_frames';
 import { PartyFramesPainter } from './party_frames_painter';
 import type { PerfOverlayHooks } from './perf_overlay_settings';
-<<<<<<< HEAD
-import { PET_ACTION_ICONS, petFeedButtonState, petSpecialButtonState } from './pet_action_icons';
-import { ownedCombatSourceOwnerId } from './pet_entity';
-=======
 import {
   PET_ACTION_ICONS,
   petBarPreviewIconIds,
   petFeedButtonState,
   petSpecialButtonState,
 } from './pet_action_icons';
-import { isControllableOwnedPet, ownedCombatSourceOwnerId } from './pet_entity';
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+// isControllableOwnedPet is not imported here: the target-frame menu routing
+// that used it moved to hud/target_frame_menu.ts's targetFrameMenuKind.
+import { ownedCombatSourceOwnerId } from './pet_entity';
 import { findOwnPet, findPetsByOwner, petFrameDescriptorInto } from './pet_frame_view';
 import {
   chatPlayerContextActions,
@@ -8292,38 +8286,7 @@ export class Hud {
     // frame in-game). Refreshing them here too would be a second writer bypassing that
     // elision cache. This method owns only the side-menu buttons, which
     // have no per-frame painter.
-<<<<<<< HEAD
-    const sideButtons: [selector: string, action: string, labelKey: TranslationKey][] = [
-      ['#mm-char', 'char', 'hud.keybinds.actions.char'],
-      ['#mm-spell', 'spellbook', 'abilityUi.spellbook.title'],
-      ['#mm-talents', 'talents', 'game.talents.title'],
-      ['#mm-quest', 'questlog', 'questUi.log.title'],
-      ['#mm-deeds', 'deeds', 'hudChrome.deeds.title'],
-      ['#mm-reliquary', 'reliquary', 'hudChrome.reliquary.title'],
-      ['#mm-professions', 'professions', 'hudChrome.professions.title'],
-      ['#mm-map', 'map', 'hud.core.mobileMap'],
-      ['#mm-bag', 'bags', 'itemUi.bags.title'],
-      ['#mm-crafting', 'crafting', 'hudChrome.crafting.title'],
-      ['#mm-arena', 'arena', 'hudChrome.pvp.launcherTitle'],
-      ['#mm-collections', 'collections', 'hudChrome.collections.launcherTitle'],
-      ['#mm-dfinder', 'dungeonFinder', 'hudChrome.finder.title'],
-      ['#mm-leaderboard', 'leaderboard', 'game.leaderboard.title'],
-      ['#mm-emote', 'emoteWheel', 'hudChrome.emoteWheel.label'],
-      ['#mm-social', 'social', 'hud.social.friendsTab'],
-      ['#mm-discord', 'discord', 'hudChrome.discord.title'],
-    ];
-    for (const [selector, action, labelKey] of sideButtons) {
-      const btn = document.querySelector<HTMLElement>(selector);
-      if (!btn) continue;
-      const key = this.keybinds.primaryLabel(action);
-      const label = t(labelKey);
-      const keyEl = btn.querySelector<HTMLElement>('.keybind');
-      if (keyEl) keyEl.textContent = keyCapLabel(key);
-      btn.setAttribute('aria-label', key ? `${label} (${key})` : label);
-    }
-=======
     refreshSideButtonLabels(document, (action) => this.keybinds.primaryLabel(action));
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
   }
 
   // -------------------------------------------------------------------------

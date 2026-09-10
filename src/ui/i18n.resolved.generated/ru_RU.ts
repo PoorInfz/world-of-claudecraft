@@ -10801,13 +10801,9 @@ export const ru_RU: EnTranslations = {
       "flask": "Фляга",
       "scroll": "Свиток",
       "bag": "Сумка",
-<<<<<<< HEAD
       "mount": "Транспорт",
       "buddy": "Спутник",
-      "skin": "Облик"
-=======
-      "mount": "Транспорт"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Броня",

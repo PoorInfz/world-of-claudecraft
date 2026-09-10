@@ -428,11 +428,8 @@ export interface IWorld
     IWorldDeeds,
     IWorldReliquary,
     IWorldMounts,
-<<<<<<< HEAD
-    IWorldBuddies {}
-=======
+    IWorldBuddies,
     IWorldFarming {}
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 
 // ---------------------------------------------------------------------------
 // Command schema (W0b): the shared wire-token vocabulary.
@@ -927,11 +924,8 @@ export type WorldFacet =
   | 'IWorldDeeds'
   | 'IWorldReliquary'
   | 'IWorldMounts'
-<<<<<<< HEAD
-  | 'IWorldBuddies';
-=======
+  | 'IWorldBuddies'
   | 'IWorldFarming';
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 
 export const COMMAND_FACETS = {
   // IWorldCombat: ability casts, auto-attack, spirit release.

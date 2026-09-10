@@ -426,7 +426,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     noDiscard: true,
     sellValue: 0,
   },
-<<<<<<< HEAD
   // Cosmetic buddy whistle. Owning the item IS owning the buddy (src/sim/
   // buddies.ts buddyOwned); it stays valid from the bank too, and it
   // transfers like any other unbound item, exactly like mount reins but with
@@ -732,14 +731,9 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     quality: 'epic',
     sellValue: 50_000, // 5g, the flat vendor price every whistle takes
   },
-  // Developer-only, same treatment as the tank above: no acquisition path, so
-  // it stays soulbound rather than tradable. Use /dev give reins_rickshaw_mount
-  // while the feature remains under development.
-  reins_rickshaw_mount: {
-    id: 'reins_rickshaw_mount',
-    name: 'Bound Reins: Bonebound Rickshaw',
-=======
   // Legacy cosmetic reins; same inert, discardable treatment as mech_bird.
+  // (reins_rickshaw_mount itself already has its own, current def further
+  // down this table -- see the comment there -- so it is not repeated here.)
   reins_rallycart_rxt: {
     id: 'reins_rallycart_rxt',
     name: 'Ignition Key: Rallycart RXT',
@@ -756,7 +750,6 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
   reins_lanternback_troll: {
     id: 'reins_lanternback_troll',
     name: "Lamplighter's Yoke: Grumbol",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     kind: 'mount',
     mount: 'lanternback_troll',
     quality: 'epic',

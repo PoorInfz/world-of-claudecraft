@@ -10801,13 +10801,9 @@ export const vi_VN: EnTranslations = {
       "flask": "Bình thuốc",
       "scroll": "Cuộn giấy",
       "bag": "Túi",
-<<<<<<< HEAD
       "mount": "Thú Cưỡi",
       "buddy": "Buddy",
-      "skin": "Ngoại hình"
-=======
-      "mount": "Thú Cưỡi"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Giáp",

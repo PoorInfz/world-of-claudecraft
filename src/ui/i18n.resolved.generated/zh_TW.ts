@@ -10801,13 +10801,9 @@ export const zh_TW: EnTranslations = {
       "flask": "藥壺",
       "scroll": "卷軸",
       "bag": "背包",
-<<<<<<< HEAD
       "mount": "坐騎",
       "buddy": "夥伴",
-      "skin": "外觀"
-=======
-      "mount": "坐騎"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "skin": "Skin"
     },
     "stats": {
       "armor": "護甲",

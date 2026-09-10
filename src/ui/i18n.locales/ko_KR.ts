@@ -16483,7 +16483,6 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.perfecting.nameSubmitBusy': '벼려내는 중',
   'hudChrome.perfecting.nameCancel': '취소',
   'crucibleShop.balanceEntry': '{name} x{count}',
-<<<<<<< HEAD
   'entities.mobs.buddy_alpaca.name':
     '알파카',
   'entities.mobs.buddy_ansem.name':
@@ -16770,7 +16769,6 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '잿불낙하 불사조의 호루라기',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     '가을마다 타들어가 한 점 잉걸불이 되었다가, 봄이면 제 재에서 다시 솟아오른다. 누구에게 물어도 할 수 있는 말은 그것이 전부다. 둥지를 찾아낸 사람도 없고, 같은 개체를 두 번 붙잡은 사람도 없다.',
-=======
   'guide.arenaPage.honorFinalNoteSoldBack':
     '명예로 산 물건은 되돌릴 수 없습니다. 되사기 목록에는 언제나 직접 판 물건만 오릅니다. 동전으로 산 물건은 대개 판매 가격에 되팔 수 있고, 마음이 다시 바뀌면 그 목록에서 되찾을 수 있지만, 워페어 장비는 구매하는 순간 귀속되어 거래도, 우편 발송도, 되팔기도 영영 할 수 없습니다. 그러니 그 목록에 오르는 일도 결코 없습니다. 상점이 굳이 한 번 더 확인을 묻는 이유가 그것이니, 누르기 전에 장비를 찬찬히 읽어 보세요.',
   'guide.arenaPage.rewardsBodyLossShare':
@@ -17039,5 +17037,4 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'devCommand.actions.farmgrow.label': '작물 익히기',
   'devCommand.fields.bed': '경작지 ID (선택 사항)',
   'guide.profPages.oncePerDay': '하루 한 번',
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 };

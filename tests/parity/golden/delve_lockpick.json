@@ -195,15 +195,9 @@
     {
       "tick": 38,
       "time": 1.9,
-<<<<<<< HEAD
-      "nextId": 1011,
-      "state": "26943b31",
-      "events": "b0dd8769",
-=======
       "nextId": 1019,
-      "state": "3c3412dd",
+      "state": "621240a8",
       "events": "73fb3ff3",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
       "rng": {
         "draws": 15,
         "digest": "7eb57a54"
@@ -538,13 +532,8 @@
     {
       "tick": 40,
       "time": 2,
-<<<<<<< HEAD
-      "nextId": 1011,
-      "state": "0e1253a5",
-=======
       "nextId": 1019,
-      "state": "909ace09",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "state": "a176a89c",
       "events": "741638a5",
       "rng": {
         "draws": 15,
@@ -554,13 +543,8 @@
     {
       "tick": 40,
       "time": 2,
-<<<<<<< HEAD
-      "nextId": 1011,
-      "state": "0e1253a5",
-=======
       "nextId": 1019,
-      "state": "909ace09",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "state": "a176a89c",
       "events": "741638a5",
       "rng": {
         "draws": 15,

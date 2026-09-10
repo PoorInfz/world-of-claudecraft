@@ -16800,7 +16800,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.perfecting.nameSubmitBusy': 'Куём',
   'hudChrome.perfecting.nameCancel': 'Отмена',
   'crucibleShop.balanceEntry': '{name} x{count}',
-<<<<<<< HEAD
   'entities.mobs.buddy_alpaca.name':
     'Альпака',
   'entities.mobs.buddy_ansem.name':
@@ -17087,7 +17086,6 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Свисток: Феникс Пепелопада',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     'Каждую осень он сгорает до уголька и к весне поднимается из собственного пепла — вот и всё, что о нём вообще могут сказать. Гнезда его никто не находил, и дважды одного и того же никто не ловил.',
-=======
   'guide.arenaPage.honorFinalNoteSoldBack':
     'Покупки за честь окончательны. Список выкупа у торговца хранит лишь то, что вы продали: купленное за монеты обычно можно продать обратно по цене продажи и, если вы снова передумаете, выкупить из этого списка, но снаряжение Боевой мощи становится персональным в тот же миг, как вы его купили, так что его нельзя ни обменять, ни отправить почтой, ни продать обратно хоть за что-нибудь, и в этот список оно не попадает никогда. Потому магазин и просит подтверждения: прочтите описание вещи, прежде чем нажать.',
   'guide.arenaPage.rewardsBodyLossShare':
@@ -17362,5 +17360,4 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'devCommand.actions.farmgrow.label': 'Ускорить созревание',
   'devCommand.fields.bed': 'ID грядки (необязательно)',
   'guide.profPages.oncePerDay': 'Раз в день',
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 };

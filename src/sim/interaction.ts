@@ -61,12 +61,9 @@ import {
   type Entity,
   INTERACT_RANGE,
   OBJECT_RESPAWN,
-<<<<<<< HEAD
-  type Vec3,
-=======
   REALM_BUILDER_MONUMENT_INTERACT_RADIUS,
   REALM_BUILDER_MONUMENT_TEMPLATE_ID,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+  type Vec3,
 } from './types';
 import { markWorldBossLooted } from './world_boss';
 

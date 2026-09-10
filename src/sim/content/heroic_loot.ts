@@ -984,39 +984,14 @@ export const HEROIC_BOSS_LOOT: Record<string, LootEntry[]> = {
     // Three weapons, not four: the Emberflight Longbow was pulled from the
     // tier (bows wait for the hunter ranged-slot rework; maintainer decision
     // 2026-08-28), and the hunter ranged marquee returns with that rework.
-<<<<<<< HEAD
-    { itemId: 'forgefathers_warhammer', chance: 0.34, rollGroup: 'ignivar_h_weapon' },
-    { itemId: 'anvilguard_blade', chance: 0.33, rollGroup: 'ignivar_h_weapon' },
-    { itemId: 'springtouched_crozier', chance: 0.33, rollGroup: 'ignivar_h_weapon' },
-    // Forgemaw The Molten (content/buddies.ts), 1% and ungrouped: an
-    // independent draw, so the cosmetic never displaces a sigil or a weapon
-    // from the exact-1.00 partitions above. Both Crucible bosses carry it at
-    // the same rate, and neither Normal table does: heroic IS the gate.
-    { itemId: 'whistle_forgemaw', chance: 0.01 },
-  ],
-  [VARKHUL_BOSS_ID]: [
-    { itemId: 'sigil_anvil_chest', chance: 0.34, rollGroup: 'varkhul_h_sigil_robe' },
-    { itemId: 'sigil_ember_chest', chance: 0.33, rollGroup: 'varkhul_h_sigil_robe' },
-    { itemId: 'sigil_tempest_chest', chance: 0.33, rollGroup: 'varkhul_h_sigil_robe' },
-    // Emberward shares the existing shield partition so its 3 percent chance
-    // adds no heroic RNG draw. The two epic outcomes split the remaining 97
-    // percent evenly, and the group still guarantees exactly one shield.
-    {
-      itemId: 'bulwark_of_the_inner_crucible',
-      chance: 0.485,
-      rollGroup: 'varkhul_h_shields',
-    },
-    { itemId: 'ember_wardens_barrier', chance: 0.485, rollGroup: 'varkhul_h_shields' },
-    { itemId: 'varkhul_emberward', chance: 0.03, rollGroup: 'varkhul_h_shields' },
-    { itemId: 'heart_of_the_end_greatblade', chance: 0.34, rollGroup: 'varkhul_h_weapon' },
-    { itemId: 'forgefire_spire', chance: 0.33, rollGroup: 'varkhul_h_weapon' },
-    { itemId: 'staff_of_the_last_spring', chance: 0.33, rollGroup: 'varkhul_h_weapon' },
-    // Forgemaw The Molten, the same 1% independent draw Ignivar carries.
-    { itemId: 'whistle_forgemaw', chance: 0.01 },
-=======
     { itemId: 'forgefathers_warhammer', chance: 0.17, rollGroup: 'ignivar_h_exclusive' },
     { itemId: 'anvilguard_blade', chance: 0.17, rollGroup: 'ignivar_h_exclusive' },
     { itemId: 'springtouched_crozier', chance: 0.16, rollGroup: 'ignivar_h_exclusive' },
+    // Forgemaw The Molten (content/buddies.ts), 1% and ungrouped: an
+    // independent draw, so the cosmetic never displaces a sigil or a weapon
+    // from the exact-1.00 partition above. Both Crucible bosses carry it at
+    // the same rate, and neither Normal table does: heroic IS the gate.
+    { itemId: 'whistle_forgemaw', chance: 0.01 },
   ],
   [VARKHUL_BOSS_ID]: [
     // Robes 0.35 / shields 0.30 / marquee weapons 0.35. Emberward keeps its
@@ -1032,6 +1007,7 @@ export const HEROIC_BOSS_LOOT: Record<string, LootEntry[]> = {
     { itemId: 'heart_of_the_end_greatblade', chance: 0.12, rollGroup: 'varkhul_h_exclusive' },
     { itemId: 'forgefire_spire', chance: 0.12, rollGroup: 'varkhul_h_exclusive' },
     { itemId: 'staff_of_the_last_spring', chance: 0.11, rollGroup: 'varkhul_h_exclusive' },
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+    // Forgemaw The Molten, the same 1% independent draw Ignivar carries.
+    { itemId: 'whistle_forgemaw', chance: 0.01 },
   ],
 };

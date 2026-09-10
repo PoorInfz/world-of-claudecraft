@@ -10801,13 +10801,9 @@ export const tr_TR: EnTranslations = {
       "flask": "Şişe",
       "scroll": "Parşömen",
       "bag": "Çanta",
-<<<<<<< HEAD
       "mount": "Binek",
       "buddy": "Buddy",
-      "skin": "Görünüm"
-=======
-      "mount": "Binek"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Zırh",

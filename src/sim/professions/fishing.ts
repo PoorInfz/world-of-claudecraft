@@ -25,11 +25,8 @@ import { FISHING_RARE_ID, FISHING_TABLES_BY_BAND, isRawCookingCatch } from '../c
 import { DEEPFEN_SHALLOWS_LAKE } from '../content/zone2';
 import { ITEMS, zoneAt } from '../data';
 import { onFishCaughtForDeeds } from '../deeds';
-<<<<<<< HEAD
 import { FISHING_BUDDY_DROP } from '../loot/global_drops';
-=======
 import { gatheredMaterialSources } from '../material_gatherer';
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 import { forceDismount } from '../mounts';
 import { PLAYER_SWIM_DEPTH } from '../pathfind';
 import type { PlayerMeta } from '../sim';

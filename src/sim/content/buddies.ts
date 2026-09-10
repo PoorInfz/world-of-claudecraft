@@ -264,3 +264,12 @@ export function buddyDef(key: string): BuddyDef | null {
 export function normalizeBuddyKey(key: string | undefined | null): BuddyKey | '' {
   return key && buddyDef(key) ? (key as BuddyKey) : '';
 }
+
+// Whistle items awaiting their painted (or, for a buddy, rendered-from-GLB)
+// bag icon: the ITEM_ART_PENDING ledger (src/ui/icons.ts) spreads this in
+// alongside the raid content waves so the debt is enumerated rather than
+// silent (tests/item_icons.test.ts). emberfall_phoenix's whistle joined the
+// catalog with its GLB committed but its icon not yet rendered
+// (render_buddy_item_icons.mjs needs a headless-Chromium host this repo's
+// sandbox does not have); it comes out the moment that render lands.
+export const BUDDY_ART_PENDING_ITEM_IDS: readonly string[] = ['whistle_emberfall_phoenix'];

@@ -10801,13 +10801,9 @@ export const sv_SE: EnTranslations = {
       "flask": "Flaska",
       "scroll": "Rulle",
       "bag": "Väska",
-<<<<<<< HEAD
       "mount": "Riddjur",
       "buddy": "Buddy",
       "skin": "Skin"
-=======
-      "mount": "Riddjur"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     },
     "stats": {
       "armor": "Rustning",

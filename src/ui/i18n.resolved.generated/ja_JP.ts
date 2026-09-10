@@ -10801,13 +10801,9 @@ export const ja_JP: EnTranslations = {
       "flask": "フラスコ",
       "scroll": "巻物",
       "bag": "バッグ",
-<<<<<<< HEAD
       "mount": "マウント",
       "buddy": "バディ",
-      "skin": "スキン"
-=======
-      "mount": "マウント"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "skin": "Skin"
     },
     "stats": {
       "armor": "防御力",

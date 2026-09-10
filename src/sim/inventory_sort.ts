@@ -50,20 +50,12 @@ export interface SortableStack {
 
 // The clean-up ladder. Gear leads (weapons, then armor by paperdoll slot,
 // then held offhands and unequipped bags), consumables next (potions before
-<<<<<<< HEAD
-// elixirs before food and drink), then tools, mount reins, and buddy
-// whistles, then the junk kind (every material lives there; gray vendor
-// trash is hoisted out below), then quest items where they are easy to find,
-// and poor-quality trash dead last so the sell-all-junk sweep reads straight
-// off the bag's tail.
-=======
 // the buff family, which runs elixirs, then the flasks that replace them, then
-// scrolls, then food and drink), then tools, mount reins, and unlearned
-// recipe patterns, then the junk kind (every material lives there; gray
-// vendor trash is hoisted out below), then quest items where they are easy
-// to find, and poor-quality trash dead last so the sell-all-junk sweep reads
-// straight off the bag's tail.
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+// scrolls, then food and drink), then tools, mount reins, buddy whistles, and
+// unlearned recipe patterns, then the junk kind (every material lives there;
+// gray vendor trash is hoisted out below), then quest items where they are
+// easy to find, and poor-quality trash dead last so the sell-all-junk sweep
+// reads straight off the bag's tail.
 // Record<ItemKind, number> deliberately: a new kind fails to compile until it
 // is given a rank here, instead of silently sorting after gray trash.
 const KIND_RANK: Record<ItemKind, number> = {
@@ -73,29 +65,18 @@ const KIND_RANK: Record<ItemKind, number> = {
   bag: 3,
   potion: 4,
   elixir: 5,
-<<<<<<< HEAD
-  food: 6,
-  drink: 7,
-  tool: 8,
-  mount: 9,
-  buddy: 10,
-  junk: 11,
-  quest: 12,
-};
-const TRASH_RANK = 13; // any poor-quality item, regardless of kind
-=======
   flask: 6,
   scroll: 7,
   food: 8,
   drink: 9,
   tool: 10,
   mount: 11,
-  recipe: 12,
-  junk: 13,
-  quest: 14,
+  buddy: 12,
+  recipe: 13,
+  junk: 14,
+  quest: 15,
 };
-const TRASH_RANK = 15; // any poor-quality item, regardless of kind
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+const TRASH_RANK = 16; // any poor-quality item, regardless of kind
 // The two defensive tails are DISTINCT ranks on purpose (comparator
 // transitivity): a missing-def stack compares by raw id while a known def
 // compares by the name/quality chain, and if the two populations could tie on

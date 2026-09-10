@@ -1260,55 +1260,13 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     // partition plus Normal epics or the Heroic-exclusive weapon partition.
     loot: [
       { copper: 150000, heroicCopper: NYTHRAXIS_HEROIC_COPPER, chance: 1 },
-<<<<<<< HEAD
-      { itemId: 'deathless_heartwood', chance: 0.03, rollGroup: 'nythraxis_drop_1' },
-      { itemId: 'bonewrought_greatsword', chance: 0.13, rollGroup: 'nythraxis_drop_1' },
-      { itemId: 'crownforged_dreadhelm', chance: 0.14, rollGroup: 'nythraxis_drop_1' },
-      { itemId: 'nighttalon_crown', chance: 0.14, rollGroup: 'nythraxis_drop_1' },
-      { itemId: 'soulflame_cowl', chance: 0.14, rollGroup: 'nythraxis_drop_1' },
-      { itemId: 'stormcallers_crown', chance: 0.14, rollGroup: 'nythraxis_drop_1' },
-      { itemId: 'nighttalon_shoulderguards', chance: 0.14, rollGroup: 'nythraxis_drop_1' },
-      { itemId: 'soulflame_mantle', chance: 0.14, rollGroup: 'nythraxis_drop_1' },
-      { itemId: 'kingsbane_last_oath', chance: 0.03, rollGroup: 'nythraxis_drop_2' },
-      { itemId: 'bonewrought_bulwark', chance: 0.13, rollGroup: 'nythraxis_drop_2' },
-      { itemId: 'crownforged_warspaulders', chance: 0.14, rollGroup: 'nythraxis_drop_2' },
-      { itemId: 'nighttalon_shoulderguards', chance: 0.14, rollGroup: 'nythraxis_drop_2' },
-      { itemId: 'soulflame_mantle', chance: 0.14, rollGroup: 'nythraxis_drop_2' },
-      { itemId: 'crownforged_dreadhelm', chance: 0.14, rollGroup: 'nythraxis_drop_2' },
-      { itemId: 'nighttalon_crown', chance: 0.14, rollGroup: 'nythraxis_drop_2' },
-      { itemId: 'stormcallers_spaulders', chance: 0.14, rollGroup: 'nythraxis_drop_2' },
-      // Group 3 is the offhand group and now carries both offhand epics, the
-      // caster orb and the hunter quiver, at an equal 0.14. The group is
-      // exclusive and must sum to exactly 1, so seating an eighth entry is the
-      // one place a quiver costs existing drops: the two offhands come down from
-      // 0.16 and the six shared set pieces from 0.14 to 0.12.
-      { itemId: 'wraithfire_orb', chance: 0.14, rollGroup: 'nythraxis_drop_3' },
-      { itemId: 'direfang_quiver', chance: 0.14, rollGroup: 'nythraxis_drop_3' },
-      { itemId: 'crownforged_dreadhelm', chance: 0.12, rollGroup: 'nythraxis_drop_3' },
-      { itemId: 'nighttalon_crown', chance: 0.12, rollGroup: 'nythraxis_drop_3' },
-      { itemId: 'soulflame_cowl', chance: 0.12, rollGroup: 'nythraxis_drop_3' },
-      { itemId: 'stormcallers_crown', chance: 0.12, rollGroup: 'nythraxis_drop_3' },
-      { itemId: 'nighttalon_shoulderguards', chance: 0.12, rollGroup: 'nythraxis_drop_3' },
-      { itemId: 'soulflame_mantle', chance: 0.12, rollGroup: 'nythraxis_drop_3' },
-      { itemId: 'direfang_greatblade', chance: 0.16, rollGroup: 'nythraxis_drop_4' },
-      { itemId: 'soulflame_mantle', chance: 0.14, rollGroup: 'nythraxis_drop_4' },
-      { itemId: 'crownforged_warspaulders', chance: 0.14, rollGroup: 'nythraxis_drop_4' },
-      { itemId: 'nighttalon_shoulderguards', chance: 0.14, rollGroup: 'nythraxis_drop_4' },
-      { itemId: 'stormcallers_spaulders', chance: 0.14, rollGroup: 'nythraxis_drop_4' },
-      { itemId: 'crownforged_dreadhelm', chance: 0.14, rollGroup: 'nythraxis_drop_4' },
-      { itemId: 'nighttalon_crown', chance: 0.14, rollGroup: 'nythraxis_drop_4' },
-      // The feral ladder's top rung rides its own bonus group: a fifth,
-      // independent draw so the four guaranteed groups above keep their exact
-      // 1.00 partitions (a 25% bonus shot, never displacing a set piece).
-      { itemId: 'maul_of_the_scourged_wilds', chance: 0.25, rollGroup: 'nythraxis_drop_5' },
+      ...NYTHRAXIS_EQUIPMENT_LOOT,
       // The Crystal Lich buddy (content/buddies.ts): 0.5% on normal, 1% on a
       // heroic claim through the row's own heroicChance, so one row covers
       // both difficulties and the heroic table never doubles the award.
       // Ungrouped on purpose: an independent draw, so the cosmetic never
       // displaces a set piece from one of the exact-1.00 partitions above.
       { itemId: 'whistle_crystal_lich', chance: 0.005, heroicChance: 0.01 },
-=======
-      ...NYTHRAXIS_EQUIPMENT_LOOT,
       // Masterwrought apex GEAR patterns (Phase 11, R8 channel doctrine): the
       // raid pillar carries the ten weaponcrafting/jewelcrafting/engineering/
       // inscription patterns (content/apex_patterns.ts) as ONE new partitioned
@@ -1360,7 +1318,6 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
       { itemId: 'evergarden_greens_seed', chance: 0.04, rollGroup: 'nythraxis_farm' },
       { itemId: 'gilded_yam_seed', chance: 0.04, rollGroup: 'nythraxis_farm' },
       { itemId: 'evergarden_pumpkin_seed', chance: 0.04, rollGroup: 'nythraxis_farm' },
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     ],
     scale: 3.1,
     color: 0x221b2d,

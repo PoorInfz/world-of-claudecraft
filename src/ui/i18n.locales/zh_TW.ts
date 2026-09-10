@@ -15702,7 +15702,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.perfecting.nameSubmitBusy': '鑄造中',
   'hudChrome.perfecting.nameCancel': '取消',
   'crucibleShop.balanceEntry': '{name} x{count}',
-<<<<<<< HEAD
   'entities.mobs.buddy_alpaca.name':
     '羊駝',
   'entities.mobs.buddy_ansem.name':
@@ -15989,7 +15988,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '燼落鳳凰的哨子',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     '每逢秋天牠便燃盡成一粒餘燼，到了春天又從自己的灰裡重新升起——關於牠，誰也說不出更多了。從沒有人找到過牠的巢，也從沒有人捉到過同一隻兩次。',
-=======
   'guide.arenaPage.honorFinalNoteSoldBack':
     '榮譽購買一經完成便無法反悔。買回清單裡只會有你賣出過的東西：以錢幣買下的東西通常還能按出售價格賣回，若你再次改變心意，也能從那份清單裡把它取回；但戰爭套裝在你買下的那一刻便靈魂綁定，因此它永遠無法交易、郵寄，也無法賣回換取任何東西，也就永遠不會出現在那份清單裡。商店會因此請你再確認一次：按下去之前，先把那件裝備看清楚。',
   'guide.arenaPage.rewardsBodyLossShare':
@@ -16245,5 +16243,4 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'devCommand.actions.farmgrow.label': '催熟作物',
   'devCommand.fields.bed': '田畦ID（選填）',
   'guide.profPages.oncePerDay': '每日一次',
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 };

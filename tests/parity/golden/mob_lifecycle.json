@@ -432,15 +432,9 @@
     {
       "tick": 0,
       "time": 0,
-<<<<<<< HEAD
-      "nextId": 1004,
-      "state": "f8844448",
-      "events": "2a405109",
-=======
       "nextId": 1012,
-      "state": "431b3b4f",
+      "state": "500eeec3",
       "events": "6fa945d8",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
       "rng": {
         "draws": 16,
         "digest": "1a09d230"
@@ -910,15 +904,9 @@
     {
       "tick": 0,
       "time": 0,
-<<<<<<< HEAD
-      "nextId": 1004,
-      "state": "b13c0272",
-      "events": "543d16b8",
-=======
       "nextId": 1012,
-      "state": "5b11af4d",
-      "events": "1abc6ede",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "state": "905be76b",
+      "events": "7478432d",
       "rng": {
         "draws": 17,
         "digest": "b3757ffe"
@@ -1038,13 +1026,8 @@
           "fallStartY": -2,
           "fiveSecondRule": 99,
           "healPower": 5,
-<<<<<<< HEAD
           "hp": 999978,
-          "id": 998,
-=======
-          "hp": 999984,
           "id": 1006,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
           "inCombat": true,
           "kind": "player",
           "level": 1,
@@ -1395,15 +1378,9 @@
     {
       "tick": 0,
       "time": 0,
-<<<<<<< HEAD
-      "nextId": 1006,
-      "state": "aa0f1e9e",
-      "events": "a0e755c4",
-=======
       "nextId": 1014,
-      "state": "98b44638",
+      "state": "6cba78a2",
       "events": "66bea31b",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
       "rng": {
         "draws": 27,
         "digest": "63b17052"
@@ -1523,13 +1500,8 @@
           "fallStartY": -2,
           "fiveSecondRule": 99,
           "healPower": 5,
-<<<<<<< HEAD
           "hp": 999978,
-          "id": 998,
-=======
-          "hp": 999984,
           "id": 1006,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
           "inCombat": true,
           "kind": "player",
           "level": 1,
@@ -1923,15 +1895,9 @@
     {
       "tick": 0,
       "time": 0,
-<<<<<<< HEAD
-      "nextId": 1007,
-      "state": "4ad9ee1e",
-      "events": "4aa98bd5",
-=======
       "nextId": 1015,
-      "state": "aef9f533",
+      "state": "cd405702",
       "events": "f1975ce5",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
       "rng": {
         "draws": 36,
         "digest": "41356f3b"
@@ -2055,13 +2021,8 @@
           "fallStartY": -2,
           "fiveSecondRule": 99,
           "healPower": 5,
-<<<<<<< HEAD
           "hp": 999978,
-          "id": 998,
-=======
-          "hp": 999984,
           "id": 1006,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
           "inCombat": true,
           "kind": "player",
           "level": 1,
@@ -2517,13 +2478,8 @@
     {
       "tick": 0,
       "time": 0,
-<<<<<<< HEAD
-      "nextId": 1007,
-      "state": "4ad9ee1e",
-=======
       "nextId": 1015,
-      "state": "aef9f533",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "state": "cd405702",
       "events": "741638a5",
       "rng": {
         "draws": 36,
@@ -2648,13 +2604,8 @@
           "fallStartY": -2,
           "fiveSecondRule": 99,
           "healPower": 5,
-<<<<<<< HEAD
           "hp": 999978,
-          "id": 998,
-=======
-          "hp": 999984,
           "id": 1006,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
           "inCombat": true,
           "kind": "player",
           "level": 1,

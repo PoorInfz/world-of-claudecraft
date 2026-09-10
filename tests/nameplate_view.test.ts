@@ -451,14 +451,11 @@ describe('nameplate_view - import absence (two-controller + purity, source scan)
     const froms = [...code.matchAll(/\bimport\b[^;]*\bfrom\s*['"]([^'"]+)['"]/g)].map((m) => m[1]);
     // unique modules, robust to biome merging/splitting the type vs value sim import
     expect([...new Set(froms)].sort()).toEqual([
-<<<<<<< HEAD
       '../sim/pet/buddy_ai',
-=======
       // The feast template-id constant (Phase 12): a sim CONTENT leaf, not
       // three/painter/gfx; imported so the discriminator cannot drift from
       // the sim's own id (the frontend-seam review's ask).
       '../sim/professions/feast',
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
       '../sim/types',
       './nameplate_combo',
       './nameplate_threat',

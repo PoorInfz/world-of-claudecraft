@@ -10801,13 +10801,9 @@ export const pl_PL: EnTranslations = {
       "flask": "Flakona",
       "scroll": "Zwój",
       "bag": "Torba",
-<<<<<<< HEAD
       "mount": "Wierzchowiec",
       "buddy": "Buddy",
-      "skin": "Skórka"
-=======
-      "mount": "Wierzchowiec"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Pancerz",

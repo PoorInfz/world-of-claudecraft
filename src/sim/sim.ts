@@ -156,10 +156,7 @@ import { ensureWarriorStance } from './combat/warrior_stances';
 // moved to social/fiesta.ts with that logic; sim.ts keeps only the type used by
 // the PlayerMeta interface + the power-up catalog the fiestaMatchInfo accessor reads.
 import { type AugmentSpecial, type AugmentTier, POWERUPS_BY_ID } from './content/augments';
-<<<<<<< HEAD
 import type { BuddyKey } from './content/buddies';
-import { applyTalentMods } from './content/classes';
-=======
 import { farmCropTier } from './content/farm_crops';
 import {
   FARM_BED_IDS,
@@ -167,7 +164,6 @@ import {
   FARM_PATCHES,
   type FarmPatchDef,
 } from './content/farm_patches';
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 import {
   CRUCIBLE_VENDOR_ENTITY_ID,
   CRUCIBLE_VENDOR_ENTRANCE_POS,

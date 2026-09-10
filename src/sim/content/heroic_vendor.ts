@@ -161,14 +161,12 @@ export const HEROIC_VENDOR_STOCK: readonly HeroicVendorOffer[] = [
   { itemId: 'zense_meridian', marks: 16 },
   { itemId: 'swiftfang_talisman', marks: 16 },
   { itemId: 'medallion_of_endless_profit', marks: 16 },
-<<<<<<< HEAD
   // The one non-jewelry row: the Loot Goblin companion (content/items.ts
   // whistle_loot_goblin, kind 'buddy'). Cosmetic, so its price is a collection
   // chase rather than a gear step: 100 marks is roughly six full jewelry
   // pieces, which is what makes it the long tail of the marks currency instead
   // of competing with an upgrade a player still needs.
   { itemId: 'whistle_loot_goblin', marks: 100 },
-=======
   // Masterwrought phase 04: the deterministic Wyrmfall Core catch-up valve
   // (ruling R8's day-one vendor channel). Deliberately priced at the ring
   // point of the mark family: a bad-luck backstop for the last core, never a
@@ -254,5 +252,4 @@ export const HEROIC_VENDOR_STOCK: readonly HeroicVendorOffer[] = [
   { itemId: 'evergarden_greens_seed', marks: 12 },
   { itemId: 'gilded_yam_seed', marks: 12 },
   { itemId: 'evergarden_pumpkin_seed', marks: 12 },
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 ];

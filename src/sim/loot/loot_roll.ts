@@ -55,13 +55,12 @@ import type {
   MasterLootThreshold,
 } from '../types';
 import { dist2d, PARTY_XP_RANGE } from '../types';
-<<<<<<< HEAD
-import { bopPartyTradeInstance } from './bop_trade_window';
-import { buddyWhistlesOfQuality, GLOBAL_BUDDY_DROP_TIERS } from './global_drops';
-=======
+// bopPartyTradeInstance is not imported here: the grantAwardedLootItem body
+// that used it moved to awarded_loot_hold.ts (imported below), which is now
+// its only caller.
 import { grantAwardedLootItem, grantOrHoldAwardedLoot } from './awarded_loot_hold';
+import { buddyWhistlesOfQuality, GLOBAL_BUDDY_DROP_TIERS } from './global_drops';
 import { lootEntryRollsOnClaim } from './loot_difficulty_gate';
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 import { isTapGroupMember, LOOT_FFA_DELAY } from './loot_ffa';
 
 // How long (seconds) a need-greed roll stays open before it auto-resolves. Sole

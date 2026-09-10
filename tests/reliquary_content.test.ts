@@ -254,22 +254,12 @@ function dungeonRarePlusLootIds(
     isRarePlus(itemId) &&
     !isRedemptionTokenId(itemId) &&
     !isMaterialId(itemId) &&
+    !isBuddyWhistleId(itemId) && // a cosmetic, never a relic
     (include || !isReliquaryCarvedOut(itemId));
   const ids = new Set<string>();
   for (const mobId of dungeonMobIds(dungeonId)) {
     for (const entry of MOBS[mobId]?.loot ?? []) {
-<<<<<<< HEAD
-      if (entry.itemId === undefined) continue;
-      // Redemption tokens fall out by kind (the Crucible sigils are epic
-      // 'tool' rows on both raid bosses' tables); the liveness arm in the
-      // raid-page describe proves the filter really excludes something.
-      if (isRedemptionTokenId(entry.itemId)) continue;
-      if (isMaterialId(entry.itemId)) continue;
-      if (isBuddyWhistleId(entry.itemId)) continue; // a cosmetic, never a relic
-      if (isRarePlus(entry.itemId)) ids.add(entry.itemId);
-=======
       if (entry.itemId !== undefined && admits(entry.itemId)) ids.add(entry.itemId);
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     }
   }
   for (const itemId of dungeonObjectItemIds(dungeonId)) {
@@ -997,6 +987,7 @@ describe('Reliquary heroic gear pins against HEROIC_BOSS_LOOT', () => {
       if (typeof e.itemId !== 'string') continue;
       if (isMountReinsId(e.itemId) || isHeroicVariantId(e.itemId)) continue;
       if (isRedemptionTokenId(e.itemId)) continue;
+      if (isBuddyWhistleId(e.itemId)) continue; // a cosmetic, never a relic
       if (!include && isReliquaryCarvedOut(e.itemId)) continue;
       liveIds.push(e.itemId);
     }

@@ -10801,13 +10801,9 @@ export const en_XA: EnTranslations = {
       "flask": "[Ƒļášķ]",
       "scroll": "[Šçŕóļļ]",
       "bag": "[Ɓáĝ]",
-<<<<<<< HEAD
       "mount": "[Ɱóúñţ]",
       "buddy": "[Ɓúððý]",
       "skin": "[Šķíñ]"
-=======
-      "mount": "[Ɱóúñţ]"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     },
     "stats": {
       "armor": "[Áŕɱóŕ]",

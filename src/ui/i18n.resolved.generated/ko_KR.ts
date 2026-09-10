@@ -10801,13 +10801,9 @@ export const ko_KR: EnTranslations = {
       "flask": "플라스크",
       "scroll": "두루마리",
       "bag": "가방",
-<<<<<<< HEAD
       "mount": "탈것",
       "buddy": "버디",
-      "skin": "스킨"
-=======
-      "mount": "탈것"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "skin": "Skin"
     },
     "stats": {
       "armor": "방어도",

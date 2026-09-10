@@ -1026,9 +1026,7 @@ export type ItemKind =
   | 'scroll'
   | 'bag'
   | 'mount'
-<<<<<<< HEAD
-  | 'buddy';
-=======
+  | 'buddy'
   | 'recipe';
 // The aura kinds a timed FLAT STAT buff may carry. Narrower than AuraKind on
 // purpose: this payload's whole contract is "a flat stat buff for a while", and
@@ -1078,7 +1076,6 @@ export interface TimedStatBuffPayload {
   value: number;
   duration: number;
 }
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 
 interface BaseItemDef {
   id: string;
@@ -1372,14 +1369,10 @@ export interface HeldOffhandItemDef extends BaseItemDef {
 }
 
 export interface OtherItemDef extends BaseItemDef {
-<<<<<<< HEAD
-  kind: Exclude<ItemKind, 'armor' | 'weapon' | 'held_offhand' | 'mount' | 'buddy'>;
-=======
   kind: Exclude<
     ItemKind,
-    'armor' | 'weapon' | 'held_offhand' | 'mount' | 'recipe' | 'scroll' | 'flask' | 'food'
+    'armor' | 'weapon' | 'held_offhand' | 'mount' | 'buddy' | 'recipe' | 'scroll' | 'flask' | 'food'
   >;
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
   armorType?: never;
   // The shared feast (farming, D16): a placeable item whose use spawns a
   // world entity instead of consuming food. `charges` is how many
@@ -1523,7 +1516,6 @@ export interface MountItemDef extends BaseItemDef {
   weapon?: never;
 }
 
-<<<<<<< HEAD
 // A collectible buddy summon-whistle. Owning the item IS owning the buddy:
 // while it sits in the player's bags or bank, the catalog buddy it names is
 // summonable (src/sim/buddies.ts buddyOwned), exactly like a mount's reins
@@ -1537,7 +1529,8 @@ export interface BuddyItemDef extends BaseItemDef {
   buddy: BuddyKey;
   armorType?: never;
   weapon?: never;
-=======
+}
+
 // A recipe PATTERN item: the physical drop that teaches one ProfessionRecipeRecord
 // when used from the bags (src/sim/professions/pattern_items.ts). The def names the
 // recipe it teaches and nothing else; `teachesRecipeId` is a recipe id
@@ -1563,7 +1556,6 @@ export interface RecipeItemDef extends BaseItemDef {
   weapon?: never;
   use?: never;
   stackSize?: never;
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 }
 
 export type ItemDef =
@@ -1573,14 +1565,11 @@ export type ItemDef =
   | HeldOffhandItemDef
   | OtherItemDef
   | MountItemDef
-<<<<<<< HEAD
-  | BuddyItemDef;
-=======
+  | BuddyItemDef
   | RecipeItemDef
   | ScrollItemDef
   | FlaskItemDef
   | FoodItemDef;
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 
 // Per-instance item payload (#1165). Additive and OPTIONAL: most items stay plain
 // {itemId, count} with no instance payload (fungible, market-listable). A slot

@@ -12825,6 +12825,7 @@ export type TranslationKeyFlat =
   | 'itemUi.kind.quest'
   | 'itemUi.kind.recipe'
   | 'itemUi.kind.scroll'
+  | 'itemUi.kind.skin'
   | 'itemUi.kind.tool'
   | 'itemUi.kind.weapon'
   | 'itemUi.logs.boughtBackItem'

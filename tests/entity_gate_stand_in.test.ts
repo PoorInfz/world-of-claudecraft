@@ -502,6 +502,7 @@ describe('entity gate stand-ins actually stand in', () => {
         false,
         false,
         false,
+        false,
       );
     expect(plan(INTERACT_RANGE).hidden, 'the plate stands in where the feast is actionable').toBe(
       false,

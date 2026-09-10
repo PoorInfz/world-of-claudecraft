@@ -10801,13 +10801,9 @@ export const da_DK: EnTranslations = {
       "flask": "Flaske",
       "scroll": "Rulle",
       "bag": "Taske",
-<<<<<<< HEAD
       "mount": "Ridedyr",
       "buddy": "Buddy",
       "skin": "Skin"
-=======
-      "mount": "Ridedyr"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     },
     "stats": {
       "armor": "Rustning",

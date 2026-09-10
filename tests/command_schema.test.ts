@@ -155,29 +155,23 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // The New Eastbrook program then retires the Vale Cup minigame, removing its
 // six vcup_* send + dispatch pairs (docs/design/eastbrook-revamp/master-plan.md);
 // the Proving Shore tutorial adds its one start_tutorial pair back on top, and
-<<<<<<< HEAD
-// the v0.40.0 sync merge brings the release side's one new pair with it.
-// Both arms added a command (ours buddy_toggle, upstream its raid set), so
-// these were re-measured on the merged tree at the 47c1aacaae resolution.
-const EXPECTED_SEND_COUNT = 208;
-const EXPECTED_DISPATCH_COUNT = 221;
-const EXPECTED_DISPATCH_ONLY_COUNT = 13;
-=======
 // the v0.40.0 sync merge brings the release side's one new pair with it: base
 // 207/220/13 for this merge.
 //
-// RE-PINNED at this merge of release/v0.42.0 into feature/masterwrought.
-// BOTH parent pins for the record: ours 221/234/13 (the professions-merge
-// chain above), the release 207/221/14 (its own dispatch-only addition: one
-// dispatch handler with no matching client send). Arithmetic reconciliation
-// per axis (base + ours' delta + theirs' delta: send 207+14+0=221, dispatch
-// 220+14+1=235, dispatch-only 13+0+1=14), NOT a suite run, which the NOTE
-// above explicitly warns against trusting: confirm with
-// `npx vitest run tests/command_schema.test.ts` before merge lands.
-const EXPECTED_SEND_COUNT = 222;
-const EXPECTED_DISPATCH_COUNT = 236;
+// RE-PINNED at this merge of release/v0.42.0 into feature/buddy-companion-system.
+// BOTH parent pins for the record: ours 208/221/13 (buddy_toggle plus the
+// buddy_autoloot pair added after it), the release 222/236/14 (its own raid
+// set, farming and dispatch-only additions). NOT reconciled by arithmetic,
+// per the note above's own warning: measured directly by running
+// `npx vitest run tests/command_schema.test.ts` against the merged
+// COMMAND_NAMES/dispatch switch and setting these three to what it reports:
+// 224/238/14 (the buddy_autoloot pair is genuinely additive over the
+// release parent's own 222/236 base, so the merged tree sits two above it
+// on both the send and dispatch axes; dispatch-only holds at the release
+// parent's own 14).
+const EXPECTED_SEND_COUNT = 224;
+const EXPECTED_DISPATCH_COUNT = 238;
 const EXPECTED_DISPATCH_ONLY_COUNT = 14;
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 
 // The chat sub-channel routing switch (server/game.ts `switch
 // (session.rememberedChat.channel)`) is NOT a msg.cmd dispatch; its labels must

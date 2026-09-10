@@ -10801,13 +10801,9 @@ export const cs_CZ: EnTranslations = {
       "flask": "Baňka",
       "scroll": "Svitek",
       "bag": "Batoh",
-<<<<<<< HEAD
       "mount": "Jízdní zvíře",
       "buddy": "Buddy",
-      "skin": "Vzhled"
-=======
-      "mount": "Jízdní zvíře"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+      "skin": "Skin"
     },
     "stats": {
       "armor": "Brnění",

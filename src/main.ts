@@ -1467,11 +1467,8 @@ async function startGame(
     renderer.showDevBadges = settings.get('showDevBadges');
     renderer.showOwnNameplate = settings.get('showOwnNameplate');
     renderer.showPlayerNameplates = settings.get('showPlayerNameplates');
-<<<<<<< HEAD
     renderer.showPetNames = settings.get('showPetNames');
-=======
     setNameplateDotScale(settings.nameplateDotRenderScale());
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     renderer.setWaterRipples(settings.get('waterRipples'));
     // Dev-only: ?targetcone=1 draws the Tab-target front cone on the ground in
     // front of the player, for tuning the targeting angle/radius (tab_target.ts).
@@ -2533,10 +2530,10 @@ async function startGame(
       renderer.showPlayerNameplates = settings.set('showPlayerNameplates', !!value);
       return;
     }
-<<<<<<< HEAD
     if (key === 'showPetNames') {
       renderer.showPetNames = settings.set('showPetNames', !!value);
-=======
+      return;
+    }
     if (key === 'showNameplateDots') {
       settings.set('showNameplateDots', !!value);
       setNameplateDotScale(settings.nameplateDotRenderScale());
@@ -2545,7 +2542,6 @@ async function startGame(
     if (key === 'nameplateDotScale') {
       settings.set('nameplateDotScale', Number(value));
       setNameplateDotScale(settings.nameplateDotRenderScale());
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
       return;
     }
     if (key === 'invertLookY') {
@@ -2784,11 +2780,8 @@ async function startGame(
     next.showDevBadges = settings.get('showDevBadges');
     next.showOwnNameplate = settings.get('showOwnNameplate');
     next.showPlayerNameplates = settings.get('showPlayerNameplates');
-<<<<<<< HEAD
     next.showPetNames = settings.get('showPetNames');
-=======
     setNameplateDotScale(settings.nameplateDotRenderScale());
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     next.reduceMotionSetting = settings.get('reduceMotion');
     next.setBrightness(settings.get('brightness'));
     next.setCameraFov(settings.get('cameraFov'));

@@ -118,24 +118,6 @@ const build = await buildItemArtAudit({
   // `node scripts/item_art_audit.mjs --verify-only` run directly on the
   // merged tree, not guessed or derived from either parent.
   expected: {
-<<<<<<< HEAD
-    // 829 + the crucible-raid-weapons-2026-08-28 batch (9 painted weapons)
-    // + the ignivar-varkhul-drop-renders-2026-08-28 batch (2 rendered
-    // legendaries) + the crucible-set-icons-2026-08-29 wave (all 192
-    // non-weapon Crucible pieces; the art-pending ledger is now empty).
-    // + the OSSBrain v0.41 batch's own painted piece, carried through the
-    // base merge alongside the release-side Crucible waves.
-    catalogCount: 1072,
-    // 844 + the 201 Crucible raid loot definitions (192 of them art-pending)
-    // + the base's 2 Varkhul legendary definitions, + the release sync's 7
-    // bank-storage painted bags.
-    liveItemCount: 1087,
-    generatedHeroicDefinitions: 64,
-    heroicDefinitionsWithOwnWebp: 48,
-    heroicWeaponArtAliases: 16,
-    sheetPageCount: 28,
-    groupCount: 23,
-=======
     // OSSBrain PR #3781 reconcile: the release's own arm reached 1281 / 1299
     // (the Masterwrought completion, Field Kit, Crucible professions, and
     // Nythraxis/Bramblehide waves) and the OSSBrain candidate's arm reached
@@ -144,15 +126,21 @@ const build = await buildItemArtAudit({
     // additive over that shared base, so 1069 + 212 + 2 = 1283 and
     // 1087 + 212 + 2 = 1301. Verified with `node scripts/item_art_audit.mjs
     // --verify-only` against the merged tree.
-    catalogCount: 1283,
-    liveItemCount: 1301,
-    pendingArtCount: 0,
+    //
+    // RESOLVED for the merge of df2ae9880f (PR #3944, release/v0.42.0) into
+    // feature/buddy-companion-system: the buddy branch's 32 whistle items add
+    // on top with no overlap (31 with committed art, plus
+    // whistle_emberfall_phoenix, whose GLB is committed but not yet rendered
+    // to an icon -- BUDDY_ART_PENDING_ITEM_IDS). Verified with
+    // `node scripts/item_art_audit.mjs --verify-only` against the merged tree.
+    catalogCount: 1314,
+    liveItemCount: 1332,
+    pendingArtCount: 1,
     generatedHeroicDefinitions: 78,
     heroicDefinitionsWithOwnWebp: 59,
     heroicWeaponArtAliases: 19,
-    sheetPageCount: 31,
-    groupCount: 25,
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
+    sheetPageCount: 32,
+    groupCount: 26,
   },
 });
 assertItemArtAuditPass(build);

@@ -1,10 +1,7 @@
 import { describe, expect, it } from 'vitest';
-<<<<<<< HEAD
 import { BUDDY_KEYS } from '../src/sim/content/buddies';
-=======
 import { FARM_CROP_IDS } from '../src/sim/content/farm_crops';
 import { FARM_BED_IDS, farmBedById } from '../src/sim/content/farm_patches';
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 import { parseBisGearFor } from '../src/sim/dev/parse_bis_loadouts';
 import { normalizeFarmPlots, serializeFarmPlots } from '../src/sim/professions/farm_persist';
 import { Sim } from '../src/sim/sim';
@@ -493,7 +490,6 @@ describe('/dev bg (Thornhollow Fields force-start)', () => {
     expect(sim.bgMatchFor(sim.playerId)).toBeNull();
   });
 
-<<<<<<< HEAD
   it('/dev buddies grants every catalog whistle, skipping ones already owned', () => {
     const sim = devSim();
     const meta = sim.players.get(sim.playerId);
@@ -505,7 +501,8 @@ describe('/dev bg (Thornhollow Fields force-start)', () => {
     expect(sim.ownedBuddies().length).toBe(BUDDY_KEYS.length);
     // The already-owned whistle was not duplicated.
     expect(meta.inventory.filter((s) => s.itemId === 'whistle_ember_fox')).toHaveLength(1);
-=======
+  });
+
   it('freezes every mob in place with no aggro, and releases on off', () => {
     const sim = devSim();
     // an aggressive mob right beside the player: without the freeze this
@@ -746,6 +743,5 @@ describe('/dev farmgrow (farming grow-now)', () => {
     sim.chat('/dev farmgrow');
 
     expect(plotOf(sim, 'bed_eastbrook_1')?.readyAtMs).toBe(FAR);
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
   });
 });

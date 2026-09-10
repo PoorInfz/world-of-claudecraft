@@ -162,7 +162,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "es_ES": [
     "entities.items.whistle_alon.name",
@@ -317,7 +318,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "fr_FR": [
     "entities.items.whistle_alon.name",
@@ -472,7 +474,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "fr_CA": [
     "entities.items.whistle_alon.name",
@@ -627,7 +630,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "en_CA": [],
   "it_IT": [
@@ -783,7 +787,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "de_DE": [
     "entities.items.whistle_alon.name",
@@ -938,7 +943,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "zh_CN": [
     "entities.mobs.buddy_alon.name",
@@ -950,7 +956,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.armor.mail",
     "hudChrome.collections.detail.vendor",
     "hudChrome.collections.detail.vendorLabel",
-    "hudChrome.collections.tabs.sets"
+    "hudChrome.collections.tabs.sets",
+    "itemUi.kind.skin"
   ],
   "zh_TW": [
     "entities.mobs.buddy_alon.name",
@@ -962,7 +969,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.armor.mail",
     "hudChrome.collections.detail.vendor",
     "hudChrome.collections.detail.vendorLabel",
-    "hudChrome.collections.tabs.sets"
+    "hudChrome.collections.tabs.sets",
+    "itemUi.kind.skin"
   ],
   "ko_KR": [
     "entities.mobs.buddy_alon.name",
@@ -974,7 +982,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.armor.mail",
     "hudChrome.collections.detail.vendor",
     "hudChrome.collections.detail.vendorLabel",
-    "hudChrome.collections.tabs.sets"
+    "hudChrome.collections.tabs.sets",
+    "itemUi.kind.skin"
   ],
   "ja_JP": [
     "entities.mobs.buddy_alon.name",
@@ -986,7 +995,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.armor.mail",
     "hudChrome.collections.detail.vendor",
     "hudChrome.collections.detail.vendorLabel",
-    "hudChrome.collections.tabs.sets"
+    "hudChrome.collections.tabs.sets",
+    "itemUi.kind.skin"
   ],
   "pt_BR": [
     "entities.items.whistle_alon.name",
@@ -1141,7 +1151,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "ru_RU": [
     "entities.mobs.buddy_alon.name",
@@ -1153,7 +1164,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.armor.mail",
     "hudChrome.collections.detail.vendor",
     "hudChrome.collections.detail.vendorLabel",
-    "hudChrome.collections.tabs.sets"
+    "hudChrome.collections.tabs.sets",
+    "itemUi.kind.skin"
   ],
   "cs_CZ": [
     "entities.items.whistle_alon.name",
@@ -1308,7 +1320,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "nl_NL": [
     "entities.items.whistle_alon.name",
@@ -1463,7 +1476,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "pl_PL": [
     "entities.items.whistle_alon.name",
@@ -1618,7 +1632,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "id_ID": [
     "entities.items.whistle_alon.name",
@@ -1773,7 +1788,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "tr_TR": [
     "entities.items.whistle_alon.name",
@@ -1928,7 +1944,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "sv_SE": [
     "entities.items.whistle_alon.name",
@@ -2083,7 +2100,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "vi_VN": [
     "entities.items.whistle_alon.name",
@@ -2238,7 +2256,8 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ],
   "da_DK": [
     "entities.items.whistle_alon.name",
@@ -2393,6 +2412,7 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.collections.title",
     "hudChrome.options.showPetNames",
     "hudChrome.warfareShop.companions",
-    "itemUi.kind.buddy"
+    "itemUi.kind.buddy",
+    "itemUi.kind.skin"
   ]
 };

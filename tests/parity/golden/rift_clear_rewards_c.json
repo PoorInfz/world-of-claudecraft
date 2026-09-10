@@ -9,13 +9,8 @@
     "openDescent + the walk-in descent trigger + spawnRiftFloor across all three floors",
     "openExit + rank coin bonus on the winning corpse (dev-entry claim, no race)"
   ],
-<<<<<<< HEAD:tests/parity/golden/bop_party_trade_eligibility.json
-  "draws": 12,
-  "drawDigest": "8870fb19",
-=======
   "draws": 347,
   "drawDigest": "52855f0a",
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020:tests/parity/golden/rift_clear_rewards_c.json
   "frames": [
     {
       "tick": 0,
@@ -28,23 +23,6 @@
         "digest": "811c9dc5"
       },
       "label": "init",
-<<<<<<< HEAD:tests/parity/golden/bop_party_trade_eligibility.json
-      "players": [],
-      "entities": []
-    },
-    {
-      "tick": 0,
-      "time": 0,
-      "nextId": 1001,
-      "state": "d74abbdd",
-      "events": "741638a5",
-      "rng": {
-        "draws": 12,
-        "digest": "8870fb19"
-      },
-      "label": "loot-identity-captured",
-=======
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020:tests/parity/golden/rift_clear_rewards_c.json
       "players": [
         {
           "activeLoadout": -1,
@@ -193,13 +171,8 @@
       "state": "78399600",
       "events": "0f4c6524",
       "rng": {
-<<<<<<< HEAD:tests/parity/golden/bop_party_trade_eligibility.json
-        "draws": 12,
-        "digest": "8870fb19"
-=======
         "draws": 48,
         "digest": "de38ddee"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020:tests/parity/golden/rift_clear_rewards_c.json
       },
       "label": "entered",
       "players": [
@@ -994,13 +967,8 @@
       "state": "5c03a5e2",
       "events": "741638a5",
       "rng": {
-<<<<<<< HEAD:tests/parity/golden/bop_party_trade_eligibility.json
-        "draws": 12,
-        "digest": "8870fb19"
-=======
         "draws": 347,
         "digest": "52855f0a"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020:tests/parity/golden/rift_clear_rewards_c.json
       },
       "label": "final",
       "players": [

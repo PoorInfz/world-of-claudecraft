@@ -16518,7 +16518,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.perfecting.nameSubmitBusy': '鍛造中',
   'hudChrome.perfecting.nameCancel': 'キャンセル',
   'crucibleShop.balanceEntry': '{name} x{count}',
-<<<<<<< HEAD
   'entities.mobs.buddy_alpaca.name':
     'アルパカ',
   'entities.mobs.buddy_ansem.name':
@@ -16805,7 +16804,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'エンバーフォール・フェニックスの笛',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     '秋ごとに燃え尽きて一粒の燃えさしとなり、春には自らの灰から立ち上がってくる。誰に訊いても言えるのはそれだけだ。巣を見つけた者はおらず、同じ個体を二度捕らえた者もいない。',
-=======
   'guide.arenaPage.honorFinalNoteSoldBack':
     '名誉での購入は取り消せません。商人の買い戻し一覧に並ぶのは、自分が売った品だけです。コインでの買い物なら、たいていは売却価格で売り戻せますし、また気が変わればその一覧から取り戻せますが、ウォーフェア装備は買った瞬間に魂縛されるため、取引にも郵送にも売り戻しにも二度と回せません。その一覧にウォーフェア装備が並ぶことは、決してありません。商店がわざわざ確認を求めるのはそのためです。押す前に、その一点をよく読みましょう。',
   'guide.arenaPage.rewardsBodyLossShare':
@@ -17073,5 +17071,4 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'devCommand.actions.farmgrow.label': '作物を成熟させる',
   'devCommand.fields.bed': '畝のID（任意）',
   'guide.profPages.oncePerDay': '1日1回',
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 };

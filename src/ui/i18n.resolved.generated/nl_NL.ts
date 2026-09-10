@@ -10801,13 +10801,9 @@ export const nl_NL: EnTranslations = {
       "flask": "Flacon",
       "scroll": "Perkament",
       "bag": "Tas",
-<<<<<<< HEAD
       "mount": "Rijdier",
       "buddy": "Buddy",
       "skin": "Skin"
-=======
-      "mount": "Rijdier"
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
     },
     "stats": {
       "armor": "Pantser",

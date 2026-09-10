@@ -48,11 +48,8 @@ const ITEM_KIND_LABEL_KEYS: Record<ItemDef['kind'], TranslationKey> = {
   scroll: 'itemUi.kind.scroll',
   bag: 'itemUi.kind.bag',
   mount: 'itemUi.kind.mount',
-<<<<<<< HEAD
   buddy: 'itemUi.kind.buddy',
-=======
   recipe: 'itemUi.kind.recipe',
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 };
 
 export function itemQualityLabel(quality: ItemDef['quality']): string {

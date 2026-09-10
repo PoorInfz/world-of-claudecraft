@@ -15694,7 +15694,6 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.perfecting.nameSubmitBusy': '铸造中',
   'hudChrome.perfecting.nameCancel': '取消',
   'crucibleShop.balanceEntry': '{name} x{count}',
-<<<<<<< HEAD
   'entities.mobs.buddy_alpaca.name':
     '羊驼',
   'entities.mobs.buddy_ansem.name':
@@ -15981,7 +15980,6 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '烬落凤凰的哨子',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     '每逢秋天它便燃尽成一粒余烬，到了春天又从自己的灰里重新升起——关于它，谁也说不出更多了。从没有人找到过它的巢，也从没有人捉到过同一只两次。',
-=======
   'guide.arenaPage.honorFinalNoteSoldBack':
     '荣誉购买是最终的。回购列表里只会有你卖出去的东西：用钱币买下的东西通常可以按出售价格卖回给商人，若你再次改变主意，还能从那份列表里把它买回来；但战争套装在你买下的那一刻便已灵魂绑定，因此它再也无法交易、邮寄，或以任何形式退回，也永远不会进入那份列表。商店正因如此才要你确认一次：按下之前，请把那件装备看清楚。',
   'guide.arenaPage.rewardsBodyLossShare':
@@ -16237,5 +16235,4 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'devCommand.actions.farmgrow.label': '催熟作物',
   'devCommand.fields.bed': '田畦ID（可选）',
   'guide.profPages.oncePerDay': '每日一次',
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
 };

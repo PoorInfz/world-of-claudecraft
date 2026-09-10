@@ -420,7 +420,6 @@ export const BOOL_SETTINGS = {
   // decluttering crowded hubs on short mobile viewports. Purely a local display
   // preference; mob nameplates and unit frames are unaffected.
   showPlayerNameplates: { def: true },
-<<<<<<< HEAD
   // off by default: a cosmetic buddy follower (src/sim/content/buddy_mobs.ts)
   // has no health worth bar-ing (1 hp) and cannot be attacked, so its plate
   // stays hidden regardless of the general mob nameplate toggle above unless
@@ -428,7 +427,6 @@ export const BOOL_SETTINGS = {
   // bar (src/render/nameplate_view.ts's isBuddyPet branch,
   // nameplate_painter.ts's hpVisible suppression).
   showPetNames: { def: false },
-=======
   // on by default: draw the LOCAL player's own debuffs as a small icon row on an
   // enemy's overhead nameplate, between the name row and the health bar, each with
   // a cooldown swipe and a countdown. Only YOUR debuffs, on mobs only; the group's
@@ -459,7 +457,6 @@ export const BOOL_SETTINGS = {
   // permanent stealth row parked in the bar. It is a plain row in the Combat
   // tab (not nested); it simply has no effect while that track is off.
   showUtilityModes: { def: true },
->>>>>>> df2ae9880fa2273294c395c195de18d7a9e86020
   // off by default: invert the vertical axis of mouselook (push mouse forward
   // to look down), the classic flight-sim preference.
   invertLookY: { def: false },
