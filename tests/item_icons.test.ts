@@ -383,7 +383,7 @@ describe('item webp icons', () => {
     expect(
       [...ITEM_ART_PENDING].sort(),
       'art debt is enumerated and re-pinned deliberately, never grown quietly',
-    ).toEqual(['whistle_emberfall_phoenix']);
+    ).toEqual(['whistle_emberfall_phoenix', 'whistle_the_mummy']);
     // And the inverse: an id with committed art must still win the static url.
     expect(itemImageUrl('linen_pouch')).toBe('/ui/items/linen_pouch.webp');
   });

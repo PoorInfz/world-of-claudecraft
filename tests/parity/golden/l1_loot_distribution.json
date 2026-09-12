@@ -30,7 +30,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1010,
-      "state": "702c067d",
+      "state": "97b44594",
       "events": "6721ca60",
       "rng": {
         "draws": 1,
@@ -44,6 +44,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -128,6 +129,7 @@
             null,
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -205,6 +207,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -519,7 +522,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 1010,
-      "state": "6aa10390",
+      "state": "e63362b7",
       "events": "21f89c3f",
       "rng": {
         "draws": 3,
@@ -533,6 +536,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -636,6 +640,7 @@
             null,
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -720,6 +725,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -1048,7 +1054,7 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 1010,
-      "state": "70f434d1",
+      "state": "e4fccb98",
       "events": "cc12c82d",
       "rng": {
         "draws": 3,
@@ -1062,6 +1068,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -1165,6 +1172,7 @@
             null,
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -1265,6 +1273,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -1577,7 +1586,7 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 1010,
-      "state": "701b1ef2",
+      "state": "cafd8939",
       "events": "741638a5",
       "rng": {
         "draws": 3,
@@ -1591,6 +1600,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -1694,6 +1704,7 @@
             null,
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -1794,6 +1805,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,

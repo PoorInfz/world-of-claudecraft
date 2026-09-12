@@ -30,4 +30,8 @@ export interface IWorldBuddies {
    *  out; the live state rides the entity mirror (Entity.buddyAutoloot, terse
    *  `budal`) like buddyKey, so there is no read member here either. */
   setBuddyAutoloot(enabled: boolean): void;
+  /** Summon/dismiss whatever buddy sits in the Buddy bag socket (bags.ts
+   *  BUDDY_BAG_SOCKET): the "Summon/Dismiss" entry on that socket's
+   *  right-click menu. A no-op with the socket empty. */
+  summonBuddyBagBuddy(): void;
 }

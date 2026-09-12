@@ -2647,6 +2647,11 @@ export const id_ID: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Pengaturan Jarahan",
       "close": "Tutup pengaturan jarahan",
@@ -2717,6 +2722,9 @@ export const id_ID: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Slot tas kosong",
       "unequipHint": "Klik untuk melepas tas ini",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Umum: {used} dari {total}",
       "poolMaterials": "Material: {used} dari {total}",
       "capacityPoolsAria": "Slot tas terpakai: {used} dari {total}. Barang umum: {generalUsed} dari {generalTotal}. Material: {materialsUsed} dari {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const id_ID: EnTranslations = {
       "clickSetUp": "Klik untuk menyiapkan",
       "clickBuyback": "Klik untuk membeli kembali",
       "bagSlots": "Tas {slots} Slot",
-      "bagSlotsMaterials": "Tas Bahan {slots} Slot"
+      "bagSlotsMaterials": "Tas Bahan {slots} Slot",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Tas",
@@ -14938,6 +14947,9 @@ export const id_ID: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Inti Api Terakhir"
       },
@@ -17249,6 +17261,9 @@ export const id_ID: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Mandor Ironvein"

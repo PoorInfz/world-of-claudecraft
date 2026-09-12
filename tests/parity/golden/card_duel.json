@@ -29,7 +29,7 @@
       "tick": 5,
       "time": 0.25,
       "nextId": 1008,
-      "state": "9faf7f15",
+      "state": "2aa7ed97",
       "events": "6bd51c34",
       "rng": {
         "draws": 0,
@@ -40,7 +40,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 1008,
-      "state": "d45aebd2",
+      "state": "1b33c27c",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -51,7 +51,7 @@
       "tick": 15,
       "time": 0.75,
       "nextId": 1008,
-      "state": "0f70b0e8",
+      "state": "492e56f2",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -62,7 +62,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 1008,
-      "state": "1877efe7",
+      "state": "90dbbd4b",
       "events": "84a9176e",
       "rng": {
         "draws": 0,
@@ -73,7 +73,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 1008,
-      "state": "e3811714",
+      "state": "95603d80",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -84,7 +84,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 1008,
-      "state": "e2eedb21",
+      "state": "b1c3ecfd",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -95,7 +95,7 @@
       "tick": 35,
       "time": 1.75,
       "nextId": 1008,
-      "state": "03327a15",
+      "state": "26e08ba1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -106,7 +106,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 1008,
-      "state": "11898fb4",
+      "state": "a3c64020",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -117,7 +117,7 @@
       "tick": 41,
       "time": 2.05,
       "nextId": 1008,
-      "state": "d2a65061",
+      "state": "c17a5e3d",
       "events": "741638a5",
       "rng": {
         "draws": 6,
@@ -131,6 +131,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -205,6 +206,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,

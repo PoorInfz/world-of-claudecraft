@@ -133,9 +133,14 @@ const build = await buildItemArtAudit({
     // whistle_emberfall_phoenix, whose GLB is committed but not yet rendered
     // to an icon -- BUDDY_ART_PENDING_ITEM_IDS). Verified with
     // `node scripts/item_art_audit.mjs --verify-only` against the merged tree.
+    //
+    // whistle_the_mummy joined the catalog the same way (GLB committed, icon
+    // not yet rendered -- BUDDY_ART_PENDING_ITEM_IDS), a second additive
+    // pending item on top. Re-measured with `node scripts/item_art_audit.mjs
+    // --verify-only`.
     catalogCount: 1314,
     liveItemCount: 1332,
-    pendingArtCount: 1,
+    pendingArtCount: 2,
     generatedHeroicDefinitions: 78,
     heroicDefinitionsWithOwnWebp: 59,
     heroicWeaponArtAliases: 19,

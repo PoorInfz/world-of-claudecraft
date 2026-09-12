@@ -2647,6 +2647,11 @@ export const sv_SE: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Byteinställningar",
       "close": "Stäng byteinställningar",
@@ -2717,6 +2722,9 @@ export const sv_SE: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Tom väskplats",
       "unequipHint": "Klicka för att ta bort den här väskan",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Allmänt: {used} av {total}",
       "poolMaterials": "Material: {used} av {total}",
       "capacityPoolsAria": "Använda väskplatser: {used} av {total}. Allmänna föremål: {generalUsed} av {generalTotal}. Material: {materialsUsed} av {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const sv_SE: EnTranslations = {
       "clickSetUp": "Klicka för att placera",
       "clickBuyback": "Klicka för att köpa tillbaka",
       "bagSlots": "Väska med {slots} platser",
-      "bagSlotsMaterials": "Materialväska med {slots} platser"
+      "bagSlotsMaterials": "Materialväska med {slots} platser",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Väskor",
@@ -14938,6 +14947,9 @@ export const sv_SE: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Den sista lågans kärna"
       },
@@ -17249,6 +17261,9 @@ export const sv_SE: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Järnådersförman"

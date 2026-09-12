@@ -836,6 +836,14 @@ export const COMMAND_NAMES = [
   'swap_perfecting_ranks',
   // Wear or take off an owned account mount skin on this character.
   'change_mount_skin',
+  // The dedicated Buddy bag socket (bags.ts BUDDY_BAG_SOCKET): equip/unequip
+  // a buddy whistle there, lock/unlock the socket, and summon/dismiss
+  // whatever buddy currently sits in it. Appended at the END because wire
+  // tokens are never reordered.
+  'equip_buddy_bag',
+  'unequip_buddy_bag',
+  'buddy_bag_locked',
+  'buddy_bag_summon',
 ] as const;
 
 // The union both the send path (`online.ts`) and the dispatch switch
@@ -1169,6 +1177,12 @@ export const COMMAND_FACETS = {
   // string, same family as buddy_toggle). The result rides the same self
   // snapshot the toggle does (terse `budal`, no send, untagged).
   buddy_autoloot: 'IWorldBuddies',
+  // buddy_bag_summon: summon/dismiss whatever buddy sits in the Buddy bag
+  // socket (same family as buddy_toggle, scoped to that socket's occupant
+  // instead of a bare dismiss). equip_buddy_bag/unequip_buddy_bag/
+  // buddy_bag_locked stay untagged, mirroring equip_bag/unequip_bag
+  // (IWorldInventory) above.
+  buddy_bag_summon: 'IWorldBuddies',
   // IWorldDungeonFinder: the group finder (snake_case wire strings, by design).
   // dungeonFinderInfo / dungeonFinderBoard are snapshot reads (no send, untagged).
   df_roles: 'IWorldDungeonFinder',

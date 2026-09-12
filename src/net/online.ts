@@ -16,10 +16,10 @@ import {
 } from '../sim/account_flair';
 import { bagCapacity } from '../sim/bags';
 import { signChallenge } from '../sim/client_challenge';
-import { type BuddyKey, normalizeBuddyKey } from '../sim/content/buddies';
 import { allocRiftCollisionToken, clearRiftRegion, setRiftRegion } from '../sim/colliders';
 import { applyAbilityCostTail, resolveAbilityChain } from '../sim/combat/ability_resolution';
 import { heroicLeapPlacementPreview } from '../sim/combat/heroic_leap';
+import { type BuddyKey, normalizeBuddyKey } from '../sim/content/buddies';
 import { FARM_PATCHES } from '../sim/content/farm_patches';
 import { type MountKey, normalizeMountKey } from '../sim/content/mounts';
 import { mechChromaSkinIndex } from '../sim/content/skins';
@@ -1263,9 +1263,13 @@ export class ClientWorld extends ReconWireState implements IWorld {
   // frame. Advert only: every admin-gated command is re-checked server-side.
   accountAdmin = false;
   inventory: InvSlot[] = [];
-  // Equipped bag sockets, mirrored from snapshot self ('bags'); capacity is
-  // derived locally from the shared item data (same math as the sim's bags.ts).
-  bags: (string | null)[] = [null, null, null, null];
+  // Equipped bag sockets PLUS the Buddy bag socket at index BUDDY_BAG_SOCKET,
+  // mirrored from snapshot self ('bags'); capacity is derived locally from the
+  // shared item data (same math as the sim's bags.ts).
+  bags: (string | null)[] = [null, null, null, null, null];
+  // Whether the Buddy bag socket refuses equip/unequip, mirrored from
+  // snapshot self ('bbl').
+  buddyBagLocked = false;
   vendorBuyback: InvSlot[] = [];
   equipment: Partial<Record<EquipSlot, string>> = {};
   equipmentInstances: import('../sim/entity').PlayerEquipmentInstances = {};
@@ -3840,6 +3844,16 @@ export class ClientWorld extends ReconWireState implements IWorld {
   unequipBag(socket: number): void {
     this.cmd({ cmd: 'unequip_bag', socket });
   }
+  equipBuddyBag(itemId: string, target?: { slotIndex: number }): void {
+    if (target === undefined) this.cmd({ cmd: 'equip_buddy_bag', item: itemId });
+    else this.cmd({ cmd: 'equip_buddy_bag', item: itemId, slot: target.slotIndex });
+  }
+  unequipBuddyBag(): void {
+    this.cmd({ cmd: 'unequip_buddy_bag' });
+  }
+  setBuddyBagLocked(locked: boolean): void {
+    this.cmd({ cmd: 'buddy_bag_locked', on: locked });
+  }
   useItem(itemId: string, target?: { slotIndex: number }): void {
     if (target === undefined) this.cmd({ cmd: 'use', item: itemId });
     else this.cmd({ cmd: 'use', item: itemId, slot: target.slotIndex });
@@ -4155,6 +4169,11 @@ export class ClientWorld extends ReconWireState implements IWorld {
   // what the menu renders from.
   setBuddyAutoloot(enabled: boolean): void {
     this.cmd({ cmd: 'buddy_autoloot', on: enabled });
+  }
+  // Buddy bag socket: Summon/Dismiss on the placed whistle, server-authoritative
+  // like the toggle above (no optimistic local flip).
+  summonBuddyBagBuddy(): void {
+    this.cmd({ cmd: 'buddy_bag_summon' });
   }
   // --- riding skill purchase: server-authoritative; on success the snapshot
   // delta (mntRtd=true) confirms the skill was granted. ---

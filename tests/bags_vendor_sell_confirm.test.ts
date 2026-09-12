@@ -165,6 +165,7 @@ function harness(
       menuOpens.push(itemId);
       menuCalls.push({ itemId, sellCount, runDefault, runSellAll });
     },
+    openBuddyBagMenu: noop,
   };
   const window_ = new BagsWindow(deps);
   window_.render();

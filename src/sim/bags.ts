@@ -83,6 +83,16 @@ import {
 export const BACKPACK_SLOTS = 16;
 /** Number of equippable bag sockets next to the backpack. */
 export const BAG_SOCKETS = 4;
+/** The dedicated "Buddy bag" socket's index in meta.bags, one past the 4
+ *  ordinary bag sockets. It rides in the same array (poolCapacityOf's `bags`
+ *  loop already grants the general pool whatever bagSlotsOf reports for the
+ *  id at this index, and bagSlotsOf reads a buddy whistle's quality tier via
+ *  buddyBagSlotsOf), so every one of bagPools'/bagCapacity's 40+ existing
+ *  call sites picks up the bonus automatically, with zero of them touched.
+ *  Kept OUT of BAG_SOCKETS/inRange on purpose: it takes only a kind:'buddy'
+ *  item (equipBuddyBag/unequipBuddyBag below), never a kind:'bag' one, and
+ *  the ordinary bag UI/equip/unequip path must never address it. */
+export const BUDDY_BAG_SOCKET = BAG_SOCKETS;
 /** Default stack cap for stackable kinds (consumables, junk, quest drops). */
 const DEFAULT_STACK = 20;
 
@@ -681,7 +691,11 @@ export function equipBag(
   }
   let target = socket;
   if (target === undefined) {
-    const empty = meta.bags.indexOf(null);
+    // Only the 4 ORDINARY bag sockets are eligible for auto-select: the
+    // Buddy bag socket at index BUDDY_BAG_SOCKET rides the same array but
+    // takes a kind:'buddy' item only (equipBuddyBag), so a plain indexOf(null)
+    // over the whole array would silently offer it to a kind:'bag' equip.
+    const empty = meta.bags.slice(0, BAG_SOCKETS).indexOf(null);
     target = empty >= 0 ? empty : -1;
   }
   if (target === -1) {
@@ -782,4 +796,102 @@ export function unequipBag(ctx: SimContext, socket: number, pid?: number): void 
     color: '#8f8',
     pid: meta.entityId,
   });
+}
+
+/** Equip a buddy whistle into the dedicated Buddy bag socket (mirrors
+ *  equipBag above, but takes a kind:'buddy' item into BUDDY_BAG_SOCKET
+ *  instead of a kind:'bag' item into 0..BAG_SOCKETS-1). Swaps the previous
+ *  occupant, if any, back to the inventory; refused on a capacity shrink
+ *  exactly like equipBag, and refused outright while the socket is locked. */
+export function equipBuddyBag(
+  ctx: SimContext,
+  itemId: string,
+  pid?: number,
+  slotIndex?: number,
+): void {
+  const r = ctx.resolve(pid);
+  if (!r) return;
+  const { meta } = r;
+  const def = ITEMS[itemId];
+  if (def?.kind !== 'buddy') return;
+  if (meta.buddyBagLocked) {
+    ctx.error(meta.entityId, 'The Buddy bag is locked.');
+    return;
+  }
+  if (ctx.countItem(itemId, meta.entityId) <= 0) {
+    ctx.error(meta.entityId, "You don't have that item.");
+    return;
+  }
+  const old = meta.bags[BUDDY_BAG_SOCKET];
+  const newBags = meta.bags.slice();
+  newBags[BUDDY_BAG_SOCKET] = itemId;
+  const after = meta.inventory.length - 1 + (old ? 1 : 0);
+  if (after > bagCapacity(newBags)) {
+    ctx.error(meta.entityId, 'You have too many items to swap to that bag.');
+    return;
+  }
+  const peeked =
+    slotIndex !== undefined
+      ? selectedInventorySlot(meta.inventory, itemId, slotIndex)
+      : newestMatchingSlot(meta.inventory, itemId);
+  if (peeked === null) {
+    ctx.error(meta.entityId, "You don't have that item.");
+    return;
+  }
+  if (peeked?.instance || peeked?.craftedRecipeId !== undefined) {
+    ctx.error(meta.entityId, 'That buddy cannot be equipped while it carries a special property.');
+    return;
+  }
+  if (slotIndex !== undefined) {
+    if (consumeSelectedInventorySlot(meta.inventory, itemId, slotIndex) === null) return;
+  } else {
+    ctx.removeItem(itemId, 1, meta.entityId);
+  }
+  if (old) addStacked(meta.inventory, old, 1);
+  meta.bags[BUDDY_BAG_SOCKET] = itemId;
+  ctx.onInventoryChangedForQuests(meta);
+  ctx.emit({ type: 'log', text: `Equipped ${def.name}.`, color: '#8f8', pid: meta.entityId });
+}
+
+/** Return the Buddy bag socket's occupant to the inventory. Refused while
+ *  locked (Lock/Unlock item, the buddy-bag context menu's second option), or
+ *  when the shrunk budget cannot hold the current items, exactly like
+ *  unequipBag. Dismisses the buddy first when it is the one currently out, so
+ *  a locked-out follower never keeps heeling a whistle that left the socket. */
+export function unequipBuddyBag(ctx: SimContext, pid?: number): void {
+  const r = ctx.resolve(pid);
+  if (!r) return;
+  const { meta } = r;
+  if (meta.buddyBagLocked) {
+    ctx.error(meta.entityId, 'The Buddy bag is locked.');
+    return;
+  }
+  const itemId = meta.bags[BUDDY_BAG_SOCKET];
+  if (!itemId) return;
+  const newBags = meta.bags.slice();
+  newBags[BUDDY_BAG_SOCKET] = null;
+  if (meta.inventory.length + 1 > bagCapacity(newBags)) {
+    ctx.error(meta.entityId, 'You have too many items to remove that bag.');
+    return;
+  }
+  meta.bags[BUDDY_BAG_SOCKET] = null;
+  addStacked(meta.inventory, itemId, 1);
+  ctx.onInventoryChangedForQuests(meta);
+  const def = ITEMS[itemId];
+  ctx.emit({
+    type: 'log',
+    text: `Unequipped ${def?.name ?? itemId}.`,
+    color: '#8f8',
+    pid: meta.entityId,
+  });
+}
+
+/** Lock/unlock the Buddy bag socket itself (not a per-copy item_lock.ts
+ *  flag: there is no indexed inventory slot here to key one off, the socket
+ *  IS the thing being protected). Locked blocks equipBuddyBag/unequipBuddyBag
+ *  both ways, so a placed buddy cannot be bumped out by accident. */
+export function setBuddyBagLocked(ctx: SimContext, locked: boolean, pid?: number): void {
+  const r = ctx.resolve(pid);
+  if (!r) return;
+  r.meta.buddyBagLocked = locked;
 }

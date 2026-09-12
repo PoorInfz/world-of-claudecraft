@@ -766,6 +766,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.bag': '背包',
   'itemUi.tooltip.bagSlots': '{slots}格背包',
   'itemUi.tooltip.bagSlotsMaterials': '{slots}格材料背包',
+  'itemUi.tooltip.buddyBagSlots': '夥伴袋 +{slots} 格',
   'hudChrome.auth.forgotPrompt': '忘記密碼？',
   'hudChrome.auth.forgotTitle': '重設密碼',
   'hudChrome.auth.forgotHint': '輸入您的使用者名稱，我們會將重設連結寄送到登記的電子郵件。',
@@ -6395,6 +6396,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.backpack': '背包',
   'hudChrome.bags.socketEmpty': '空背包欄位',
   'hudChrome.bags.unequipHint': '點擊移除此背包',
+  'hudChrome.bags.buddyBagSocketEmpty': '空夥伴袋欄位',
+  'hudChrome.bags.buddyBagSocketAria': '{name}：夥伴袋',
+  'hudChrome.bags.buddyBagLockedHint': '已鎖定：右鍵點擊解鎖',
   'hudChrome.bags.poolGeneral': '一般：{used}/{total}',
   'hudChrome.bags.poolMaterials': '材料：{used}/{total}',
   'hudChrome.bags.capacityPoolsAria':
@@ -15822,6 +15826,12 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '你的夥伴會去拾取 30 碼內屬於你自己的屍體上的戰利品。',
   'hudChrome.buddyMenu.cancel':
     '取消',
+  'hudChrome.buddyBagMenu.summonDismiss':
+    '召喚/解散',
+  'hudChrome.buddyBagMenu.lock':
+    '鎖定物品',
+  'hudChrome.buddyBagMenu.unlock':
+    '解鎖物品',
   'hudChrome.collections.title':
     '狩獵',
   'hudChrome.collections.close':
@@ -15986,6 +15996,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
     '燼落鳳凰',
   'entities.items.whistle_emberfall_phoenix.name':
     '燼落鳳凰的哨子',
+  'entities.mobs.buddy_the_mummy.name':
+    '木乃伊',
+  'entities.items.whistle_the_mummy.name':
+    '木乃伊的哨子',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     '每逢秋天牠便燃盡成一粒餘燼，到了春天又從自己的灰裡重新升起——關於牠，誰也說不出更多了。從沒有人找到過牠的巢，也從沒有人捉到過同一隻兩次。',
   'guide.arenaPage.honorFinalNoteSoldBack':

@@ -99,6 +99,7 @@ function renderBagsHarness(
     dropOnActionSlot: noop,
     dropOnActionRingSlot: noop,
     openItemActionMenu: noop,
+    openBuddyBagMenu: noop,
   };
   const win = new BagsWindow(deps);
   win.render();

@@ -12,8 +12,13 @@ export type RiftForgeOutcome = RiftForgeResult | Promise<boolean>;
 
 export interface IWorldInventory {
   inventory: InvSlot[];
-  // The 4 equippable bag sockets (kind:'bag' item ids, null = empty socket).
+  // The 4 equippable bag sockets (kind:'bag' item ids, null = empty socket)
+  // PLUS one more at index BUDDY_BAG_SOCKET (src/sim/bags.ts): the dedicated
+  // "Buddy bag" socket, a kind:'buddy' whistle id or null.
   bags: (string | null)[];
+  // Whether the Buddy bag socket refuses equip/unequip (the placed buddy's
+  // Lock/Unlock item context-menu entry).
+  buddyBagLocked: boolean;
   // Total pooled slot budget, both pools summed: the implicit 16-slot backpack
   // plus every equipped bag's bagSlots (see src/sim/bags.ts). Used slots is
   // inventory.length. Deliberately the TOTAL, not a fit answer: the bag grid
@@ -54,6 +59,15 @@ export interface IWorldInventory {
   equipBag(itemId: string, socket?: number, target?: { slotIndex: number }): void;
   /** Return the bag in `socket` to the inventory (refused when items would not fit). */
   unequipBag(socket: number): void;
+  /** Equip a buddy whistle into the dedicated Buddy bag socket (first-copy
+   *  match when no target is given; swaps in place; refused while locked). */
+  equipBuddyBag(itemId: string, target?: { slotIndex: number }): void;
+  /** Return the Buddy bag socket's occupant to the inventory (refused while
+   *  locked, or when items would not fit). */
+  unequipBuddyBag(): void;
+  /** Lock/unlock the Buddy bag socket (the placed buddy's Lock/Unlock item
+   *  context-menu entry): while locked, both equip and unequip are refused. */
+  setBuddyBagLocked(locked: boolean): void;
   useItem(itemId: string, target?: { slotIndex: number }): void;
   /** `target.anchor` is the OPTIONAL ordinal-plus-count description of the copy
    *  the player clicked (src/sim/item_copy_anchor.ts). The slot index alone

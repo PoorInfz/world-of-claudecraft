@@ -18,7 +18,7 @@
 // (not a literal white hex).
 
 import { audio } from '../game/audio';
-import { BACKPACK_SLOTS, bagSlotsOf } from '../sim/bags';
+import { BACKPACK_SLOTS, BAG_SOCKETS, BUDDY_BAG_SOCKET, bagSlotsOf } from '../sim/bags';
 import { ITEMS, QUESTS } from '../sim/data';
 import { FIREBOTTLE_COOLDOWN_SECS, FIREBOTTLE_ITEM_ID } from '../sim/interactions/firebottle_hut';
 import { baggedCopyAnchor } from '../sim/item_copy_anchor';
@@ -330,6 +330,10 @@ export interface BagsWindowDeps extends PainterHostPresentation {
     runSellAll?: () => void,
     materialSources?: MaterialComposition,
   ): void;
+  /** Open the Buddy bag socket's right-click menu (Summon/Dismiss, Lock/Unlock)
+   *  at a viewport point. A no-op call target for an EMPTY socket: the painter
+   *  never wires the listener there (see buildBagBar below). */
+  openBuddyBagMenu(x: number, y: number): void;
 }
 
 export class BagsWindow {
@@ -608,8 +612,13 @@ export class BagsWindow {
   // in the grid is equipped by clicking it (bagItemAction 'equipBag').
   private buildBagBar(): HTMLElement {
     const world = this.deps.world();
+    // The pure model only ever sees the 4 ORDINARY bag sockets: the Buddy bag
+    // socket at index BUDDY_BAG_SOCKET rides the same meta.bags array for its
+    // capacity math (bag_pools.ts), but it takes a different item kind and a
+    // different right-click menu, so it is rendered by the dedicated block
+    // below instead of this generic loop.
     const model = buildBagBar(
-      world.bags,
+      world.bags.slice(0, BAG_SOCKETS),
       world.inventory.length,
       world.bagCapacity,
       BACKPACK_SLOTS,
@@ -683,6 +692,7 @@ export class BagsWindow {
         bar.appendChild(emptySocket);
       }
     }
+    bar.appendChild(this.buildBuddyBagSocket(world));
     const counter = document.createElement('span');
     counter.className = `bag-capacity${model.used > model.capacity ? ' over' : ''}`;
     const split = carriedPools(world.bags, world.inventory);
@@ -751,6 +761,124 @@ export class BagsWindow {
     });
     bar.appendChild(counter);
     return bar;
+  }
+
+  /** The dedicated Buddy bag socket (bags.ts BUDDY_BAG_SOCKET): a kind:'buddy'
+   *  whistle only, granting bonus inventory slots by quality
+   *  (bag_pools.ts buddyBagSlotsOf). Left-click equips a held whistle by
+   *  clicking IT in the grid (see bagItemAction 'equipBuddyBag' below), same
+   *  as an ordinary bag; this socket itself only opens the right-click menu
+   *  (Summon/Dismiss, Lock/Unlock) on its occupant, and unequips on a plain
+   *  click when unlocked, mirroring the ordinary sockets above. */
+  private buildBuddyBagSocket(world: IWorld): HTMLElement {
+    const itemId = world.bags[BUDDY_BAG_SOCKET];
+    const item = itemId ? ITEMS[itemId] : undefined;
+    if (!item) {
+      const emptySocket = document.createElement('button');
+      emptySocket.type = 'button';
+      emptySocket.className = 'bag-socket empty buddy-bag-socket';
+      emptySocket.dataset.focusKey = 'bagsocket:buddy';
+      emptySocket.dataset.buddyBagSocket = '';
+      emptySocket.setAttribute('aria-disabled', 'true');
+      emptySocket.setAttribute('aria-label', t('hudChrome.bags.buddyBagSocketEmpty'));
+      this.deps.attachTooltip(
+        emptySocket,
+        () => `<div class="tt-sub">${esc(t('hudChrome.bags.buddyBagSocketEmpty'))}</div>`,
+      );
+      this.bindBuddyBagDropTarget(emptySocket);
+      return emptySocket;
+    }
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `bag-socket buddy-bag-socket q-${bagQualityKey(item)}`;
+    btn.dataset.focusKey = 'bagsocket:buddy';
+    btn.dataset.buddyBagSocket = '';
+    btn.innerHTML = this.deps.itemIcon(item);
+    if (world.buddyBagLocked) btn.classList.add('locked');
+    btn.setAttribute(
+      'aria-label',
+      t('hudChrome.bags.buddyBagSocketAria', { name: itemDisplayName(item) }),
+    );
+    btn.addEventListener('click', () => {
+      if (world.buddyBagLocked) return;
+      world.unequipBuddyBag();
+      this.deps.hideTooltip();
+      this.render();
+    });
+    btn.addEventListener('contextmenu', (ev) => {
+      ev.preventDefault();
+      this.deps.hideTooltip();
+      this.deps.openBuddyBagMenu(ev.clientX, ev.clientY);
+    });
+    this.deps.attachTooltip(
+      btn,
+      () =>
+        `${this.deps.itemTooltip(item)}<div class="tt-sub">${esc(
+          t(
+            world.buddyBagLocked
+              ? 'hudChrome.bags.buddyBagLockedHint'
+              : 'hudChrome.bags.unequipHint',
+          ),
+        )}</div>`,
+    );
+    this.bindBuddyBagDropTarget(btn);
+    return btn;
+  }
+
+  // The Buddy bag socket as a drop target for a dragged kind:'buddy' whistle
+  // stack: mirrors char_window.ts's bindEquipDropTarget (dragover accepts only
+  // a real buddy whistle, re-resolved every dragover since the bags can shift
+  // mid-drag; the drop routes into equipBuddyBag with the pinned named slot).
+  private bindBuddyBagDropTarget(el: HTMLElement): void {
+    el.addEventListener('dragover', (e) => {
+      const drag = this.deps.dragState.get();
+      if (!drag) return;
+      const item = ITEMS[drag.itemId];
+      if (item?.kind !== 'buddy') return;
+      const world = this.deps.world();
+      if (world.buddyBagLocked) return;
+      const named = draggedCopySlotIndex(world.inventory, drag.itemId, drag);
+      if (named === null) return;
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+      el.classList.add('drop-target');
+    });
+    el.addEventListener('dragleave', () => el.classList.remove('drop-target'));
+    el.addEventListener('drop', (e) => {
+      const drag = this.deps.dragState.get();
+      el.classList.remove('drop-target');
+      if (!drag) return;
+      e.preventDefault();
+      e.stopPropagation();
+      this.deps.dragState.end();
+      this.equipBuddyBagFromDrag(drag.itemId, drag);
+    });
+  }
+
+  // Shared by the desktop drop above and the touch onDrop arm (dropOnBuddyBagSocket
+  // below): re-resolves the dragged copy against the LIVE bags (the pin survives a
+  // mid-drag shift) and equips it, or refuses with the honest not-held toast.
+  private equipBuddyBagFromDrag(itemId: string, ref: DraggedCopyRef): void {
+    const item = ITEMS[itemId];
+    if (item?.kind !== 'buddy') return;
+    const world = this.deps.world();
+    if (world.buddyBagLocked) return;
+    const named = draggedCopySlotIndex(world.inventory, itemId, ref);
+    if (named === null) {
+      this.deps.showError(tSim('error.noItem'));
+      return;
+    }
+    world.equipBuddyBag(itemId, named === undefined ? undefined : { slotIndex: named });
+    this.deps.hideTooltip();
+    this.render();
+  }
+
+  // The touch arm of bindBuddyBagDropTarget's drop handler: reached from the
+  // per-row bindTouchItemDrag onDrop when resolveDropTargetAt names the Buddy
+  // bag socket (item_drop_hit_test.ts kind 'buddyBag').
+  private dropOnBuddyBagSocket(item: ItemDef, s: InvSlot, ref: DraggedCopyRef): void {
+    if (item.kind !== 'buddy') return;
+    this.equipBuddyBagFromDrag(s.itemId, ref);
   }
 
   private persistFilter(): void {
@@ -1325,6 +1453,7 @@ export class BagsWindow {
           else if (target.kind === 'actionSlot') this.deps.dropOnActionSlot(s.itemId, target.slot);
           else if (target.kind === 'actionRingSlot')
             this.deps.dropOnActionRingSlot(s.itemId, target.ringIndex);
+          else if (target.kind === 'buddyBag') this.dropOnBuddyBagSocket(item, s, ref);
           else if (target.kind === 'world') this.dropOnWorldToDestroy(s.itemId, count, ref);
         },
         onEnd: () => {

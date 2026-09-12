@@ -81,9 +81,13 @@ export interface CharacterState {
   /** Legacy plural key written by this branch's earlier rift-gear saves. */
   equipmentInstances?: Partial<Record<EquipSlot, ItemInstancePayload>>;
   inventory: InvSlot[];
-  // Equipped bag sockets. Optional so pre-bag saves load cleanly (defaults to
-  // 4 empty sockets; an over-capacity legacy inventory is tolerated).
+  // Equipped bag sockets, PLUS the Buddy bag socket at index BUDDY_BAG_SOCKET
+  // (4). Optional so pre-bag saves load cleanly (defaults to 5 empty sockets;
+  // an over-capacity legacy inventory is tolerated).
   bags?: (string | null)[];
+  // Whether the Buddy bag socket refuses equip/unequip. Optional so older
+  // saves load cleanly (defaults to unlocked).
+  buddyBagLocked?: boolean;
   // Per-character bank (JSONB; optional so pre-bank saves load cleanly, defaulting
   // to an empty bank with no purchased/bonus slots). sanitizeBankState is the one
   // load path (never destroys items; tolerates an over-capacity inventory). The

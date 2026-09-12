@@ -2647,6 +2647,11 @@ export const it_IT: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Impostazioni Bottino",
       "close": "Chiudi impostazioni bottino",
@@ -2717,6 +2722,9 @@ export const it_IT: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Alloggiamento borsa vuoto",
       "unequipHint": "Clicca per rimuovere questa borsa",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Generale: {used} di {total}",
       "poolMaterials": "Materiali: {used} di {total}",
       "capacityPoolsAria": "Spazi delle borse usati: {used} di {total}. Oggetti generali: {generalUsed} di {generalTotal}. Materiali: {materialsUsed} di {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const it_IT: EnTranslations = {
       "clickSetUp": "Fai clic per preparare",
       "clickBuyback": "Clicca per ricomprare",
       "bagSlots": "Borsa da {slots} spazi",
-      "bagSlotsMaterials": "Borsa per materiali da {slots} spazi"
+      "bagSlotsMaterials": "Borsa per materiali da {slots} spazi",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Borse",
@@ -14938,6 +14947,9 @@ export const it_IT: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Nucleo dell’Ultima Fiamma"
       },
@@ -17249,6 +17261,9 @@ export const it_IT: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Caposquadra Venaferrata"

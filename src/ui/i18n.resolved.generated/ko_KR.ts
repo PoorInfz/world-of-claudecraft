@@ -2647,6 +2647,11 @@ export const ko_KR: EnTranslations = {
       "autolootHint": "버디가 30야드 이내에 있는 당신 소유의 시체에서 전리품을 가져옵니다.",
       "cancel": "취소"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "소환/해제",
+      "lock": "아이템 잠그기",
+      "unlock": "아이템 잠금 해제"
+    },
     "lootSettings": {
       "title": "전리품 설정",
       "close": "전리품 설정 닫기",
@@ -2717,6 +2722,9 @@ export const ko_KR: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "빈 가방 칸",
       "unequipHint": "클릭하여 이 가방을 해제",
+      "buddyBagSocketEmpty": "빈 버디 가방 칸",
+      "buddyBagSocketAria": "{name}: 버디 가방",
+      "buddyBagLockedHint": "잠김: 우클릭하여 잠금 해제",
       "poolGeneral": "일반: {total}칸 중 {used}칸",
       "poolMaterials": "재료: {total}칸 중 {used}칸",
       "capacityPoolsAria": "사용 중인 가방 칸: {total}칸 중 {used}칸. 일반 아이템: {generalTotal}칸 중 {generalUsed}칸. 재료: {materialsTotal}칸 중 {materialsUsed}칸.",
@@ -10865,7 +10873,8 @@ export const ko_KR: EnTranslations = {
       "clickSetUp": "클릭하여 설치",
       "clickBuyback": "클릭하여 되사기",
       "bagSlots": "{slots}칸 가방",
-      "bagSlotsMaterials": "{slots}칸 재료 가방"
+      "bagSlotsMaterials": "{slots}칸 재료 가방",
+      "buddyBagSlots": "버디 가방 칸 +{slots}"
     },
     "bags": {
       "title": "가방",
@@ -14938,6 +14947,9 @@ export const ko_KR: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "잿불낙하 불사조의 호루라기"
       },
+      "whistle_the_mummy": {
+        "name": "미라의 호루라기"
+      },
       "lastflame_core": {
         "name": "마지막 불꽃의 핵"
       },
@@ -17249,6 +17261,9 @@ export const ko_KR: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "팬텀"
+      },
+      "buddy_the_mummy": {
+        "name": "미라"
       },
       "ironvein_foreman": {
         "name": "철맥 감독관"

@@ -2647,6 +2647,11 @@ export const vi_VN: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Cài Đặt Chiến Lợi Phẩm",
       "close": "Đóng cài đặt chiến lợi phẩm",
@@ -2717,6 +2722,9 @@ export const vi_VN: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Ô túi trống",
       "unequipHint": "Nhấp để tháo chiếc túi này",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Chung: {used} trên {total}",
       "poolMaterials": "Nguyên liệu: {used} trên {total}",
       "capacityPoolsAria": "Ô túi đã dùng: {used} trên {total}. Vật phẩm chung: {generalUsed} trên {generalTotal}. Nguyên liệu: {materialsUsed} trên {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const vi_VN: EnTranslations = {
       "clickSetUp": "Nhấn để thu dọn",
       "clickBuyback": "Nhấp để mua lại",
       "bagSlots": "Túi {slots} Ô",
-      "bagSlotsMaterials": "Túi Nguyên Liệu {slots} Ô"
+      "bagSlotsMaterials": "Túi Nguyên Liệu {slots} Ô",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Túi Đồ",
@@ -14938,6 +14947,9 @@ export const vi_VN: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Lõi Ngọn Lửa Cuối Cùng"
       },
@@ -17249,6 +17261,9 @@ export const vi_VN: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Quản Đốc Mạch Sắt"

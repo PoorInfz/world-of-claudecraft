@@ -85,6 +85,7 @@ function harness(inventory: InvSlot[]): {
     dropOnActionSlot: noop,
     dropOnActionRingSlot: noop,
     openItemActionMenu: noop,
+    openBuddyBagMenu: noop,
   };
   const window = new BagsWindow(deps);
   window.render();

@@ -2768,6 +2768,7 @@ const ITEM_ENTITY_IDS = [
   'whistle_crystal_tide',
   'whistle_phantom',
   'whistle_emberfall_phoenix',
+  'whistle_the_mummy',
   // Crucible raid professions (docs/prd/ignivar-raid-professions.md).
   'lastflame_core',
   'forgefathers_ember',
@@ -3477,6 +3478,7 @@ const APPENDED_ITEM_NAMES: Partial<Record<ItemEntityId, string>> = {
   whistle_crystal_tide: 'Crystal Tide Whistle',
   whistle_phantom: 'Phantom Whistle',
   whistle_emberfall_phoenix: 'Emberfall Phoenix Whistle',
+  whistle_the_mummy: 'The Mummy Whistle',
   // Crucible raid professions, English-appended like the waves above (the
   // maintainer fills every locale at release).
   lastflame_core: 'Core of the Last Flame',

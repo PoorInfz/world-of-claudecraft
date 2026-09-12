@@ -28,7 +28,7 @@
       "tick": 3,
       "time": 0.15,
       "nextId": 1009,
-      "state": "b8320e68",
+      "state": "58c3e17e",
       "events": "f5c58712",
       "rng": {
         "draws": 2,
@@ -42,6 +42,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -122,6 +123,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,

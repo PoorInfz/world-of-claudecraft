@@ -2647,6 +2647,11 @@ export const zh_TW: EnTranslations = {
       "autolootHint": "你的夥伴會去拾取 30 碼內屬於你自己的屍體上的戰利品。",
       "cancel": "取消"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "召喚/解散",
+      "lock": "鎖定物品",
+      "unlock": "解鎖物品"
+    },
     "lootSettings": {
       "title": "拾取設定",
       "close": "關閉拾取設定",
@@ -2717,6 +2722,9 @@ export const zh_TW: EnTranslations = {
       "bagSocketAria": "{name}：{slots}",
       "socketEmpty": "空背包欄位",
       "unequipHint": "點擊移除此背包",
+      "buddyBagSocketEmpty": "空夥伴袋欄位",
+      "buddyBagSocketAria": "{name}：夥伴袋",
+      "buddyBagLockedHint": "已鎖定：右鍵點擊解鎖",
       "poolGeneral": "一般：{used}/{total}",
       "poolMaterials": "材料：{used}/{total}",
       "capacityPoolsAria": "背包格已用：{used}/{total}。一般物品：{generalUsed}/{generalTotal}。材料：{materialsUsed}/{materialsTotal}。",
@@ -10865,7 +10873,8 @@ export const zh_TW: EnTranslations = {
       "clickSetUp": "點擊架設",
       "clickBuyback": "點擊買回",
       "bagSlots": "{slots}格背包",
-      "bagSlotsMaterials": "{slots}格材料背包"
+      "bagSlotsMaterials": "{slots}格材料背包",
+      "buddyBagSlots": "夥伴袋 +{slots} 格"
     },
     "bags": {
       "title": "背包",
@@ -14938,6 +14947,9 @@ export const zh_TW: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "燼落鳳凰的哨子"
       },
+      "whistle_the_mummy": {
+        "name": "木乃伊的哨子"
+      },
       "lastflame_core": {
         "name": "末焰之核"
       },
@@ -17249,6 +17261,9 @@ export const zh_TW: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "幻魂"
+      },
+      "buddy_the_mummy": {
+        "name": "木乃伊"
       },
       "ironvein_foreman": {
         "name": "鐵脈工頭"

@@ -169,8 +169,14 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 // release parent's own 222/236 base, so the merged tree sits two above it
 // on both the send and dispatch axes; dispatch-only holds at the release
 // parent's own 14).
-const EXPECTED_SEND_COUNT = 224;
-const EXPECTED_DISPATCH_COUNT = 238;
+// Re-measured for the Buddy bag socket feature: four new commands
+// (equip_buddy_bag, unequip_buddy_bag, buddy_bag_locked, buddy_bag_summon)
+// are both sent (online.ts) and dispatched (server/game.ts), so send and
+// dispatch each rise by 4 over the 224/238 base above; dispatch-only is
+// unaffected (all four are sent, not admin/legacy-only). Measured directly
+// by running `npx vitest run tests/command_schema.test.ts`, not derived.
+const EXPECTED_SEND_COUNT = 228;
+const EXPECTED_DISPATCH_COUNT = 242;
 const EXPECTED_DISPATCH_ONLY_COUNT = 14;
 
 // The chat sub-channel routing switch (server/game.ts `switch

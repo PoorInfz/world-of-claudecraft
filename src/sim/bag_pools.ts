@@ -58,7 +58,31 @@ export function isMaterialsOnlyBag(def: ItemDef | undefined): boolean {
  *  beside the pool split that consumes it, so the per-bag slot answer has ONE
  *  definition; bags.ts re-exports it for the carried-inventory consumers. */
 export function bagSlotsOf(def: ItemDef | undefined): number {
-  return def?.kind === 'bag' ? (def.bagSlots ?? 0) : 0;
+  if (def?.kind === 'bag') return def.bagSlots ?? 0;
+  if (def?.kind === 'buddy') return buddyBagSlotsOf(def.quality);
+  return 0;
+}
+
+/** Bonus general-pool slots a buddy whistle grants when worn in the dedicated
+ *  Buddy bag socket (src/sim/bags.ts BUDDY_BAG_SOCKET), by whistle quality:
+ *  common 5, uncommon 10, rare 15, epic 20. A buddy has no bagSlots field of
+ *  its own (bagSlots is a kind:'bag' concept); this is the one place the
+ *  tier->bonus mapping lives, poolCapacityOf's `bags` loop reads it the exact
+ *  same way it reads a real bag's bagSlots, since the Buddy bag socket's
+ *  occupant rides in the same meta.bags array (see bags.ts header). */
+export function buddyBagSlotsOf(quality: ItemDef['quality']): number {
+  switch (quality) {
+    case 'common':
+      return 5;
+    case 'uncommon':
+      return 10;
+    case 'rare':
+      return 15;
+    case 'epic':
+      return 20;
+    default:
+      return 0;
+  }
 }
 
 /** Split a container's slot budget into pools: `baseSlots` plus every

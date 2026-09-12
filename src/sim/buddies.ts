@@ -20,6 +20,7 @@
 //
 // `src/sim`-pure and rng-free.
 
+import { BUDDY_BAG_SOCKET } from './bags';
 import { BUDDY_KEYS, type BuddyKey, buddyDef } from './content/buddies';
 import { ITEMS } from './data';
 import { despawnBuddyEntity, spawnBuddyEntity } from './pet/buddy_ai';
@@ -43,7 +44,10 @@ export function buddyItemId(key: string): string | null {
   return buddyItemIds.get(key) ?? null;
 }
 
-/** Whether the player owns the buddy: its whistle sits in bags or bank.
+/** Whether the player owns the buddy: its whistle sits in bags, bank, or the
+ *  dedicated Buddy bag socket (bags.ts BUDDY_BAG_SOCKET; equipping it there
+ *  removes it from the flat inventory list exactly like a bag item equipped
+ *  into an ordinary socket, so that socket needs its own check here).
  *  Unknown keys are never owned. A fresh player owns nothing. */
 export function buddyOwned(meta: PlayerMeta, key: string): boolean {
   if (!buddyDef(key)) return false;
@@ -51,18 +55,22 @@ export function buddyOwned(meta: PlayerMeta, key: string): boolean {
   if (!itemId) return false;
   return (
     meta.inventory.some((s) => s.itemId === itemId) ||
-    meta.bank.inventory.some((s) => s.itemId === itemId)
+    meta.bank.inventory.some((s) => s.itemId === itemId) ||
+    meta.bags[BUDDY_BAG_SOCKET] === itemId
   );
 }
 
-/** The owned subset of the catalog, in catalog order (bags + bank). Empty for
- *  a fresh player. Single pass over both containers. */
+/** The owned subset of the catalog, in catalog order (bags + bank + the
+ *  Buddy bag socket). Empty for a fresh player. */
 export function ownedBuddies(meta: PlayerMeta): BuddyKey[] {
   const owned = new Set<string>();
   for (const s of [...meta.inventory, ...meta.bank.inventory]) {
     const def = ITEMS[s.itemId];
     if (def?.kind === 'buddy') owned.add(def.buddy);
   }
+  const buddyBagId = meta.bags[BUDDY_BAG_SOCKET];
+  const buddyBagDef = buddyBagId ? ITEMS[buddyBagId] : undefined;
+  if (buddyBagDef?.kind === 'buddy') owned.add(buddyBagDef.buddy);
   return BUDDY_KEYS.filter((key) => owned.has(key));
 }
 
@@ -90,6 +98,20 @@ export function summonBuddyItem(ctx: SimContext, pid: number, key: string): bool
   e.buddyKey = def.key;
   spawnBuddyEntity(ctx, e, def.key);
   return true;
+}
+
+/** Summon (or dismiss) whatever buddy currently sits in the Buddy bag socket
+ *  (bags.ts BUDDY_BAG_SOCKET) — the "Summon/Dismiss" entry on that socket's
+ *  right-click menu. A no-op with the socket empty. Routes through the same
+ *  summonBuddyItem as clicking the whistle in bags would, since the socket
+ *  holds the identical item id (buddyOwned above already covers it there). */
+export function summonBuddyBagBuddy(ctx: SimContext, pid: number): boolean {
+  const meta = ctx.players.get(pid);
+  if (!meta) return false;
+  const itemId = meta.bags[BUDDY_BAG_SOCKET];
+  const def = itemId ? ITEMS[itemId] : undefined;
+  if (def?.kind !== 'buddy') return false;
+  return summonBuddyItem(ctx, pid, def.buddy);
 }
 
 /** Dismiss-only toggle for a keybind/button with no item in hand. Does

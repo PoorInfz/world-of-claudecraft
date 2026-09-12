@@ -100,6 +100,7 @@ function harness() {
     dropOnActionSlot: noop,
     dropOnActionRingSlot: noop,
     openItemActionMenu: noop,
+    openBuddyBagMenu: noop,
   };
   return {
     window: new BagsWindow(deps),

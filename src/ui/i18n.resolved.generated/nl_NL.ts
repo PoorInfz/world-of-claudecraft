@@ -2647,6 +2647,11 @@ export const nl_NL: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Buitinstellingen",
       "close": "Buitinstellingen sluiten",
@@ -2717,6 +2722,9 @@ export const nl_NL: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Leeg tasvak",
       "unequipHint": "Klik om deze tas af te doen",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Algemeen: {used} van {total}",
       "poolMaterials": "Materialen: {used} van {total}",
       "capacityPoolsAria": "Tasvakken gebruikt: {used} van {total}. Algemene voorwerpen: {generalUsed} van {generalTotal}. Materialen: {materialsUsed} van {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const nl_NL: EnTranslations = {
       "clickSetUp": "Klik om te gebruiken",
       "clickBuyback": "Klik om terug te kopen",
       "bagSlots": "Tas met {slots} vakken",
-      "bagSlotsMaterials": "Materialentas met {slots} vakken"
+      "bagSlotsMaterials": "Materialentas met {slots} vakken",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Tassen",
@@ -14938,6 +14947,9 @@ export const nl_NL: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Kern van de Laatste Vlam"
       },
@@ -17249,6 +17261,9 @@ export const nl_NL: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "IJzerader-Voorman"

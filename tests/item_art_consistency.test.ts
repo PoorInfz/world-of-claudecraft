@@ -842,8 +842,9 @@ describe('item-art consistency accepted-art provenance', () => {
     // RESOLVED for the merge of df2ae9880f (PR #3944, release/v0.42.0) into
     // feature/buddy-companion-system: the buddy branch's 32 whistle item
     // definitions (content/items.ts, one per BuddyKey including the new
-    // Emberfall Phoenix) add on top with no overlap: 1,333.
-    expect(Object.keys(ITEMS)).toHaveLength(1333);
+    // Emberfall Phoenix) add on top with no overlap: 1,333. The Buddy bag
+    // slot's the_mummy whistle adds one more: 1,334.
+    expect(Object.keys(ITEMS)).toHaveLength(1334);
     expect(Object.values(verdict.auditScope.groups).reduce((sum, count) => sum + count, 0)).toBe(
       1255,
     );
@@ -1003,11 +1004,13 @@ describe('item-art consistency accepted-art provenance', () => {
     // buddy-whistle-icons-2026-08-28 mapping batch adds 31 more owners (every
     // whistle EXCEPT whistle_emberfall_phoenix, which has no shipped icon yet
     // and so no mapping owner -- see BUDDY_ART_PENDING_ITEM_IDS): 1,314. The
-    // ITEMS catalog itself carries all 32 buddy item DEFINITIONS regardless
-    // of shipped art, so it is one higher than the owner/shipping counts: 1,333.
+    // Buddy bag slot's the_mummy whistle is pending the same way (no shipped
+    // icon), so the owner/shipping counts stay 1,314; the ITEMS catalog
+    // itself carries all 33 buddy item DEFINITIONS regardless of shipped art,
+    // so it is now two higher than the owner/shipping counts: 1,334.
     expect(new Set(currentOwnerIds).size).toBe(1314);
     expect(shippingIds).toHaveLength(1314);
-    expect(Object.keys(ITEMS)).toHaveLength(1333);
+    expect(Object.keys(ITEMS)).toHaveLength(1334);
 
     const datedVerdict = readJson<FinalAuditVerdict>(CURRENT_VERDICT_PATH);
     const oldPassIds = sorted(datedVerdict.visualVerdict.passIds);

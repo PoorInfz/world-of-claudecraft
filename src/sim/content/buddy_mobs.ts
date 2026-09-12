@@ -166,6 +166,9 @@ export const BUDDY_MOBS: Record<string, MobTemplate> = {
     'beast',
     0xffffff,
   ),
+  // The epic undead with no source yet (content/buddies.ts says why). Its own
+  // GLB carries its baked wrappings texture, so the color is inert here too.
+  [buddyTemplateId('the_mummy')]: buddyTemplate('the_mummy', 'The Mummy', 'undead', 0xffffff),
 };
 
 /** Every valid buddy templateId, for the cheap `isBuddyMob` membership check

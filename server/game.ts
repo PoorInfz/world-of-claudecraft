@@ -6796,6 +6796,18 @@ export class GameServer {
           sim.unequipBag(msg.socket, pid);
         }
         break;
+      case 'equip_buddy_bag':
+        if (typeof msg.item === 'string') {
+          const slot = Number.isInteger(msg.slot) ? Number(msg.slot) : undefined;
+          sim.equipBuddyBag(msg.item, pid, slot);
+        }
+        break;
+      case 'unequip_buddy_bag':
+        sim.unequipBuddyBag(pid);
+        break;
+      case 'buddy_bag_locked':
+        if (typeof msg.on === 'boolean') sim.setBuddyBagLocked(msg.on, pid);
+        break;
       case 'change_skin':
         if (typeof msg.skin === 'number') {
           if (msg.catalog === 'mech') {
@@ -6836,6 +6848,11 @@ export class GameServer {
       // is entirely server-side, in the Sim tick.
       case 'buddy_autoloot':
         if (typeof msg.on === 'boolean') sim.setBuddyAutolootFor(pid, msg.on);
+        break;
+      // Buddy bag socket: Summon/Dismiss on the placed whistle (a socket-scoped
+      // sibling of buddy_toggle, routed by item id instead of a bare dismiss).
+      case 'buddy_bag_summon':
+        sim.summonBuddyBagBuddyFor(pid);
         break;
       // Riding lesson: the Sim re-validates everything (level, range, quest
       // state, fee, session state).
@@ -8942,6 +8959,9 @@ export class GameServer {
       session.lastWireRev = meta.wireRev;
       maybe('inv', meta.inventory);
       maybe('bags', meta.bags);
+      // Whether the Buddy bag socket (bags[BUDDY_BAG_SOCKET]) refuses
+      // equip/unequip. Same heavy-self gate as `bags` itself.
+      maybe('bbl', meta.buddyBagLocked);
       // The owned mount collection (IWorldMounts.ownedMounts): the horse plus
       // every mount whose reins item sits in bags or bank. Its inputs are
       // meta.inventory (heavy-gated above) and meta.bank.inventory, which is

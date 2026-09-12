@@ -28,6 +28,7 @@ import * as bagsMod from './bags';
 import {
   addStacked,
   BAG_SOCKETS,
+  BUDDY_BAG_SOCKET,
   bagCapacity,
   bagPools,
   canAddItem,
@@ -47,6 +48,7 @@ import { extractTradableCopyImpl, grantTradableCopyImpl } from './broker_custody
 import {
   ownedBuddies as ownedBuddiesImpl,
   setBuddyAutoloot as setBuddyAutolootImpl,
+  summonBuddyBagBuddy as summonBuddyBagBuddyImpl,
   toggleBuddy as toggleBuddyImpl,
 } from './buddies';
 import { campSpawnOffset } from './camp_scatter';
@@ -1421,9 +1423,16 @@ export interface PlayerMeta {
   // it every frame. Runtime-only signal, never serialized/persisted.
   wireRev: number;
   inventory: InvSlot[];
-  // The 4 equippable bag sockets (itemId of a kind:'bag' item, or null). The
-  // 16-slot backpack is implicit; capacity math lives in bags.ts. Persisted.
+  // The 4 equippable bag sockets (itemId of a kind:'bag' item, or null) PLUS
+  // one more at index BUDDY_BAG_SOCKET (4): the dedicated "Buddy bag" socket,
+  // a kind:'buddy' whistle id or null. The 16-slot backpack is implicit;
+  // capacity math (both sockets alike) lives in bags.ts/bag_pools.ts.
+  // Persisted.
   bags: (string | null)[];
+  // Whether the Buddy bag socket (index BUDDY_BAG_SOCKET of `bags`) refuses
+  // equip/unequip (bags.ts setBuddyBagLocked, the placed buddy's Lock/Unlock
+  // item context-menu entry). Persisted.
+  buddyBagLocked: boolean;
   // The per-character bank: a second pooled item store with its own copper-bought
   // slot budget. Capacity/move math lives in bank.ts. Persisted (inside the
   // character save, exactly like inventory/bags).
@@ -2908,7 +2917,8 @@ export class Sim {
       moveInput: emptyMoveInput(),
       wireRev: 0,
       inventory: [],
-      bags: Array<string | null>(BAG_SOCKETS).fill(null),
+      bags: Array<string | null>(BAG_SOCKETS + 1).fill(null),
+      buddyBagLocked: false,
       bank: emptyBankState(),
       bankBonusSources: [],
       vault: { stock: {}, special: [], upgrades: 0 },
@@ -3230,7 +3240,10 @@ export class Sim {
           const id = s.bags[i];
           meta.bags[i] = id && ITEMS[id]?.kind === 'bag' ? id : null;
         }
+        const buddyId = s.bags[BUDDY_BAG_SOCKET];
+        meta.bags[BUDDY_BAG_SOCKET] = buddyId && ITEMS[buddyId]?.kind === 'buddy' ? buddyId : null;
       }
+      meta.buddyBagLocked = s.buddyBagLocked === true;
       // Legendary items are unique-equipped; a save from before that rule (or
       // a tampered one) can still wear duplicates. Bench every later copy into
       // the bags before stats derive from the worn set below, and say so: a
@@ -4153,6 +4166,7 @@ export class Sim {
       ),
       inventory: meta.inventory.map(cloneInvSlot),
       bags: [...meta.bags],
+      buddyBagLocked: meta.buddyBagLocked,
       bank: savedBankState(meta.bank),
       // Hand-enumerated clone: tsc forces a new REQUIRED MaterialsVaultState field
       // to appear here, but an optional one would compile unpersisted; add it by hand.
@@ -4419,6 +4433,13 @@ export class Sim {
     return setBuddyAutolootImpl(this.ctx, pid, enabled);
   }
 
+  /** Per-pid summon/dismiss for whatever buddy sits in the Buddy bag socket
+   *  (the server command path); the IWorld member below rides primaryId.
+   *  Rules live in src/sim/buddies.ts. */
+  summonBuddyBagBuddyFor(pid: number): boolean {
+    return summonBuddyBagBuddyImpl(this.ctx, pid);
+  }
+
   // --- IWorldBuddies ---
   ownedBuddies(): readonly BuddyKey[] {
     return this.ownedBuddiesFor(this.primaryId);
@@ -4428,6 +4449,9 @@ export class Sim {
   }
   setBuddyAutoloot(enabled: boolean): void {
     this.setBuddyAutolootFor(this.primaryId, enabled);
+  }
+  summonBuddyBagBuddy(): void {
+    this.summonBuddyBagBuddyFor(this.primaryId);
   }
 
   /** Purchase the riding skill from Marla (80g). Server path; IWorld member rides
@@ -4759,6 +4783,9 @@ export class Sim {
   }
   get bagCapacity(): number {
     return bagCapacity(this.primary.bags);
+  }
+  get buddyBagLocked(): boolean {
+    return this.primary.buddyBagLocked;
   }
   get vendorBuyback(): InvSlot[] {
     return this.primary.vendorBuyback;
@@ -8528,6 +8555,23 @@ export class Sim {
 
   unequipBag(socket: number, pid?: number): void {
     bagsMod.unequipBag(this.ctx, socket, pid);
+  }
+
+  equipBuddyBag(
+    itemId: string,
+    pidOrTarget?: number | { slotIndex: number },
+    slotIndex?: number,
+  ): void {
+    const { pid, named } = foldNamedSlotTarget(pidOrTarget, slotIndex);
+    bagsMod.equipBuddyBag(this.ctx, itemId, pid, named);
+  }
+
+  unequipBuddyBag(pid?: number): void {
+    bagsMod.unequipBuddyBag(this.ctx, pid);
+  }
+
+  setBuddyBagLocked(locked: boolean, pid?: number): void {
+    bagsMod.setBuddyBagLocked(this.ctx, locked, pid);
   }
 
   discardItem(

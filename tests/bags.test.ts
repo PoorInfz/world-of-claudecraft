@@ -246,7 +246,9 @@ describe('stack sizes and stacking math', () => {
 describe('capacity budget and the equip/unequip commands', () => {
   it('a fresh character has the 16-slot backpack and 4 empty sockets', () => {
     const sim = makeSim();
-    expect(sim.bags).toEqual([null, null, null, null]);
+    // The 4 ordinary sockets plus the dedicated Buddy bag socket
+    // (BUDDY_BAG_SOCKET, bags.ts), also empty on a fresh character.
+    expect(sim.bags).toEqual([null, null, null, null, null]);
     expect(sim.bagCapacity).toBe(BACKPACK_SLOTS);
     expect(BAG_SOCKETS).toBe(4);
   });
@@ -291,7 +293,9 @@ describe('capacity budget and the equip/unequip commands', () => {
     expect(ev.some((e) => e.type === 'error' && e.text === 'All your bag slots are full.')).toBe(
       true,
     );
-    expect(sim.bags.every((b) => b === 'linen_pouch')).toBe(true);
+    // The 4 ordinary sockets stay full; the Buddy bag socket (index
+    // BUDDY_BAG_SOCKET) is untouched by an ordinary-bag equip attempt.
+    expect(sim.bags.slice(0, BAG_SOCKETS).every((b) => b === 'linen_pouch')).toBe(true);
   });
 
   it('unequipping a bag is refused while the items would not fit the shrunk budget', () => {
@@ -626,11 +630,11 @@ describe('persistence and back-compat', () => {
     sim.addItem('linen_pouch', 1);
     sim.equipBag('linen_pouch', 2);
     const state = sim.serializeCharacter(sim.playerId)!;
-    expect(state.bags).toEqual([null, null, 'linen_pouch', null]);
+    expect(state.bags).toEqual([null, null, 'linen_pouch', null, null]);
 
     const sim2 = new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
     const pid = sim2.addPlayer('warrior', 'Restored', { state });
-    expect(sim2.bags).toEqual([null, null, 'linen_pouch', null]);
+    expect(sim2.bags).toEqual([null, null, 'linen_pouch', null, null]);
     expect(sim2.bagCapacity).toBe(BACKPACK_SLOTS + 6);
     expect(pid).toBeGreaterThan(0);
   });
@@ -641,17 +645,17 @@ describe('persistence and back-compat', () => {
     delete (state as { bags?: unknown }).bags;
     const sim2 = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
     sim2.addPlayer('warrior', 'Legacy', { state });
-    expect(sim2.bags).toEqual([null, null, null, null]);
+    expect(sim2.bags).toEqual([null, null, null, null, null]);
     expect(sim2.bagCapacity).toBe(BACKPACK_SLOTS);
   });
 
   it('a tampered save with a non-bag id in a socket loads it as empty', () => {
     const sim = makeSim();
     const state = sim.serializeCharacter(sim.playerId)!;
-    state.bags = ['worn_sword', 'not_an_item', 'linen_pouch', null];
+    state.bags = ['worn_sword', 'not_an_item', 'linen_pouch', null, null];
     const sim2 = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
     sim2.addPlayer('warrior', 'Tampered', { state });
-    expect(sim2.bags).toEqual([null, null, 'linen_pouch', null]);
+    expect(sim2.bags).toEqual([null, null, 'linen_pouch', null, null]);
   });
 
   it('an over-capacity legacy inventory is preserved and blocks new pickups only', () => {
@@ -744,7 +748,7 @@ describe('pre-bag save migration (equivalent bags for earned space)', () => {
     const m2 = (sim2 as never as { players: Map<number, { bags: (string | null)[] }> }).players.get(
       pid,
     )!;
-    expect(m2.bags).toEqual(['travelers_knapsack', 'linen_pouch', null, null]);
+    expect(m2.bags).toEqual(['travelers_knapsack', 'linen_pouch', null, null, null]);
     // exact coverage: everything owned fits (30/30), nothing was lost
     expect(bagCapacity(m2.bags)).toBeGreaterThanOrEqual(30);
     sim2.discardItem('worn_sword', 1, pid);
@@ -765,14 +769,14 @@ describe('pre-bag save migration (equivalent bags for earned space)', () => {
     const sim2 = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
     const pid = sim2.addPlayer('warrior', 'Veteran', { state });
     const migrated = sim2.serializeCharacter(pid)!;
-    expect(migrated.bags).toEqual(['linen_pouch', null, null, null]);
+    expect(migrated.bags).toEqual(['linen_pouch', null, null, null, null]);
     // discard down to an empty backpack-sized load, then unequip the granted bag
     const sim3 = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
     const pid3 = sim3.addPlayer('warrior', 'Veteran', { state: migrated });
     const m3 = (sim3 as never as { players: Map<number, { bags: (string | null)[] }> }).players.get(
       pid3,
     )!;
-    expect(m3.bags).toEqual(['linen_pouch', null, null, null]); // loaded, not re-granted
+    expect(m3.bags).toEqual(['linen_pouch', null, null, null, null]); // loaded, not re-granted
     const ev = sim3.tick();
     expect(ev.some((e) => e.type === 'log' && /packed into new bags/.test(e.text))).toBe(false);
   });
@@ -780,14 +784,14 @@ describe('pre-bag save migration (equivalent bags for earned space)', () => {
   it('does not grant on a post-bag save even if it is over capacity (tampered)', () => {
     const sim = makeSim();
     const state = sim.serializeCharacter(sim.playerId)!;
-    state.bags = [null, null, null, null];
+    state.bags = [null, null, null, null, null];
     state.inventory = Array.from({ length: 30 }, () => ({ itemId: 'worn_sword', count: 1 }));
     const sim2 = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
     const pid = sim2.addPlayer('warrior', 'Tamper', { state });
     const m2 = (sim2 as never as { players: Map<number, { bags: (string | null)[] }> }).players.get(
       pid,
     )!;
-    expect(m2.bags).toEqual([null, null, null, null]);
+    expect(m2.bags).toEqual([null, null, null, null, null]);
     expect(sim2.canAddItem('wolf_fang', 1, pid)).toBe(false); // overflow just blocks pickups
   });
 });
@@ -1411,7 +1415,7 @@ describe('two-pool capacity through the real gates and the real taxonomy', () =>
     // Refused, and nothing moved: the pack is still socketed and the pouch is
     // still carried, so the player can free room and retry.
     expect(m.bags[0]).toBe(PACK);
-    expect(m.bags).toEqual([PACK, null, null, null]);
+    expect(m.bags).toEqual([PACK, null, null, null, null]);
     expect(sim.countItem('linen_pouch')).toBe(1);
     expect(m.inventory).toHaveLength(32);
   });
@@ -1448,7 +1452,7 @@ describe('two-pool capacity through the real gates and the real taxonomy', () =>
       sim.addItem(PACK, 1);
       sim.equipBag(PACK, k);
     }
-    expect(m.bags).toEqual([PACK, PACK, PACK, PACK]);
+    expect(m.bags).toEqual([PACK, PACK, PACK, PACK, null]);
     expect(bagPools(m.bags)).toEqual({ general: 80, materials: 0 });
     m.inventory = [
       ...Array.from({ length: 76 }, () => ({ itemId: GEAR, count: 1 })),
@@ -1517,7 +1521,7 @@ describe('two-pool capacity through the real gates and the real taxonomy', () =>
           (e) => e.type === 'error' && e.text === 'You have too many items to remove that bag.',
         ),
     ).toBe(true);
-    expect(m.bags).toEqual([SATCHEL, SATCHEL, SATCHEL, SATCHEL]);
+    expect(m.bags).toEqual([SATCHEL, SATCHEL, SATCHEL, SATCHEL, null]);
     expect(m.inventory).toHaveLength(176);
     // Length alone survives a refusal path that swapped one id for another, so
     // pin the carried NON-material multiset too: the 76 gear and the four packs
@@ -1536,7 +1540,7 @@ describe('two-pool capacity through the real gates and the real taxonomy', () =>
     sim.drainEvents();
     sim.equipBag(PACK, 0);
     expect(sim.drainEvents().some((e) => e.type === 'error')).toBe(false);
-    expect(m.bags).toEqual([PACK, SATCHEL, SATCHEL, SATCHEL]);
+    expect(m.bags).toEqual([PACK, SATCHEL, SATCHEL, SATCHEL, null]);
     expect(bagPools(m.bags)).toEqual({ general: 32, materials: 72 });
     expect(m.inventory).toHaveLength(80);
 

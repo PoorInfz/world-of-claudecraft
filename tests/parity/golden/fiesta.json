@@ -30,7 +30,7 @@
       "tick": 25,
       "time": 1.25,
       "nextId": 1010,
-      "state": "f7d77d1e",
+      "state": "12fa2b2a",
       "events": "ee4ebe83",
       "rng": {
         "draws": 0,
@@ -41,7 +41,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 1010,
-      "state": "ad4c2533",
+      "state": "93b952bf",
       "events": "1bd60145",
       "rng": {
         "draws": 66,
@@ -52,7 +52,7 @@
       "tick": 75,
       "time": 3.75,
       "nextId": 1010,
-      "state": "ede0584d",
+      "state": "45df8121",
       "events": "cc883821",
       "rng": {
         "draws": 247,
@@ -63,7 +63,7 @@
       "tick": 100,
       "time": 5,
       "nextId": 1010,
-      "state": "f4a69a06",
+      "state": "b609d1d2",
       "events": "a4509c69",
       "rng": {
         "draws": 485,
@@ -74,7 +74,7 @@
       "tick": 125,
       "time": 6.25,
       "nextId": 1010,
-      "state": "fece7f91",
+      "state": "299f543f",
       "events": "3abfaa21",
       "rng": {
         "draws": 756,
@@ -85,7 +85,7 @@
       "tick": 150,
       "time": 7.5,
       "nextId": 1010,
-      "state": "4d479d8a",
+      "state": "f2916154",
       "events": "741638a5",
       "rng": {
         "draws": 1041,
@@ -96,7 +96,7 @@
       "tick": 163,
       "time": 8.15,
       "nextId": 1010,
-      "state": "499030b5",
+      "state": "4a4f75d3",
       "events": "940cfa12",
       "rng": {
         "draws": 1178,
@@ -110,6 +110,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -204,6 +205,7 @@
             null,
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -289,6 +291,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -378,6 +381,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,

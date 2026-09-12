@@ -56,7 +56,8 @@ import {
   type StreamerLinks,
 } from '../sim/account_flair';
 import { isOwnAura } from '../sim/aura_classify';
-import { bagPools } from '../sim/bags';
+import { buddyBagSlotsOf } from '../sim/bag_pools';
+import { BUDDY_BAG_SOCKET, bagPools } from '../sim/bags';
 import { warriorParryChance } from '../sim/combat/warrior_hit_table';
 import { DEEDS } from '../sim/content/deeds';
 import { HEROIC_MARK_ITEM_ID } from '../sim/content/dungeon_difficulty';
@@ -570,7 +571,7 @@ import { RiftForgeWindow, riftForgeInReach } from './hud/rift_forge';
 import { StanceBarController } from './hud/stance';
 import { closeOpenTouchMenu } from './hud/tap_menu';
 import { createTargetDotsView, type TargetDotsInput, TargetDotsPainter } from './hud/target_dots';
-import { buddyMenuHtml, targetFrameMenuKind } from './hud/target_frame_menu';
+import { buddyBagMenuHtml, buddyMenuHtml, targetFrameMenuKind } from './hud/target_frame_menu';
 import { dismissBuyQuantityPrompts } from './hud/vendor/buy_quantity_prompt_window';
 import { buildCrucibleVendorView } from './hud/vendor/crucible_vendor_view';
 import { renderCrucibleVendorWindow } from './hud/vendor/crucible_vendor_window';
@@ -5282,6 +5283,7 @@ export class Hud {
     },
     // Untouched forward (hud.ts is at its pinned line-count ceiling).
     openItemActionMenu: (...args) => this.bagItemActionMenu.open(...args),
+    openBuddyBagMenu: (x, y) => this.openBuddyBagMenu(x, y),
   });
   // Bag-item action menu (Professions 2.0): the right-click / touch
   // menu that surfaces Disenchant / Salvage / Apply Enchant on a bag stack.
@@ -6722,6 +6724,17 @@ export class Hud {
       // itemNumber (the leaf's null covers only the non-bag arm).
       if (slotsKey && item.bagSlots)
         html += `<div class="tt-stat">${esc(t(slotsKey, { slots: itemNumber(item.bagSlots) }))}</div>`;
+    }
+    // A buddy whistle's Buddy bag bonus (bag_pools.ts buddyBagSlotsOf, keyed
+    // off quality): the same "how many extra slots" claim the bag line above
+    // makes, for the OTHER item kind that grants carried-inventory capacity.
+    if (item.kind === 'buddy') {
+      const buddyBagSlots = buddyBagSlotsOf(item.quality);
+      if (buddyBagSlots > 0) {
+        html += `<div class="tt-stat">${esc(
+          t('itemUi.tooltip.buddyBagSlots', { slots: itemNumber(buddyBagSlots) }),
+        )}</div>`;
+      }
     }
     // Collectible mount reins: the mount's flavor + specialty numbers + its
     // ride-level gate (red below the gate, like gear's requires-level line).
@@ -17967,6 +17980,28 @@ export class Hud {
     this.keepPopupOnScreen(el);
     this.bindContextMenuActions((act) => {
       if (act === 'autoloot') this.sim.setBuddyAutoloot(!armed);
+    });
+  }
+
+  /** The Buddy bag socket's right-click menu (Summon/Dismiss, Lock/Unlock).
+   *  The occupant's name/locked state are read off the live bags/buddyBagLocked
+   *  mirror at open time, same rule as openBuddyMenu's armed read. A no-op
+   *  with the socket empty (bags_window.ts never wires the listener there). */
+  openBuddyBagMenu(x: number, y: number): void {
+    const world = this.sim;
+    const itemId = world.bags[BUDDY_BAG_SOCKET];
+    const def = itemId ? ITEMS[itemId] : undefined;
+    if (!def) return;
+    const el = $('#ctx-menu');
+    el.classList.remove(CTX_MENU_PICKER_CLASS);
+    const locked = world.buddyBagLocked;
+    el.innerHTML = buddyBagMenuHtml(itemDisplayName(def), locked);
+    el.style.display = 'block';
+    this.placePopupAt(el, x, y, 170, 240);
+    this.keepPopupOnScreen(el);
+    this.bindContextMenuActions((act) => {
+      if (act === 'summon') world.summonBuddyBagBuddy();
+      else if (act === 'lock') world.setBuddyBagLocked(!locked);
     });
   }
 

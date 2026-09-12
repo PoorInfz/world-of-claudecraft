@@ -787,6 +787,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.bag': '가방',
   'itemUi.tooltip.bagSlots': '{slots}칸 가방',
   'itemUi.tooltip.bagSlotsMaterials': '{slots}칸 재료 가방',
+  'itemUi.tooltip.buddyBagSlots': '버디 가방 칸 +{slots}',
   'hudChrome.auth.forgotPrompt': '비밀번호를 잊으셨나요?',
   'hudChrome.auth.forgotTitle': '비밀번호 재설정',
   'hudChrome.auth.forgotHint': '사용자 이름을 입력하면 등록된 이메일로 재설정 링크를 보내드립니다.',
@@ -6612,6 +6613,9 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.backpack': '배낭',
   'hudChrome.bags.socketEmpty': '빈 가방 칸',
   'hudChrome.bags.unequipHint': '클릭하여 이 가방을 해제',
+  'hudChrome.bags.buddyBagSocketEmpty': '빈 버디 가방 칸',
+  'hudChrome.bags.buddyBagSocketAria': '{name}: 버디 가방',
+  'hudChrome.bags.buddyBagLockedHint': '잠김: 우클릭하여 잠금 해제',
   'hudChrome.bags.poolGeneral': '일반: {total}칸 중 {used}칸',
   'hudChrome.bags.poolMaterials': '재료: {total}칸 중 {used}칸',
   'hudChrome.bags.capacityPoolsAria':
@@ -16603,6 +16607,12 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '버디가 30야드 이내에 있는 당신 소유의 시체에서 전리품을 가져옵니다.',
   'hudChrome.buddyMenu.cancel':
     '취소',
+  'hudChrome.buddyBagMenu.summonDismiss':
+    '소환/해제',
+  'hudChrome.buddyBagMenu.lock':
+    '아이템 잠그기',
+  'hudChrome.buddyBagMenu.unlock':
+    '아이템 잠금 해제',
   'hudChrome.collections.title':
     '사냥',
   'hudChrome.collections.close':
@@ -16767,6 +16777,10 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '잿불낙하 불사조',
   'entities.items.whistle_emberfall_phoenix.name':
     '잿불낙하 불사조의 호루라기',
+  'entities.mobs.buddy_the_mummy.name':
+    '미라',
+  'entities.items.whistle_the_mummy.name':
+    '미라의 호루라기',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     '가을마다 타들어가 한 점 잉걸불이 되었다가, 봄이면 제 재에서 다시 솟아오른다. 누구에게 물어도 할 수 있는 말은 그것이 전부다. 둥지를 찾아낸 사람도 없고, 같은 개체를 두 번 붙잡은 사람도 없다.',
   'guide.arenaPage.honorFinalNoteSoldBack':

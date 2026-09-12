@@ -833,7 +833,10 @@ export function buildBoostedCharacterState(
       throw new Error(`boost equip failed for ${cls} ${slot}: ${want}`);
     }
   }
-  const bags = state.bags ?? [];
+  // Only the BOOST_BAG_SOCKETS ordinary sockets are boosted; a trailing
+  // Buddy bag socket slot (bags.ts BUDDY_BAG_SOCKET, empty on a fresh boost)
+  // is not part of this check.
+  const bags = (state.bags ?? []).slice(0, BOOST_BAG_SOCKETS);
   if (bags.length !== BOOST_BAG_SOCKETS || bags.some((b) => b !== bagId)) {
     throw new Error(`boost bag equip failed for ${cls}`);
   }

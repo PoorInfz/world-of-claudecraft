@@ -112,6 +112,7 @@ function harness(inventory: InvSlot[]): Harness {
     dropOnActionSlot: noop,
     dropOnActionRingSlot: noop,
     openItemActionMenu: noop,
+    openBuddyBagMenu: noop,
     // The release's vendor-sale confirm opt-out. TRUE (the shipped default) is
     // the arm this suite needs: the stale-click refusals below must fire before
     // any sale is attempted, and the opt-out would skip the confirm entirely and

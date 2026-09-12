@@ -34,7 +34,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "b264b807",
+      "state": "949c460e",
       "events": "cb3d1c5e",
       "rng": {
         "draws": 0,
@@ -51,6 +51,7 @@
             "foragers_haversack",
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -186,7 +187,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "37411e01",
+      "state": "34b6bae8",
       "events": "80d0cb97",
       "rng": {
         "draws": 0,
@@ -203,6 +204,7 @@
             "foragers_haversack",
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -359,7 +361,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "728f7b1b",
+      "state": "21947d3e",
       "events": "c4c55ff9",
       "rng": {
         "draws": 0,
@@ -376,6 +378,7 @@
             "foragers_haversack",
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -592,7 +595,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "d75fa3b3",
+      "state": "96835cee",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -609,6 +612,7 @@
             "foragers_haversack",
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -825,7 +829,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "d75fa3b3",
+      "state": "96835cee",
       "events": "c5127e69",
       "rng": {
         "draws": 0,
@@ -842,6 +846,7 @@
             "foragers_haversack",
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -1058,7 +1063,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "01cdb019",
+      "state": "f40bd698",
       "events": "bb79ffff",
       "rng": {
         "draws": 0,
@@ -1075,6 +1080,7 @@
             "foragers_haversack",
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -1359,7 +1365,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "eb4f0049",
+      "state": "e0e04194",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -1374,6 +1380,7 @@
           "arenaRating": 1500,
           "bags": [
             "foragers_haversack",
+            null,
             null,
             null,
             null
@@ -1658,7 +1665,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 1007,
-      "state": "88eb6ac4",
+      "state": "9f6551f9",
       "events": "bfa11aec",
       "rng": {
         "draws": 0,
@@ -1673,6 +1680,7 @@
           "arenaRating": 1500,
           "bags": [
             "foragers_haversack",
+            null,
             null,
             null,
             null

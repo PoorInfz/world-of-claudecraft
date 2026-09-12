@@ -89,6 +89,7 @@ function harness(
     dropOnActionSlot: noop,
     dropOnActionRingSlot: noop,
     openItemActionMenu: noop,
+    openBuddyBagMenu: noop,
   };
   new BagsWindow(deps).render();
   return { root, usedItems, gatherToolCalls, feastPlacements };

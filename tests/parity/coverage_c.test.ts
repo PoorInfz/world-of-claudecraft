@@ -1283,7 +1283,7 @@ describe('coverage: each scenario fires its subsystem', { timeout: 90_000 }, () 
 
     // The socket took, through the real equipBag path: without it there is no
     // materials pool at all and every assertion below degenerates.
-    expect(meta.bags).toEqual(['foragers_haversack', null, null, null]);
+    expect(meta.bags).toEqual(['foragers_haversack', null, null, null, null]);
 
     // biome-ignore lint/suspicious/noExplicitAny: sampled frames are plain JSON
     const at = (label: string): any => {

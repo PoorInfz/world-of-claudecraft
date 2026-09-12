@@ -31,7 +31,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "9c62b83d",
+      "state": "21026234",
       "events": "6a69f473",
       "rng": {
         "draws": 0,
@@ -48,6 +48,7 @@
             null,
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -197,7 +198,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "2a56f8d8",
+      "state": "aaf72ac1",
       "events": "f3bf1aee",
       "rng": {
         "draws": 0,
@@ -214,6 +215,7 @@
             null,
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -359,7 +361,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "77ed5ce0",
+      "state": "8d9870f1",
       "events": "b2097156",
       "rng": {
         "draws": 0,
@@ -376,6 +378,7 @@
             null,
             null,
             null,
+            null,
             null
           ],
           "bank": {
@@ -521,7 +524,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "9c62b83d",
+      "state": "21026234",
       "events": "fd2bc5c5",
       "rng": {
         "draws": 0,
@@ -535,6 +538,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -687,7 +691,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "9c62b83d",
+      "state": "21026234",
       "events": "f9b88c4e",
       "rng": {
         "draws": 0,
@@ -701,6 +705,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -853,7 +858,7 @@
       "tick": 2,
       "time": 0.1,
       "nextId": 1007,
-      "state": "b498fff3",
+      "state": "5fbc1bfa",
       "events": "78c6bb89",
       "rng": {
         "draws": 0,
@@ -867,6 +872,7 @@
           "arena2v2Rating": 1500,
           "arenaRating": 1500,
           "bags": [
+            null,
             null,
             null,
             null,

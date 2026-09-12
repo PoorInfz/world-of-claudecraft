@@ -19,6 +19,11 @@ export const HEAVY_SELF_CMDS = new Set<string>([
   'rift_socket_gem',
   'equip_bag',
   'unequip_bag',
+  // Buddy bag socket: equip/unequip rewrite `bags` exactly like the ordinary
+  // bag sockets above; the lock flip rewrites the heavy-gated `bbl` key.
+  'equip_buddy_bag',
+  'unequip_buddy_bag',
+  'buddy_bag_locked',
   'use',
   'discard',
   'lock_item',

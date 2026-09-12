@@ -731,6 +731,18 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     quality: 'epic',
     sellValue: 50_000, // 5g, the flat vendor price every whistle takes
   },
+  // Epic undead, the same NOT OBTAINABLE YET state as whistle_emberfall_phoenix
+  // above: no mob table lists it, no vendor stocks it, and the global epic
+  // tier sits at chance 0 (loot/global_drops.ts). Tradable like every other
+  // whistle, so it is not soulbound.
+  whistle_the_mummy: {
+    id: 'whistle_the_mummy',
+    name: 'The Mummy Whistle',
+    kind: 'buddy',
+    buddy: 'the_mummy',
+    quality: 'epic',
+    sellValue: 50_000, // 5g, the flat vendor price every whistle takes
+  },
   // Legacy cosmetic reins; same inert, discardable treatment as mech_bird.
   // (reins_rickshaw_mount itself already has its own, current def further
   // down this table -- see the comment there -- so it is not repeated here.)

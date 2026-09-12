@@ -2573,6 +2573,16 @@ export const VISUALS: Record<string, VisualDef> = {
     height: 0.75,
     clips: BUDDY_CLIPS,
   },
+  // epic undead, no source yet (content/buddies.ts). Baked wrappings texture,
+  // so no tint. Idle/Walk clips renamed in place by
+  // scripts/assets/normalize_buddy_clips.mjs, so BUDDY_CLIPS reads them like
+  // every other follower. Height 0.85 mirrors buddy_skeleton, the roster's
+  // other standing undead-humanoid rig.
+  buddy_the_mummy: {
+    url: `${BUDDIES_DIR}/the_mummy.glb`,
+    height: 0.85,
+    clips: BUDDY_CLIPS,
+  },
   // Yumi, the Protect Yumi objective cat familiar (Meshy rig, scale baked by
   // scripts/_bake_meshy_scale.mjs, meshopt + 1024 webp). The GLB ships ONE
   // clip, the block: mapped as the HIT reaction so she blocks when struck
@@ -4022,6 +4032,7 @@ const MOB_KEYS: Record<string, string> = {
   buddy_crystal_tide: 'buddy_crystal_tide',
   buddy_phantom: 'buddy_phantom',
   buddy_emberfall_phoenix: 'buddy_emberfall_phoenix',
+  buddy_the_mummy: 'buddy_the_mummy',
   // Packlord Stampede guardians are transient local templates, not MOBS rows.
   // Give the three summoned beasts distinct existing bodies instead of the
   // generic humanoid bandit fallback.

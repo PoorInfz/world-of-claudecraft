@@ -95,6 +95,7 @@ function harness(
     ) => {
       menuCalls.push({ itemId, vendorSellCount, runSellAll });
     },
+    openBuddyBagMenu: noop,
   };
   new BagsWindow(deps).render();
   return { root, menuCalls };

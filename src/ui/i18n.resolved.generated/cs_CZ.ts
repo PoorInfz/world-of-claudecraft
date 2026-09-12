@@ -2647,6 +2647,11 @@ export const cs_CZ: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Nastavení kořisti",
       "close": "Zavřít nastavení kořisti",
@@ -2717,6 +2722,9 @@ export const cs_CZ: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Prázdný slot batohu",
       "unequipHint": "Klikni pro odebrání tohoto batohu",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Obecné: {used} z {total}",
       "poolMaterials": "Materiály: {used} z {total}",
       "capacityPoolsAria": "Použité sloty batohu: {used} z {total}. Obecné předměty: {generalUsed} z {generalTotal}. Materiály: {materialsUsed} z {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const cs_CZ: EnTranslations = {
       "clickSetUp": "Klikni pro postavení",
       "clickBuyback": "Kliknutím odkoupíš zpět",
       "bagSlots": "Batoh s {slots} sloty",
-      "bagSlotsMaterials": "Batoh na materiály s {slots} sloty"
+      "bagSlotsMaterials": "Batoh na materiály s {slots} sloty",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Batohy",
@@ -14938,6 +14947,9 @@ export const cs_CZ: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Jádro Posledního plamene"
       },
@@ -17249,6 +17261,9 @@ export const cs_CZ: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Předák Železné žíly"

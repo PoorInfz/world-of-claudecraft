@@ -106,6 +106,7 @@ function harness(startCopper = 1000, inventory: InvSlot[] = SWORD): Harness {
     dropOnActionSlot: noop,
     dropOnActionRingSlot: noop,
     openItemActionMenu: noop,
+    openBuddyBagMenu: noop,
   };
   return {
     window: new BagsWindow(deps),

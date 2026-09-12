@@ -2647,6 +2647,11 @@ export const en_XA: EnTranslations = {
       "autolootHint": "[Ýóúŕ ƀúððý ƒéţçĥéš ļóóţ ƒŕóɱ ýóúŕ óŵñ çóŕþšéš ŵíţĥíñ 30 ýáŕðš.]",
       "cancel": "[Çáñçéļ]"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "[Šúɱɱóñ/Ðíšɱíšš]",
+      "lock": "[Ļóçķ íţéɱ]",
+      "unlock": "[Úñļóçķ íţéɱ]"
+    },
     "lootSettings": {
       "title": "[Ļóóţ Šéţţíñĝš]",
       "close": "[Çļóšé ļóóţ šéţţíñĝš]",
@@ -2717,6 +2722,9 @@ export const en_XA: EnTranslations = {
       "bagSocketAria": "[{name}: {slots}]",
       "socketEmpty": "[Éɱþţý ƀáĝ šļóţ]",
       "unequipHint": "[Çļíçķ ţó ŕéɱóʋé ţĥíš ƀáĝ]",
+      "buddyBagSocketEmpty": "[Éɱþţý Ɓúððý ƀáĝ šļóţ]",
+      "buddyBagSocketAria": "[{name}: Ɓúððý ƀáĝ]",
+      "buddyBagLockedHint": "[Ļóçķéð: ŕíĝĥţ-çļíçķ ţó úñļóçķ]",
       "poolGeneral": "[Ĝéñéŕáļ: {used} óƒ {total}]",
       "poolMaterials": "[Ɱáţéŕíáļš: {used} óƒ {total}]",
       "capacityPoolsAria": "[Ɓáĝ šļóţš úšéð: {used} óƒ {total}. Ĝéñéŕáļ íţéɱš: {generalUsed} óƒ {generalTotal}. Ɱáţéŕíáļš: {materialsUsed} óƒ {materialsTotal}.]",
@@ -10865,7 +10873,8 @@ export const en_XA: EnTranslations = {
       "clickSetUp": "[Çļíçķ ţó šéţ úþ]",
       "clickBuyback": "[Çļíçķ ţó ƀúý ƀáçķ]",
       "bagSlots": "[{slots} Šļóţ Ɓáĝ]",
-      "bagSlotsMaterials": "[{slots} Šļóţ Ɱáţéŕíáļš Ɓáĝ]"
+      "bagSlotsMaterials": "[{slots} Šļóţ Ɱáţéŕíáļš Ɓáĝ]",
+      "buddyBagSlots": "[+{slots} Ɓúððý Ɓáĝ Šļóţš]"
     },
     "bags": {
       "title": "[Ɓáĝš]",
@@ -14938,6 +14947,9 @@ export const en_XA: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "[Éɱƀéŕƒáļļ Þĥóéñíẋ Ŵĥíšţļé]"
       },
+      "whistle_the_mummy": {
+        "name": "[Ţĥé Ɱúɱɱý Ŵĥíšţļé]"
+      },
       "lastflame_core": {
         "name": "[Çóŕé óƒ ţĥé Ļášţ Ƒļáɱé]"
       },
@@ -17249,6 +17261,9 @@ export const en_XA: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "[Þĥáñţóɱ]"
+      },
+      "buddy_the_mummy": {
+        "name": "[Ţĥé Ɱúɱɱý]"
       },
       "ironvein_foreman": {
         "name": "[Íŕóñʋéíñ Ƒóŕéɱáñ]"

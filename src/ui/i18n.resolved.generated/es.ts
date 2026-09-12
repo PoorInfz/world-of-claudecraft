@@ -2647,6 +2647,11 @@ export const es: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Ajustes de botín",
       "close": "Cerrar ajustes de botín",
@@ -2717,6 +2722,9 @@ export const es: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Espacio de bolsa vacío",
       "unequipHint": "Haz clic para quitar esta bolsa",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "General: {used} de {total}",
       "poolMaterials": "Materiales: {used} de {total}",
       "capacityPoolsAria": "Espacios de bolsa usados: {used} de {total}. Objetos generales: {generalUsed} de {generalTotal}. Materiales: {materialsUsed} de {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const es: EnTranslations = {
       "clickSetUp": "Haz clic para preparar",
       "clickBuyback": "Haz clic para recomprar",
       "bagSlots": "Bolsa de {slots} espacios",
-      "bagSlotsMaterials": "Bolsa de materiales de {slots} espacios"
+      "bagSlotsMaterials": "Bolsa de materiales de {slots} espacios",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Bolsas",
@@ -14938,6 +14947,9 @@ export const es: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Núcleo de la Última Llama"
       },
@@ -17249,6 +17261,9 @@ export const es: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Capataz Vena de Hierro"

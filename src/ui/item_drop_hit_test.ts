@@ -30,6 +30,11 @@ export type DropTargetAt =
   // shows the desktop rows, kept because the hit-test is the cheap half.
   | { kind: 'actionSlot'; slot: number }
   | { kind: 'actionRingSlot'; ringIndex: number }
+  // The dedicated Buddy bag socket (bags.ts BUDDY_BAG_SOCKET): stamped
+  // data-buddy-bag-socket on both its empty and occupied render (bags_window.ts
+  // buildBuddyBagSocket), so a touch release over either resolves here, the
+  // touch twin of the desktop drag's HTML5 dragover/drop pair on that button.
+  | { kind: 'buddyBag' }
   | { kind: 'world' }
   | { kind: 'none' };
 
@@ -51,6 +56,9 @@ export function resolveDropTargetAt(
   if (raw && isEquipSlot(raw)) {
     return { kind: 'equip', slot: raw };
   }
+  // The Buddy bag socket (bags_window.ts buildBuddyBagSocket): checked before
+  // the bag-cell arm below since the socket carries no data-bag-index.
+  if (el.closest?.('[data-buddy-bag-socket]')) return { kind: 'buddyBag' };
   // A bag cell (the manual-order drop): its data-bag-index IS an inventory index
   // while the grid shows the raw array order, which is the only view that stamps it.
   const cell = el.closest?.('[data-bag-index]') as HTMLElement | null;

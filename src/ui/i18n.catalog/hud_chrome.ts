@@ -3536,6 +3536,13 @@ export const hudChromeStrings = {
     autolootHint: 'Your buddy fetches loot from your own corpses within 30 yards.',
     cancel: 'Cancel',
   },
+  // Right-click menu on the Buddy bag socket's occupant (bags_window.ts):
+  // Summon/Dismiss that buddy, Lock/Unlock the socket itself.
+  buddyBagMenu: {
+    summonDismiss: 'Summon/Dismiss',
+    lock: 'Lock item',
+    unlock: 'Unlock item',
+  },
   lootSettings: {
     title: 'Loot Settings',
     close: 'Close loot settings',
@@ -3661,6 +3668,11 @@ export const hudChromeStrings = {
     bagSocketAria: '{name}: {slots}',
     socketEmpty: 'Empty bag slot',
     unequipHint: 'Click to remove this bag',
+    // The dedicated Buddy bag socket (bags.ts BUDDY_BAG_SOCKET): a placed
+    // buddy whistle grants bonus inventory slots by quality.
+    buddyBagSocketEmpty: 'Empty Buddy bag slot',
+    buddyBagSocketAria: '{name}: Buddy bag',
+    buddyBagLockedHint: 'Locked: right-click to unlock',
     // Per-pool truth for the carried counter (Bank Storage phase 08): the
     // counter's tooltip and split aria name both pools, because the summed
     // {used}/{total} can read past its denominator in the tolerated-overflow

@@ -67,6 +67,8 @@ export const BUDDY_ICON_BATCH = [
   { itemId: 'whistle_phantom', glb: 'public/models/buddies/phantom.glb' },
   // The epic with no source yet (content/buddies.ts), from its own GLB.
   { itemId: 'whistle_emberfall_phoenix', glb: 'public/models/buddies/emberfall_phoenix.glb' },
+  // The epic undead with no source yet (content/buddies.ts), from its own GLB.
+  { itemId: 'whistle_the_mummy', glb: 'public/models/buddies/the_mummy.glb' },
 ];
 
 /** True when a GLB declares the KTX2 texture extension, which the preview

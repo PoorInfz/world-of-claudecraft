@@ -2647,6 +2647,11 @@ export const tr_TR: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Ganimet Ayarları",
       "close": "Ganimet ayarlarını kapat",
@@ -2717,6 +2722,9 @@ export const tr_TR: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Boş çanta yuvası",
       "unequipHint": "Bu çantayı çıkarmak için tıkla",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Genel: {used} / {total}",
       "poolMaterials": "Malzemeler: {used} / {total}",
       "capacityPoolsAria": "Kullanılan çanta yuvaları: {used} / {total}. Genel eşyalar: {generalUsed} / {generalTotal}. Malzemeler: {materialsUsed} / {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const tr_TR: EnTranslations = {
       "clickSetUp": "Kurmak için tıkla",
       "clickBuyback": "Geri satın almak için tıkla",
       "bagSlots": "{slots} Yuvalı Çanta",
-      "bagSlotsMaterials": "{slots} Yuvalı Malzeme Çantası"
+      "bagSlotsMaterials": "{slots} Yuvalı Malzeme Çantası",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Çantalar",
@@ -14938,6 +14947,9 @@ export const tr_TR: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Son Alevin Özü"
       },
@@ -17249,6 +17261,9 @@ export const tr_TR: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Demirdamar Ustabaşı"

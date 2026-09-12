@@ -57,3 +57,18 @@ export function buddyMenuHtml(name: string, armed: boolean): string {
     `<div class="ctx-item" data-act="close">${esc(t('hudChrome.buddyMenu.cancel'))}</div>`
   );
 }
+
+/** The Buddy bag socket's right-click menu: Summon/Dismiss the placed buddy,
+ *  Lock/Unlock the socket itself, plus Cancel. `locked` is the owner's
+ *  CURRENT PlayerMeta.buddyBagLocked as it came off the wire (bags[4]), so
+ *  both rows offer the flip the server would actually make. */
+export function buddyBagMenuHtml(name: string, locked: boolean): string {
+  const summonLabel = t('hudChrome.buddyBagMenu.summonDismiss');
+  const lockLabel = locked ? t('hudChrome.buddyBagMenu.unlock') : t('hudChrome.buddyBagMenu.lock');
+  return (
+    `<div class="ctx-title">${esc(name)}</div>` +
+    `<div class="ctx-item" data-act="summon">${esc(summonLabel)}</div>` +
+    `<div class="ctx-item" data-act="lock">${esc(lockLabel)}</div>` +
+    `<div class="ctx-item" data-act="close">${esc(t('hudChrome.buddyMenu.cancel'))}</div>`
+  );
+}

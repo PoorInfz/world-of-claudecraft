@@ -766,6 +766,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.bag': '背包',
   'itemUi.tooltip.bagSlots': '{slots} 格背包',
   'itemUi.tooltip.bagSlotsMaterials': '{slots} 格材料背包',
+  'itemUi.tooltip.buddyBagSlots': '伙伴袋 +{slots} 格',
   'hudChrome.auth.forgotPrompt': '忘记密码？',
   'hudChrome.auth.forgotTitle': '重置密码',
   'hudChrome.auth.forgotHint': '输入您的用户名，我们会将重置链接发送到登记的邮箱。',
@@ -6392,6 +6393,9 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.backpack': '背包',
   'hudChrome.bags.socketEmpty': '空背包栏位',
   'hudChrome.bags.unequipHint': '点击移除此背包',
+  'hudChrome.bags.buddyBagSocketEmpty': '空伙伴袋栏位',
+  'hudChrome.bags.buddyBagSocketAria': '{name}：伙伴袋',
+  'hudChrome.bags.buddyBagLockedHint': '已锁定：右键点击解锁',
   'hudChrome.bags.poolGeneral': '通用：{used}/{total}',
   'hudChrome.bags.poolMaterials': '材料：{used}/{total}',
   'hudChrome.bags.capacityPoolsAria':
@@ -15814,6 +15818,12 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '你的伙伴会去拾取 30 码内属于你自己的尸体上的战利品。',
   'hudChrome.buddyMenu.cancel':
     '取消',
+  'hudChrome.buddyBagMenu.summonDismiss':
+    '召唤/解散',
+  'hudChrome.buddyBagMenu.lock':
+    '锁定物品',
+  'hudChrome.buddyBagMenu.unlock':
+    '解锁物品',
   'hudChrome.collections.title':
     '狩猎',
   'hudChrome.collections.close':
@@ -15978,6 +15988,10 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '烬落凤凰',
   'entities.items.whistle_emberfall_phoenix.name':
     '烬落凤凰的哨子',
+  'entities.mobs.buddy_the_mummy.name':
+    '木乃伊',
+  'entities.items.whistle_the_mummy.name':
+    '木乃伊的哨子',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     '每逢秋天它便燃尽成一粒余烬，到了春天又从自己的灰里重新升起——关于它，谁也说不出更多了。从没有人找到过它的巢，也从没有人捉到过同一只两次。',
   'guide.arenaPage.honorFinalNoteSoldBack':

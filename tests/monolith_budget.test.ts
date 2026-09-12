@@ -457,9 +457,11 @@ const MONOLITHS: MonolithRow[] = [
     // popup opener, no shared line touched by the release-side extractions),
     // so the reconciled file is the release-side base PLUS the buddy delta,
     // not a smaller number either arm's own history would predict.
-    // `wc -l < src/ui/hud.ts` on the reconciled file measures 18514. Exact
-    // merged count, zero slack: any further growth reds again.
-    ceiling: 18514,
+    // The Buddy bag socket feature (openBuddyBagMenu + its deps wiring plus
+    // the BUDDY_BAG_SOCKET/buddyBagMenuHtml imports) added lines on top.
+    // `wc -l < src/ui/hud.ts` measures 18537. Exact count, zero slack: any
+    // further growth reds again.
+    ceiling: 18537,
     seam: 'pure view core + thin painter on PainterHost (src/ui/CLAUDE.md)',
   },
   {
@@ -1026,7 +1028,12 @@ const MONOLITHS: MonolithRow[] = [
     // of that base, not overlapping any line the release-side extractions
     // touched. `wc -l < src/sim/sim.ts` on the reconciled file measures
     // 11925. Exact merged count, zero slack: any further growth reds again.
-    ceiling: 11925,
+    //
+    // The Buddy bag socket feature (buddyBagLocked field/getter, equipBuddyBag/
+    // unequipBuddyBag/setBuddyBagLocked/summonBuddyBagBuddyFor delegates, and
+    // the load/save/serialize threading) added lines on top. `wc -l <
+    // src/sim/sim.ts` measures 11968. Exact count, zero slack.
+    ceiling: 11968,
     seam: 'a sim system module behind SimContext (src/sim/CLAUDE.md)',
   },
   {
@@ -1442,7 +1449,12 @@ const MONOLITHS: MonolithRow[] = [
     // the release side's own pin by roughly that delta.
     // `wc -l < server/game.ts` on the reconciled file measures 10122. Exact
     // merged count, zero slack: any further growth reds again.
-    ceiling: 10122,
+    //
+    // The Buddy bag socket feature (equip_buddy_bag/unequip_buddy_bag/
+    // buddy_bag_locked/buddy_bag_summon dispatch cases, plus the bags/bbl
+    // heavy-self wire lines) added lines on top. `wc -l < server/game.ts`
+    // measures 10136. Exact count, zero slack.
+    ceiling: 10136,
     seam: 'a sibling server module; see the hot-path seams in server/CLAUDE.md',
   },
   {
@@ -1592,7 +1604,12 @@ const MONOLITHS: MonolithRow[] = [
     // one mirrored identity field) that touches none of those extracted
     // lines. `wc -l < src/net/online.ts` on the reconciled file measures
     // 5569. Exact merged count, zero slack: any further growth reds again.
-    ceiling: 5569,
+    //
+    // The Buddy bag socket feature (equipBuddyBag/unequipBuddyBag/
+    // setBuddyBagLocked/summonBuddyBagBuddy senders, the bags/buddyBagLocked
+    // field defaults, and the s.bbl wire mirror wiring) added lines on top.
+    // `wc -l < src/net/online.ts` measures 5588. Exact count, zero slack.
+    ceiling: 5588,
     seam: 'a src/net sibling module (the refactor/net-online split is the template)',
   },
   {

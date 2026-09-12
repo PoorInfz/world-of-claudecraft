@@ -53,7 +53,8 @@ export type BuddyKey =
   | 'forgemaw'
   | 'crystal_tide'
   | 'phantom'
-  | 'emberfall_phoenix';
+  | 'emberfall_phoenix'
+  | 'the_mummy';
 
 /** How the Hunting window groups a companion. Mostly the follower's own mob
  *  family says it (a wolf is a beast), but two groups are editorial and no
@@ -249,6 +250,16 @@ export const BUDDIES: Record<BuddyKey, BuddyDef> = {
     key: 'emberfall_phoenix',
     name: 'Emberfall Phoenix',
   },
+  // epic undead, deliberately UNOBTAINABLE for now, the same shipped-but-
+  // sourceless state as emberfall_phoenix above: no mob table lists its
+  // whistle, no vendor stocks it, and the global epic tier is withheld at
+  // chance 0 (loot/global_drops.ts). No `kind` override needed: undead is
+  // already its own BuddyKind and the_mummy's family matches it directly.
+  the_mummy: {
+    key: 'the_mummy',
+    name: 'The Mummy',
+    kind: 'undead',
+  },
 };
 
 /** Catalog order: declaration order. */
@@ -268,8 +279,11 @@ export function normalizeBuddyKey(key: string | undefined | null): BuddyKey | ''
 // Whistle items awaiting their painted (or, for a buddy, rendered-from-GLB)
 // bag icon: the ITEM_ART_PENDING ledger (src/ui/icons.ts) spreads this in
 // alongside the raid content waves so the debt is enumerated rather than
-// silent (tests/item_icons.test.ts). emberfall_phoenix's whistle joined the
-// catalog with its GLB committed but its icon not yet rendered
-// (render_buddy_item_icons.mjs needs a headless-Chromium host this repo's
-// sandbox does not have); it comes out the moment that render lands.
-export const BUDDY_ART_PENDING_ITEM_IDS: readonly string[] = ['whistle_emberfall_phoenix'];
+// silent (tests/item_icons.test.ts). emberfall_phoenix's and the_mummy's
+// whistles joined the catalog with their GLB committed but their icon not yet
+// rendered (render_buddy_item_icons.mjs needs a headless-Chromium host this
+// repo's sandbox does not have); each comes out the moment that render lands.
+export const BUDDY_ART_PENDING_ITEM_IDS: readonly string[] = [
+  'whistle_emberfall_phoenix',
+  'whistle_the_mummy',
+];

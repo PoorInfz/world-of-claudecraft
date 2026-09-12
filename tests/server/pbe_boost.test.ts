@@ -336,7 +336,9 @@ describe('applyBoostKitToPlayer (world-join top-up)', () => {
     expect(sim.countItem(pvpPiece!.id, pid), 'old gear kept').toBeGreaterThan(0);
     // Bags: every socket carries the best bag in the game.
     const bagId = bestBoostBag();
-    expect(meta.bags).toEqual(Array(BOOST_BAG_SOCKETS).fill(bagId));
+    // Only the BOOST_BAG_SOCKETS ordinary sockets are boosted; the trailing
+    // Buddy bag socket slot (bags.ts BUDDY_BAG_SOCKET) sits outside this check.
+    expect(meta.bags.slice(0, BOOST_BAG_SOCKETS)).toEqual(Array(BOOST_BAG_SOCKETS).fill(bagId));
     expect(meta.ridingTrained, 'riding trained').toBe(true);
     expect(meta.pbeBoostKit).toBe(BOOST_KIT_VERSION);
     for (const questId of NYTHRAXIS_ATTUNEMENT_QUESTS) {
@@ -368,7 +370,9 @@ describe('applyBoostKitToPlayer (world-join top-up)', () => {
     const meta = sim.meta(pid)!;
     expect(meta.bags[0]).toBe(smaller!.id);
     expect(applyBoostKitToPlayer(sim, pid)).toBe(true);
-    expect(meta.bags).toEqual(Array(BOOST_BAG_SOCKETS).fill(bagId));
+    // Only the BOOST_BAG_SOCKETS ordinary sockets are boosted; the trailing
+    // Buddy bag socket slot (bags.ts BUDDY_BAG_SOCKET) sits outside this check.
+    expect(meta.bags.slice(0, BOOST_BAG_SOCKETS)).toEqual(Array(BOOST_BAG_SOCKETS).fill(bagId));
     expect(sim.countItem(smaller!.id, pid), 'small bag kept in the pool').toBeGreaterThan(0);
   });
 
@@ -410,7 +414,7 @@ describe('applyBoostKitToPlayer (world-join top-up)', () => {
     sim.drainEvents();
     expect(applyBoostKitToPlayer(sim, pid), 'the top-up still applies').toBe(true);
     // The satchel keeps its socket; the three empty sockets take the boost bag.
-    expect(meta.bags).toEqual([bigger!.id, bagId, bagId, bagId]);
+    expect(meta.bags.slice(0, BOOST_BAG_SOCKETS)).toEqual([bigger!.id, bagId, bagId, bagId]);
     // Decisive: the pre-fix bug left exactly one granted boost bag loose in the
     // pool for the refused socket. Nothing loose, and the satchel was never
     // displaced into the pool either.
@@ -462,7 +466,9 @@ describe('applyBoostKitToPlayer (world-join top-up)', () => {
     expect(meta.bags[1]).toBe(smaller!.id);
 
     expect(applyBoostKitToPlayer(sim, pid)).toBe(true);
-    expect(meta.bags).toEqual(Array(BOOST_BAG_SOCKETS).fill(bagId));
+    // Only the BOOST_BAG_SOCKETS ordinary sockets are boosted; the trailing
+    // Buddy bag socket slot (bags.ts BUDDY_BAG_SOCKET) sits outside this check.
+    expect(meta.bags.slice(0, BOOST_BAG_SOCKETS)).toEqual(Array(BOOST_BAG_SOCKETS).fill(bagId));
     // The displaced pouch lands in the pool exactly once, and the four granted
     // boost bags all went into sockets rather than leaving a loose copy.
     expect(sim.countItem(smaller!.id, pid), 'the pouch is kept, never deleted').toBe(1);
@@ -504,7 +510,7 @@ describe('applyBoostKitToPlayer (world-join top-up)', () => {
     expect(applyBoostKitToPlayer(sim, pid), 'the top-up still applies').toBe(true);
     // Socket 0's swap was refused (it would still end above the grown budget),
     // so the pouch stays; the empty sockets grow the budget and take the bag.
-    expect(meta.bags).toEqual([smaller!.id, bagId, bagId, bagId]);
+    expect(meta.bags.slice(0, BOOST_BAG_SOCKETS)).toEqual([smaller!.id, bagId, bagId, bagId]);
     expect(sim.countItem(bagId, pid), 'the refused grant was taken back out').toBe(0);
   });
 
@@ -563,7 +569,7 @@ describe('applyBoostKitToPlayer (world-join top-up)', () => {
         ),
       "socket 0's growing swap was attempted and refused",
     ).toBe(true);
-    expect(meta.bags).toEqual([smaller!.id, bagId, bagId, bagId]);
+    expect(meta.bags.slice(0, BOOST_BAG_SOCKETS)).toEqual([smaller!.id, bagId, bagId, bagId]);
     expect(sim.countItem(bagId, pid), 'exactly one loose boost bag is left').toBe(1);
     expect(
       meta.inventory.includes(looseSlot),
@@ -606,7 +612,9 @@ describe('bags, gold, and alternate role kits', () => {
     expect(materialsOnly.length).toBeGreaterThan(0);
     expect(Math.max(...materialsOnly.map((b) => b.bagSlots ?? 0))).toBeGreaterThan(maxSlots);
     const state = buildBoostedCharacterState('warrior', 'Pbetestbags', 0);
-    expect(state.bags).toEqual(Array(BOOST_BAG_SOCKETS).fill(bagId));
+    expect((state.bags ?? []).slice(0, BOOST_BAG_SOCKETS)).toEqual(
+      Array(BOOST_BAG_SOCKETS).fill(bagId),
+    );
     // The tie is REAL (multiple general bags at the max since phase 05) and the
     // winner is decided by the explicit ascending-id tie-break, never by
     // content-table insertion order: pin the tie's existence, the exact

@@ -787,6 +787,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.bag': 'バッグ',
   'itemUi.tooltip.bagSlots': '{slots}スロットのバッグ',
   'itemUi.tooltip.bagSlotsMaterials': '{slots}スロットの素材バッグ',
+  'itemUi.tooltip.buddyBagSlots': 'バディバッグ枠 +{slots}',
   'hudChrome.auth.forgotPrompt': 'パスワードをお忘れですか？',
   'hudChrome.auth.forgotTitle': 'パスワードをリセット',
   'hudChrome.auth.forgotHint':
@@ -6638,6 +6639,9 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.backpack': 'バックパック',
   'hudChrome.bags.socketEmpty': '空のバッグスロット',
   'hudChrome.bags.unequipHint': 'クリックしてこのバッグを外す',
+  'hudChrome.bags.buddyBagSocketEmpty': '空のバディバッグ枠',
+  'hudChrome.bags.buddyBagSocketAria': '{name}：バディバッグ',
+  'hudChrome.bags.buddyBagLockedHint': 'ロック中：右クリックで解除',
   'hudChrome.bags.poolGeneral': '一般: {total}個中{used}個',
   'hudChrome.bags.poolMaterials': '素材: {total}個中{used}個',
   'hudChrome.bags.capacityPoolsAria':
@@ -16638,6 +16642,12 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'バディが30ヤード以内にあるあなた自身の死体から戦利品を回収します。',
   'hudChrome.buddyMenu.cancel':
     'キャンセル',
+  'hudChrome.buddyBagMenu.summonDismiss':
+    '召喚/解散',
+  'hudChrome.buddyBagMenu.lock':
+    'アイテムをロック',
+  'hudChrome.buddyBagMenu.unlock':
+    'アイテムのロック解除',
   'hudChrome.collections.title':
     'ハンティング',
   'hudChrome.collections.close':
@@ -16802,6 +16812,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'エンバーフォール・フェニックス',
   'entities.items.whistle_emberfall_phoenix.name':
     'エンバーフォール・フェニックスの笛',
+  'entities.mobs.buddy_the_mummy.name':
+    'ミイラ',
+  'entities.items.whistle_the_mummy.name':
+    'ミイラの笛',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     '秋ごとに燃え尽きて一粒の燃えさしとなり、春には自らの灰から立ち上がってくる。誰に訊いても言えるのはそれだけだ。巣を見つけた者はおらず、同じ個体を二度捕らえた者もいない。',
   'guide.arenaPage.honorFinalNoteSoldBack':

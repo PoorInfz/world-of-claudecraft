@@ -2647,6 +2647,11 @@ export const fr_FR: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Réglages de butin",
       "close": "Fermer les réglages de butin",
@@ -2717,6 +2722,9 @@ export const fr_FR: EnTranslations = {
       "bagSocketAria": "{name} : {slots}",
       "socketEmpty": "Emplacement de sac vide",
       "unequipHint": "Cliquez pour retirer ce sac",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Général : {used} sur {total}",
       "poolMaterials": "Matériaux : {used} sur {total}",
       "capacityPoolsAria": "Emplacements de sac utilisés : {used} sur {total}. Objets généraux : {generalUsed} sur {generalTotal}. Matériaux : {materialsUsed} sur {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const fr_FR: EnTranslations = {
       "clickSetUp": "Cliquer pour installer",
       "clickBuyback": "Cliquer pour racheter",
       "bagSlots": "Sac de {slots} emplacements",
-      "bagSlotsMaterials": "Sac à matériaux de {slots} emplacements"
+      "bagSlotsMaterials": "Sac à matériaux de {slots} emplacements",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Sacs",
@@ -14938,6 +14947,9 @@ export const fr_FR: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Cœur de la Dernière Flamme"
       },
@@ -17249,6 +17261,9 @@ export const fr_FR: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Contremaître Veinefer"

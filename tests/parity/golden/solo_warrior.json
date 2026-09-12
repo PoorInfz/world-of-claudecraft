@@ -17,7 +17,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "b8206c6f",
+      "state": "ff24615a",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -32,6 +32,7 @@
           "arenaRating": 1500,
           "autoEquip": true,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -169,7 +170,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 1008,
-      "state": "2a14a710",
+      "state": "0ea98035",
       "events": "52b2e989",
       "rng": {
         "draws": 7,
@@ -180,7 +181,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 1008,
-      "state": "50a70fec",
+      "state": "1823a5b1",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -191,7 +192,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 1008,
-      "state": "adf41d18",
+      "state": "0b72e225",
       "events": "87bd686b",
       "rng": {
         "draws": 174,
@@ -202,7 +203,7 @@
       "tick": 72,
       "time": 3.6,
       "nextId": 1008,
-      "state": "4303069e",
+      "state": "657a5123",
       "events": "0316eea8",
       "rng": {
         "draws": 267,
@@ -217,6 +218,7 @@
           "arenaRating": 1500,
           "autoEquip": true,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -457,7 +459,7 @@
       "tick": 76,
       "time": 3.8,
       "nextId": 1008,
-      "state": "3aca16f0",
+      "state": "b907443d",
       "events": "cc703ad5",
       "rng": {
         "draws": 313,
@@ -472,6 +474,7 @@
           "arenaRating": 1500,
           "autoEquip": true,
           "bags": [
+            null,
             null,
             null,
             null,

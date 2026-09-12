@@ -791,6 +791,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'itemUi.kind.bag': 'Сумка',
   'itemUi.tooltip.bagSlots': 'Сумка на {slots} ячеек',
   'itemUi.tooltip.bagSlotsMaterials': 'Сумка для материалов на {slots} ячеек',
+  'itemUi.tooltip.buddyBagSlots': '+{slots} ячеек сумки спутника',
   'hudChrome.auth.forgotPrompt': 'Забыли пароль?',
   'hudChrome.auth.forgotTitle': 'Сброс пароля',
   'hudChrome.auth.forgotHint':
@@ -6756,6 +6757,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.backpack': 'Рюкзак',
   'hudChrome.bags.socketEmpty': 'Пустая ячейка для сумки',
   'hudChrome.bags.unequipHint': 'Нажмите, чтобы снять эту сумку',
+  'hudChrome.bags.buddyBagSocketEmpty': 'Пустой слот сумки спутника',
+  'hudChrome.bags.buddyBagSocketAria': '{name}: сумка спутника',
+  'hudChrome.bags.buddyBagLockedHint': 'Заблокировано: нажмите правой кнопкой, чтобы разблокировать',
   'hudChrome.bags.poolGeneral': 'Общие: {used} из {total}',
   'hudChrome.bags.poolMaterials': 'Материалы: {used} из {total}',
   'hudChrome.bags.capacityPoolsAria':
@@ -16920,6 +16924,12 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Спутник соберёт добычу с ваших собственных трупов в радиусе 30 ярдов.',
   'hudChrome.buddyMenu.cancel':
     'Отмена',
+  'hudChrome.buddyBagMenu.summonDismiss':
+    'Призвать/отпустить',
+  'hudChrome.buddyBagMenu.lock':
+    'Заблокировать предмет',
+  'hudChrome.buddyBagMenu.unlock':
+    'Разблокировать предмет',
   'hudChrome.collections.title':
     'Охота',
   'hudChrome.collections.close':
@@ -17084,6 +17094,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Феникс Пепелопада',
   'entities.items.whistle_emberfall_phoenix.name':
     'Свисток: Феникс Пепелопада',
+  'entities.mobs.buddy_the_mummy.name':
+    'Мумия',
+  'entities.items.whistle_the_mummy.name':
+    'Свисток: Мумия',
   'hudChrome.collections.buddyLore.emberfall_phoenix':
     'Каждую осень он сгорает до уголька и к весне поднимается из собственного пепла — вот и всё, что о нём вообще могут сказать. Гнезда его никто не находил, и дважды одного и того же никто не ловил.',
   'guide.arenaPage.honorFinalNoteSoldBack':

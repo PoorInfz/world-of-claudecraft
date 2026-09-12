@@ -2647,6 +2647,11 @@ export const da_DK: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Bytteindstillinger",
       "close": "Luk byttindstillinger",
@@ -2717,6 +2722,9 @@ export const da_DK: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Tom taskeplads",
       "unequipHint": "Klik for at fjerne denne taske",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Generelt: {used} af {total}",
       "poolMaterials": "Materialer: {used} af {total}",
       "capacityPoolsAria": "Taskepladser brugt: {used} af {total}. Generelt: {generalUsed} af {generalTotal}. Materialer: {materialsUsed} af {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const da_DK: EnTranslations = {
       "clickSetUp": "Klik for at placere",
       "clickBuyback": "Klik for at købe tilbage",
       "bagSlots": "Taske med {slots} pladser",
-      "bagSlotsMaterials": "Materialetaske med {slots} pladser"
+      "bagSlotsMaterials": "Materialetaske med {slots} pladser",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Tasker",
@@ -14938,6 +14947,9 @@ export const da_DK: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Den sidste flammes kerne"
       },
@@ -17249,6 +17261,9 @@ export const da_DK: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Jernåre-Formand"

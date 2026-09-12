@@ -5106,6 +5106,7 @@ const ALL_DELTA_KEYS = [
   'auras',
   'bags',
   'bank',
+  'bbl',
   'bg',
   'blk',
   'bpsl',
@@ -5234,6 +5235,7 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   atitle: 'activeTitle',
   bags: 'bags',
   bank: 'bankInfo',
+  bbl: 'buddyBagLocked',
   blk: 'blockChance',
   budOwn: 'ownedBuddies',
   buyback: 'vendorBuyback',
@@ -6469,8 +6471,10 @@ describe('delta-key contract pins (anti-drift)', () => {
     // budOwn) and the release branch's own 94 (the same 90 plus fplot,
     // offhandWeapon, hpref, ggoal) compose to 95, counted directly off the
     // merged ALL_DELTA_KEYS array above rather than reconciled by arithmetic.
-    expect(ALL_DELTA_KEYS).toHaveLength(95);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(95);
+    //
+    // The Buddy bag socket feature's lock-flag mirror `bbl` adds one more: 96.
+    expect(ALL_DELTA_KEYS).toHaveLength(96);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(96);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -6641,7 +6645,9 @@ describe('delta-key contract pins (anti-drift)', () => {
     // this branch: budOwn (this branch) plus fplot/hpref/ggoal/cbt (the
     // release side) compose to 95, matching ALL_DELTA_KEYS's own merged
     // count above.
-    expect(scraped.size).toBe(95);
+    //
+    // The Buddy bag socket feature's lock-flag mirror `bbl` adds one more: 96.
+    expect(scraped.size).toBe(96);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

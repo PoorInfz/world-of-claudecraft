@@ -2647,6 +2647,11 @@ export const pl_PL: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Ustawienia łupów",
       "close": "Zamknij ustawienia łupów",
@@ -2717,6 +2722,9 @@ export const pl_PL: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Puste gniazdo na torbę",
       "unequipHint": "Kliknij, aby zdjąć tę torbę",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Ogólne: {used} z {total}",
       "poolMaterials": "Materiały: {used} z {total}",
       "capacityPoolsAria": "Zajęte miejsca w torbie: {used} z {total}. Przedmioty ogólne: {generalUsed} z {generalTotal}. Materiały: {materialsUsed} z {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const pl_PL: EnTranslations = {
       "clickSetUp": "Kliknij, aby ustawić",
       "clickBuyback": "Kliknij, aby odkupić",
       "bagSlots": "Torba z {slots} miejscami",
-      "bagSlotsMaterials": "Torba na surowce z {slots} miejscami"
+      "bagSlotsMaterials": "Torba na surowce z {slots} miejscami",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Torby",
@@ -14938,6 +14947,9 @@ export const pl_PL: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Rdzeń Ostatniego Płomienia"
       },
@@ -17249,6 +17261,9 @@ export const pl_PL: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Sztygar z Żelaznej Żyły"

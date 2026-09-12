@@ -2647,6 +2647,11 @@ export const de_DE: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Beute-Einstellungen",
       "close": "Beute-Einstellungen schließen",
@@ -2717,6 +2722,9 @@ export const de_DE: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Leerer Taschenplatz",
       "unequipHint": "Klicke, um diese Tasche abzulegen",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Allgemein: {used} von {total}",
       "poolMaterials": "Materialien: {used} von {total}",
       "capacityPoolsAria": "Belegte Taschenplätze: {used} von {total}. Allgemeine Gegenstände: {generalUsed} von {generalTotal}. Materialien: {materialsUsed} von {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const de_DE: EnTranslations = {
       "clickSetUp": "Zum Einrichten anklicken",
       "clickBuyback": "Zum Rückkaufen klicken",
       "bagSlots": "Tasche mit {slots} Plätzen",
-      "bagSlotsMaterials": "Materialtasche mit {slots} Plätzen"
+      "bagSlotsMaterials": "Materialtasche mit {slots} Plätzen",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Taschen",
@@ -14938,6 +14947,9 @@ export const de_DE: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Kern der Letzten Flamme"
       },
@@ -17249,6 +17261,9 @@ export const de_DE: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Eisenader-Vorarbeiter"

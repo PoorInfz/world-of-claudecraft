@@ -74,6 +74,7 @@ function harness(inventory: InvSlot[]): { root: HTMLElement } {
     dropOnActionSlot: noop,
     dropOnActionRingSlot: noop,
     openItemActionMenu: noop,
+    openBuddyBagMenu: noop,
   };
   new BagsWindow(deps).render();
   return { root };

@@ -2647,6 +2647,11 @@ export const ja_JP: EnTranslations = {
       "autolootHint": "バディが30ヤード以内にあるあなた自身の死体から戦利品を回収します。",
       "cancel": "キャンセル"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "召喚/解散",
+      "lock": "アイテムをロック",
+      "unlock": "アイテムのロック解除"
+    },
     "lootSettings": {
       "title": "分配設定",
       "close": "分配設定を閉じる",
@@ -2717,6 +2722,9 @@ export const ja_JP: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "空のバッグスロット",
       "unequipHint": "クリックしてこのバッグを外す",
+      "buddyBagSocketEmpty": "空のバディバッグ枠",
+      "buddyBagSocketAria": "{name}：バディバッグ",
+      "buddyBagLockedHint": "ロック中：右クリックで解除",
       "poolGeneral": "一般: {total}個中{used}個",
       "poolMaterials": "素材: {total}個中{used}個",
       "capacityPoolsAria": "使用中のバッグスロット: {total}個中{used}個。一般アイテム: {generalTotal}個中{generalUsed}個。素材: {materialsTotal}個中{materialsUsed}個。",
@@ -10865,7 +10873,8 @@ export const ja_JP: EnTranslations = {
       "clickSetUp": "クリックして設営",
       "clickBuyback": "クリックして買い戻す",
       "bagSlots": "{slots}スロットのバッグ",
-      "bagSlotsMaterials": "{slots}スロットの素材バッグ"
+      "bagSlotsMaterials": "{slots}スロットの素材バッグ",
+      "buddyBagSlots": "バディバッグ枠 +{slots}"
     },
     "bags": {
       "title": "バッグ",
@@ -14938,6 +14947,9 @@ export const ja_JP: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "エンバーフォール・フェニックスの笛"
       },
+      "whistle_the_mummy": {
+        "name": "ミイラの笛"
+      },
       "lastflame_core": {
         "name": "最後の炎の核"
       },
@@ -17249,6 +17261,9 @@ export const ja_JP: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "ファントム"
+      },
+      "buddy_the_mummy": {
+        "name": "ミイラ"
       },
       "ironvein_foreman": {
         "name": "鉄脈の現場監督"

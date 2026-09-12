@@ -595,6 +595,11 @@ const mergeStringsEn = {
       // The materials-only satchel variant (phase 05 two-pool bags): the same
       // tooltip and socket-aria sites, English-appended until the release fill.
       bagSlotsMaterials: '{slots} Slot Materials Bag',
+      // A buddy whistle's Buddy bag bonus (bags.ts BUDDY_BAG_SOCKET, quality
+      // tiered by bag_pools.ts buddyBagSlotsOf): the same "extra slots" claim
+      // bagSlots makes above, for the other item kind that grants carried
+      // capacity. Rendered by the item tooltip (hud.ts) only.
+      buddyBagSlots: '+{slots} Buddy Bag Slots',
     },
     vendor: {
       ...itemNames.en.itemUi.vendor,

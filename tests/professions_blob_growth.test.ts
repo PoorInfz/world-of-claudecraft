@@ -194,6 +194,9 @@ const NON_PROFESSIONS_BLOB_FIELDS = [
   'equipment',
   'inventory',
   'bags',
+  // Whether the Buddy bag socket (bags[BUDDY_BAG_SOCKET]) refuses
+  // equip/unequip. A carried-inventory flag, same family as `bags` above.
+  'buddyBagLocked',
   'bank',
   'vault',
   'vendorBuyback',
@@ -1961,8 +1964,10 @@ describe('the whole-character gear-heavy maximal blob (Phase 18 U-MEASURE)', () 
     const cadenceCount = Object.values(QUESTS).filter((q) => q.repeatCadenceTicks).length;
     expect(s2.questLog).toHaveLength(cadenceCount);
     expect(cadenceCount).toBeGreaterThanOrEqual(7);
-    expect(s2.bags?.every((id) => id && ITEMS[id]?.bagSlots === 16)).toBe(true);
-    expect(s2.bags).toHaveLength(4);
+    // Only the 4 ordinary sockets are maximized here; the trailing Buddy bag
+    // socket slot (bags.ts BUDDY_BAG_SOCKET) stays empty in this fixture.
+    expect(s2.bags?.slice(0, 4).every((id) => id && ITEMS[id]?.bagSlots === 16)).toBe(true);
+    expect(s2.bags).toHaveLength(5);
     expect(BACKPACK_SLOTS).toBe(16);
     expect(s2.inventory).toHaveLength(16 + 4 * 16);
     // Derived from the load-side name rule so a widened crafter alphabet moves

@@ -2647,6 +2647,11 @@ export const pt_BR: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Configurações de Saque",
       "close": "Fechar configurações de saque",
@@ -2717,6 +2722,9 @@ export const pt_BR: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Espaço de bolsa vazio",
       "unequipHint": "Clique para remover esta bolsa",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "Geral: {used} de {total}",
       "poolMaterials": "Materiais: {used} de {total}",
       "capacityPoolsAria": "Espaços de bolsa usados: {used} de {total}. Itens gerais: {generalUsed} de {generalTotal}. Materiais: {materialsUsed} de {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const pt_BR: EnTranslations = {
       "clickSetUp": "Clique para preparar",
       "clickBuyback": "Clique para recomprar",
       "bagSlots": "Bolsa de {slots} espaços",
-      "bagSlotsMaterials": "Bolsa de materiais de {slots} espaços"
+      "bagSlotsMaterials": "Bolsa de materiais de {slots} espaços",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Bolsas",
@@ -14938,6 +14947,9 @@ export const pt_BR: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Núcleo da Última Chama"
       },
@@ -17249,6 +17261,9 @@ export const pt_BR: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Capataz Veio de Ferro"

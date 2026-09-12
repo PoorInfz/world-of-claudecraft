@@ -2647,6 +2647,11 @@ export const ru_RU: EnTranslations = {
       "autolootHint": "Спутник соберёт добычу с ваших собственных трупов в радиусе 30 ярдов.",
       "cancel": "Отмена"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Призвать/отпустить",
+      "lock": "Заблокировать предмет",
+      "unlock": "Разблокировать предмет"
+    },
     "lootSettings": {
       "title": "Настройки добычи",
       "close": "Закрыть настройки добычи",
@@ -2717,6 +2722,9 @@ export const ru_RU: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Пустая ячейка для сумки",
       "unequipHint": "Нажмите, чтобы снять эту сумку",
+      "buddyBagSocketEmpty": "Пустой слот сумки спутника",
+      "buddyBagSocketAria": "{name}: сумка спутника",
+      "buddyBagLockedHint": "Заблокировано: нажмите правой кнопкой, чтобы разблокировать",
       "poolGeneral": "Общие: {used} из {total}",
       "poolMaterials": "Материалы: {used} из {total}",
       "capacityPoolsAria": "Занято ячеек сумок: {used} из {total}. Общие предметы: {generalUsed} из {generalTotal}. Материалы: {materialsUsed} из {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const ru_RU: EnTranslations = {
       "clickSetUp": "Нажмите, чтобы установить",
       "clickBuyback": "Нажмите, чтобы выкупить",
       "bagSlots": "Сумка на {slots} ячеек",
-      "bagSlotsMaterials": "Сумка для материалов на {slots} ячеек"
+      "bagSlotsMaterials": "Сумка для материалов на {slots} ячеек",
+      "buddyBagSlots": "+{slots} ячеек сумки спутника"
     },
     "bags": {
       "title": "Сумки",
@@ -14938,6 +14947,9 @@ export const ru_RU: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Свисток: Феникс Пепелопада"
       },
+      "whistle_the_mummy": {
+        "name": "Свисток: Мумия"
+      },
       "lastflame_core": {
         "name": "Ядро Последнего Пламени"
       },
@@ -17249,6 +17261,9 @@ export const ru_RU: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Фантом"
+      },
+      "buddy_the_mummy": {
+        "name": "Мумия"
       },
       "ironvein_foreman": {
         "name": "Прораб Железной жилы"

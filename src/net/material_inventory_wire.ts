@@ -16,8 +16,13 @@ function decodeSlots(value: unknown): InvSlot[] | undefined {
 }
 
 export function applyMaterialInventoryWire(
-  mirror: { inventory: InvSlot[]; vendorBuyback: InvSlot[]; bags?: (string | null)[] },
-  self: { inv?: unknown; buyback?: unknown; bags?: (string | null)[] },
+  mirror: {
+    inventory: InvSlot[];
+    vendorBuyback: InvSlot[];
+    bags?: (string | null)[];
+    buddyBagLocked?: boolean;
+  },
+  self: { inv?: unknown; buyback?: unknown; bags?: (string | null)[]; bbl?: boolean },
 ): boolean {
   let changed = false;
   if (self.inv !== undefined) {
@@ -36,6 +41,10 @@ export function applyMaterialInventoryWire(
   }
   if (self.bags !== undefined) {
     mirror.bags = self.bags;
+    changed = true;
+  }
+  if (self.bbl !== undefined) {
+    mirror.buddyBagLocked = self.bbl === true;
     changed = true;
   }
   return changed;

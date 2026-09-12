@@ -186,6 +186,10 @@ export const IWORLD_MEMBERS = [
   { name: 'partyTradeMsRemaining', kind: 'method' },
   { name: 'equipBag', kind: 'method' },
   { name: 'unequipBag', kind: 'method' },
+  { name: 'buddyBagLocked', kind: 'data' },
+  { name: 'equipBuddyBag', kind: 'method' },
+  { name: 'unequipBuddyBag', kind: 'method' },
+  { name: 'setBuddyBagLocked', kind: 'method' },
   { name: 'changeSkin', kind: 'method' },
   { name: 'claimEventSkin', kind: 'method' },
   { name: 'unequipMechChroma', kind: 'method' },
@@ -479,6 +483,7 @@ export const IWORLD_MEMBERS = [
   { name: 'ownedBuddies', kind: 'method' }, // read-returning
   { name: 'toggleBuddy', kind: 'method' },
   { name: 'setBuddyAutoloot', kind: 'method' },
+  { name: 'summonBuddyBagBuddy', kind: 'method' },
   // --- Dungeon Finder facet (IWorldDungeonFinder) ---
   { name: 'dungeonFinderInfo', kind: 'data' },
   { name: 'dungeonFinderBoard', kind: 'data' },
@@ -866,9 +871,13 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     // Counted directly off the resolved IWORLD_MEMBERS literal above (103
     // `kind: 'data'` + 271 `kind: 'method'` = 374, no duplicate names), never
     // reconciled by arithmetic in the diff.
-    expect(IWORLD_MEMBERS.length).toBe(374);
-    expect(DATA_MEMBERS.length).toBe(103);
-    expect(METHOD_MEMBERS.length).toBe(271);
+    //
+    // The Buddy bag socket feature adds 5 more (buddyBagLocked, one `data`;
+    // equipBuddyBag/unequipBuddyBag/setBuddyBagLocked/summonBuddyBagBuddy,
+    // four `method`): 104 `data` + 275 `method` = 379.
+    expect(IWORLD_MEMBERS.length).toBe(379);
+    expect(DATA_MEMBERS.length).toBe(104);
+    expect(METHOD_MEMBERS.length).toBe(275);
   });
   it('has no duplicate member names', () => {
     const names = IWORLD_MEMBERS.map((m) => m.name);
@@ -932,6 +941,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'bgRespond',
       'blockAdd',
       'blockRemove',
+      'buddyBagLocked',
       'buyBackItem',
       'buyCrucibleVendorItem',
       'buyHeroicVendorItem',
@@ -1009,6 +1019,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'enterDungeon',
       'entities',
       'equipBag',
+      'equipBuddyBag',
       'equipItem',
       'equipItemToSlot',
       'equipment',
@@ -1187,6 +1198,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'setActiveBorder',
       'setActiveTitle',
       'setBuddyAutoloot',
+      'setBuddyBagLocked',
       'setDungeonDifficulty',
       'setGuildPledgeSettings',
       'setHarvestPreference',
@@ -1211,6 +1223,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'stationPlacements',
       'stopAutoAttack',
       'submitLootRoll',
+      'summonBuddyBagBuddy',
       'swapPerfectingRanks',
       'switchLoadout',
       'tabTarget',
@@ -1240,6 +1253,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'turnInQuest',
       'unbindItem',
       'unequipBag',
+      'unequipBuddyBag',
       'unequipItem',
       'unequipMechChroma',
       'unlockedMilestones',
@@ -1284,6 +1298,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'bankInfo',
       'bankPurchasedSlots',
       'bgInfo',
+      'buddyBagLocked',
       'cardMinigameInfo',
       'cfg',
       'civicServicePlacements',
@@ -1451,6 +1466,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'enterDelve',
       'enterDungeon',
       'equipBag',
+      'equipBuddyBag',
       'equipItem',
       'equipItemToSlot',
       'extractEssence',
@@ -1584,6 +1600,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'setActiveBorder',
       'setActiveTitle',
       'setBuddyAutoloot',
+      'setBuddyBagLocked',
       'setDungeonDifficulty',
       'setGuildPledgeSettings',
       'setHarvestPreference',
@@ -1605,6 +1622,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'startAutoAttack',
       'stopAutoAttack',
       'submitLootRoll',
+      'summonBuddyBagBuddy',
       'swapPerfectingRanks',
       'switchLoadout',
       'tabTarget',
@@ -1628,6 +1646,7 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'turnInQuest',
       'unbindItem',
       'unequipBag',
+      'unequipBuddyBag',
       'unequipItem',
       'unequipMechChroma',
       'unstuck',
@@ -1828,6 +1847,10 @@ const FACET_INVENTORY = [
   'partyTradeMsRemaining',
   'equipBag',
   'unequipBag',
+  'buddyBagLocked',
+  'equipBuddyBag',
+  'unequipBuddyBag',
+  'setBuddyBagLocked',
 ] as const satisfies readonly (keyof IWorldInventory)[];
 type _ExhaustInventory = AssertNever<
   Exclude<keyof IWorldInventory, (typeof FACET_INVENTORY)[number]>
@@ -2141,6 +2164,7 @@ const FACET_BUDDIES = [
   'ownedBuddies',
   'toggleBuddy',
   'setBuddyAutoloot',
+  'summonBuddyBagBuddy',
 ] as const satisfies readonly (keyof IWorldBuddies)[];
 type _ExhaustBuddies = AssertNever<Exclude<keyof IWorldBuddies, (typeof FACET_BUDDIES)[number]>>;
 const FACET_DUNGEON_FINDER = [
@@ -2401,8 +2425,12 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the facet
     // src/world_api/inventory.ts, src/world_api/professions.ts, and
     // src/world_api/combat.ts are resolved: this pin and the one above must
     // always agree.
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(374);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(374);
+    // Re-measured for the Buddy bag socket feature: 5 new facet members
+    // (buddyBagLocked/equipBuddyBag/unequipBuddyBag/setBuddyBagLocked in
+    // FACET_INVENTORY, summonBuddyBagBuddy in FACET_BUDDIES) over the 374
+    // base above.
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(379);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(379);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

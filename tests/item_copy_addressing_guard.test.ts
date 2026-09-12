@@ -59,6 +59,9 @@ const ADDRESSED_COMMANDS: ReadonlyArray<{
   { cmd: 'use', field: 'slot' },
   { cmd: 'pet_feed', field: 'slot' },
   { cmd: 'equip_bag', field: 'slot' },
+  // The Buddy bag socket's twin (bags.ts BUDDY_BAG_SOCKET): same shape as
+  // equip_bag above, an id-only call or a named `slot`.
+  { cmd: 'equip_buddy_bag', field: 'slot' },
   // The bank-aimed twin of equip_bag (Bank Storage phase 07): the bags-side
   // socket click always names the exact carried copy. Its parse arm lives in
   // the delegated dispatch module, not game.ts's label group.

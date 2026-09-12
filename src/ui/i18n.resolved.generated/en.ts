@@ -2647,6 +2647,11 @@ export const en: EnTranslations = {
       "autolootHint": "Your buddy fetches loot from your own corpses within 30 yards.",
       "cancel": "Cancel"
     },
+    "buddyBagMenu": {
+      "summonDismiss": "Summon/Dismiss",
+      "lock": "Lock item",
+      "unlock": "Unlock item"
+    },
     "lootSettings": {
       "title": "Loot Settings",
       "close": "Close loot settings",
@@ -2717,6 +2722,9 @@ export const en: EnTranslations = {
       "bagSocketAria": "{name}: {slots}",
       "socketEmpty": "Empty bag slot",
       "unequipHint": "Click to remove this bag",
+      "buddyBagSocketEmpty": "Empty Buddy bag slot",
+      "buddyBagSocketAria": "{name}: Buddy bag",
+      "buddyBagLockedHint": "Locked: right-click to unlock",
       "poolGeneral": "General: {used} of {total}",
       "poolMaterials": "Materials: {used} of {total}",
       "capacityPoolsAria": "Bag slots used: {used} of {total}. General items: {generalUsed} of {generalTotal}. Materials: {materialsUsed} of {materialsTotal}.",
@@ -10865,7 +10873,8 @@ export const en: EnTranslations = {
       "clickSetUp": "Click to set up",
       "clickBuyback": "Click to buy back",
       "bagSlots": "{slots} Slot Bag",
-      "bagSlotsMaterials": "{slots} Slot Materials Bag"
+      "bagSlotsMaterials": "{slots} Slot Materials Bag",
+      "buddyBagSlots": "+{slots} Buddy Bag Slots"
     },
     "bags": {
       "title": "Bags",
@@ -14938,6 +14947,9 @@ export const en: EnTranslations = {
       "whistle_emberfall_phoenix": {
         "name": "Emberfall Phoenix Whistle"
       },
+      "whistle_the_mummy": {
+        "name": "The Mummy Whistle"
+      },
       "lastflame_core": {
         "name": "Core of the Last Flame"
       },
@@ -17249,6 +17261,9 @@ export const en: EnTranslations = {
       },
       "buddy_phantom": {
         "name": "Phantom"
+      },
+      "buddy_the_mummy": {
+        "name": "The Mummy"
       },
       "ironvein_foreman": {
         "name": "Ironvein Foreman"

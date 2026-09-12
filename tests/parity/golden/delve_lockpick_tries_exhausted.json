@@ -16,7 +16,7 @@
       "tick": 0,
       "time": 0,
       "nextId": 1007,
-      "state": "66339138",
+      "state": "c375ddf1",
       "events": "741638a5",
       "rng": {
         "draws": 0,
@@ -31,6 +31,7 @@
           "arenaRating": 1500,
           "autoEquip": true,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -163,7 +164,7 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 1021,
-      "state": "be063d57",
+      "state": "db1165d4",
       "events": "9be39354",
       "rng": {
         "draws": 7,
@@ -174,7 +175,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 1021,
-      "state": "0416b92d",
+      "state": "8b64d2fa",
       "events": "82b32424",
       "rng": {
         "draws": 7,
@@ -185,7 +186,7 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 1021,
-      "state": "a2248adf",
+      "state": "c8fd578c",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -196,7 +197,7 @@
       "tick": 40,
       "time": 2,
       "nextId": 1021,
-      "state": "11763b91",
+      "state": "7a1cefde",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -207,7 +208,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 1021,
-      "state": "4252c0f7",
+      "state": "50226974",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -218,7 +219,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 1021,
-      "state": "3419705d",
+      "state": "cecf8caa",
       "events": "741638a5",
       "rng": {
         "draws": 7,
@@ -229,7 +230,7 @@
       "tick": 69,
       "time": 3.45,
       "nextId": 1022,
-      "state": "0e9a454a",
+      "state": "cbf3d1d7",
       "events": "7e72f7eb",
       "rng": {
         "draws": 9,
@@ -244,6 +245,7 @@
           "arenaRating": 1500,
           "autoEquip": true,
           "bags": [
+            null,
             null,
             null,
             null,
@@ -457,7 +459,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 1022,
-      "state": "8bc87a84",
+      "state": "b0781931",
       "events": "741638a5",
       "rng": {
         "draws": 9,
@@ -468,7 +470,7 @@
       "tick": 71,
       "time": 3.55,
       "nextId": 1022,
-      "state": "f744de72",
+      "state": "f9c0aeef",
       "events": "741638a5",
       "rng": {
         "draws": 9,
@@ -483,6 +485,7 @@
           "arenaRating": 1500,
           "autoEquip": true,
           "bags": [
+            null,
             null,
             null,
             null,
