@@ -1,3 +1,4 @@
+import { encodeAppearance } from '../../shared/appearance.ts';
 import { AOI_RADIUS } from '../../shared/constants.ts';
 import {
   type EntityInit,
@@ -52,6 +53,7 @@ export function entityInit(e: Entity): EntityInit {
     case 'player':
       base.cls = e.cls.id;
       base.fac = e.faction;
+      base.ap = encodeAppearance(e.appearance);
       break;
     case 'mob':
       base.mob = e.def.id;

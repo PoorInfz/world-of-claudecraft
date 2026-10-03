@@ -50,8 +50,24 @@ export class GameScene extends Phaser.Scene {
     super('game');
   }
 
+  /** La escena se reutiliza al volver a entrar: todo el estado empieza de cero. */
+  init(): void {
+    this.views = new Map();
+    this.pool = [];
+    this.targetId = 0;
+    this.hoveredId = 0;
+    this.holdingMove = false;
+    this.markerUntil = 0;
+    this.hud = null;
+  }
+
   create(): void {
     this.session = this.registry.get('session') as GameSession;
+    this.events.once('shutdown', () => {
+      // Suelta las texturas de personaje contadas por referencias.
+      for (const v of this.views.values()) v.dropTexture();
+      this.input.setDefaultCursor('default');
+    });
     this.mapView = new MapView(this, this.session.map);
     this.fx = new Fx(this);
     this.ring = this.add.graphics();

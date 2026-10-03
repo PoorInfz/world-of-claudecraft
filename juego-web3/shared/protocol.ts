@@ -1,3 +1,4 @@
+import type { AppearanceWire } from './appearance.ts';
 import type { ClassId, FactionId, School } from './data/types.ts';
 
 /**
@@ -10,7 +11,7 @@ import type { ClassId, FactionId, School } from './data/types.ts';
 
 // ---------------------------------------------------------------- cliente
 export type ClientMsg =
-  | { t: 'join'; name: string; cls: ClassId; fac: FactionId }
+  | { t: 'join'; token: string; char: number }
   | { t: 'move'; x: number; y: number }
   | { t: 'attack'; id: number }
   | { t: 'cast'; ab: string; id?: number; x?: number; y?: number }
@@ -31,9 +32,10 @@ export interface EntityInit {
   y: number;
   lvl: number;
   mhp: number;
-  /** Jugador: clase y faccion. */
+  /** Jugador: clase, faccion y apariencia compacta. */
   cls?: ClassId;
   fac?: FactionId;
+  ap?: AppearanceWire;
   /** Enemigo: id de MobDef. */
   mob?: string;
   /** Proyectil: escuela (para el color) e id de la habilidad. */
@@ -81,9 +83,9 @@ export type ErrorCode =
   | 'sin_linea'
   | 'botin_ajeno'
   | 'inventario_lleno'
-  | 'nombre_invalido'
-  | 'nombre_en_uso'
-  | 'clase_invalida';
+  | 'sesion_invalida'
+  | 'personaje_no_encontrado'
+  | 'personaje_en_uso';
 
 export type GameEvent =
   | { e: 'dmg'; s: number; t: number; a: number; sc: School; r: HitWire; ab?: string }

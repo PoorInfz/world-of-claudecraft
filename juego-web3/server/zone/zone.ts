@@ -1,8 +1,10 @@
+import type { Appearance } from '../../shared/appearance.ts';
 import { maxHpFor, maxResourceFor, mitigate, rollMelee } from '../../shared/combat.ts';
 import { DT, RESPAWN_SECONDS } from '../../shared/constants.ts';
 import { AURAS } from '../../shared/data/abilities.ts';
 import { ITEMS } from '../../shared/data/items.ts';
 import { MOBS } from '../../shared/data/mobs.ts';
+import { RACES } from '../../shared/data/races.ts';
 import type {
   AbilityDef,
   AuraDef,
@@ -12,10 +14,11 @@ import type {
   School,
 } from '../../shared/data/types.ts';
 import { dirFromWorldDelta } from '../../shared/iso.ts';
-import type { MapData } from '../../shared/map.ts';
+import { isWalkable, type MapData } from '../../shared/map.ts';
 import { findPath, nearestWalkable } from '../../shared/pathfinding.ts';
 import type { ClientMsg, ErrorCode, GameEvent, InventoryItem } from '../../shared/protocol.ts';
 import { Rng } from '../../shared/rng.ts';
+import type { CharacterProgress } from '../db/store.ts';
 import { applyEffects, updateCast } from './abilities.ts';
 import { updateMob } from './ai.ts';
 import { applyDamage, armorOf, tickAuras } from './combat.ts';
@@ -42,6 +45,19 @@ const CORPSE_TIME = 8;
 const LOOT_TTL = 90;
 /** Segundos hasta reaparecer en el cementerio. */
 export const PLAYER_RESPAWN = RESPAWN_SECONDS;
+
+export interface PlayerInit {
+  charId: number;
+  name: string;
+  cls: ClassDef;
+  faction: FactionId;
+  appearance: Appearance;
+  level: number;
+  x: number | null;
+  y: number | null;
+  gold: number;
+  inventory: InventoryItem[];
+}
 
 interface SpawnSlot {
   def: MobDef;
@@ -100,28 +116,51 @@ export class Zone {
     return false;
   }
 
-  addPlayer(name: string, cls: ClassDef, faction: FactionId, observer: Observer): PlayerEntity {
+  isCharacterInZone(charId: number): boolean {
+    for (const e of this.entities.values())
+      if (e.kind === 'player' && e.charId === charId) return true;
+    return false;
+  }
+
+  /**
+   * Mete en el mundo un personaje cargado de la base de datos. Atributos =
+   * base de la clase + pasiva racial. Si no tiene posicion guardada (o ya no
+   * es transitable), aparece en el punto de inicio.
+   */
+  addPlayer(init: PlayerInit, observer: Observer): PlayerEntity {
     const id = this.nextId++;
-    const sp = this.map.playerSpawn;
-    const a = this.rng.range(0, Math.PI * 2);
-    const r = this.rng.range(0, sp.radius);
-    const { x, y } =
-      nearestWalkable(this.map, sp.x + Math.cos(a) * r, sp.y + Math.sin(a) * r, 3) ?? sp;
+    const cls = init.cls;
+    let pos: { x: number; y: number } | null =
+      init.x !== null && init.y !== null && isWalkable(this.map, init.x, init.y)
+        ? { x: init.x, y: init.y }
+        : null;
+    if (!pos) {
+      const sp = this.map.playerSpawn;
+      const a = this.rng.range(0, Math.PI * 2);
+      const r = this.rng.range(0, sp.radius);
+      pos = nearestWalkable(this.map, sp.x + Math.cos(a) * r, sp.y + Math.sin(a) * r, 3) ?? sp;
+    }
+    const { x, y } = pos;
     const stats = { ...cls.base };
+    const bonus = RACES[init.appearance.race].passive.stats;
+    for (const k of Object.keys(bonus) as (keyof typeof stats)[]) stats[k] += bonus[k] ?? 0;
     const mhp = maxHpFor(cls, stats);
     const mres = maxResourceFor(cls, stats);
     const p: PlayerEntity = {
-      ...baseFields(id, 'player', name, x, y),
+      ...baseFields(id, 'player', init.name, x, y),
       kind: 'player',
+      charId: init.charId,
+      appearance: init.appearance,
+      level: init.level,
       cls,
-      faction,
+      faction: init.faction,
       stats,
       hp: mhp,
       mhp,
       res: cls.resource === 'mana' ? mres : 0,
       mres,
-      gold: 0,
-      inv: [],
+      gold: init.gold,
+      inv: init.inventory.map((i) => ({ ...i })),
       invDirty: true,
       cds: new Map(),
       gcd: 0,
@@ -137,6 +176,25 @@ export class Zone {
     this.grid.update(p);
     this.interests.set(id, new Interest(id, observer));
     return p;
+  }
+
+  /** Estado a guardar de un jugador (los muertos se guardan en el cementerio). */
+  progressOf(p: PlayerEntity): CharacterProgress {
+    const pos = p.dead ? this.map.graveyard : p;
+    return {
+      id: p.charId,
+      zone: this.id,
+      x: Math.round(pos.x * 100) / 100,
+      y: Math.round(pos.y * 100) / 100,
+      level: p.level,
+      xp: 0,
+      gold: p.gold,
+      inventory: p.inv.map((i) => ({ ...i })),
+    };
+  }
+
+  *players(): Generator<PlayerEntity> {
+    for (const e of this.entities.values()) if (e.kind === 'player') yield e;
   }
 
   removePlayer(id: number): void {

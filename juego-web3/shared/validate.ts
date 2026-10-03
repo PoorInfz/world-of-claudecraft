@@ -1,7 +1,4 @@
 import { ABILITIES } from './data/abilities.ts';
-import { CLASSES } from './data/classes.ts';
-import { FACTIONS } from './data/factions.ts';
-import type { ClassId, FactionId } from './data/types.ts';
 import type { ClientMsg } from './protocol.ts';
 
 /**
@@ -34,10 +31,9 @@ export function parseClientMessage(raw: string): ClientMsg | null {
   const o = m as Record<string, unknown>;
   switch (o.t) {
     case 'join':
-      if (typeof o.name !== 'string' || o.name.length > 32) return null;
-      if (typeof o.cls !== 'string' || !(o.cls in CLASSES)) return null;
-      if (typeof o.fac !== 'string' || !(o.fac in FACTIONS)) return null;
-      return { t: 'join', name: o.name, cls: o.cls as ClassId, fac: o.fac as FactionId };
+      if (typeof o.token !== 'string' || o.token.length < 10 || o.token.length > 100) return null;
+      if (!id(o.char)) return null;
+      return { t: 'join', token: o.token, char: o.char };
     case 'move':
       if (!coord(o.x) || !coord(o.y)) return null;
       return { t: 'move', x: o.x, y: o.y };

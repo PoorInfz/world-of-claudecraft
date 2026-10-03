@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { decodeAppearance, defaultAppearance } from '../../shared/appearance.ts';
 import { MOBS } from '../../shared/data/mobs.ts';
 import { worldToScreen } from '../../shared/iso.ts';
 import { FLAG } from '../../shared/protocol.ts';
@@ -12,10 +13,10 @@ import {
   FRAME_W,
   FRAMES_PER_DIR,
   mobLookKey,
-  playerLookKey,
   sheetKey,
 } from '../gfx/characters.ts';
 import { FONT_KEY } from '../gfx/font.ts';
+import { acquireCharacter, releaseCharacter } from '../gfx/paperdoll/index.ts';
 import { SCHOOL_COLORS } from '../gfx/world_textures.ts';
 import { T } from '../i18n.ts';
 import type { ClientEntity } from '../net/world.ts';
@@ -38,6 +39,8 @@ export class EntityView {
   id = 0;
   kind: ClientEntity['init']['k'] = 'mob';
   private sheet = '';
+  /** La textura es de un jugador (contada por referencias). */
+  private ownsSheet = false;
   private anim: AnimName = 'idle';
   private animDir = -1;
   private lockUntil = 0;
@@ -71,11 +74,18 @@ export class EntityView {
     this.hpFg.setVisible(false);
     const init = e.init;
     if (init.k === 'player' || init.k === 'mob') {
-      const look =
-        init.k === 'player'
-          ? playerLookKey(init.cls ?? 'guerrero', init.fac ?? 'luz')
-          : mobLookKey(MOBS[init.mob ?? '']?.look.palette ?? 'lobo');
-      this.sheet = sheetKey(look);
+      if (init.k === 'player') {
+        // Jugadores: textura compuesta por capas a partir de su apariencia.
+        const appearance = decodeAppearance(init.ap) ?? defaultAppearance('humano', 'm');
+        this.sheet = acquireCharacter(this.scene, {
+          appearance,
+          cls: init.cls ?? 'guerrero',
+          faction: init.fac ?? 'luz',
+        });
+        this.ownsSheet = true;
+      } else {
+        this.sheet = sheetKey(mobLookKey(MOBS[init.mob ?? '']?.look.palette ?? 'lobo'));
+      }
       this.sprite.setTexture(this.sheet, 0).setOrigin(FOOT_X / FRAME_W, FOOT_Y / FRAME_H);
       this.label.setText(init.n);
       // Enemigos en rojo; jugadores de la propia faccion en azul claro; uno mismo en blanco.
@@ -99,9 +109,22 @@ export class EntityView {
     }
   }
 
+  /** Suelta solo la textura de personaje (al cerrar la escena, los sprites ya no existen). */
+  dropTexture(): void {
+    if (this.ownsSheet) releaseCharacter(this.scene, this.sheet);
+    this.ownsSheet = false;
+    this.sheet = '';
+  }
+
   release(): void {
     this.sprite.setVisible(false).setActive(false);
     this.sprite.anims.stop();
+    if (this.ownsSheet) {
+      this.sprite.setTexture('__DEFAULT');
+      releaseCharacter(this.scene, this.sheet);
+      this.ownsSheet = false;
+    }
+    this.sheet = '';
     this.label.setVisible(false);
     this.hpBg.setVisible(false);
     this.hpFg.setVisible(false);

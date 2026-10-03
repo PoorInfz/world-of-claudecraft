@@ -51,6 +51,10 @@ export class Connection {
     };
   }
 
+  close(): void {
+    this.ws.close();
+  }
+
   onClose(h: () => void): void {
     this.closeHandlers.push(h);
   }

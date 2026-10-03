@@ -1,3 +1,4 @@
+import type { Appearance } from '../../shared/appearance.ts';
 import type {
   AbilityDef,
   AuraDef,
@@ -61,6 +62,9 @@ export interface BaseEntity {
 
 export interface PlayerEntity extends BaseEntity {
   kind: 'player';
+  /** Id del personaje en la base de datos. */
+  charId: number;
+  appearance: Appearance;
   cls: ClassDef;
   faction: FactionId;
   stats: BaseStats;

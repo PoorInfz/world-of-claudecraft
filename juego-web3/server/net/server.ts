@@ -3,8 +3,8 @@ import { createServer, type Server } from 'node:http';
 import { extname, join, normalize, resolve } from 'node:path';
 import { WebSocketServer } from 'ws';
 import { TICK_RATE, WS_PATH } from '../../shared/constants.ts';
-import type { Zone } from '../zone/zone.ts';
-import { Session } from './session.ts';
+import { createRouter, type Route } from '../http/router.ts';
+import { Session, type SessionDeps } from './session.ts';
 
 const MIME: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -28,12 +28,17 @@ export interface RunningServer {
  * WebSocket del juego, con el bucle de simulacion a TICK_RATE Hz.
  */
 export function startServer(
-  zone: Zone,
+  deps: SessionDeps,
+  routes: Route[],
   port: number,
   staticDir: string | null,
+  rateScale = 1,
 ): Promise<RunningServer> {
+  const { zone } = deps;
+  const api = createRouter(routes, rateScale);
   const root = staticDir && existsSync(staticDir) ? resolve(staticDir) : null;
-  const http = createServer((req, res) => {
+  const http = createServer(async (req, res) => {
+    if (await api(req, res)) return;
     const url = (req.url ?? '/').split('?')[0] ?? '/';
     if (url === '/salud') {
       res.writeHead(200, { 'content-type': 'application/json' });
@@ -60,7 +65,7 @@ export function startServer(
   });
 
   const wss = new WebSocketServer({ server: http, path: WS_PATH, maxPayload: 4096 });
-  wss.on('connection', (ws) => new Session(ws, zone));
+  wss.on('connection', (ws) => new Session(ws, deps));
 
   // Bucle de paso fijo con compensacion de deriva.
   const stepMs = 1000 / TICK_RATE;

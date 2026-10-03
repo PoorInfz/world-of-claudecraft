@@ -1,5 +1,6 @@
 import type { PlayerEntity } from '../server/zone/entities.ts';
 import type { Zone } from '../server/zone/zone.ts';
+import { defaultAppearance } from '../shared/appearance.ts';
 import { CLASSES } from '../shared/data/classes.ts';
 import type { ClassId, SpawnDef } from '../shared/data/types.ts';
 import type { MapData } from '../shared/map.ts';
@@ -50,13 +51,29 @@ export class Recorder {
   }
 }
 
+let nextChar = 1;
+
 export function addPlayer(
   z: Zone,
   name = 'Prueba',
   cls: ClassId = 'guerrero',
 ): { p: PlayerEntity; rec: Recorder } {
   const rec = new Recorder();
-  const p = z.addPlayer(name, CLASSES[cls], 'luz', rec);
+  const p = z.addPlayer(
+    {
+      charId: nextChar++,
+      name,
+      cls: CLASSES[cls],
+      faction: 'luz',
+      appearance: defaultAppearance('humano', 'm'),
+      level: 1,
+      x: null,
+      y: null,
+      gold: 0,
+      inventory: [],
+    },
+    rec,
+  );
   return { p, rec };
 }
 

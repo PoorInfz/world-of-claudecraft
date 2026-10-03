@@ -1,5 +1,31 @@
 import type Phaser from 'phaser';
-import type { ClassId, FactionId } from '../../shared/data/types.ts';
+import { type Ctx, line, outline, rect, shadow } from './pixel.ts';
+import {
+  ANIMS,
+  type AnimName,
+  animKey,
+  FOOT_X,
+  FOOT_Y,
+  FRAME_H,
+  FRAME_W,
+  FRAMES_PER_DIR,
+  MIRROR,
+  type Pose,
+  poseFor,
+  viewFor,
+} from './pose.ts';
+import { drawWeapon, type WeaponKind } from './weapons.ts';
+
+export {
+  ANIMS,
+  type AnimName,
+  animKey,
+  FOOT_X,
+  FOOT_Y,
+  FRAME_H,
+  FRAME_W,
+  FRAMES_PER_DIR,
+} from './pose.ts';
 
 /**
  * Generador de spritesheets de personajes en pixel art (placeholders).
@@ -13,27 +39,6 @@ import type { ClassId, FactionId } from '../../shared/data/types.ts';
  * misma clave de textura: la logica de animacion no cambia.
  */
 
-export const FRAME_W = 32;
-export const FRAME_H = 40;
-/** Punto de apoyo (pies) dentro del fotograma. */
-export const FOOT_X = 16;
-export const FOOT_Y = 37;
-
-export type AnimName = 'idle' | 'walk' | 'attack' | 'cast' | 'hit' | 'death';
-
-export const ANIMS: Record<
-  AnimName,
-  { start: number; count: number; fps: number; repeat: number }
-> = {
-  idle: { start: 0, count: 4, fps: 4, repeat: -1 },
-  walk: { start: 4, count: 6, fps: 10, repeat: -1 },
-  attack: { start: 10, count: 4, fps: 12, repeat: 0 },
-  cast: { start: 14, count: 4, fps: 8, repeat: -1 },
-  hit: { start: 18, count: 2, fps: 10, repeat: 0 },
-  death: { start: 20, count: 4, fps: 8, repeat: 0 },
-};
-export const FRAMES_PER_DIR = 24;
-
 export interface Look {
   body: 'humanoid' | 'quadruped';
   skin: string;
@@ -42,7 +47,7 @@ export interface Look {
   armor: string;
   armorDark: string;
   trim: string;
-  weapon: 'sword' | 'staff' | 'bow' | 'none';
+  weapon: WeaponKind;
   glow: string;
   hat?: boolean;
   hood?: boolean;
@@ -53,59 +58,8 @@ export interface Look {
   bulk?: number;
 }
 
-/** Aspecto por defecto: la Luz usa humanos, la Sombra orcos (hasta la Fase 2). */
+/** Aspectos de los enemigos (los jugadores se componen por capas en gfx/paperdoll). */
 export const LOOKS: Record<string, Look> = {
-  guerrero_luz: {
-    body: 'humanoid',
-    skin: '#e8b98e',
-    hair: '#7a4a22',
-    eyes: '#2b3a67',
-    armor: '#b8c2cc',
-    armorDark: '#5b6470',
-    trim: '#f2c14e',
-    weapon: 'sword',
-    glow: '#fff4d6',
-    pads: true,
-  },
-  guerrero_sombra: {
-    body: 'humanoid',
-    skin: '#6f9a4a',
-    hair: '#1d1a17',
-    eyes: '#c0302a',
-    armor: '#4a4250',
-    armorDark: '#24202a',
-    trim: '#a02a3a',
-    weapon: 'sword',
-    glow: '#ff5a4a',
-    pads: true,
-    bulk: 1,
-  },
-  mago_luz: {
-    body: 'humanoid',
-    skin: '#f0c9a0',
-    hair: '#e8d27a',
-    eyes: '#2b5aa0',
-    armor: '#e9ecf5',
-    armorDark: '#4f8fe0',
-    trim: '#f2c14e',
-    weapon: 'staff',
-    glow: '#7fd8ff',
-    hat: true,
-    robe: true,
-  },
-  mago_sombra: {
-    body: 'humanoid',
-    skin: '#7aa356',
-    hair: '#2a1631',
-    eyes: '#ffcf3a',
-    armor: '#5a2d78',
-    armorDark: '#24122f',
-    trim: '#a02a3a',
-    weapon: 'staff',
-    glow: '#c86bff',
-    hat: true,
-    robe: true,
-  },
   lobo: {
     body: 'quadruped',
     skin: '#8a8f96',
@@ -144,10 +98,6 @@ export const LOOKS: Record<string, Look> = {
   },
 };
 
-export function playerLookKey(cls: ClassId, fac: FactionId): string {
-  return `${cls}_${fac}`;
-}
-
 export function mobLookKey(palette: string): string {
   return palette;
 }
@@ -156,153 +106,8 @@ export function sheetKey(look: string): string {
   return `chr_${look}`;
 }
 
-// ------------------------------------------------------------------ poses
-interface Pose {
-  bob: number;
-  leg: number;
-  arm: number;
-  /** Giro del arma respecto a reposo (radianes, positivo = hacia delante). */
-  swing: number;
-  lunge: number;
-  raise: number;
-  glow: number;
-  lean: number;
-  down: number;
-}
-
-function poseFor(anim: AnimName, f: number): Pose {
-  const p: Pose = {
-    bob: 0,
-    leg: 0,
-    arm: 0,
-    swing: 0,
-    lunge: 0,
-    raise: 0,
-    glow: 0,
-    lean: 0,
-    down: 0,
-  };
-  switch (anim) {
-    case 'idle':
-      p.bob = [0, 0, 1, 1][f] ?? 0;
-      break;
-    case 'walk': {
-      const s = Math.sin((f / 6) * Math.PI * 2);
-      p.leg = Math.round(s * 2);
-      p.arm = -Math.round(s);
-      p.bob = Math.abs(Math.round(s)) === 1 ? 0 : 1;
-      break;
-    }
-    case 'attack':
-      p.swing = [-0.9, 1.4, 2.0, 0.6][f] ?? 0;
-      p.lunge = [0, 2, 2, 1][f] ?? 0;
-      break;
-    case 'cast':
-      p.raise = [0.6, 1, 1, 1][f] ?? 0;
-      p.glow = [0, 1, 2, 1][f] ?? 0;
-      p.bob = [0, 0, 1, 0][f] ?? 0;
-      break;
-    case 'hit':
-      p.lean = [2, 1][f] ?? 0;
-      break;
-    case 'death':
-      p.down = [0.2, 0.5, 0.85, 1][f] ?? 1;
-      break;
-  }
-  return p;
-}
-
-// ------------------------------------------------------------------ dibujo
-type Ctx = CanvasRenderingContext2D;
-
-function rect(c: Ctx, x: number, y: number, w: number, h: number, color: string): void {
-  if (w <= 0 || h <= 0) return;
-  c.fillStyle = color;
-  c.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
-}
-
-function line(c: Ctx, x0: number, y0: number, x1: number, y1: number, color: string): void {
-  x0 = Math.round(x0);
-  y0 = Math.round(y0);
-  x1 = Math.round(x1);
-  y1 = Math.round(y1);
-  const dx = Math.abs(x1 - x0);
-  const dy = -Math.abs(y1 - y0);
-  const sx = x0 < x1 ? 1 : -1;
-  const sy = y0 < y1 ? 1 : -1;
-  let err = dx + dy;
-  c.fillStyle = color;
-  for (;;) {
-    c.fillRect(x0, y0, 1, 1);
-    if (x0 === x1 && y0 === y1) break;
-    const e2 = 2 * err;
-    if (e2 >= dy) {
-      err += dy;
-      x0 += sx;
-    }
-    if (e2 <= dx) {
-      err += dx;
-      y0 += sy;
-    }
-  }
-}
-
-function shadow(c: Ctx, w = 14): void {
-  c.fillStyle = 'rgba(0,0,0,0.35)';
-  const half = w / 2;
-  c.fillRect(FOOT_X - half + 2, FOOT_Y - 1, w - 4, 3);
-  c.fillRect(FOOT_X - half, FOOT_Y, w, 1);
-}
-
-/** Vista desde la direccion autorizada (solo S, SE, E, NE, N; el resto se refleja). */
-type View = { front: boolean; back: boolean; side: boolean; fx: number };
-
-function viewFor(dir: number): View {
-  switch (dir) {
-    case 0:
-      return { front: true, back: false, side: false, fx: 0 };
-    case 7:
-      return { front: true, back: false, side: false, fx: 1 };
-    case 6:
-      return { front: false, back: false, side: true, fx: 1 };
-    case 5:
-      return { front: false, back: true, side: false, fx: 1 };
-    default:
-      return { front: false, back: true, side: false, fx: 0 };
-  }
-}
-
-function drawWeapon(c: Ctx, look: Look, hx: number, hy: number, pose: Pose, side: number): void {
-  if (look.weapon === 'sword') {
-    const a = -Math.PI / 2 + side * (0.45 + pose.swing);
-    const len = 11;
-    const tx = hx + Math.cos(a) * len;
-    const ty = hy + Math.sin(a) * len;
-    line(c, hx, hy, tx, ty, '#e8edf2');
-    line(c, hx + 1, hy, tx + 1, ty, '#9aa4ae');
-    // Guarda y empunadura.
-    const gx = Math.cos(a + Math.PI / 2) * 2;
-    const gy = Math.sin(a + Math.PI / 2) * 2;
-    line(c, hx - gx, hy - gy, hx + gx, hy + gy, look.trim);
-  } else if (look.weapon === 'staff') {
-    const lift = Math.round(pose.raise * 5);
-    const x = Math.round(hx);
-    line(c, x, hy - 9 - lift, x, hy + 8 - lift, '#7a5230');
-    rect(c, x - 1, hy - 12 - lift, 3, 3, look.glow);
-    if (pose.glow) {
-      c.fillStyle = look.glow;
-      for (let i = 0; i < pose.glow * 2; i++)
-        c.fillRect(x - 2 + ((i * 3) % 5), hy - 15 - lift - (i % 2), 1, 1);
-    }
-  } else if (look.weapon === 'bow') {
-    const x = Math.round(hx + side);
-    line(c, x, hy - 6, x + side * 2, hy - 3, '#7a5230');
-    line(c, x + side * 2, hy - 3, x + side * 2, hy + 3, '#7a5230');
-    line(c, x + side * 2, hy + 3, x, hy + 6, '#7a5230');
-    const pull = pose.swing > 1 ? -side * 2 : 0;
-    line(c, x, hy - 6, x + pull, hy, '#ddd');
-    line(c, x + pull, hy, x, hy + 6, '#ddd');
-  }
+function weapon(c: Ctx, look: Look, hx: number, hy: number, pose: Pose, side: number): void {
+  drawWeapon(c, look.weapon, look.trim, look.glow, hx, hy, pose, side);
 }
 
 function drawHumanoid(c: Ctx, look: Look, dir: number, pose: Pose): void {
@@ -347,7 +152,7 @@ function drawHumanoid(c: Ctx, look: Look, dir: number, pose: Pose): void {
   const side = v.back ? -1 : 1;
   const handX = v.side ? cx + 3 : v.front ? cx + 6 + bulk : cx - 7 - bulk;
   const handY = 26 + oy - Math.round(pose.raise * 6) + (look.weapon === 'staff' ? 0 : pose.arm);
-  if (v.back) drawWeapon(c, look, handX, handY, pose, side);
+  if (v.back) weapon(c, look, handX, handY, pose, side);
 
   // Torso (o tunica).
   const tw = v.side ? 7 : 10 + bulk * 2;
@@ -436,7 +241,7 @@ function drawHumanoid(c: Ctx, look: Look, dir: number, pose: Pose): void {
     rect(c, hx, hy - 2, hw, 1, look.trim);
   }
 
-  if (!v.back) drawWeapon(c, look, handX, handY, pose, side);
+  if (!v.back) weapon(c, look, handX, handY, pose, side);
 
   // Brillo del hechizo entre las manos.
   if (pose.glow && look.weapon !== 'staff') {
@@ -535,32 +340,6 @@ function drawQuadruped(c: Ctx, look: Look, dir: number, pose: Pose): void {
   }
 }
 
-/** Contorno oscuro de 1 px alrededor de los pixeles opacos (estilo pixel art). */
-function outline(c: Ctx, w: number, h: number): void {
-  const img = c.getImageData(0, 0, w, h);
-  const d = img.data;
-  const solid = (x: number, y: number): boolean =>
-    x >= 0 && y >= 0 && x < w && y < h && (d[(y * w + x) * 4 + 3] as number) === 255;
-  const mark: number[] = [];
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      if ((d[(y * w + x) * 4 + 3] as number) === 255) continue;
-      if (solid(x - 1, y) || solid(x + 1, y) || solid(x, y - 1) || solid(x, y + 1))
-        mark.push(y * w + x);
-    }
-  }
-  for (const i of mark) {
-    d[i * 4] = 18;
-    d[i * 4 + 1] = 14;
-    d[i * 4 + 2] = 22;
-    d[i * 4 + 3] = 255;
-  }
-  c.putImageData(img, 0, 0);
-}
-
-/** Direcciones que se dibujan reflejando otra (indice destino -> origen). */
-const MIRROR: Record<number, number> = { 1: 7, 2: 6, 3: 5 };
-
 function drawFrame(look: Look, dir: number, anim: AnimName, f: number): HTMLCanvasElement {
   const cv = document.createElement('canvas');
   cv.width = FRAME_W;
@@ -619,8 +398,4 @@ export function buildSheet(scene: Phaser.Scene, lookKey: string): string {
     }
   }
   return key;
-}
-
-export function animKey(sheet: string, anim: AnimName, dir: number): string {
-  return `${sheet}:${anim}:${dir}`;
 }

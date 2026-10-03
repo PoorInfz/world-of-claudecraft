@@ -8,24 +8,21 @@
   </head>
   <body>
     <div id="game"></div>
-    <form id="join" class="panel" autocomplete="off">
+    <form id="login" class="panel hidden" autocomplete="on">
       <h1>Luz y Sombra</h1>
-      <p class="sub">Fase 1: prototipo jugable</p>
-      <label>Nombre
-        <input id="name" maxlength="12" required pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{3,12}" />
+      <p class="sub" id="sub"></p>
+      <label for="usuario">Usuario
+        <input id="usuario" name="username" autocomplete="username" maxlength="20" required />
       </label>
-      <fieldset>
-        <legend>Facción</legend>
-        <div class="choices" id="factions"></div>
-      </fieldset>
-      <fieldset>
-        <legend>Clase</legend>
-        <div class="choices" id="classes"></div>
-      </fieldset>
-      <button type="submit" id="enter">Entrar al mundo</button>
+      <label for="clave">Contraseña
+        <input id="clave" name="password" type="password" autocomplete="current-password" maxlength="72" required />
+      </label>
+      <div class="row">
+        <button type="submit" id="b-login"></button>
+        <button type="button" id="b-register" class="secondary"></button>
+      </div>
       <p class="err" id="err" role="alert"></p>
-      <p class="help">Clic izquierdo: moverse / atacar / recoger. Clic derecho y 1 a 6: habilidades.
-        WASD: moverse. Tab: siguiente enemigo. I: bolsa. Esc: quitar objetivo.</p>
+      <p class="help" id="help"></p>
     </form>
     <script type="module" src="./main.ts"></script>
   </body>

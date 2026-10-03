@@ -32,6 +32,8 @@ export interface BaseStats {
 export interface ClassDef {
   id: ClassId;
   name: string;
+  /** Resumen del rol para el creador de personajes. */
+  description: string;
   resource: ResourceKind;
   /** Ira: maximo fijo. Mana: mana base antes del intelecto. */
   maxResource: number;

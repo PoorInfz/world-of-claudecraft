@@ -1,8 +1,8 @@
 {
   "name": "juego-web3",
   "private": true,
-  "version": "0.1.0",
-  "description": "MMORPG 2D pixel art Luz contra Sombra: servidor autoritativo + cliente Phaser (Fase 1).",
+  "version": "0.2.0",
+  "description": "MMORPG 2D pixel art Luz contra Sombra: servidor autoritativo + cliente Phaser.",
   "type": "module",
   "scripts": {
     "dev": "concurrently -k -n server,client \"npm:server:watch\" \"npm:client\"",
@@ -13,14 +13,20 @@
     "start": "NODE_ENV=production tsx server/main.ts",
     "map": "tsx scripts/gen_start_zone.ts",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "dev:pg": "DATABASE_URL=postgres://juego:juego@localhost:5434/luzysombra concurrently -k -n server,client \"npm:server:watch\" \"npm:client\"",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "test:pg": "TEST_DATABASE_URL=postgres://juego:juego@localhost:5434/luzysombra vitest run"
   },
   "dependencies": {
+    "pg": "8.16.3",
     "phaser": "3.90.0",
     "ws": "8.18.3"
   },
   "devDependencies": {
     "@types/node": "22.15.30",
+    "@types/pg": "8.15.5",
     "@types/ws": "8.18.1",
     "concurrently": "9.2.1",
     "tsx": "4.20.6",

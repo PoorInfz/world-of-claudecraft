@@ -8,6 +8,7 @@ export const CLASSES: Record<ClassId, ClassDef> = {
   guerrero: {
     id: 'guerrero',
     name: 'Guerrero',
+    description: 'Combatiente cuerpo a cuerpo con armadura pesada. Tanque o daño. Usa ira.',
     resource: 'ira',
     maxResource: 100,
     base: { str: 23, agi: 20, sta: 22, int: 20, spi: 20, armor: 60 },
@@ -26,6 +27,8 @@ export const CLASSES: Record<ClassId, ClassDef> = {
   mago: {
     id: 'mago',
     name: 'Mago',
+    description:
+      'Lanzador a distancia de fuego, escarcha y arcano. Controla a sus enemigos. Usa maná.',
     resource: 'mana',
     maxResource: 100,
     base: { str: 20, agi: 20, sta: 20, int: 23, spi: 22, armor: 20 },

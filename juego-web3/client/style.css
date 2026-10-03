@@ -107,3 +107,32 @@ button {
 .hidden {
   display: none;
 }
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+button.secondary {
+  background: #3a3242;
+  color: var(--text);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+/* Campo de nombre del creador de personajes, colocado sobre el lienzo. */
+.pixel-input {
+  position: fixed;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 6px;
+  background: #000;
+  color: var(--text);
+  border: 2px solid #5a4a32;
+  font-family: ui-monospace, "Courier New", monospace;
+  outline: none;
+  z-index: 5;
+}
+.pixel-input:focus {
+  border-color: var(--border);
+}

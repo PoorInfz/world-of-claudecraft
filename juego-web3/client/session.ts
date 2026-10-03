@@ -1,3 +1,4 @@
+import type { Appearance } from '../shared/appearance.ts';
 import type { ClassId, FactionId } from '../shared/data/types.ts';
 import type { MapData } from '../shared/map.ts';
 import type { Connection } from './net/connection.ts';
@@ -12,4 +13,8 @@ export interface GameSession {
   name: string;
   cls: ClassId;
   faction: FactionId;
+  charId: number;
+  appearance: Appearance;
+  /** Salida voluntaria (no mostrar error de desconexion). */
+  leaving?: boolean;
 }

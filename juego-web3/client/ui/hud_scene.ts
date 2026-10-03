@@ -56,11 +56,28 @@ export class HudScene extends Phaser.Scene implements HudBridge {
   private uiRects: Rect[] = [];
   private slotRects: Rect[] = [];
   private bagRect: Rect = { x: 0, y: 0, w: 0, h: 0 };
+  private exitRect: Rect = { x: 0, y: 0, w: 0, h: 0 };
   private invRect: Rect = { x: 0, y: 0, w: 0, h: 0 };
   private fpsAcc = { frames: 0, since: 0, fps: 60 };
 
   constructor() {
     super('hud');
+  }
+
+  init(): void {
+    this.t = {};
+    this.slotIcons = [];
+    this.slotKeys = [];
+    this.slotCd = [];
+    this.auraIcons = [];
+    this.invIcons = [];
+    this.invQty = [];
+    this.logLines = [];
+    this.errorUntil = 0;
+    this.diedAt = 0;
+    this.invOpen = false;
+    this.uiRects = [];
+    this.slotRects = [];
   }
 
   create(): void {
@@ -94,6 +111,7 @@ export class HudScene extends Phaser.Scene implements HudBridge {
     text('respawn', [0.5, 0]);
     text('bag', [0.5, 0.5]);
     text('invTitle');
+    text('exit', [0.5, 0.5]).setText(T.exit);
     this.t.bag?.setText('I');
     this.t.invTitle?.setText(T.inventory);
 
@@ -147,6 +165,11 @@ export class HudScene extends Phaser.Scene implements HudBridge {
   // ------------------------------------------------------------ entrada
   private onClick(p: Phaser.Input.Pointer): void {
     if (!p.leftButtonDown()) return;
+    if (inside(this.exitRect, p.x, p.y)) {
+      this.session.leaving = true;
+      this.session.conn.close();
+      return;
+    }
     const slot = this.slotRects.findIndex((r) => inside(r, p.x, p.y));
     if (slot >= 0) {
       this.game3.useSlot(slot);
@@ -248,9 +271,20 @@ export class HudScene extends Phaser.Scene implements HudBridge {
     }
     for (let i = ai; i < this.auraIcons.length; i++) this.auraIcons[i]?.setVisible(false);
 
-    // --- Zona, ping y FPS
-    this.t.zone?.setPosition(W - 6, 6);
-    this.t.zkind?.setPosition(W - 6, 16);
+    // --- Zona, ping, FPS y salir a la seleccion de personajes
+    this.exitRect = { x: W - 44, y: 4, w: 40, h: 14 };
+    drawPanel(
+      g,
+      this.exitRect.x,
+      this.exitRect.y,
+      this.exitRect.w,
+      this.exitRect.h,
+      inside(this.exitRect, pointer.x, pointer.y) ? 0xf2c14e : UI.border,
+    );
+    this.uiRects.push(this.exitRect);
+    this.t.exit?.setPosition(W - 24, 12);
+    this.t.zone?.setPosition(W - 50, 6);
+    this.t.zkind?.setPosition(W - 50, 16);
     this.fpsAcc.frames++;
     this.fpsAcc.since += delta;
     if (this.fpsAcc.since >= 1000) {
