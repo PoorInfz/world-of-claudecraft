@@ -1,0 +1,31 @@
+{
+  "name": "juego-web3",
+  "private": true,
+  "version": "0.1.0",
+  "description": "MMORPG 2D pixel art Luz contra Sombra: servidor autoritativo + cliente Phaser (Fase 1).",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n server,client \"npm:server:watch\" \"npm:client\"",
+    "client": "vite",
+    "server": "tsx server/main.ts",
+    "server:watch": "tsx watch server/main.ts",
+    "build": "vite build",
+    "start": "NODE_ENV=production tsx server/main.ts",
+    "map": "tsx scripts/gen_start_zone.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "phaser": "3.90.0",
+    "ws": "8.18.3"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "@types/ws": "8.18.1",
+    "concurrently": "9.2.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "vite": "7.1.12",
+    "vitest": "3.2.4"
+  }
+}

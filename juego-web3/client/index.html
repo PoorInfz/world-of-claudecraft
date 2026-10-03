@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Luz y Sombra</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="game"></div>
+    <form id="join" class="panel" autocomplete="off">
+      <h1>Luz y Sombra</h1>
+      <p class="sub">Fase 1: prototipo jugable</p>
+      <label>Nombre
+        <input id="name" maxlength="12" required pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{3,12}" />
+      </label>
+      <fieldset>
+        <legend>Facción</legend>
+        <div class="choices" id="factions"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Clase</legend>
+        <div class="choices" id="classes"></div>
+      </fieldset>
+      <button type="submit" id="enter">Entrar al mundo</button>
+      <p class="err" id="err" role="alert"></p>
+      <p class="help">Clic izquierdo: moverse / atacar / recoger. Clic derecho y 1 a 6: habilidades.
+        WASD: moverse. Tab: siguiente enemigo. I: bolsa. Esc: quitar objetivo.</p>
+    </form>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
